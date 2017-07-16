@@ -1,0 +1,11 @@
+
+html_document:
+    toc: true
+    toc_float:
+        collapsed: false
+        smooth_scroll: false
+    include:
+        after_body: _includes/footer.html
+    theme: lumen # lumen or simplex or sandstone
+    # highlight: pygments # or textmate or tango or default?
+    #css: _includes/style.css
