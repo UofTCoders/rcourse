@@ -6,7 +6,7 @@ Authors@R: c(
     person("Madeleine", "Bonsma", email = "m.bonsma@mail.utoronto.ca", role = c("aut")),
     person("Lindsay", "Coome", email = "lindsay.coome@mail.utoronto.ca", role = c("aut")),
     person("Joel", "Östblom", email = "joel.ostblom@gmail.com", role = c("aut")),
-    person("Elloitt", "Sales de Andrade", email = "esalesde@physics.utoronto.ca", role = c("aut")),
+    person("Elliott", "Sales de Andrade", email = "esalesde@physics.utoronto.ca", role = c("aut")),
     person("Lina", "Tran", email = "lina.mntran@gmail.com", role = c("aut"))
     )
 Depends: R (>= 3.4.0)
