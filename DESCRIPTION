@@ -1,0 +1,19 @@
+Package: rcourse
+Title: Reproducible Quantitative Methods in R Course in Ecology and Evolutionary Biology
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Luke", "Johnston", email = "lwjohnst@gmail.com", role = c("aut", "cre")),
+    person("Madeleine", "Bonsma", email = "m.bonsma@mail.utoronto.ca", role = c("aut")),
+    person("Lindsay", "Coome", email = "lindsay.coome@mail.utoronto.ca", role = c("aut")),
+    person("Joel", "Östblom", email = "joel.ostblom@gmail.com", role = c("aut")),
+    person("Elloitt", "Sales de Andrade", email = "esalesde@physics.utoronto.ca", role = c("aut")),
+    person("Lina", "Tran", email = "lina.mntran@gmail.com", role = c("aut"))
+    )
+Depends: R (>= 3.4.0)
+License: CC-BY
+Encoding: UTF-8
+Imports: rmarkdown,
+    knitr,
+    dplyr,
+    tidyr,
+    ggplot2
