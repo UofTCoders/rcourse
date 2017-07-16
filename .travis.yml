@@ -1,0 +1,15 @@
+language: R
+sudo: false
+cache:
+    packages: true
+    directories:
+        - _site
+script:
+    - Rscript -e 'rmarkdown::render_site(".")'
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN # set in travis dashboard
+    local_dir: _site
+    on:
+        branch: master
