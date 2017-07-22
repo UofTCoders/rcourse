@@ -1,0 +1,15 @@
+---
+title: "Resources and Additional Information"
+---
+
+## R Coding Style Guide
+
+*All code submitted for grading* will need to conform to the coding style
+guidelines as outline on [this Style Guide](http://style.tidyverse.org/index.html).
+We will be discussing and highlighting how to automatically (or at least
+consistently) use this style as we go through the lectures and labs. If you do
+not follow these guidelines, you will be requested to make the necessary changes
+and resubmit the assignment. The resubmission *still adheres* to the assignment
+deadline and to the *late submission penalty (5% mark/day)*. So for example, if
+we check that the coding style is not followed one day after the deadline and
+you resubmit one day later, that is a *total of 10% penalty* on that assignment.
