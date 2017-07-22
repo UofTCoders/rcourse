@@ -2,7 +2,6 @@ name: "EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods using 
 output_dir: "_site"
 exclude:
     - "DESCRIPTION"
-    - "deploy.sh"
     - "README.md"
 navbar:
   title: "EEB430H1"

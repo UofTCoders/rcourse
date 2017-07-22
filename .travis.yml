@@ -1,15 +1,16 @@
 language: R
 sudo: false
-cache:
-    packages: true
-    directories:
-        - _site
+cache: packages
 script:
-    - Rscript -e 'rmarkdown::render_site(".")'
+- Rscript -e "rmarkdown::render_site('.')"
+- touch _site/.nojekyll
+env:
+  global:
+    secure: Iv+8tj5Uv3yIJ0o48t8QEDpti8ePaFJndAzZPL4xf4Qtz6vAnFjBRoFyqBVdZeA4TW00TzkQ2JL5Pa4mLzTqgGDV6HsvALcDfaaqVHNNtdXz1IL//i8qqy4gYUHELdz4YjcMtP32b03BvtueJbpOceMnlvBZT6KAN0s1CCYXurNQHbZ7ZO0wh/HdY6eGc7kCsVYW77JWGRp8K/g6G+y+Raa4yKtV+qadOTjRf7T/HIjl09PmpLhxfK40XFgizehxzt96k4Asoeqb5Z2HCmUcVHtFKt9Y8UzVdJKIM2Yqusb0pDRjBu4WZePntUI1sir7qjgsk2zZSbAHukEma6vV7lsPqmGpvXIhJympD/2oqItP+NKgSa9gfXCoFt8sxax4yizGdcG1XiafNSfsd3fQMzDzIUyg7hIAwLNAX2PTq/typMP6b4ZsECLCB+sSqE8e/oCkgV73nIQLJzNwaSwsHzupSqI6g2mdrWf8EhFm4Zber55N58pfo/prvI+VVEaNKot9dChvhYPKYBD4xx404MCden/Lem7gQmqomdvkqsSqtMZIKdj2yZBGqSQbzEhU7k/wGwpIpnne2VOkxsVO3S36OynKkaVYlUvNAuXrfW8ckPrNRoBBIGuWQHvSb0Tf0LuIuNvW0g5yX4R7tuYm//ESoMTzKxVhUAUO6QRHnqU=
 deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN # set in travis dashboard
-    local_dir: _site
-    on:
-        branch: master
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: _site
+  on:
+    branch: master
