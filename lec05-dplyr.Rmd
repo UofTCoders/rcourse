@@ -1,0 +1,4 @@
+---
+title: "More on using dplyr and a brief introduction to plotting with ggplot"
+---
+
