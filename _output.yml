@@ -9,4 +9,4 @@ html_document:
         after_body: _includes/footer.html
     theme: lumen # lumen or simplex or sandstone
     # highlight: pygments # or textmate or tango or default?
-    mathjax: "http://example.com/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    mathjax: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
