@@ -51,6 +51,7 @@ navbar:
           href: lec17-metadata.html
         - text: "Scientific collaboration, Git, and GitHub"
           href: lec18-git.html
+        - text: "Project work (no lesson)"
         - text: "Preparing a scientific item for academic publishing"
           href: lec20-publishing.html
     - text: "Assignments"
