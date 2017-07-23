@@ -76,10 +76,10 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 10   | Oct 10 | Fitting models to data                              | Madeleine      |
 | 11   | Oct 12 | Linear regression population dynamics models?       | Luke           |
 | 12   | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
-| 13   | Oct 19 | Project work, prodigenR, tidy data, git via rstudio | Luke           |
+| 13   | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
 | 14   | Oct 24 | Data visualization in R                             | Lindsay        |
 | 15   | Oct 26 | Project work, data visualizations                   | Lindsay        |
-| 16   | Oct 31 | Reproducible workflow, metadata, Rmarkdown          | Lina           |
+| 16   | Oct 31 | Reproducible workflow, metadata, R Markdown         | Lina           |
 | 17   | Nov 02 | Project work, metadata                              | 1 TA/group     |
 | -    | Nov 07 | Fall break                                          | -              |
 | -    | Nov 09 | Fall break                                          | -              |
