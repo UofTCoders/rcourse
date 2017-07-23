@@ -11,12 +11,12 @@ EEB322H1, EEB323H1
 
 Tue and Thu 2-4 pm. Office hours are Tue 4-5 pm.  
 
-## Lecture halls
+## Class locations
 
-| Day | Location | Details |
-|-----|----------|---------|
-| Tue | [Ramsay Wright](https://goo.gl/maps/KgAD9t5sBp62) (RW 109) | Harbord and St George, 1st floor, enter from St George street. |
-| Thu | [Carr Hall](https://goo.gl/maps/t1SmTYWTYK82) (SMC 325) | Queen's Park East and St. Joseph Street, 3rd floor, St. Michael's College. |
+| Day | Room | Location | Details |
+|-----|------|----------|---------|
+| Tue | [Ramsay Wright](https://goo.gl/maps/KgAD9t5sBp62) (RW 109) | Harbord and St George | 1st floor, enter from St George street. |
+| Thu | [Carr Hall](https://goo.gl/maps/t1SmTYWTYK82) (SMC 325) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
 
 Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Installed programs and packages are wiped from the computers daily. Saved files will be accessible from any computer via the student's login. Students can use any of the lecture halls when there are no classes scheduled. See the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
