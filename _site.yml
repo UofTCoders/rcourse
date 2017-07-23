@@ -66,6 +66,14 @@ navbar:
           href: assignment-04.html
         - text: "Assignment 5"
           href: assignment-05.html
+        - text: "Assignment 6"
+          href: assignment-06.html
+        - text: "Assignment 7"
+          href: assignment-07.html
+        - text: "Assignment 8"
+          href: assignment-08.html
+        - text: "Assignment 9"
+          href: assignment-09.html
         - text: "Final assignment"
           href: assignment-final.html
     - text: "Resources and FAQ"
