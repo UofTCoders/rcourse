@@ -5,7 +5,8 @@ html_document:
         collapsed: false
         smooth_scroll: false
     include:
+        in_header: _includes/style.html
         after_body: _includes/footer.html
     theme: lumen # lumen or simplex or sandstone
     # highlight: pygments # or textmate or tango or default?
-    #css: _includes/style.css
+    mathjax: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
