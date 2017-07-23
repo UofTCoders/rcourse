@@ -1,5 +1,5 @@
 ---
-title: "Syllabus: EEB430H1 Theoretical Ecology [24L, 12P]"
+title: "Syllabus: EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods using R [24L, 12P]"
 ---
 
 This course focuses on theoretical ecology concepts and reproducible quantitative methods using R. Theoretical ecology uses models to explain biological phenomena such as the maintenance of biodiversity, population growth, competition, eco-evolutionary dynamics, epidemiology, spatial ecology, and species extinction. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
