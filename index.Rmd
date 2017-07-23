@@ -36,8 +36,8 @@ _Please address all general course-related email communication to joel.ostblom@m
 ### Supervising professor
 Prof. Martin Krkosek, martin.krkosek@utoronto.ca, 416-978-3839, RW402
 
-## Course Web page (on Blackboard)
-All course information will be stored on Blackboard (https://portal.utoronto.ca/). You will have access to the Syllabus, Lecture Schedule & Recommended Readings for each lecture, Lab Schedule, Lab Instructions, Lecture slides (pdf files) and Lab Data sheets. If you have any problem accessing the material, let us know right away so we can fix the problem (e-mail is best).
+## Course Website and Blackboard
+All course information is accessible on its own website (https://uoftcoders.github.io/rcourse/) and will also be stored on Blackboard (https://portal.utoronto.ca/). You will have access to the Syllabus, Lecture Schedule & Recommended Readings for each lecture, Lab Schedule, Lab Instructions, Lecture slides (pdf files) and Lab Data sheets. If you have any problem accessing the material, let us know right away so we can fix the problem (e-mail is best).
 
 ## Recommended resources
 - [R for Data science](http://r4ds.had.co.nz/), H Wickham, G Grolemund, 2017
