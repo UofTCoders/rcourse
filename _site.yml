@@ -16,38 +16,43 @@ navbar:
       icon: fa-book
       menu:
         - text: "Introduction to the course"
-          icon: fa-home
           href: lec01-introduction.html
         - text: "Basic R (part 1): Introduction to R and RStudio"
-          icon: fa-file-code-o
           href: lec02-basic-r.html
         - text: "Basic R (part 2): More on R"
-          icon: fa-file-code-o
           href: lec03-basic-r.html
         - text: "Data wrangling (part 1): Working with data"
-          icon: fa-database
           href: lec04-dplyr.html
         - text: "Data wrangling (part 2): Data and some plotting"
-          icon: fa-database
           href: lec05-dplyr.html
-        - text: "Qualitative(?) population models"
-          icon: fa-signal
+        - text: "Qualitative population models"
           href: lec06-pop-models.html
-        - text: "Qualitative(?) population models: 2D"
-          icon: fa-signal
+        - text: "Qualitative population models: 2 dimensions"
           href: lec07-pop-models.html
-        - text: "Qualitative(?) population models: 2D"
-          icon: fa-database
-          href: lec07-pop-models.html
-        - text: "Data visualization"
-          icon: fa-line-chart
-          href: plots.html
-        - text: "Statistics and report generation"
-          icon: fa-file-text
-          href: reports.html
-        - text: "R Markdown"
-          icon: fa-file-text-o
+        - text: "Fixed points, null clines, and stability"
+          href: lec08-stability.html
+        - text: "Modeling in R"
+          href: lec09-modeling-r.html
+        - text: "Fitting models to data"
+          href: lec10-modeling-r.html
+        - text: "Linear regression population dynamics models"
+          href: lec11-modeling.html
+        - text: "Introduce data sets, hypotheses, start projects"
+          href: lec12-datasets.html
+        - text: "Project and Git setup in RStudio, tidy data, and project work"
+          href: lec13-projects-r.html
+        - text: "Data visualization (Part 1)"
+          href: lec14-data-viz.html
+        - text: "Data visualization (Part 2) and project work"
+          href: lec15-data-viz.html
+        - text: "Reproducible workflow, metadata, R Markdown"
           href: lec16-rmarkdown.html
+        - text: "Metadata and project work"
+          href: lec17-metadata.html
+        - text: "Scientific collaboration, Git, and GitHub"
+          href: lec18-git.html
+        - text: "Preparing a scientific item for academic publishing"
+          href: lec20-publishing.html
     - text: "Assignments"
       icon: fa-book
       menu:
@@ -77,5 +82,5 @@ navbar:
           href: "mailto:joel.ostblom@mail.utoronto.ca"
         - text: "GitHub"
           icon: fa-github
-          href: https://github.com/uoftcoders/course
+          href: https://github.com/uoftcoders/rcourse
 
