@@ -7,7 +7,11 @@
 
 # Convert all Rmd files into pdf files
 rmd_files <- list.files(pattern = "(assignment|lec|index).*.Rmd$")
-sapply(rmd_files, rmarkdown::render, output_format = "pdf_document")
+sapply(rmd_files, rmarkdown::render, output_format = "pdf_document",
+       output_options = list(
+           pandoc_args = c("-V", "fontsize=12pt", "-V", "papersize=letter"),
+           include = list(in_header = "_includes/preamble.tex")
+       ))
 
 # Create a _pdf dir if none exists
 if (!dir.exists("_pdf")) {

@@ -9,9 +9,3 @@ html_document:
     theme: lumen # lumen or simplex or sandstone
     # highlight: pygments # or textmate or tango or default?
     #css: _includes/style.css
-
-pdf_document:
-    include:
-        in_header:
-            - _includes/preamble.tex
-    pandoc_args: ["-V", "fontsize=12pt", "-V", "papersize=letter"]
