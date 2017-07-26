@@ -1,0 +1,76 @@
+---
+title: "Introduction to the datasets, hypotheses, and team dynamics; Start the projects"
+---
+
+## Lesson objectives:
+
+- **Main goal**: To start the process of identifying which dataset to use and what some possible research questions there are
+- Learn about the scientific method and *(the basics of)* how to apply it to your project
+- Learn basics of group dynamics in team setting, how to share responsibilities and duties
+- Get into groups and start your projects
+
+## Lesson outline:
+
+- Datasets available for use (20 min)
+- What is the scientific method (20 min)
+- An example of an analysis plan (10 min)
+- Team dynamics and assigning roles and tasks (20 min)
+- Getting into groups (10 min)
+    - Exercise ()
+    - Start project work 
+
+Total lesson time: 2 hours
+
+<!--
+
+2 hours:
+
+Rough outline:
+
+- Datasets available for use
+- Scientific method
+- Example of an analysis plan
+    - cover more on this next class
+- Get into groups, the basics
+    - exercise: write up initial skill set of each team member (keep is very simple for right now. only one or two skills)
+        - roles: who will submit assignment, how will leadership/faciliator roles be rotated? who will be responsible for what?
+- Identify 
+    
+
+Brainstorm:
+
+- focus down on a few datasets everyone has to use (using survey results; sent out from previous week? Or from main survey from intro)
+
+- scientific method (https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology)
+    - ask them first
+    - method:
+        - identify research question
+        - look into what the previous literature shows (how much emphasis on this?)
+        - create a hypothesis or several hypotheses
+        - write up an expected approach to answering that question (analysis plan; presentation plan)
+            - how you will get the data and what data it is (the source)
+            - what statistical or mathematical techniques have previous researchers used to address the question/hypotheses? (are they appropriate? optional since they may not have expertise)
+            - what are some ways to present your data and results?
+            - identify some possible tables and figures that will show off the results
+        - run all analyses (or additional ones you may have id'd after trying out prev ones)
+        - visualize or present all analyses
+        - interpret all results 
+        - draw conclusions based on hypotheses and question
+        - publish your results (blogs, etc.)
+        
+- TODO: create an analysis plan example on my github and link to here.
+
+- groups form now
+    - Should the groups be random? Different skill levels 
+    - Brief discussion about group dynamics, project management, sharing and being explicit about roles in the group
+    - exercise: write up initial skill set of each team member (keep is very simple for right now. only one or two skills)
+        - roles: who will submit assignment, how will leadership/faciliator roles be rotated? who will be responsible for what? Doesn't have to be completely decided right now, just so team members have an idea of their place in the team and how they can contribute
+    - Discuss code of conduct
+    
+Introduce data sets, divide intro groups, think about interesting questions to ask, formulate hypothesis/plan of action.
++    - Potentially do this already the week before and have them take a survey with the data they want to work on and their background experience.
++2. Project work, getting started with their own data in R, tidy data principles, how to clean data, setting up a collaborative git environment through Rprojects and [prodigenr](https://github.com/lwjohnst86/prodigenr) in Rstudio.
++3. Quizzes on portal. Create a github account after the first class this week. Maybe write a data README?
++
+    
+-->
