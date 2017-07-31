@@ -1,0 +1,4 @@
+---
+title: "Scientific collaboration, Git, and GitHub"
+---
+
