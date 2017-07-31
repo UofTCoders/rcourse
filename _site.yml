@@ -1,14 +1,9 @@
 name: "EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods using R"
 output_dir: "_site"
-exclude:
-    - "DESCRIPTION"
-    - "README.md"
+exclude: ["DESCRIPTION", "LICENSE"]
 navbar:
   title: "EEB430H1"
   left:
-#    - text: "Home"
-#      icon: fa-home
-#      href: index.html
     - text: "Syllabus"
       icon: fa-map-o
       href: index.html
