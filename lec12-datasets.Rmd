@@ -60,8 +60,6 @@ Brainstorm:
         - draw conclusions based on hypotheses and question
         - publish your results (blogs, etc.)
         
-- TODO: create an analysis plan example on my github and link to here.
-
 - groups form now
     - Should the groups be random? Different skill levels 
     - Brief discussion about group dynamics, project management, sharing and being explicit about roles in the group
@@ -71,8 +69,95 @@ Brainstorm:
     
 Introduce data sets, divide intro groups, think about interesting questions to ask, formulate hypothesis/plan of action.
 +    - Potentially do this already the week before and have them take a survey with the data they want to work on and their background experience.
-+2. Project work, getting started with their own data in R, tidy data principles, how to clean data, setting up a collaborative git environment through Rprojects and [prodigenr](https://github.com/lwjohnst86/prodigenr) in Rstudio.
-+3. Quizzes on portal. Create a github account after the first class this week. Maybe write a data README?
+    - Quizzes on portal. Create a github account after the first class this week. Maybe write a data README?
 +
-    
+
+Assignment (distribute who takes what item in your group to complete):
+    - create a codeOfConduct.md file in RStudio. Write down what your team has decided.
+    - create a team-description.md in RStudio. Write out what your team decided
+    on the skills everyone has, how responsibilities will be assigned/taken, and
+    how team roles will be rotated.
+    - create a project-description.md file. Write out everything your team
+    decided for which datasets and possible research questions.
+    - As a group, list the datasets and research questions in order of priority
+    for which ones you all want your final assignment to be on.
+
+- analysis plan?
 -->
+
+## Datasets for use
+
+{{list/link them here}}
+
+## Scientific method
+
+- What is the scientific method?
+
+### Steps in the scientific process
+
+1. Identify research question(s).
+2. Look into what the previous literature shows. <!--(how much emphasis on this?)-->
+3. Create one or more hypotheses or objectives for the research.
+4. Write up an outline or expected approach to answering those questions/objectives (analysis plan; presentation plan):
+    - How will the data be obtained and what is the data (i.e. the source).
+    - What statistical or mathematical techniques have previous researchers used? Will they be used or will other ones be used? Are they appropriate (optional, may need an expert)? 
+    - How will the results/data be presented?
+    - Identify/describe some possible tables and figures to present the results/data.
+5. Run all analyses (or additional ones that may come up as you work with and analyze the data).
+6. Visualize or present all results from analyses.
+7. Interpret the results and how they fit in the context of the previous literature and findings.
+8. Draw conclusions based on the hypotheses/objectives.
+9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
+
+### Simplified diagram of the scientific method
+
+```{r fig_scientific_method, eval=FALSE}
+
+```
+
+## Team dynamics
+
+- Everyone is different, every team is different. Communication is vital in order to achieve the team goal and to work together.
+- 
+
+### Identifying roles and responsibilities
+
+- Facilitator's duty:
+    - Goal is to keep things running smoothly, focused on the task, and on track for time
+    - Keep everyone on topic and on task; stay aware of the time
+    - (Try to) mediate or resolve any conflicts (there will *always* be some type of conflict; how it's dealt with is what matters)
+    - (Try to) encourage everyone to participate. Try to allow everyone a chance at talking.
+- Recorder's duty:
+    - Goal is to write/type down main or important points raised or discussed when team is meeting
+    - Keep notes and files organized and orderly
+- Organizer's duty:
+    - Arrange for next meeting time and location
+    - Send reminders to members a day or two before meeting
+
+### Code of conduct
+
+How do you want each member to treat each other? This is the purpose of the code of conduct. While common sense usually ensures that 
+
+## Group exercise
+
+- Get into your {{assigned?}} groups
+- Introduce each other:
+    - Find out everyone's name and year of study
+    - Find out what, if any, plans everyone has for next year
+- Assign roles to each person (these roles will be rotated in every group setting):
+    - Need: facilitator, recorder, organizer
+    - Discuss how and when roles will be rotated (record it)
+- Discuss and brainstorm some codes of conduct you want your team to follow (record it)
+- Take a few minutes, think about your own skills and what you feel are most competent in
+    - Then, share the top one or two of those skills (record those skills)
+- Discuss how responsibilities of each member will be decided on (record it)
+
+## Group project
+
+In your group, rotate roles (need a facilitator and recorder). Before end of class:
+
+- Choose two possible datasets your team would like to work from (can also be datasets not presented in class)
+- Brainstorm as many research questions as possible for those two datasets. 
+    - Goal is to write as much ideas down. No question is off limits and no question is too simple or too complex! Just write what ever comes to mind.
+
+Make sure to record everything down!
