@@ -4,22 +4,24 @@ title: "Introduction to the datasets, hypotheses, and team dynamics; Start the p
 
 ## Lesson objectives:
 
-- **Main goal**: To start the process of identifying which dataset to use and what some possible research questions there are
-- Learn about the scientific method and *(the basics of)* how to apply it to your project
-- Learn basics of group dynamics in team setting, how to share responsibilities and duties
-- Get into groups and start your projects
+- **Main goal**: 
+    - To start the process of identifying which dataset to use and some possible research questions
+- **Secondary goals**:
+    - Learn about the scientific method and *(the basics of)* how to apply it to your project
+    - Learn basics of group dynamics in a team setting, how to share responsibilities and duties
+    - Get into groups and start your projects
 
 ## Lesson outline:
 
+Total lesson time: 2 hours
+
 - Datasets available for use (20 min)
 - What is the scientific method (20 min)
-- An example of an analysis plan (10 min)
-- Team dynamics and assigning roles and tasks (20 min)
+- Team dynamics and assigning roles and tasks (15 min)
+- Break (10 min)
 - Getting into groups (10 min)
-    - Exercise ()
-    - Start project work 
-
-Total lesson time: 2 hours
+    - Exercise (25 min)
+    - Start project work (20 min)
 
 <!--
 
