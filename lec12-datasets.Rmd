@@ -71,18 +71,6 @@ Introduce data sets, divide intro groups, think about interesting questions to a
 +    - Potentially do this already the week before and have them take a survey with the data they want to work on and their background experience.
     - Quizzes on portal. Create a github account after the first class this week. Maybe write a data README?
 +
-
-Assignment (distribute who takes what item in your group to complete):
-    - create a codeOfConduct.md file in RStudio. Write down what your team has decided.
-    - create a team-description.md in RStudio. Write out what your team decided
-    on the skills everyone has, how responsibilities will be assigned/taken, and
-    how team roles will be rotated.
-    - create a project-description.md file. Write out everything your team
-    decided for which datasets and possible research questions.
-    - As a group, list the datasets and research questions in order of priority
-    for which ones you all want your final assignment to be on.
-
-- analysis plan?
 -->
 
 ## Datasets for use
