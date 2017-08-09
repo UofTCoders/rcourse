@@ -144,7 +144,13 @@ Final assignment is in a group and to succeed, need to understand team dynamics:
 
 ### Code of conduct
 
-How do you want each member to treat each other? This is the purpose of the code of conduct. While common sense usually ensures that 
+- Vital to establishing boundaries and expectations of being a team member
+    - How do you want each member to treat each other?
+    - How do you deal with conflict?
+    - What is acceptable and unacceptable behaviour?
+- These are outlined in the code of conduct
+- Mostly its common sense (be kind and respect)
+    - But its important that you as a team write out what everyone wants
 
 ## Group exercise
 
