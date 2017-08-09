@@ -100,17 +100,37 @@ Introduce data sets, divide intro groups, think about interesting questions to a
 ### Simplified diagram of the scientific method
 
 ```{r fig_scientific_method, eval=FALSE}
-
+DiagrammeR::grViz("_diagrams/scientific-method.gv")
 ```
 
 ## Team dynamics
 
-- Everyone is different, every team is different. Communication is vital in order to achieve the team goal and to work together.
-- 
+Final assignment is in a group and to succeed, need to understand team dynamics:
 
-### Identifying roles and responsibilities
+- Everyone is different, every team is different
+- Communication is vital to work together and to achieve the goal
+- Teams go through various stages
+- Consensus for group norms, goals, duties/responsibilities, and conduct
+    - Important that everyone has a stake in the project
+- Rotate roles (leadership/facilitator especially)
 
-- Facilitator's duty:
+### Stages of group formation
+
+- "Forming-Storming-Norming-Performing-Adjourning Model"[^group_forming]
+- Essentially, groups go through stages (not always all, and not always in order):
+    - Getting to know one other
+    - Feeling comfortable and safer, testing boundaries
+    - Opening up, voicing opinions, potential for conflict
+    - Stronger bonds form, cooperative
+    - Greater focus and energy on completion of project
+    - Team ends after project is successfully completed
+- These stages and be fast-tracked by discussing norms, duties, and conduct early on
+
+[^group_forming]: See [Principles of Group Dynames](https://open.lib.umn.edu/principlesmanagement/chapter/13-3-group-dynamics/) 
+
+### Roles and responsibilities
+
+- Leader/Facilitator's duty:
     - Goal is to keep things running smoothly, focused on the task, and on track for time
     - Keep everyone on topic and on task; stay aware of the time
     - (Try to) mediate or resolve any conflicts (there will *always* be some type of conflict; how it's dealt with is what matters)
