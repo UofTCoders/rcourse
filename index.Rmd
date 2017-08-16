@@ -65,22 +65,22 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Week | Date   | Topic                                               | Instructor     |
 |------|--------|-----------------------------------------------------|----------------|
 | 1    | Sep 07 | Welcome to the course! Intro to programming         | Everyone       |
-| 2    | Sep 12 | Basic R – RStudio, R Markdown, assignment, vectors   | Joel           |
+| 2    | Sep 12 | Basic R – RStudio, R Markdown, assignment, vectors  | Joel           |
 | 2    | Sep 14 | Basic R – functions, data frames, indexing          | Joel           |
 | 3    | Sep 19 | Intro to dplyr data wrangling                       | Joel           |
 | 3    | Sep 21 | More dplyr, ggplot intro                            | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
 | 4    | Sep 28 | Qualitative population models in 2 dimensions       | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
-| 5    | Oct 05 | Modelling in R                                       | Madeleine      |
-| 6   | Oct 10 | Fitting models to data                              | Madeleine      |
-| 6   | Oct 12 | Linear regression population dynamics models?       | Luke           |
-| 7   | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
-| 7   | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
-| 8   | Oct 24 | Data visualization in R                             | Lindsay        |
-| 8   | Oct 26 | Project work, data visualizations                   | Lindsay        |
-| 9   | Oct 31 | Reproducible workflow, metadata, R Markdown         | Lina           |
-| 9   | Nov 02 | Project work, metadata                              | 1 TA/group     |
+| 5    | Oct 05 | Modelling in R                                      | Madeleine      |
+| 6    | Oct 10 | Fitting models to data                              | Madeleine      |
+| 6    | Oct 12 | Linear regression population dynamics models?       | Luke           |
+| 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
+| 7    | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
+| 8    | Oct 24 | Data visualization in R                             | Lindsay        |
+| 8    | Oct 26 | Project work, data visualizations                   | Lindsay        |
+| 9    | Oct 31 | Reproducible workflow, metadata, R Markdown         | Lina           |
+| 9    | Nov 02 | Project work, metadata                              | 1 TA/group     |
 | -    | Nov 07 | Fall break                                          | -              |
 | -    | Nov 09 | Fall break                                          | -              |
 | 10   | Nov 14 | Scientific collaboration, Git and GitHub            | Elliot         |
@@ -100,7 +100,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | dplyr                 | Individual          | Sep 25     | 8     |
 | Population models     | Individual          | Oct 02     | 8     |
 | Modelling in R        | Individual          | Oct 09     | 8     |
-| Fitting models to data    | Individual      | Oct 16     | 8     |
+| Fitting models to data| Individual          | Oct 16     | 8     |
 | Setup github          | Project, Individual | Oct 23     | 8     |
 | Data visualization    | Project, Individual | Oct 30     | 8     |
 | Reproducible workflow | Project, Individual | Nov 06     | 8     |
