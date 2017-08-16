@@ -95,15 +95,15 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 
 | Assesment             | Type                | Due date   | Marks |
 |-----------------------|---------------------|------------|-------|
-| Getting set up        | Individual          | Sep 11     | 4     |
-| Basic R               | Individual          | Sep 18     | 8     |
-| dplyr                 | Individual          | Sep 25     | 8     |
-| Population models     | Individual          | Oct 02     | 8     |
-| Modelling in R        | Individual          | Oct 09     | 8     |
-| Fitting models to data| Individual          | Oct 16     | 8     |
-| Setup github          | Project, Individual | Oct 23     | 8     |
-| Data visualization    | Project, Individual | Oct 30     | 8     |
-| Reproducible workflow | Project, Individual | Nov 06     | 8     |
+| Getting set up        | Individual          | Sep 19     | 4     |
+| Basic R               | Individual          | Sep 26     | 8     |
+| dplyr                 | Individual          | Oct 03     | 8     |
+| Population models     | Individual          | Oct 10     | 8     |
+| Modelling in R        | Individual          | Oct 17     | 8     |
+| Fitting models to data| Individual          | Oct 24     | 8     |
+| Setup github          | Project, Individual | Oct 31     | 8     |
+| Data visualization    | Project, Individual | Nov 07     | 8     |
+| Reproducible workflow | Project, Individual | Nov 14     | 8     |
 | Final project work    | Project, Group      | Dec 15     | 32    |
 
-Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assessments will be handed out on Thursdays and due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
