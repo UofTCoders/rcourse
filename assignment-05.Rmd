@@ -1,4 +1,96 @@
----
-title: "Assignment 5"
----
+
+
+## Week 4 - quantitative modelling in R
+
+1. Consider the differential equation $\frac{dx}{dt} = x(1-x)$ from last week's assignment.
+
+(a) Find the fixed points (equilibrium values) of the system (analytically, on paper).
+
+(b) Use R to simulate this equation and plot $x$ vs. $t$ for $0 \le t \le 10$. Plot trajectories for several different starting values of $x$. Based on the long-time behaviour of the system, which fixed point(s) are stable and which are unstable?
+
+(c) Analyze the stability of the fixed points on paper. Since this system is one-dimensional, we only need a single derivative: $\frac{\partial \dot{x}}{\partial x}$, where $\dot{x} = \frac{dx}{dt}$. Calculate this derivative, evaluate it at each of the fixed points, and use the result to classify each point as stable or unstable.
+
+2. Consider the Lotka-Volterra competition model. Unlike the predator-prey model considered last week, in this model the growth rate of each species ($x$ and $y$) depends on the per-capita effect the competing species have on each other, which can be thought of as the amount of overlap in resource use. The amount of overlap for each species is given by $\alpha_1$ and $\alpha_2$, respectively.  $\alpha_1$ and $\alpha_2$ don't need to be equal.
+
+$$\frac{dx}{dt} = r_1 x \left(1-\frac{x+\alpha_1 y}{K_1}\right)$$
+
+$$\frac{dy}{dt} = r_2 x \left(1-\frac{y+\alpha_2 x}{K_2}\right)$$
+
+$r$ and $K$ are growth rates and carrying capacities, respectively.
+
+(a) Find the fixed points and null clines of the system (analytically, on paper). The fixed points can be found by setting $\frac{dx}{dt} = 0$ and $\frac{dy}{dt} = 0$ simultaneously, and the null clines can be found by setting each derivative to zero individually and solving for $y$ as a function of $x$ in each case so that they can be plotted on a $y$ vs. $x$ phase portrait.
+
+(b) Use R to simulate these equations and plot $x$ and $y$ vs. $t$. Use the symmetric case: $\alpha_1 = \alpha_2 = \alpha$, $K_1 = K_2 = K$, and $r_1 = r_2 = r$. Choose $\alpha = 0.2, K = 50$, and $r = 1$.
+
+(c) Create a phase portrait for this system in R. On $y$ vs. $x$ axes, plot the following:
+- all the fixed points
+- the two null clines found in (a)
+- three to four trajectories found in (b). Use your $x$ vs. $t$ and $y$ vs. $t$ data to plot $y$ vs $x$ parametrized trajectories on the phase portrait.
+
+(d) Analyze the stability of each fixed point for the general case when each parameter is distinct. Calculate the four partial derivatives needed for the Jacobian: $\frac{\partial \dot{x}}{\partial x}$, $\frac{\partial \dot{x}}{\partial y}$, $\frac{\partial \dot{y}}{\partial x}$, $\frac{\partial \dot{y}}{\partial y}$.
+
+For example, for the fixed point $x^* = 0$, $y^* = K_2$:
+
+```
+   #Fixed point
+   x.star <- 0;
+   y.star <- K_2;
+
+```
+
+And we can use our solutions for the partial derivatives above, plugging in the equilibrium values. For example the partial derivative of $\dot{x}$ with respect to x evaluated at the fixed point above is
+
+```
+   # Partial derivatives / elements of the Jacobian
+   dXdot_dx <- r1*(1-(x.star+a1*y.star)/K1) - (1/K1)*r1*x.star;
+```
+
+Now create the Jacobian matrix and then calculate the eigenvalues.
+```
+   A<-matrix(c(dXdot_dx,dXdot_dy,dYdot_dx,dYdot_dy),2,2,byrow=TRUE);
+   e_vals<-eigen(A)$values;
+```
+
+For each point, give the eigenvalues and explain whether the fixed point is stable or unstable. Will it oscillate? Explain why or why not.
+
+(e) Simplify the fixed points of the system in the case when $ \alpha_1 = \alpha_2 = \alpha $. Create a plot in R showing $ x^* $ vs. $\alpha$, $y^*$ vs $\alpha$, and $ x ^ * + y ^ *$ vs. $\alpha$ for $ -1 < $\alpha < 1.5$. Label $K_1$, $K_2$, and $K_1 + K_2$ on the y-axis. Use a solid line to represent stable fixed points and a dashed line for unstable fixed points. Are there any bifurcations (qualitative changes in the number or stability of fixed points) as a function of $\alpha$? Thinking of $\alpha$ as the parameter that controls "overlap" between the two competing species, what is the biological meaning of $\alpha = 0$? (Hint: compare this fixed point to the non-trivial fixed point from the logistic model: $N^* = K$.) What is the biological meaning of $0 < \alpha < 1$? What is the biological meaning of $\alpha = 1$, and of $\alpha > 1$? (Hint: what is the sum of the non-trivial fixed points $x^*$ and $y^*$ in each of these cases in terms of $K_1$ and $K_2$?) What would happen to the system if $\alpha$ was negative? (Hint: is "competition" still an appropriate name for the model if $\alpha < 0$?)
+
+3. Ricker model
+
+The Ricker model is a stochastic model for growth of a population. Its two parameters are the death rate $b$ and growth rate $r$ of the population. The carrying capacity of the system is $r/b$. 
+
+$ N_{t+1} = N_t e^{r-bN_t + \xi_t}$
+
+(a) Use the following code to simulate a dataset of the number of fish returning to spawn each year.
+
+```
+######### Simulating data for Ricker Model #########
+
+r <- 2.0	# growth rate
+b <- r/2000	# density dependent mortality (carrying capacity = r/b = 2000)
+st.d <- 0.75 	# process error (standard deviation)
+N <- 100	# timesteps
+
+y<-numeric(N+1)	# vector of population sizes
+y1<-1000	# initial condition (start it at half of the carrying capacity)
+
+# Simulate data:
+y[1]<-y1 # set first element to initial condition
+for(i in 2:(N+1)) y[i]<-y[i-1]*exp(rnorm(n=1, r-b*y[i-1], st.d)) 
+
+plot(y, type="l", xlab="Time (years)", ylab="Number of Spawners"); abline(h=r/b, lty=3)
+```
+
+(b) Rearrange the Ricker model by taking the logarithm of both sides to get an expression of the form $y = mx + c$, where $y = log(N_{t+1}/N_t)$. In terms of the Ricker model parameters, what are $m$ and $c$? Assume $\xi_t$ is a Gaussian random variable with mean $0$ and variance $st.d^2$. 
+
+(c) Use the R function `lm` to fit the data to the Ricker model. Report the estimates for $r$ and $b$, along with their standard deviation. 
+
+(d) The noise term $\xi_t$ in the Ricker model reflects the fact that any real population is stochastic: in any given year, the number of fish returning to spawn may be more or less than the mean given by $r$ and $b$ by a random amount: a fish may die sooner or later than expected by chance, or it may have more or fewer offspring than expected by chance. Examine the effect of the magnitude of noise on your ability to correctly infer the "true" values of $r$ and $b$. Make a plot of the standard deviation of r calculated by `lm` vs. the standard deviation of $\xi_t$ by running the simulation 10 times for different values of `st.d`. 
+
+(e) Make a plot of the minimum value of the population size ($y$ in the simulation) vs. standard deviation of the noise `st.d`. As you will notice, one issue with this model is that while time is discrete, the population size is still a continuous value. What would happen to a real population when $y < 1$? What does this tell you about using the Ricker model to study small populations? 
+
+
+
+
+
 
