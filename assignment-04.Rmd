@@ -1,5 +1,6 @@
-
-## Week 3 assignment
+---
+title: "Assignment 4"
+---
 
 
 1. Consider the differential equation $\frac{dx}{dt} = x(1-x)$.

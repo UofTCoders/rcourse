@@ -1,6 +1,6 @@
-
-
-## Week 4 - quantitative modelling in R
+---
+title: "Assignment 5"
+---
 
 1. Consider the differential equation $\frac{dx}{dt} = x(1-x)$ from last week's assignment.
 
