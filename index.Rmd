@@ -104,6 +104,6 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Setup github          | Project, Individual | Oct 23     | 8     |
 | Data visualization    | Project, Individual | Oct 30     | 8     |
 | Reproducible workflow | Project, Individual | Nov 06     | 8     |
-| Final project work    | Project, Group      | Dec 9 – 20 | 32    |
+| Final project work    | Project, Group      | Dec 15     | 32    |
 
 Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. _There will be a penalty of 5% per day (including week-ends) for late submissions._
