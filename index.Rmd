@@ -42,7 +42,7 @@ All course information is accessible [on its own website](https://uoftcoders.git
 ## Recommended resources
 - [R for Data science](http://r4ds.had.co.nz/), H Wickham, G Grolemund, 2017
     - Excellent open access resource for R.
-- [Rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/), Rstudio, 2017
+- [Rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/), RStudio, 2017
     - As good as it sounds, great quick reference.
 - [R for ecological data science](http://www.datacarpentry.org/R-ecology-lesson/index.html)
     - An inspiration for our lectures.
@@ -65,7 +65,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Week | Date   | Topic                                               | Instructor     |
 |------|--------|-----------------------------------------------------|----------------|
 | 1    | Sep 07 | Welcome to the course! Intro to programming         | Everyone       |
-| 2    | Sep 12 | Basic R – Rstudio, Rmarkdown, assignment, vectors   | Joel           |
+| 2    | Sep 12 | Basic R – RStudio, R Markdown, assignment, vectors   | Joel           |
 | 2    | Sep 14 | Basic R – functions, data frames, indexing          | Joel           |
 | 3    | Sep 19 | Intro to dplyr data wrangling                       | Joel           |
 | 3    | Sep 21 | More dplyr, ggplot intro                            | Joel           |
@@ -106,4 +106,4 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Reproducible workflow | Project, Individual | Nov 06     | 8     |
 | Final project work    | Project, Group      | Dec 9 – 20 | 32    |
 
-Assessments will be distributed and submitted in the R-markdown format via Blackboard or GitHub. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. _There will be a penalty of 5% per day (including week-ends) for late submissions._
