@@ -70,11 +70,11 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 3    | Sep 19 | Intro to dplyr data wrangling                       | Joel           |
 | 3    | Sep 21 | More dplyr, ggplot intro                            | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
-| 4    | Sep 28 | Qualitative population models in 2 dimensions       | Madeleine      |
+| 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
 | 5    | Oct 05 | Modelling in R                                      | Madeleine      |
-| 6    | Oct 10 | Fitting models to data                              | Madeleine      |
-| 6    | Oct 12 | Linear regression population dynamics models?       | Luke           |
+| 6    | Oct 10 | Linear regression population dynamics models        | Luke           |
+| 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
 | 7    | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
 | 8    | Oct 24 | Data visualization in R                             | Lindsay        |
