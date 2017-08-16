@@ -103,7 +103,9 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Fitting models to data| Individual          | Oct 24     | 8     |
 | Setup github          | Project, Individual | Oct 31     | 8     |
 | Data visualization    | Project, Individual | Nov 07     | 8     |
-| Reproducible workflow | Project, Individual | Nov 14     | 8     |
 | Final project work    | Project, Group      | Dec 15     | 32    |
+| Participation         | Individual          | -          | 8     |
+
+Students can be absent from two lectures without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
 Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assessments will be handed out on Thursdays and due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
