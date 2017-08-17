@@ -73,7 +73,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
 | 5    | Oct 05 | Modelling in R                                      | Madeleine      |
-| 6    | Oct 10 | Linear regression population dynamics models        | Luke           |
+| 6    | Oct 10 | Linear regression models                            | Luke           |
 | 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
 | 7    | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
@@ -91,20 +91,20 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 12   | Nov 30 | Project work                                        | Everyone       |
 | 13   | Dec 05 | Project work                                        | Everyone       |
 
-## Assessment schedule 
+## Assessment schedule
 
-| Assesment             | Type                | Due date   | Marks |
-|-----------------------|---------------------|------------|-------|
-| Getting set up        | Individual          | Sep 19     | 4     |
-| Basic R               | Individual          | Sep 26     | 8     |
-| dplyr                 | Individual          | Oct 03     | 8     |
-| Population models     | Individual          | Oct 10     | 8     |
-| Modelling in R        | Individual          | Oct 17     | 8     |
-| Fitting models to data| Individual          | Oct 24     | 8     |
-| Setup github          | Project, Individual | Oct 31     | 8     |
-| Data visualization    | Project, Individual | Nov 07     | 8     |
-| Final project work    | Project, Group      | Dec 15     | 32    |
-| Participation         | Individual          | -          | 8     |
+| Assesment                 | Type                | Due date   | Marks |
+|---------------------------|---------------------|------------|-------|
+| Getting set up            | Individual          | Sep 19     | 4     |
+| Basic R                   | Individual          | Sep 26     | 8     |
+| dplyr                     | Individual          | Oct 03     | 8     |
+| Population models         | Individual          | Oct 10     | 8     |
+| Modelling in R            | Individual          | Oct 17     | 8     |
+| Fitting models to data    | Individual          | Oct 24     | 8     |
+| Setup GitHub and projects | Project, Individual | Oct 31     | 8     |
+| Data visualization        | Project, Individual | Nov 07     | 8     |
+| Final project work        | Project, Group      | Dec 15     | 32    |
+| Participation             | Individual          | -          | 8     |
 
 Students can be absent from two lectures without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
