@@ -93,7 +93,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 
 ## Assessment schedule
 
-| Assesment                 | Type                | Due date   | Marks |
+| Assessment                | Type                | Due date   | Marks |
 |---------------------------|---------------------|------------|-------|
 | Getting set up            | Individual          | Sep 19     | 4     |
 | Basic R                   | Individual          | Sep 26     | 8     |
