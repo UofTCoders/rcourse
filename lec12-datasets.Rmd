@@ -81,6 +81,27 @@ Introduce data sets, divide intro groups, think about interesting questions to a
 
 - What is the scientific method?
 
+<!-- Question to class. -->
+
+### Simplified diagram of the scientific method
+
+```{r fig_scientific_method, eval=FALSE}
+DiagrammeR::grViz('
+digraph rmarkdown {
+    graph [layout = neato, splines = true]
+    node [shape = box, style = rounded]
+    Hypothesis [pos = "0.75,3.75!"]
+    CollectData [label = "Collect Data", pos = "0.75,3!"]
+    AnalyzeData [label = "Analyze Data", pos = "0.75,2.25!"]
+    HypothesisTrue [label = "Hypothesis\nif TRUE", pos = "0,1.5!"]
+    HypothesisFalse [label = "Hypothesis\nif FALSE", pos = "1.5,1.5!"]
+    Report [label = "Report/Publish", pos = "0.75,0.75!"]
+
+    Hypothesis -> CollectData -> AnalyzeData -> HypothesisTrue -> Report
+    AnalyzeData -> HypothesisFalse -> {Report Hypothesis}
+}')
+```
+
 ### Steps in the scientific process
 
 1. Identify research question(s).
