@@ -27,4 +27,8 @@ Total lesson time: {{num}} hours
 
 ### Header 3 (2 for slides)
 
+```{r}
+# R code chunk
+```
+
 ## {{ Group | Individual }} exercise
