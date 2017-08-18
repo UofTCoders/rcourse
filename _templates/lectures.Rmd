@@ -1,0 +1,30 @@
+---
+title: "Lecture title"
+---
+
+<!-- Clearly stated lesson objectives -->
+<!-- `##` = website/pdf header 2, slide header 1 -->
+
+## Lesson objectives:
+
+<!-- items can (but don't have to) reveal one at a time in slides -->
+
+- Item 1 
+- Item 2
+
+## Lesson outline:
+
+<!-- good to have an estimated time that each section takes, for us and them -->
+Total lesson time: {{num}} hours
+
+- Outline 1 ({{num}} min)
+- Outline 2 ({{num}} min)
+- Outline 3 ({{num}} min)
+
+## Header 2 (1 for slides)
+
+<!-- Header 3 will be a block section in slides -->
+
+### Header 3 (2 for slides)
+
+## {{ Group | Individual }} exercise
