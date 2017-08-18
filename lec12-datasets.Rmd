@@ -1,8 +1,12 @@
 ---
-title: "Introduction to the datasets, hypotheses, and team dynamics; Start the projects"
+title: "Introduction to the datasets, scientific method, and team dynamics; Start the projects"
 ---
 
-## Lesson objectives:
+-----
+
+## Lesson preamble:
+
+### Lesson objectives:
 
 - **Main goal**: 
     - To start the process of identifying which dataset to use and some possible research questions
@@ -11,81 +15,33 @@ title: "Introduction to the datasets, hypotheses, and team dynamics; Start the p
     - Learn basics of group dynamics in a team setting, how to share responsibilities and duties
     - Get into groups and start your projects
 
-## Lesson outline:
+### Lesson outline:
 
 Total lesson time: 2 hours
 
-- Datasets available for use (20 min)
+- Datasets available for use (10-20 min)
 - What is the scientific method (20 min)
-- Team dynamics and assigning roles and tasks (15 min)
+- Team dynamics and assigning roles and tasks (15-20 min)
 - Break (10 min)
 - Getting into groups (10 min)
-    - Exercise (25 min)
-    - Start project work (20 min)
+    - Exercise (25-30 min)
+    - Start project work (20-25 min)
 
-<!--
-
-2 hours:
-
-Rough outline:
-
-- Datasets available for use
-- Scientific method
-- Example of an analysis plan
-    - cover more on this next class
-- Get into groups, the basics
-    - exercise: write up initial skill set of each team member (keep is very simple for right now. only one or two skills)
-        - roles: who will submit assignment, how will leadership/faciliator roles be rotated? who will be responsible for what?
-- Identify 
-    
-
-Brainstorm:
-
-- focus down on a few datasets everyone has to use (using survey results; sent out from previous week? Or from main survey from intro)
-
-- scientific method (https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology)
-    - ask them first
-    - method:
-        - identify research question
-        - look into what the previous literature shows (how much emphasis on this?)
-        - create a hypothesis or several hypotheses
-        - write up an expected approach to answering that question (analysis plan; presentation plan)
-            - how you will get the data and what data it is (the source)
-            - what statistical or mathematical techniques have previous researchers used to address the question/hypotheses? (are they appropriate? optional since they may not have expertise)
-            - what are some ways to present your data and results?
-            - identify some possible tables and figures that will show off the results
-        - run all analyses (or additional ones you may have id'd after trying out prev ones)
-        - visualize or present all analyses
-        - interpret all results 
-        - draw conclusions based on hypotheses and question
-        - publish your results (blogs, etc.)
-        
-- groups form now
-    - Should the groups be random? Different skill levels 
-    - Brief discussion about group dynamics, project management, sharing and being explicit about roles in the group
-    - exercise: write up initial skill set of each team member (keep is very simple for right now. only one or two skills)
-        - roles: who will submit assignment, how will leadership/faciliator roles be rotated? who will be responsible for what? Doesn't have to be completely decided right now, just so team members have an idea of their place in the team and how they can contribute
-    - Discuss code of conduct
-    
-Introduce data sets, divide intro groups, think about interesting questions to ask, formulate hypothesis/plan of action.
-+    - Potentially do this already the week before and have them take a survey with the data they want to work on and their background experience.
-    - Quizzes on portal. Create a github account after the first class this week. Maybe write a data README?
-+
--->
+-----
 
 ## Datasets for use
+
+### List of datasets available
 
 {{list/link them here}}
 
 ## Scientific method
 
-- What is the scientific method?
-
-<!-- Question to class. -->
+<!-- What is the scientific method? -->
 
 ### Simplified diagram of the scientific method
 
-```{r fig_scientific_method, eval=FALSE}
+```{r fig_scientific_method, echo=FALSE}
 DiagrammeR::grViz('
 digraph rmarkdown {
     graph [layout = neato, splines = true]
@@ -102,46 +58,51 @@ digraph rmarkdown {
 }')
 ```
 
-### Steps in the scientific process
+### Steps in the scientific process[^sci_method]
 
 1. Identify research question(s).
 2. Look into what the previous literature shows. <!--(how much emphasis on this?)-->
-3. Create one or more hypotheses or objectives for the research.
-4. Write up an outline or expected approach to answering those questions/objectives (analysis plan; presentation plan):
+3. Create one or more hypotheses or objectives.
+4. Write up an outline or expected approach to answering those questions/objectives (analysis and presentation plan):
     - How will the data be obtained and what is the data (i.e. the source).
     - What statistical or mathematical techniques have previous researchers used? Will they be used or will other ones be used? Are they appropriate (optional, may need an expert)? 
-    - How will the results/data be presented?
+    - How will the results/data be presented or visualized?
     - Identify/describe some possible tables and figures to present the results/data.
 5. Run all analyses (or additional ones that may come up as you work with and analyze the data).
-6. Visualize or present all results from analyses.
+6. Visualize or present all results from the analyses.
 7. Interpret the results and how they fit in the context of the previous literature and findings.
 8. Draw conclusions based on the hypotheses/objectives.
 9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
 
+
+[^sci_method]: See [Khan Academy on Scientific Method](https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology) for a brief overview and explanation on the scientific process.
+
 ## Team dynamics
 
-Final assignment is in a group and to succeed, need to understand team dynamics:
+### Basics of succeeding with a team
+
+Final assignment is in a group and to succeed, you need to understand team dynamics:
 
 - Everyone is different, every team is different
 - Communication is vital to work together and to achieve the goal
 - Teams go through various stages
-- Consensus for group norms, goals, duties/responsibilities, and conduct
+- Need consensus for group norms, goals, duties/responsibilities, and conduct/behaviour
     - Important that everyone has a stake in the project
-- Rotate roles (leadership/facilitator especially)
+- Rotate roles (specifically for the leader/facilitator)
 
 ### Stages of group formation
 
 - "Forming-Storming-Norming-Performing-Adjourning Model"[^group_forming]
-- Essentially, groups go through stages (not always all, and not always in order):
-    - Getting to know one other
-    - Feeling comfortable and safer, testing boundaries
-    - Opening up, voicing opinions, potential for conflict
-    - Stronger bonds form, cooperative
-    - Greater focus and energy on completion of project
-    - Team ends after project is successfully completed
-- These stages and be fast-tracked by discussing norms, duties, and conduct early on
+- Essentially, groups go through stages (not always all and not always in order):
+    1. Getting to know one other
+    2. Feeling comfortable and safer, testing boundaries
+    3. Opening up, voicing opinions, potential for conflict
+    4. Stronger bonds form, cooperative
+    5. Greater focus and energy on completion of project
+    6. Team ends after project is successfully completed
+- These stages can be fast-tracked by discussing norms, duties, and conduct early on
 
-[^group_forming]: See [Principles of Group Dynames](https://open.lib.umn.edu/principlesmanagement/chapter/13-3-group-dynamics/) 
+[^group_forming]: See [Principles of Group Dynamics](https://open.lib.umn.edu/principlesmanagement/chapter/13-3-group-dynamics/) 
 
 ### Roles and responsibilities
 
@@ -149,7 +110,7 @@ Final assignment is in a group and to succeed, need to understand team dynamics:
     - Goal is to keep things running smoothly, focused on the task, and on track for time
     - Keep everyone on topic and on task; stay aware of the time
     - (Try to) mediate or resolve any conflicts (there will *always* be some type of conflict; how it's dealt with is what matters)
-    - (Try to) encourage everyone to participate. Try to allow everyone a chance at talking.
+    - (Try to) encourage everyone to participate and allow everyone a chance at talking
 - Recorder's duty:
     - Goal is to write/type down main or important points raised or discussed when team is meeting
     - Keep notes and files organized and orderly
@@ -164,29 +125,35 @@ Final assignment is in a group and to succeed, need to understand team dynamics:
     - How do you deal with conflict?
     - What is acceptable and unacceptable behaviour?
 - These are outlined in the code of conduct
-- Mostly its common sense (be kind and respect)
-    - But its important that you as a team write out what everyone wants
+- Mostly its common sense (be kind and respectful)
+    - But its important that you as a team write out what everyone wants and agrees to
 
-## Group exercise
+## Exercise
 
-- Get into your {{assigned?}} groups
+### As a group, complete these tasks
+
+- Get into your assigned groups
 - Introduce each other:
     - Find out everyone's name and year of study
-    - Find out what, if any, plans everyone has for next year
+    - Find out other things about each other (e.g. any plans for next year, etc)
 - Assign roles to each person (these roles will be rotated in every group setting):
-    - Need: facilitator, recorder, organizer
-    - Discuss how and when roles will be rotated (record it)
-- Discuss and brainstorm some codes of conduct you want your team to follow (record it)
+    - You need: facilitator, recorder, organizer
+    - Discuss how and when roles will be rotated *(record it)*
+- Discuss and brainstorm some codes of conduct you want your team to follow *(record it)*
 - Take a few minutes, think about your own skills and what you feel are most competent in
-    - Then, share the top one or two of those skills (record those skills)
-- Discuss how responsibilities of each member will be decided on (record it)
+    - Then, share the top one or two of those skills *(record those skills)*
+- Discuss how responsibilities of each member will be decided on *(record it)*
 
-## Group project
+## Starting the projects
 
-In your group, rotate roles (need a facilitator and recorder). Before end of class:
+### As a group, complete these tasks
 
-- Choose two possible datasets your team would like to work from (can also be datasets not presented in class)
-- Brainstorm as many research questions as possible for those two datasets. 
-    - Goal is to write as much ideas down. No question is off limits and no question is too simple or too complex! Just write what ever comes to mind.
+In your group, rotate roles (need a facilitator and recorder at minimum). Before the end of class, finish these:
 
-Make sure to record everything down!
+- Choose two possible datasets your team would like to work from (can also be datasets not presented in class) *(record them)*
+- Brainstorm as many research questions as possible for those two datasets *(record them)*
+    - Goal is to write as much ideas down
+    - No question is off limits and no question is too simple or too complex! 
+    - Just write what ever comes to mind
+
+Make sure to *record* everything down! Many of these tasks will also be part of the assignment!
