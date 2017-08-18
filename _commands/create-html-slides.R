@@ -1,23 +1,19 @@
-
+# Run this command in the parent directory (`rcourse/`)
+#
 # Usage:
 #
-#   Rscript _commmands/create-html-slides.R lesson-file.Rmd
+#   Rscript _commmands/build-slides.R
+#
 
-arg <- commandArgs(trailingOnly = TRUE)
-
-if (length(arg) > 1) {
-    stop("Please supply only one Rmd file name.")
-}
-
-rmd_file <- arg[1]
-
-# Check if file exists
-if (!file.exists(rmd_file)) {
-    stop(rmd_file, " doesn't exist. Is there a typo?")
-}
-
+# Create directory for slides, delete all previous files if they exist.
 if (!dir.exists("_slides")) {
     dir.create("_slides")
+} else {
+    existing_slide_files <- list.files(path = "_slides", pattern = "*.html")
+    file.remove(existing_slide_files)
 }
 
-rmarkdown::render(rmd_file, output_format = "ioslides_presentation", output_dir = "_slides")
+# Generate the html files.
+rmd_files <- list.files(pattern = "lec.*.Rmd$")
+sapply(rmd_files, rmarkdown::render, output_format = "ioslides_presentation",
+       output_dir = "_slides")
