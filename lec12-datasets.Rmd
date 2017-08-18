@@ -118,12 +118,6 @@ digraph rmarkdown {
 8. Draw conclusions based on the hypotheses/objectives.
 9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
 
-### Simplified diagram of the scientific method
-
-```{r fig_scientific_method, eval=FALSE}
-DiagrammeR::grViz("_diagrams/scientific-method.gv")
-```
-
 ## Team dynamics
 
 Final assignment is in a group and to succeed, need to understand team dynamics:
