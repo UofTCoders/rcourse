@@ -10,44 +10,44 @@ navbar:
     - text: "Lectures"
       icon: fa-book
       menu:
-        - text: "Introduction to the course"
+        - text: "Sept. 7: Introduction to the course"
           href: lec01-introduction.html
-        - text: "Basic R (part 1): Introduction to R and RStudio"
+        - text: "Sept. 12: Basic R (part 1): Introduction to R and RStudio"
           href: lec02-basic-r.html
-        - text: "Basic R (part 2): More on R"
+        - text: "Sept. 14: Basic R (part 2): More on R"
           href: lec03-basic-r.html
-        - text: "Data wrangling (part 1): Working with data"
+        - text: "Sept. 19: Data wrangling (part 1): Working with data"
           href: lec04-dplyr.html
-        - text: "Data wrangling (part 2): Data and some plotting"
+        - text: "Sept. 21: Data wrangling (part 2): Data and some plotting"
           href: lec05-dplyr.html
-        - text: "Qualitative population models"
+        - text: "Sept. 26: Qualitative population models"
           href: lec06-pop-models.html
-        - text: "Qualitative population models: 2 dimensions"
+        - text: "Sept. 28: Qualitative population models: 2 dimensions"
           href: lec07-pop-models.html
-        - text: "Fixed points, null clines, and stability"
+        - text: "Oct. 03: Fixed points, null clines, and stability"
           href: lec08-stability.html
-        - text: "Modeling in R"
+        - text: "Oct. 05: Modeling in R"
           href: lec09-modeling-r.html
-        - text: "Fitting models to data"
+        - text: "Oct. 10: Fitting models to data"
           href: lec10-modeling-r.html
-        - text: "Linear regression population dynamics models"
+        - text: "Oct. 12: Linear regression population dynamics models"
           href: lec11-modeling.html
-        - text: "Introduce data sets, hypotheses, start projects"
+        - text: "Oct. 17: Introduce data sets, hypotheses, start projects"
           href: lec12-datasets.html
-        - text: "Project and Git setup in RStudio, tidy data, and project work"
+        - text: "Oct. 19: Project and Git setup in RStudio, tidy data, and project work"
           href: lec13-projects-r.html
-        - text: "Data visualization (Part 1)"
+        - text: "Oct. 24: Data visualization (Part 1)"
           href: lec14-data-viz.html
-        - text: "Data visualization (Part 2) and project work"
+        - text: "Oct. 26: Data visualization (Part 2) and project work"
           href: lec15-data-viz.html
-        - text: "Reproducible workflow, metadata, R Markdown"
+        - text: "Oct. 31: Reproducible workflow, metadata, R Markdown"
           href: lec16-rmarkdown.html
-        - text: "Metadata and project work"
+        - text: "Nov. 02: Metadata and project work"
           href: lec17-metadata.html
-        - text: "Scientific collaboration, Git, and GitHub"
+        - text: "Nov. 14: Scientific collaboration, Git, and GitHub"
           href: lec18-git.html
-        - text: "Project work (no lesson)"
-        - text: "Preparing a scientific item for academic publishing"
+        - text: "Nov. 16: Project work (no lesson)"
+        - text: "Nov. 21: Preparing a scientific item for academic publishing"
           href: lec20-publishing.html
     - text: "Assignments"
       icon: fa-book
