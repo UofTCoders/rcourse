@@ -5,15 +5,18 @@
 #   Rscript _commmands/build-slides.R
 #
 
-# Create directory for slides, delete all previous files if they exist.
-if (!dir.exists("_slides")) {
-    dir.create("_slides")
-} else {
-    existing_slide_files <- list.files(path = "_slides", pattern = "*.html")
-    file.remove(existing_slide_files)
-}
-
-# Generate the html files.
+# Generate the slide html files, of only the lectures.
 rmd_files <- list.files(pattern = "lec.*.Rmd$")
-sapply(rmd_files, rmarkdown::render, output_format = "ioslides_presentation",
-       output_dir = "_slides")
+sapply(
+    rmd_files,
+    rmarkdown::render,
+    output_format = "ioslides_presentation",
+    output_dir = "_slides",
+    output_options = list(
+        df_print = "kable",
+        slide_level = 3,
+        incremental = TRUE,
+        smaller = TRUE,
+        transition = 0.01
+    )
+)
