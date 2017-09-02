@@ -62,8 +62,8 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 1    | Sep 07 | Welcome to the course! Intro to programming         | Everyone       |
 | 2    | Sep 12 | Basic R – RStudio, R Markdown, assignment, vectors  | Joel           |
 | 2    | Sep 14 | Basic R – functions, data frames, indexing          | Joel           |
-| 3    | Sep 19 | Intro to dplyr data wrangling                       | Joel           |
-| 3    | Sep 21 | More dplyr, ggplot intro                            | Joel           |
+| 3    | Sep 19 | Intro to dplyr data wrangling, tidy data            | Joel           |
+| 3    | Sep 21 | More dplyr and tidy data, ggplot intro              | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
@@ -71,7 +71,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 6    | Oct 10 | Linear regression models                            | Luke           |
 | 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
-| 7    | Oct 19 | Project and Git setup in RStudio, tidy data         | Luke           |
+| 7    | Oct 19 | Project and Git setup in RStudio,                   | Luke           |
 | 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliot         |
 | 8    | Oct 26 | Data visualization in R                             | Lindsay        |
 | 9    | Oct 31 | Project work, data visualizations                   | Lindsay        |
@@ -91,7 +91,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 |---------------------------|---------------------|------------|-------|
 | Getting set up            | Individual          | Sep 19     | 4     |
 | Basic R                   | Individual          | Sep 26     | 8     |
-| dplyr                     | Individual          | Oct 03     | 8     |
+| dplyr and tidy data       | Individual          | Oct 03     | 8     |
 | Population models         | Individual          | Oct 10     | 8     |
 | Modelling in R            | Individual          | Oct 17     | 8     |
 | Fitting models to data    | Individual          | Oct 24     | 8     |
@@ -100,6 +100,6 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Final project work        | Project, Group      | Dec 15     | 32    |
 | Participation             | Individual          | -          | 8     |
 
-Students can be absent from two lectures without losing any participation marks. After that, students will lose 1 mark per missed lecture.
+Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
 Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assessments will be handed out on Thursdays and due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
