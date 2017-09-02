@@ -59,10 +59,10 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 ## Lecture schedule
 | Week | Date   | Topic                                               | Instructor     |
 |------|--------|-----------------------------------------------------|----------------|
-| 1    | Sep 07 | Welcome to the course! Intro to programming         | Everyone       |
-| 2    | Sep 12 | Basic R – RStudio, R Markdown, assignment, vectors  | Joel           |
-| 2    | Sep 14 | Basic R – functions, data frames, indexing          | Joel           |
-| 3    | Sep 19 | Intro to dplyr data wrangling, tidy data            | Joel           |
+| 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
+| 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
+| 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
+| 3    | Sep 19 | Data wrangling in dplyr, tidy data                  | Joel           |
 | 3    | Sep 21 | More dplyr and tidy data, ggplot intro              | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
