@@ -71,7 +71,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 6    | Oct 10 | Linear regression models                            | Luke           |
 | 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
-| 7    | Oct 19 | Project and Git setup in RStudio,                   | Luke           |
+| 7    | Oct 19 | Project and Git setup in RStudio                    | Luke           |
 | 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliot         |
 | 8    | Oct 26 | Data visualization in R                             | Lindsay        |
 | 9    | Oct 31 | Project work, data visualizations                   | Lindsay        |
