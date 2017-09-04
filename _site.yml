@@ -68,6 +68,11 @@ navbar:
           href: assignment-07.html
         - text: "Final assignment"
           href: assignment-final.html
+    - text: "Slides"
+      icon: fa-caret-square-o-right
+      menu:
+        - text: "Introduction to the course"
+          href: slides/lec01-introduction.html
     - text: "Resources and FAQ"
       icon: fa-question
       href: resources.html

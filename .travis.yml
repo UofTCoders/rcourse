@@ -3,6 +3,7 @@ sudo: false
 cache: packages
 script:
 - Rscript -e "rmarkdown::render_site('.')"
+- Rscript _commands/build-slides.R
 - touch _site/.nojekyll
 deploy:
   provider: pages
