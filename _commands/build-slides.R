@@ -11,7 +11,7 @@ sapply(
     rmd_files,
     rmarkdown::render,
     output_format = "ioslides_presentation",
-    output_dir = "_slides",
+    output_dir = "_site/slides",
     output_options = list(
         df_print = "kable",
         slide_level = 3,
