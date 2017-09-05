@@ -98,7 +98,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Fitting models to data    | Individual          | Oct 24     | 8     |
 | Setup GitHub and projects | Project, Individual | Oct 31     | 8     |
 | Data visualization        | Project, Individual | Nov 07     | 8     |
-| Final project work        | Project, Group      | Dec 15     | 32    |
+| Final project work        | Project, Group      | Dec 06     | 32    |
 | Participation             | Individual          | -          | 8     |
 
 Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
