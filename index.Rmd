@@ -46,9 +46,10 @@ All course information is accessible [on its own website](https://uoftcoders.git
 ## Course learning outcomes
 1. Integrate and apply concepts and theoretical models learnt in class.
 2. Learn how to use basic statistics to analyze and interpret data.
-3. Realize that data do not always fit theoretical models, but that it is important to interpret data with a larger theoretical framework in mind.
-4. Learn how to work in group on a scientific product.
-5. Learn what is required to generate a scientific item ready for publishing.
+3. Use R to apply theoretical models and perform data analysis.
+4. Realize that data do not always fit theoretical models, but that it is important to interpret data with a larger theoretical framework in mind.
+5. Learn how to work as part of a research team to produce a scientific product.
+6. Learn what is required to generate a scientific item ready for publishing.
 
 ## Improving your writing skills
 Effective communication is crucial in science. The [University of Toronto provides services](http://www.writing.utoronto.ca/) to help you improve your writing, from general advices on effective writing to writing centers and writing courses. The Faculty of Arts & Science also offers an English Language Learning (ELL) program, which provides free individualized instruction in English skills. Take advantage of these!
