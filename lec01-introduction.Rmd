@@ -62,13 +62,13 @@ If we want to calculate something in Excel, we would highlight the column and th
 iris <- read_csv('/home/joel/iris.csv')
 ```
 
-Now we can simply ask to calculate the mean of the data frame `iris`, column `petal_length`:
+The arrow `<-` simply means that the output from the right hand signed is stored in the variable name that you write on the left hand side. Now we can simply ask to calculate the mean of the data frame `iris`, column `petal_length`:
 
 ```{r}
 mean(iris$petal_length)
 ```
 
-If we want to know more than just the mean, the useful thing with R, is that we don't have to calculate these things one by one, but we can actually get an overview of all the columns by asking R to provide a summary of `iris`.
+The `$` is the syntax used in R to indicate that you want to access a column in the data frame. If we want to know more than just the mean, the useful thing with R, is that we don't have to calculate these things one by one, but we can actually get an overview of all the columns by asking R to provide a summary of `iris`.
 
 ```{r}
 summary(iris)
