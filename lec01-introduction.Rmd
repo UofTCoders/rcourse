@@ -83,6 +83,7 @@ Before we continue, we are going to switch from using the R console, to using an
 - So, if I read in the iris data we were working with previously, we can view it in the console by typing `iris`, just like before, or we can also view the `iris` variable in our environment tab, which shows it to us in a spreadsheet or table format.
 - This panel shows the files in the current directory, any plots we might make later, and also the documentation, which we accessed earlier by typing `?` in front of a function. Here, the documentation is formatted in a way that is easier to read and also provides links to the related sections.
 - Finally we have the text editor panel. This is where we can write scripts, i.e. putting several commands of code together and saving them as a text document so that they are accessible for later and so that we can execute them all at once by running the script instead of typing them in one by one.
+- Another very useful thing with RStudio is that you have access to some excellent cheat sheets in PDF format straight from the menu `Help -> Cheatsheets`!
 
 So if I create a script with some of the commands you saw earlier, I can save them all as a text file and then run the entire script by clicking the run button, which executes commands in the console. We will use this text editor to explore how to make plots in R.
 
