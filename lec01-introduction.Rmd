@@ -91,28 +91,28 @@ So if I create a script with some of the commands you saw earlier, I can save th
 In R, it is straightforward to explore your data by creating nice looking plots. E.g. to make a scatter plot, we first tell R that we want to make a plot of the `iris` data frame, and we want the aesthetics of this plot to be that `sepal_length` is on the x axis and `sepal_width` is on the y-axis. Finally, we specify that we want this to be a plot of points, i.e. a scatter plot.
 
 ```{r}
-ggplot(iris, aes(x=sepal_length, y=sepal_width)) +
+ggplot(iris, aes(x = sepal_length, y = sepal_width)) +
     geom_point()
 ```
 
 This plot shows up in the plot panel in RStudio, which is convenient instead of having it show up as a separate window. You can already see that there seems to be at least some structure to the data. There is one cluster of points up the left corner and at least one in the lower right corner. Hmmmm, I wonder if these correspond to the different species of flowers... Let's find out, by coloring the points according to which species they are.
 
 ```{r}
-ggplot(iris, aes(x=sepal_length, y=sepal_width, color=species)) +
+ggplot(iris, aes(x = sepal_length, y = sepal_width, color = species)) +
     geom_point()
 ```
 
 Likewise, it would be really easy to make a histogram of the `petal_length` and color it according to the species.
 
 ```{r}
-ggplot(iris, aes(x=petal_length, fill=species)) +
+ggplot(iris, aes(x = petal_length, fill = species)) +
     geom_histogram()
 ```
 
 And we could get fancier by instructing R to split this plot in vertically stacked facets, or subplots, with one species in each facet.
 
 ```{r}
-ggplot(iris, aes(x=petal_length, fill=species)) +
+ggplot(iris, aes(x = petal_length, fill = species)) +
     geom_histogram() +
     facet_wrap(~ species, dir='v')
 ```
