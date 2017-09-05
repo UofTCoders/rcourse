@@ -88,7 +88,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 13   | Dec 05 | Project work                                        | Everyone       |
 
 ## Assessment schedule
-| Assessment                | Type                | Due date   | Marks |
+| Assignment                | Type                | Due date   | Marks |
 |---------------------------|---------------------|------------|-------|
 | Getting set up            | Individual          | Sep 19     | 4     |
 | Basic R                   | Individual          | Sep 26     | 8     |
@@ -105,4 +105,4 @@ There are 100 marks in total. Your final course mark will be the sum of your ass
 
 Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
-Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assessments will be handed out on Thursdays and due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assignments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
