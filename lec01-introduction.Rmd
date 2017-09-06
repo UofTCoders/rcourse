@@ -10,9 +10,27 @@ library(GGally)
 
 ## Lesson preamble
 
-Before we get into more practical matters, I want to provide a brief background to the idea of working with computers. Essentially, computer work is about humans communicating with the computer by modulating flows of current in the hardware, to get the computer to carry out an advanced calculation that we are unable to compute efficient ourselves. Early examples of human computer communication was quite primitive and included actually disconnecting a wire and connecting it again in a different spot. Luckily, we are not doing this anymore, instead we have programs with graphical user interface with menus and buttons, that enables more efficient human to computer communication.
+### Lesson objectives
 
-### Graphical user interfaces vs text based user interfaces
+- **Main goal**:
+    - To give students an overview of the capabilities of R and how to use the
+      R Notebook for exploratory data analyses.
+- **Secondary goals**:
+    - Learn about the differences between R and Excel.
+    - Learn some basic R commands.
+    - Learn about the markdown syntax and how to use it within the R Notebook.
+
+### Lesson outline
+
+Total lesson time: 1 hour
+
+- Working with computers (15 min)
+- Programming in R (40 min)
+    - The Basics (10 min)
+    - RStudio and the R Notebook (5 min)
+    - Plotting (10 min)
+    - Saving data and generating reports (5 min)
+    - R Markdown (10 min)
 
 ## Working with computers
 
