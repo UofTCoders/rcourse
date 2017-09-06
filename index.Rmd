@@ -8,7 +8,7 @@ Prerequisites: MAT 136, BIO220H1, EEB225H1, and two of EEB319H1, EEB321H1,
 EEB322H1, EEB323H1
 
 ## Time
-Tue and Thu 2-4 pm, lectures start 10 min past the hour. Office hours are Tue 4-5 pm.
+Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 ## Class locations
 | Day | Room | Location | Details |
