@@ -190,8 +190,8 @@ work with R. When you launch RStudio, you will see four panels:
 
 - The console is the same as what we have been using so far. The advantage with
   using the console within RStudio is that it interacts with the other panels.
-- So, if I read in the iris data we were working with previously, we can view
-  it in the console by typing `iris`, just like before, or we can also view the
+- So, if I read in the iris data we were working with previously, we can view it
+  in the console by typing `iris`, just like before, or we can also view the
   `iris` variable in our environment tab, which shows it to us in a spreadsheet
   or table format.
 - This panel shows the files in the current directory, any plots we might make
@@ -200,16 +200,37 @@ work with R. When you launch RStudio, you will see four panels:
   easier to read and also provides links to the related sections.
 - Finally we have the text editor panel. This is where we can write scripts,
   i.e. putting several commands of code together and saving them as a text
-  document so that they are accessible for later and so that we can execute
-  them all at once by running the script instead of typing them in one by one.
+  document so that they are accessible for later and so that we can execute them
+  all at once by running the script instead of typing them in one by one.
 - Another very useful thing with RStudio is that you have access to some
   excellent cheat sheets in PDF format straight from the menu `Help ->
   Cheatsheets`!
 
-So if I create a script with some of the commands you saw earlier, I can save
-them all as a text file and then run the entire script by clicking the run
-button, which executes commands in the console. We will use this text editor to
-explore how to make plots in R.
+In the RStudio interface, we will be writing code in a format called the
+R Notebook. As the name entails, this interface works like a notebook for code,
+as it allows us to save our notes about what the code is doing, the code itself,
+and any output we get, such as plots and tables, altogether in the same
+document.
+
+When we are in the Notebook, the text we write is normal text, just as if we
+would be writing it in a text document. If we want to execute some R code, we
+need to insert a code chunk, which we can do by pressing this button, or by
+using the keyboard shortcut `Ctrl+Alt+i`. To run a code chunk, we press this
+little green arrow or the corresponding keyboard shortcut `Shift+Ctrl+Enter`.
+
+```{r}
+seq(0:30)
+```
+
+As you can see, the output appears right under the code block. This is a great
+way to perform explore your data, since you can do your analysis and write
+comments and conclusions write under it in the same document. A powerful feature
+of this workflow, is that there is no extra time needed for code documentation
+and note-taking, you're doing your analyses and taking notes at the same time,
+it is great for both taking notes at lectures and to have as a reference when
+you return to your code in the future. We will delve deeper into some of the
+neat features about the R notebook towards the end, now let's get back into
+learning about R.
 
 ### Plots
 
@@ -273,44 +294,19 @@ is to use R for your exploratory data analyses. In a few lines of code, we have
 made some really nice plots, some of which are not even imaginable to create in
 Excel.
 
-### Saving data
+### Saving data and generating reports
 
-OK, now you should have a somewhat of an idea of how to programmatically
-analyze data. But now that the analyses has been conducted, how do we save it?
-First, what do we want to save? Definitely the plots, those are important. And
-remember that we said one of the biggest advantages over graphical software is
-that we have access to all the commands we typed in, and we can save them as an
-instruction manual for how to make these plots.
-
-Scripts are powerful for automation, but it is still a little bit messy in
-terms of saving you data, since we will keep the code in one text file and all
-the output graphs will be saved as separate images. It would not be clear
-exactly which part of the text file generated what images unless we added notes
-about this manually. Instead, it would be great if we could keep this all
-together, in sort of a notebook format... Luckily, there is something called
-the R Notebook (go to New -> R notebook), which allows us to do exactly that!
-
-### The R Notebook & R Markdown
-
-In the R Notebook, we are writing in a format called R Markdown, which allows
-us to combine R code, as the one we were just writing, with the Markdown text
-format, which allows us to use certain characters to specify headings, bullet
-points, quotations and even citations. A simple example of how to write in
-Markdown is to use a single asterisk or underscore to emphasize text _emphasis_
-and two asterisks or underscores to strongly emphasize text **strong
-emphasis**. These will show up as italics and bold typeface when we convert
-this document to PDF or HTML, which we will do soon. If you have been writing
-on online forums, or popular chat services, such as whatsapp, you might already
-be familiar with this style of writing. In case you haven't seen it before, you
-have just learnt something about whatsapp in your theoretical ecology class...
-
-R Markdown can easily be converted into HTML and PDF documents with figures and
+To save our code and graphs, all we have to do is to save the R Notebook file,
+and the we can open it in RStudio next time again. However, if we want someone
+else to look at this, we can't just send them the R Notebook file, because they might
+not have RStudio installed. Another great feature of R Notebooks, is that it is
+really easy to export to HTML or PDF documents with figures and
 professional typesetting. There are actually many academic papers that are
-written entirely in R Markdown and it is great for assignments or reports:
+written entirely in this format and it is great for assignments and reports:
 I have used this myself for some of my progress updates to my supervisor. Since
-R Markdown converts to HTML, it is also easy to publish simple good-looking
-websites in it, for example the syllabus website for this course is made via an
-R Markdown template that Luke set up.
+R Notebook files convert to HTML, it is also easy to publish simple good-looking
+websites in it, for example the syllabus website for this course is made this
+way via a template that Luke set up.
 
 Let's try to convert this new document. First, let's go through it and see what
 we expect the output to include. First we see this intro section here, this is
@@ -321,6 +317,21 @@ and a few code blocks. OK, let's see what this looks like. To create the output
 document, we poetically say that we will knit our R Markdown into the HTML
 document. Luckily, it is much simpler than actually knitting something, just
 press this button here and the new document will be created.
+
+### R Markdown As you can see, we got headings and formatted text in our final
+document. This is because we have used special characters inside our text to
+indicate how certain section should be formatted. In the R Notebook, we are
+writing in a format called R Markdown, which allows us to combine R code, as the
+one we were just writing, with the Markdown text format, which allows us to use
+certain characters to specify headings, bullet points, quotations and even
+citations. A simple example of how to write in Markdown is to use a single
+asterisk or underscore to emphasize text _emphasis_ and two asterisks or
+underscores to strongly emphasize text **strong emphasis**. These will show up
+as italics and bold typeface when we convert this document to PDF or HTML, which
+we will do soon. If you have been writing on online forums, or popular chat
+services, such as whatsapp, you might already be familiar with this style of
+writing. In case you haven't seen it before, you have just learnt something
+about whatsapp in your theoretical ecology class...
 
 As you can see, the title showed up as we would expect, the lines with pound
 sign(s) in front of them were converted into headers and we can see both the
@@ -349,23 +360,6 @@ output:
     theme: united
 ---
 ```
-
-### R Notebook interactivity
-
-That explains what R markdown is and how we generate reports from it. But how
-do we work with it interactively? Well it is actually quite simple. Execute the
-chunks of R code by pressing this little green arrow or the corresponding
-keyboard shortcut `Shift+Ctrl+Enter`. The output appears right under the code
-block. This is a great way to perform exploratory data analysis, since you can
-do your analysis and write comments and conclusions write under it in the same
-document. To get familiar with this workflow, I will go type in some of the
-commands that we went through earlier and write comments while working with
-them. A powerful feature of this workflow, is that there is no extra time
-needed for code documentation and note-taking, you're doing your analyses and
-taking notes at the same time, it is great for both taking notes at lectures
-and to have as a reference when you return to your code in the future.
-
-_Show some examples depending on time left..._
 
 Hopefully, this has given you an idea of how powerful and time-saving R can be
 for your data analysis, and how we will work with it in this class using the
