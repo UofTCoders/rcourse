@@ -9,9 +9,11 @@ library(GGally)
 ```
 
 ## Working with computers
+
 Before we get into more practical matters, I want to provide a brief background to the idea of working with computers. Essentially, computer work is about humans communicating with the computer by modulating flows of current in the hardware, to get the computer to carry out an advanced calculation that we are unable to compute efficient ourselves. Early examples of human computer communication was quite primitive and included actually disconnecting a wire and connecting it again in a different spot. Luckily, we are not doing this anymore, instead we have programs with graphical user interface with menus and buttons, that enables more efficient human to computer communication.
 
 ### Graphical user interfaces vs text based user interfaces
+
 An example of such a program that I think many of you are familiar with, is spreadsheet software such as Microsoft Excel and LibreOffice Calc. Here, all the functionality of the program is accessible via hierarchical menus, and clicking buttons send instructions to the computer, which responds and sends the results back to your screen. E.g. I can click this button to send the instruction of coloring this cell yellow, and the computer interprets my instructions and then displays the results on the screen, in this case, the cell is highlighted yellow.
 
 Spreadsheet software is great for viewing and entering small data sets and creating simple visualizations fast. However, it can be tricky to design publication-ready figures, create automatic reproducible analysis workflows, perform advanced calculations, and reliably clean data sets. Even when using a spreadsheet program to record data, it is often beneficial to have some some basic programming skills to facilitate the analyses of that data.
@@ -19,6 +21,7 @@ Spreadsheet software is great for viewing and entering small data sets and creat
 Typing commands to directly instead of searching for them in menus, is a more efficient approach to communicate with the computer and a powerful way of doing data analysis. This is initially intimidating for almost all people, but if you compare it to learning a new language, the process becomes more intuitive: When learning a language, you would initially string together sentences by looking up individual words in the dictionary. As you improve, you will only reference the dictionary occasionally since you already know most of the words, and eventually you will throw it out altogether because it is faster and more precise to speak directly. In contrast, graphical programs force you to look up every word in the dictionary, even if you already know what to say.
 
 ### Formal and natural languages
+
 You might think it is quite tricky to learn computer languages, but it is actually not! You already know one, mathematics is often written the same way as you would write it by hand, both in Excel and R.
 
 ```{r}
@@ -47,6 +50,7 @@ In my experience, learning programming really is similar to learning a foreign l
 ## Programming in R
 
 ### The basics
+
 With that background to some of the concepts of programming, let's compare the workflow of analyzing a data set in R vs in a Excel. _Pull up Excel and R console next to each other._ In Excel, we open a file via 'File -> Open -> Navigate to file'. You can conceptualize this as if there is a function `file.open()` for which you need to specify a file location, (`file.open(/home/joel/iris.csv`). In R this looks similar, it is `read.csv('/home/joel/iris.csv')`, <!--need to write in windows paths...--> so it is pretty much the same, slightly different words are used and you type them in instead of clicking your way to them.
 
 When you open a file in Excel, it will immediately display the content in the window. Likewise, the R console will display the information of the data set when you read it in. This sample data set that we are using for this class describes the length and width of sepals and petals for three species of iris flowers.
@@ -77,6 +81,7 @@ summary(iris)
 You can already see how it will save you time to use R instead of typing these calculations separately in Excel.
  
 ### RStudio
+
 Before we continue, we are going to switch from using the R console, to using an interface called RStudio. RStudio includes the R console, but also many other convenient functionalities, which makes it easier to get started and to work with R. When you launch RStudio, you will see four panels:
 
 - The console is the same as what we have been using so far. The advantage with using the console within RStudio is that it interacts with the other panels.
@@ -88,6 +93,7 @@ Before we continue, we are going to switch from using the R console, to using an
 So if I create a script with some of the commands you saw earlier, I can save them all as a text file and then run the entire script by clicking the run button, which executes commands in the console. We will use this text editor to explore how to make plots in R.
 
 ### Plots
+
 In R, it is straightforward to explore your data by creating nice looking plots. E.g. to make a scatter plot, we first tell R that we want to make a plot of the `iris` data frame, and we want the aesthetics of this plot to be that `sepal_length` is on the x axis and `sepal_width` is on the y-axis. Finally, we specify that we want this to be a plot of points, i.e. a scatter plot.
 
 ```{r}
@@ -128,11 +134,13 @@ This plot is a bit overwhelming, and the purpose here is not to produce a public
 Hopefully, these examples have giving you an idea of how simple and powerful it is to use R for your exploratory data analyses. In a few lines of code, we have made some really nice plots, some of which are not even imaginable to create in Excel.
 
 ### Saving data
+
 OK, now you should have a somewhat of an idea of how to programmatically analyze data. But now that the analyses has been conducted, how do we save it? First, what do we want to save? Definitely the plots, those are important. And remember that we said one of the biggest advantages over graphical software is that we have access to all the commands we typed in, and we can save them as an instruction manual for how to make these plots.
 
 Scripts are powerful for automation, but it is still a little bit messy in terms of saving you data, since we will keep the code in one text file and all the output graphs will be saved as separate images. It would not be clear exactly which part of the text file generated what images unless we added notes about this manually. Instead, it would be great if we could keep this all together, in sort of a notebook format... Luckily, there is something called the R Notebook (go to New -> R notebook), which allows us to do exactly that!
 
 ### The R Notebook & R Markdown
+
 In the R Notebook, we are writing in a format called R Markdown, which allows us to combine R code, as the one we were just writing, with the Markdown text format, which allows us to use certain characters to specify headings, bullet points, quotations and even citations. A simple example of how to write in Markdown is to use a single asterisk or underscore to emphasize text _emphasis_ and two asterisks or underscores to strongly emphasize text **strong emphasis**. These will show up as italics and bold typeface when we convert this document to PDF or HTML, which we will do soon. If you have been writing on online forums, or popular chat services, such as whatsapp, you might already be familiar with this style of writing. In case you haven't seen it before, you have just learnt something about whatsapp in your theoretical ecology class...
 
 R Markdown can easily be converted into HTML and PDF documents with figures and professional typesetting. There are actually many academic papers that are written entirely in R Markdown and it is great for assignments or reports: I have used this myself for some of my progress updates to my supervisor. Since R Markdown converts to HTML, it is also easy to publish simple good-looking websites in it, for example the syllabus website for this course is made via an R Markdown template that Luke set up.
@@ -155,6 +163,7 @@ output:
 ```
 
 ### R Notebook interactivity
+
 That explains what R markdown is and how we generate reports from it. But how do we work with it interactively? Well it is actually quite simple. Execute the chunks of R code by pressing this little green arrow or the corresponding keyboard shortcut `Shift+Ctrl+Enter`. The output appears right under the code block. This is a great way to perform exploratory data analysis, since you can do your analysis and write comments and conclusions write under it in the same document. To get familiar with this workflow, I will go type in some of the commands that we went through earlier and write comments while working with them. A powerful feature of this workflow, is that there is no extra time needed for code documentation and note-taking, you're doing your analyses and taking notes at the same time, it is great for both taking notes at lectures and to have as a reference when you return to your code in the future.
 
 _Show some examples depending on time left..._
@@ -163,6 +172,7 @@ Hopefully, this has given you an idea of how powerful and time-saving R can be f
 
 
 # Misc notes (not in lecture at the moment)
+
 Left out on purpose
 - Comments in R and Markdown
 - Importing packages
