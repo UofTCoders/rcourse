@@ -8,7 +8,7 @@ Based on [RQM](https://cbahlai.github.io/rqm-template/). Draw much inspiration a
 
 ## A bit about the instructors/TAs
 
-- Madeleine Bonsma (Physics)
+- Madeleine Bonsma-Fisher (Physics)
 - Lindsay Coome (Psychology)
 - Luke Johnston (Nutritional Sciences)
 - Joel Ostblom (IBBME)
