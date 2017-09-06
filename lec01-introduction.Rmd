@@ -318,37 +318,58 @@ document, we poetically say that we will knit our R Markdown into the HTML
 document. Luckily, it is much simpler than actually knitting something, just
 press this button here and the new document will be created.
 
-### R Markdown As you can see, we got headings and formatted text in our final
-document. This is because we have used special characters inside our text to
-indicate how certain section should be formatted. In the R Notebook, we are
-writing in a format called R Markdown, which allows us to combine R code, as the
-one we were just writing, with the Markdown text format, which allows us to use
-certain characters to specify headings, bullet points, quotations and even
-citations. A simple example of how to write in Markdown is to use a single
-asterisk or underscore to emphasize text _emphasis_ and two asterisks or
-underscores to strongly emphasize text **strong emphasis**. These will show up
-as italics and bold typeface when we convert this document to PDF or HTML, which
-we will do soon. If you have been writing on online forums, or popular chat
-services, such as whatsapp, you might already be familiar with this style of
-writing. In case you haven't seen it before, you have just learnt something
-about whatsapp in your theoretical ecology class...
+As you can see in the knitted document, the title showed up as we would expect,
+the lines with pound sign(s) in front of them were converted into headers and
+we can see both the code and its output! So the plots are generated directly in
+the report without us having to cut and paste images! If we change something in
+the code, we don't have to find the new images and paste it in again, the
+correct one will appear right in your code.
 
-As you can see, the title showed up as we would expect, the lines with pound
-sign(s) in front of them were converted into headers and we can see both the
-code and its output! So the plots are generated directly in the report without
-us having to cut and paste images! If we change something in the code, we don't
-have to find the new images and paste it in again, the correct one will appear
-right in your code. E.g. if we realize that we actually used the wrong data set
-for the plot, and we want to plot `cars` instead, we just change `pressure` to
-`cars` and then click stitch again, done!
+### R Markdown
+
+The text format we are using in the R Notebook is called R Markdown. This format allows us to combine R code with the Markdown text format, which enables the use of certain
+characters to specify headings, bullet points, quotations and even 
+citations. A simple example of how to write in Markdown is to use a single
+asterisk or underscore to *emphasize* text (`*emphasis*`) and two asterisks or
+underscores to **strongly emphasize** text (`**strong emphasis**`). When we
+convert our R Markdown text to HTML or PDF, these will show up as italics and
+bold typeface, respectively. If you have been writing on online forums, or
+popular chat services, such as whatsapp, you might already be familiar with
+this style of writing. In case you haven't seen it before, you have just learnt
+something about whatsapp in your theoretical ecology class...
+
+To get more familiar with the Markdown syntax, let's open a new R Notebook.
+RStudio already includes a template when you create new documents, that gives
+you some instructions on how to use the syntax. We can see some of the
+formatting rules that we just mentioned. Let's add some emphasized text and see
+how it renders. Using the Markdown syntax we can organize our document with
+headings and subheadings. This is indicated by the number of pound sign in front ot
 
 Furthermore, if we want to change the style of our output document, it is quite
-easy to do so. Let's add a subheading first, then to keep track of things we
-want a table of contents, _knit_. Now we realize that we want to include
-numbers in the report to keep with the departmental guidelines, _knit_. We
-could alter the style of our report by adding a theme, _knit_. And finally we
-remember that we need to hand in our assignments as PDF-files, so let's create
-a PDF instead of a HTML-document, _remove themee and knit_.
+easy to do so. Let's add a subheading first, and a table of contents.
+
+```yaml
+---
+title: "HTML output demo"
+output:
+  html_document:
+    toc: true
+---
+```
+
+Now we realize that we want to include numbers in the report to keep with the departmental guidelines, so let's add those.
+
+```yaml
+---
+title: "HTML output demo"
+output:
+  html_document:
+    toc: true
+    number_section: true
+---
+```
+
+We can alter the style of our report by adding a theme.
 
 ```yaml
 ---
@@ -361,6 +382,19 @@ output:
 ---
 ```
 
+And finally we remember that we need to hand in our assignments as PDF-files, so let's create a PDF instead of a HTML-document.
+
+```yaml
+---
+title: "PDF output demo"
+output:
+  pdf_document:
+    toc: true
+    number_section: true
+---
+```
+
+## Background experience survey
 Hopefully, this has given you an idea of how powerful and time-saving R can be
 for your data analysis, and how we will work with it in this class using the
 R Notebook. The first assignment will be available on blackboard today, and it
@@ -371,15 +405,10 @@ groups accordingly for the class project later this fall. Please take 10 min to
 do so now by going to this page (send page to everyone's computer via the
 teaching software), or if you have to run, you can complete it at home.
 
+<!-- Only include if there is too much time left.
+## Misc
 
-# Misc notes (not in lecture at the moment)
-
-Left out on purpose
-- Comments in R and Markdown
-- Importing packages
-- 
-
-<!-- Maybe save this for last if there is time -->
+### More about Markdown
 As an aside, we can learn more about Markdown, and text vs binary formats in
 general. Let's contrast writing in Markdown with writing in a word processor,
 such as MS Word or Google Docs. In the word processor, the text you are writing
@@ -407,5 +436,6 @@ the source code is readable by humans, you don't run the chance of losing
 access to your own work any time soon and it is easy for other people who might
 not be able to afford the same software you own to also read your work. 
 
-<!-- Also if there is time-->
+### RNA seq example
 Show example with my RNA-seq report I made previously.
+-->
