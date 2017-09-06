@@ -52,14 +52,14 @@ With that background to some of the concepts of programming, let's compare the w
 When you open a file in Excel, it will immediately display the content in the window. Likewise, the R console will display the information of the data set when you read it in. This sample data set that we are using for this class describes the length and width of sepals and petals for three species of iris flowers.
 
 ```{r}
-read_csv('/home/joel/iris.csv') # need to dry run this with windows path names...
+read_csv('./iris.csv') # need to dry run this with windows path names...
 ```
 
 
 If we want to calculate something in Excel, we would highlight the column and then click mean... <!-- I actually don't have Excel and don't know how to do this, will check tomorrow... --> In R we first give the data a nick name where it is stored, so instead of printing out to console, these values are stored in this R session and we can access it by this name `iris`, (technically we say that we have assigned it to variable `iris`).
 
 ```{r}
-iris <- read_csv('/home/joel/iris.csv')
+iris <- read_csv('./iris.csv')
 ```
 
 The arrow `<-` simply means that the output from the right hand signed is stored in the variable name that you write on the left hand side. Now we can simply ask to calculate the mean of the data frame `iris`, column `petal_length`:
