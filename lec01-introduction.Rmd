@@ -394,6 +394,10 @@ output:
 ---
 ```
 
+If you want to learn more about R Markdown, you can read the cheat sheets in
+RStudio and [RStudio Markdown reference
+online](http://rmarkdown.rstudio.com/authoring_basics.html).
+
 ## Background experience survey
 Hopefully, this has given you an idea of how powerful and time-saving R can be
 for your data analysis, and how we will work with it in this class using the
