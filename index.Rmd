@@ -11,8 +11,8 @@ EEB322H1, EEB323H1
 Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 ## Class locations
-| Day | Room | Location | Details |
-|-----|------|----------|---------|
+| Day | Room         | Location       | Details      |
+|-----|--------------|----------------|--------------|
 | Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Harbord and St George | 1st floor, enter from St George street. |
 | Thu | [Carr Hall](http://map.utoronto.ca/utsg/building/426) (SMC 325) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
 
@@ -58,8 +58,8 @@ Effective communication is crucial in science. The [University of Toronto provid
 You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor.
 
 ## Lecture schedule
-| Week | Date   | Topic                                               | Instructor     |
-|------|--------|-----------------------------------------------------|----------------|
+| Week | Date   | Topic                                             | Instructor        |
+|------|--------|---------------------------------------------------|-------------------|
 | 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
 | 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
 | 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
@@ -69,7 +69,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
 | 5    | Oct 05 | Modelling in R                                      | Madeleine      |
-| 6    | Oct 10 | Linear regression models                            | Luke           |
+| 6    | Oct 10 | Statistical/probabilistic modeling                  | Luke           |
 | 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
 | 7    | Oct 19 | Project and Git setup in RStudio                    | Luke           |
