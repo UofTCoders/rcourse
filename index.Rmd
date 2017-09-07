@@ -1,22 +1,22 @@
 ---
-title: "Syllabus: EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods using R [24L, 12P]"
+title: "Syllabus: EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods in R [24L, 12P]"
 ---
 
-This course focuses on theoretical ecology concepts and reproducible quantitative methods using R. Theoretical ecology uses models to explain biological phenomena such as the maintenance of biodiversity, population growth, competition, eco-evolutionary dynamics, epidemiology, spatial ecology, and species extinction. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
+This course focuses on theoretical ecology concepts and reproducible quantitative methods in R. Theoretical ecology uses models to explain biological phenomena such as the maintenance of biodiversity, population growth, competition, eco-evolutionary dynamics, epidemiology, spatial ecology, and species extinction. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
 
 Prerequisites: MAT 136, BIO220H1, EEB225H1, and two of EEB319H1, EEB321H1,
 EEB322H1, EEB323H1
 
 ## Time
-Tue and Thu 2-4 pm. Office hours are Tue 4-5 pm.  
+Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 ## Class locations
-| Day | Room | Location | Details |
-|-----|------|----------|---------|
+| Day | Room         | Location       | Details      |
+|-----|--------------|----------------|--------------|
 | Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Harbord and St George | 1st floor, enter from St George street. |
 | Thu | [Carr Hall](http://map.utoronto.ca/utsg/building/426) (SMC 325) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
 
-Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Installed programs and packages are wiped from the computers daily. Saved files will be accessible from any computer via the student's login. Students can use any of the lecture halls when there are no classes scheduled. See the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
+Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
 Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to joel.ostblom@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB430". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
@@ -38,7 +38,7 @@ All course information is accessible [on its own website](https://uoftcoders.git
 ## Recommended resources
 - [R for Data science](http://r4ds.had.co.nz/), H Wickham, G Grolemund, 2017
     - Excellent open access resource for R.
-- [Rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/), RStudio, 2017
+- [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/), RStudio, 2017
     - As good as it sounds, great quick reference.
 - [R for ecological data science](http://www.datacarpentry.org/R-ecology-lesson/index.html)
     - An inspiration for our lectures.
@@ -46,33 +46,34 @@ All course information is accessible [on its own website](https://uoftcoders.git
 ## Course learning outcomes
 1. Integrate and apply concepts and theoretical models learnt in class.
 2. Learn how to use basic statistics to analyze and interpret data.
-3. Realize that data do not always fit theoretical models, but that it is important to interpret data with a larger theoretical framework in mind.
-4. Learn how to work in group on a scientific product.
-5. Learn what is required to generate a scientific item ready for publishing.
+3. Use R to apply theoretical models and perform data analysis.
+4. Realize that data do not always fit theoretical models, but that it is important to interpret data with a larger theoretical framework in mind.
+5. Learn how to work as part of a research team to produce a scientific product.
+6. Learn what is required to generate a scientific item ready for publishing.
 
 ## Improving your writing skills
-Effective communication is crucial in science. The [University of Toronto provides services](http://www.writing.utoronto.ca/) to help you improve your writing, from general advices on effective writing to writing centers and writing courses. The Faculty of Arts & Science also offers an English Language Learning (ELL) program, which provides free individualized instruction in English skills. Take advantage of these!
+Effective communication is crucial in science. The [University of Toronto provides services](http://writing.utoronto.ca/) to help you improve your writing, from general advices on effective writing to writing centers and writing courses. The Faculty of Arts & Science also offers an English Language Learning (ELL) program, which provides free individualized instruction in English skills. Take advantage of these!
 
 ## Academic integrity
-You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor.
+You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor. Please make sure that what you submit for the final project does not overlap with what you submit for other classes, such as the 4th year research project. We will not enforce this, but the department will. 
 
 ## Lecture schedule
-| Week | Date   | Topic                                               | Instructor     |
-|------|--------|-----------------------------------------------------|----------------|
+| Week | Date   | Topic                                             | Instructor        |
+|------|--------|---------------------------------------------------|-------------------|
 | 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
 | 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
 | 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
-| 3    | Sep 19 | Data wrangling in dplyr, tidy data                  | Joel           |
-| 3    | Sep 21 | More dplyr and tidy data, ggplot intro              | Joel           |
+| 3    | Sep 19 | Data wrangling in dplyr, ggplot, tidy data          | Joel           |
+| 3    | Sep 21 | More dplyr and ggplot                               | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
 | 5    | Oct 05 | Modelling in R                                      | Madeleine      |
-| 6    | Oct 10 | Linear regression models                            | Luke           |
+| 6    | Oct 10 | Statistical/probabilistic modeling                  | Luke           |
 | 6    | Oct 12 | Fitting models to data                              | Madeleine      |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
 | 7    | Oct 19 | Project and Git setup in RStudio                    | Luke           |
-| 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliot         |
+| 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliott        |
 | 8    | Oct 26 | Data visualization in R                             | Lindsay        |
 | 9    | Oct 31 | Project work, data visualizations                   | Lindsay        |
 | 9    | Nov 02 | Reproducible workflow, metadata, R Markdown         | Lina           |
@@ -87,19 +88,32 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 13   | Dec 05 | Project work                                        | Everyone       |
 
 ## Assessment schedule
-| Assessment                | Type                | Due date   | Marks |
+| Assignment                | Type                | Due date   | Marks |
 |---------------------------|---------------------|------------|-------|
 | Getting set up            | Individual          | Sep 19     | 4     |
-| Basic R                   | Individual          | Sep 26     | 8     |
+| Basic R and dplyr         | Individual          | Sep 26     | 8     |
 | dplyr and tidy data       | Individual          | Oct 03     | 8     |
 | Population models         | Individual          | Oct 10     | 8     |
 | Modelling in R            | Individual          | Oct 17     | 8     |
 | Fitting models to data    | Individual          | Oct 24     | 8     |
 | Setup GitHub and projects | Project, Individual | Oct 31     | 8     |
 | Data visualization        | Project, Individual | Nov 07     | 8     |
-| Final project work        | Project, Group      | Dec 15     | 32    |
+| Final project work        | Project, Group      | Dec 06     | 32    |
 | Participation             | Individual          | -          | 8     |
+
+There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
 Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
-Assessments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assessments will be handed out on Thursdays and due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assignments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+
+### Final project grading rubric
+
+|                                                | Inadequate (0 marks)                                                                                                                                                                                          | Adequate (4 marks)                                                                                                                                                | Excellent (8 marks)                                                                                                                                                                    |
+|------------|--------------------|--------------------|--------------------|
+| Contribution to group work and self-assessment | Student contributed little to project; self-assessed contributions are low in quality and/or quantity; self-assessment is not consistent with actual contribution.                                            | Student contributed adequately to project; made some significant contributions                                                                                    | Student substantially contributed to project to ensure success; self-assessed contributions are crucial to project; self-assessment is consistent with actual contribution.            |
+| Weekly progress (measured in GitHub commits)   | Several weeks in which no contributions are made to project                                                                                                                                                   | Adequate progress on project is made in most weeks                                                                                                                | Significant progress is made every week                                                                                                                                                |
+| Content                                        | Missing crucial information; methods and results are inconsistent, not logical, or not adequately explained; conclusions are confusing or unsupported by results; unnecessary information included as clutter | Most essential information included; methods and results are adequately described; conclusions supported by results; most included material is relevant to report | All essential information included; methods and results are succinct, clear, logical, and scientifically valid; conclusions are creative and meaningful; project is concise throughout |
+| Style and reproducibility                      | Code and writing are poorly organized, poorly formatted, missing units, difficult to read, poorly documented, difficult to reproduce analyses                                                                 | Code and writing are well-organized, well-formatted, consistent use of units and significant figures                                                              | Code and writing are precise and clear throughout, free of errors, well-organized, well-documented, easily reproducible analyses, publication-ready                                    |
+
+As the final project is a team effort, all members within a group will receive the same mark. A final project that is considered to lie between two of the defined levels will be marked accordingly, e.g. between "Adequate" and "Excellent" would be 5, 6, or 7 marks.
