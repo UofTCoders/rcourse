@@ -63,8 +63,8 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
 | 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
 | 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
-| 3    | Sep 19 | Data wrangling in dplyr, tidy data                  | Joel           |
-| 3    | Sep 21 | More dplyr and tidy data, ggplot intro              | Joel           |
+| 3    | Sep 19 | Data wrangling in dplyr, ggplot, tidy data          | Joel           |
+| 3    | Sep 21 | More dplyr and ggplot                               | Joel           |
 | 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
@@ -91,7 +91,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Assignment                | Type                | Due date   | Marks |
 |---------------------------|---------------------|------------|-------|
 | Getting set up            | Individual          | Sep 19     | 4     |
-| Basic R                   | Individual          | Sep 26     | 8     |
+| Basic R and dplyr         | Individual          | Sep 26     | 8     |
 | dplyr and tidy data       | Individual          | Oct 03     | 8     |
 | Population models         | Individual          | Oct 10     | 8     |
 | Modelling in R            | Individual          | Oct 17     | 8     |
