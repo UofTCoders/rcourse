@@ -1,4 +1,750 @@
 ---
-title: "Basic R (part 1): Rstudio, Rmarkdown, assignment, vectors"
+title: Introduction to R
 ---
 
+**Copyright (c) Data Carpentry**
+
+*Note: This lecture content was originally created by voluntary contributions to
+[data carpentry](http://datacarpentry.org) and has been modified to
+align with the aims of EEB430. Data Carpentry is an organization focused on data
+literacy, with the objective of teaching skills to researchers to enable them to
+retrieve, view, manipulate, analyze and store their and other’s data in an open
+and reproducible way in order to extract knowledge from data. For EEB430, we are
+making all our content available under the same license, The Creative Commons, 
+license, so if someone in the future are teaching this course content available under
+the same lice*
+
+I am emphazing this because I think it is one of the core features of working with an open language like R, many smart people readily share their material and discoveries not only for free, but in a way that allows others to modify and built on the material themselves. It really is "standing on the shoulders of giants", and there is a common saying in the open source world:
+
+> I came for the language and stayed for the community.
+
+Which highlights the spirit, generousity, and the fun involved in many of these project.
+
+------------
+
+
+## Recap from intro lecture
+
+We will be working with the programming language R through an interface called
+RStudio. We will mainly be using the R Notebook, which allows us to mix R code
+with writing notes in the Markdown text format. So let's open an R Notebook in
+RStudio... You will be prompted to install a few packages, click Yes/OK. I have
+asked the IT services to make sure these packages are always installed on the
+computers so that we don't have to install them every time, hopefully they will
+do so soon. If you prefer, you can also bring your own laptop to class, which
+has the advantage that you can save things permanently and that you have
+everything setup, this is up to you <!--ok to say this?-->. Let's go over the
+lesson objectives while we wait for these packages to install. 
+
+
+## Learning Objectives
+
+* Define the following terms as they relate to R: object, assign, call,
+  function, arguments, options.
+* Create objects and assign values to them.
+* Use comments to inform script.
+* Do simple arithmetic operations in R using values and objects.
+* Call functions and use arguments to change their default options.
+* Inspect the content of vectors and manipulate their content.
+* Subset and extract values from vectors.
+* Correctly define and handle missing values in vectors.
+
+
+## Setting up the notebook
+
+Let's remove the template R Studio gives us, and add a title of our own.
+
+```yaml
+---
+title: Introduction to R
+---
+```
+
+This introductory block is call the `yaml`-block and is where we specify things
+like whether we want html or PDF output, but more on that another class. For
+now, we just care about including the lecture here. Under it let's type a note:
+
+> This lecture covers fundamental R usage, such as assigning values to a
+> variable, using functions, commenting code, and more.
+
+Under this sentence, we will insert our first code chunk. You insert a code
+chunk by either clicking this button or pressing <kbd>Ctrl</kbd> +
+<kbd>Alt</kbd> + <kbd>i</kbd>. You could also type out the surrounding
+delimiters, but this would take longer. To run a code chunk, you press this
+green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+
+
+## Creating objects in R
+
+As we saw in our first class, you can get output from R simply by typing math in
+the console:
+
+```{r}
+3 + 5
+12 / 7
+```
+
+However, to do useful and interesting things, we need to assign _values_ to
+_objects/variables_. To create an object, we need to give it a name followed by
+the assignment operator `<-`, and the value we want to assign:
+
+```{r}
+x <- 3
+x + 5
+```
+
+`<-` is the assignment operator. It assigns values on the right to objects on
+the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can
+be read as 3 **goes into** `x`.  For historical reasons, you can also use `=`
+for assignments, but not in every context. Because of
+the
+[slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) [differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html) in
+syntax, it is good practice to always use `<-` for assignments.
+
+In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the
+same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke.
+
+What are known as `objects` in `R` are called `variables` in many other
+programming languages.  Depending on the context, `object` and `variable` can
+have drastically different meanings.  However, in this lesson, the two words are
+used synonymously and in this introductory section, the title "Creating object
+in R" is the same as "Assigning a value to a variable" (for more information
+see: https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
+
+You can name an object in R, almost anything you want:
+
+```{r}
+joel <- 3
+joel + 5
+```
+
+> ### Challenge
+> So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
+
+> ```{r}
+> joel + x
+> ```
+
+Objects can be given any name such as `x`, `current_temperature`, or
+`subject_id`. You want your object names to be explicit and not too long. They
+cannot start with a number (`2x` is not valid, but `x2` is). R is case sensitive
+(e.g., `joel` is different from `Joel`). There are some names that cannot be
+used because they are the names of fundamental functions in R (e.g., `if`,
+`else`, `for`, see
+[here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+for a complete list). In general, even if it's allowed, it's best to not use
+other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). If in
+doubt, check the help or use tab completion to see if the name is already in
+use. It's also best to avoid dots (`.`) within a variable name as in
+`my.dataset`. There are many functions in R with dots in their names for
+historical reasons, but because dots have a special meaning in R (for methods)
+and other programming languages, it's safest to avoid them and use underscores
+(`_`) instead. It is also recommended to use nouns for variable names, and verbs
+for function names. It's important to be consistent in the styling of your code
+(where you put spaces, how you name variables, etc.). Using a consistent coding
+style makes your code clearer to read for your future self and your
+collaborators. In R, three popular style guides are
+[Google's](https://google.github.io/styleguide/Rguide.xml), [Jean
+Fan's](http://jef.works/R-style-guide/) and the
+[tidyverse's](http://style.tidyverse.org/). The tidyverse's is very
+comprehensive and may seem overwhelming at first. You can install the
+[**`lintr`**](https://github.com/jimhester/lintr) to automatically check for
+issues in the styling of your code.
+
+When assigning a value to an object, R does not print anything. You can force R
+to print the value by using parentheses or by typing the object name:
+
+```{r}
+weight_kg <- 55    # doesn't print anything
+(weight_kg <- 55)  # but putting parenthesis around the call prints the value of `weight_kg`
+weight_kg          # and so does typing the name of the object
+```
+
+The variable `weight_kg` is not stored in the computer's memory where R can
+access it, and we can start doing arithmetic with it efficiently. For instance,
+we may want to convert this weight into pounds (weight in pounds is 2.2 times
+the weight in kg):
+
+```{r}
+2.2 * weight_kg
+```
+
+We can also change a variable's value by assigning it a new one:
+
+```{r}
+weight_kg <- 57.5
+2.2 * weight_kg
+```
+
+This means that assigning a value to one variable does not change the values of
+other variables.  For example, let's store the animal's weight in pounds in a
+new variable, `weight_lb`:
+
+```{r}
+weight_lb <- 2.2 * weight_kg
+```
+
+and then change `weight_kg` to 100.
+
+```{r}
+weight_kg <- 100
+```
+
+> ### Challenge
+> What do you think is the current content of the object `weight_lb`? 126.5 or 220?
+
+> ```{r}
+> weight_lb
+> ```
+
+
+### Comments
+
+A comment is piece of text in your code that will not be executed with the rest
+of the code, but its purpose is to be a note to the person reading the code.
+Traditionally, comments has been the only way to make notes when you are coding,
+but since we are using the R Notebook format, we can also write notes in
+markdown. Therefore, comments are not as important for us, but they are still
+the best method of leaving short notes and explanations for specific lines of
+code. The comment character in R is `#`, anything to the right of a `#` in a
+script will be ignored by R.
+
+RStudio makes it easy to comment or uncomment a paragraph: after selecting the
+lines you want to comment, press at the same time on your keyboard
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment
+out one line, you can put the cursor at any location of that line (i.e. no need 
+to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + 
+<kbd>C</kbd>.
+
+```{r}
+weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
+```
+
+> ### Challenge
+> What are the values after each statement in the following?
+
+> ```{r}
+> mass <- 47.5            # mass?
+> age  <- 122             # age?
+> mass <- mass * 2.0      # mass?
+> age  <- age - 20        # age?
+> mass_index <- mass/age  # mass_index?
+> ```
+
+
+### Functions and their arguments
+
+Functions can be thought of as recipes. You give a few ingredients as input to a
+function, and it will generate an output based on these ingredients. Just as
+when baking, both the ingredients and the actual recipe will influence what
+comes out of the recipe in the end, will it be a cake or a loaf of bread? In R,
+the inputs to a function are not called ingredients, but rather *arguments*, and
+the output is called the *return value* of the function. A function does not
+technically have to return a value, but often does so. Functions are used to
+automate more complicated sets of commands and many of them are already
+predefined in R. A typical example would be the function `sqrt()`. The input
+(the argument) must be a number, and the return value (in fact, the output) is
+the square root of that number. Executing a function ('running it') is called
+*calling* the function. An example of a function call is:
+
+```{r}
+sqrt(9)
+```
+
+Which is the same as assigning the value to a variable and then passing that
+variable to the function:
+
+```{r}
+a <- 9
+b <- sqrt(a)
+b
+```
+
+Here, the value of `a` is given to the `sqrt()` function, the `sqrt()` function
+calculates the square root, and returns the value which is then assigned to
+variable `b`. This function is very simple, because it takes just one argument.
+
+The return 'value' of a function need not be numerical (like that of `sqrt()`),
+and it also does not need to be a single item: it can be a set of things, or
+even a dataset. We'll see that when we read data files into R, as I showed you
+briefly in during the first class.
+
+Arguments can be anything, not only numbers or filenames, but also other
+objects. Exactly what each argument means differs per function, and must be
+looked up in the documentation (see below). Some functions take arguments which
+may either be specified by the user, or, if left out, take on a *default* value:
+these are called *options*. Options are typically used to alter the way the
+function operates, such as whether it ignores 'bad values', or what symbol to
+use in a plot. However, if you want something specific, you can specify a value
+of your choice which will be used instead of the default.
+
+To access help about `sqrt`, we are first going to learn about tab-completion.
+Type `s` and press <kbd>Tab</kbd>.
+
+```{r, eval=FALSE}
+s<tab>q
+```
+
+You can see that R gives you suggestions of what functions and variables are
+available that start with the letter `s`, and thanks to `RStudio` they are
+formatted in this nice list. There are *many* suggestions here, so let's be a
+bit more specific and append a `q`, to find what we want. If we press enter or
+tab again, R will insert the selected option.
+
+You can see that R inserts a pair of parenthesis together with the name of the
+functions. This is how the function syntax looks for R and many other
+programming languages, and it means that within these parentheses, we will
+specify all the arguments, the ingredients, that we want to pass to this
+function.
+
+If we press tab again, R will helpfully display all the available parameters for
+this function that we can pass an argument to. The word *parameter* is used to
+describe the name that the argument can be passed to, more on that later.
+
+```{r, eval=FALSE}
+sqrt(<tab>
+```
+
+There are many things in this list, but only one of them is marked in purple.
+Purple here means that it is parameter we can use for the function and yellow
+means that it is a variable that we defined earlier. There are a few other
+symbols as well, all of which can be viewed at the end of [this post about
+RStudio code
+completion](https://support.rstudio.com/hc/en-us/articles/205273297-Code-Completion).
+
+To read the full help about `sqrt`, we can use the question mark, or type it
+directly into the help document browser.
+
+```{r}
+?sqrt
+```
+
+As you can see, `sqrt()` takes only one argument, `x`, which needs to be a
+*numerical vector*. Don't worry too much about that is says *vector* here, I
+will talk more about that later. But briefly, a vector is a set of one or
+several numbers, and in R, every value is a vector even if it only is a single
+number. So, you don't have to do anything special in R to create a vector, but
+more on that later.
+
+Let's try a function that can take multiple arguments: `round()`.
+
+```{r, eval=FALSE}
+round(<tab>
+?round
+```
+
+If we try round with a value:
+
+```{r}
+round(3.14159)
+```
+
+Here, we've called `round()` with just one argument, `3.14159`, and it has
+returned the value `3`. That's because the default is to round to the nearest
+whole number, or integer. If we want more digits we can pass an argument to the
+`digits` parameter, to specify how many decimals we want to round to.
+
+```{r, eval=FALSE}
+round(3.14159, digits = 2)
+```
+
+So, above we pass the *argument* `2`, to the *parameter* `digits`. Knowing this
+nomenclature is not essential for doing your own data analysis, but it will be
+very helpful when you are reading through help documents online and in RStudio.
+
+We can leave actually, out the word `digits` since we know it comes as the
+second parameter, after `x`.
+
+```{r}
+round(3.14159, 2)
+```
+
+As you notice, we have been leaving out `x` from the beginning. If you provide
+the names for both the arguments, we can switch their order:
+
+```{r}
+round(digits = 2, x = 3.14159)
+```
+
+It's good practice to put the non-optional arguments (like the number you're
+rounding) first in your function call, and to specify the names of all optional
+arguments. If you don't, someone reading your code might have to look up the
+definition of a function with unfamiliar arguments to understand what you're
+doing.
+
+
+## Vectors and data types
+
+A vector is the most common and basic data type in R, and is pretty much the
+workhorse of R. A vector is composed by a series of values, which can be either
+numbers or characters. We can assign a series of values to a vector using the
+`c()` function, which stands for "concatenate (combine/connect one after
+another) values into a vector" For example we can create a vector of animal
+weights and assign it to a new object `weight_g`:
+
+```{r}
+weight_g <- c(50, 60, 65, 82) # Concatenate/Combine values into a vector
+weight_g
+```
+
+You can also use the built-in command `seq`, to create a sequence of numbers
+without typing all of them in manually.
+
+```{r}
+seq(0, 30)
+seq(0, 30, 3) # Every third number
+```
+
+A vector can also contain characters:
+
+```{r}
+animals <- c('mouse', 'rat', 'dog')
+animals
+```
+
+The quotes around "mouse", "rat", etc. are essential here and can be either
+single or double quotes. Without the quotes R will assume there are objects
+called `mouse`, `rat` and `dog`. As these objects don't exist in R's memory,
+there will be an error message.
+
+There are many functions that allow you to inspect the content of a
+vector. `length()` tells you how many elements are in a particular vector:
+
+```{r}
+length(weight_g)
+length(animals)
+```
+
+An important feature of a vector, is that all of the elements are the same type
+of data. The function `class()` indicates the class (the type of element) of an
+object:
+
+```{r}
+class(weight_g)
+class(animals)
+```
+
+The function `str()` provides an overview of the structure of an object and its
+elements. It is a useful function when working with large and complex
+objects:
+
+```{r}
+str(weight_g)
+str(animals)
+```
+
+You can use the `c()` function to add other elements to your vector:
+
+```{r}
+weight_g <- c(weight_g, 90) # add to the end of the vector
+weight_g <- c(30, weight_g) # add to the beginning of the vector
+weight_g
+```
+
+In the first line, we take the original vector `weight_g`,
+add the value `90` to the end of it, and save the result back into
+`weight_g`. Then we add the value `30` to the beginning, again saving the result
+back into `weight_g`.
+
+We can do this over and over again to grow a vector, or assemble a dataset.
+As we program, this may be useful to add results that we are collecting or
+calculating.
+
+An **atomic vector** is the simplest R **data type** and it is a linear vector
+of a single type, e.g. all numbers. Above, we saw 2 of the 6 main **atomic
+vector** types  that R uses: `"character"` and `"numeric"` (or `"double"`).
+These are the basic building blocks that all R objects are built from. The other
+4 **atomic vector** types are:
+
+* `"logical"` for `TRUE` and `FALSE` (the boolean data type)
+* `"integer"` for integer numbers (e.g., `2L`, the `L` indicates to R that it's an integer)
+* `"complex"` to represent complex numbers with real and imaginary parts (e.g.,
+  `1 + 4i`) and that's all we're going to say about them
+* `"raw"` for bitstreams that we won't discuss further
+
+Vectors are one of the many **data structures** that R uses. Other important
+ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`),
+factors (`factor`) and arrays (`array`). In this class, we will focus on data
+frames, which is most commonly used one for data analyses.
+
+> ### Challenge
+> * We’ve seen that atomic vectors can be of type character, >   numeric (or
+double), integer, and logical. But what happens if we try to mix these types in 
+>   a single vector? Find out by using `class` to test these examples?
+
+> ```r
+> num_char <- c(1, 2, 3, 'a')
+> num_logical <- c(1, 2, 3, TRUE)
+> char_logical <- c('a', 'b', 'c', TRUE)
+> tricky <- c(1, 2, 3, '4')
+> ```
+
+> <!-- * _Answer_: R implicitly converts them to all be the same type -->
+>
+
+> - This happens because vectors can be of only one data type. Instead of
+>  throwing an error and saying that you are trying to mix different types in
+>  the same vector, R tries to convert (coerce) the content of this vector to
+>  find a "common denominator". A logical can be turn into 1 or 0, and a number
+>  can be turned into a string/character representation. It would be difficult
+>  to do it the other way around: would 5 be TRUE or FALSE? What number would
+>  't' be?
+
+> - In R, we
+>   call converting objects from one class into another class
+>   _coercion_. These conversions happen according to a hierarchy,
+>   whereby some types get preferentially coerced into other
+>   types. Can you draw a diagram that represents the hierarchy of how
+>   these data types are coerced?
+> <!-- * _Answer_: `logical -> numeric -> character <-- logical` -->
+
+
+```{r, echo=FALSE, eval=FALSE}
+num_char <- c(1, 2, 3, "a")
+
+num_logical <- c(1, 2, 3, TRUE)
+
+char_logical <- c("a", "b", "c", TRUE)
+
+tricky <- c(1, 2, 3, "4")
+```
+
+
+## Subsetting vectors
+
+If we want to extract one or several values from a vector, we must provide one
+or several indices in square brackets. For instance:
+
+```{r}
+animals <- c("mouse", "rat", "dog", "cat")
+animals[2]
+animals[c(3, 2)]
+```
+
+We can also repeat the indices to create an object with more elements than the
+original one:
+
+```{r}
+more_animals <- animals[c(1, 2, 3, 2, 1, 4)]
+more_animals
+```
+
+R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R
+start counting at 1, because that's what human beings typically do. Languages in
+the C family (including C++, Java, Perl, and Python) count from 0 because that's
+simpler for computers to do.
+
+
+### Conditional subsetting
+
+Another common way of subsetting is by using a logical vector. `TRUE` will
+select the element with the same index, while `FALSE` will not:
+
+```{r}
+weight_g <- c(21, 34, 39, 54, 55)
+weight_g[c(TRUE, FALSE, TRUE, TRUE, FALSE)]
+```
+
+Typically, these logical vectors are not typed by hand, but are the output of
+other functions or logical tests. For instance, if you wanted to select only the
+values above 50:
+
+```{r}
+weight_g > 50    # will return logicals with TRUE for the indices that meet the condition
+## so we can use this to select only the values above 50
+weight_g[weight_g > 50]
+```
+
+You can combine multiple tests using `&` (both conditions are true, AND) or `|`
+(at least one of the conditions is true, OR), similar to how you can do when
+using a search engine online:
+
+```{r}
+weight_g[weight_g < 30 | weight_g > 50]
+weight_g[weight_g >= 30 & weight_g == 21]
+```
+
+Here, `<` stands for "less than", `>` for "greater than", `>=` for "greater than
+or equal to", and `==` for "equal to". The double equal sign `==` is a test for
+numerical equality between the left and right hand sides, and should not be
+confused with the single `=` sign, which performs variable and parameter
+assignment (similar to `<-`).
+
+A common task is to search for certain strings in a vector.  One could use the
+"or" operator `|` to test for equality to multiple values, but this can quickly
+become tedious. The function `%in%` allows you to test if any of the elements of
+a search vector are found:
+
+```{r}
+animals <- c("mouse", "rat", "dog", "cat")
+animals[animals == "cat" | animals == "rat"] # returns both rat and cat
+animals %in% c("rat", "cat", "dog", "duck", "goat")
+animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
+```
+
+> ### Challenge
+>
+> * Can you figure out why `"four" > "five"` returns `TRUE`?
+
+<!--
+```{r}
+## Answers
+## * When using ">" or "<" on strings, R compares their alphabetical order. Here
+##   "four" comes after "five", and therefore is "greater than" it.
+```
+-->
+
+
+## Missing data
+
+As R was designed to analyze datasets, it includes the concept of missing data
+(which is uncommon in other programming languages). Missing data are represented
+in vectors as `NA`.
+
+When doing operations on numbers, most functions will return `NA` if the data
+you are working with include missing values. This feature
+makes it harder to overlook the cases where you are dealing with missing data.
+You can add the argument `na.rm=TRUE` to calculate the result while ignoring
+the missing values.
+
+```{r}
+heights <- c(2, 4, 4, NA, 6)
+mean(heights)
+max(heights)
+mean(heights, na.rm = TRUE)
+max(heights, na.rm = TRUE)
+```
+
+If your data include missing values, you may want to become familiar with the
+functions `is.na()`, `na.omit()`, and `complete.cases()`. See below for
+examples.
+
+
+```{r}
+## Extract those elements which are not missing values.
+heights[!is.na(heights)]
+
+## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
+na.omit(heights)
+
+## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
+heights[complete.cases(heights)]
+```
+Recall that you can use the `typeof()` function to find the type of your atomic vector.
+
+> ### Challenge
+>
+> 1. Using this vector of length measurements, create a new vector with the NAs
+> removed.
+
+> ```r
+> lengths <- c(10,24,NA,18,NA,20)
+> ```
+>
+> 2. Use the function `median()` to calculate the median of the `lengths` vector.
+
+
+## Writing functions
+
+In this class, you will be working a lot with functions, especially those that
+someone else has already written. When you type `sum`, `c()`, or `mean()`, you
+are using a function that has be made previously and built into R. To remove
+some of the magic around these functions, we wil go through how to make a basic
+function of our own. Let's start with a simple example where we add two numbers
+together:
+
+```{r}
+add_two_numbers <- function(num1, num2) {
+    return(num1 + num2)
+}
+add_two_numbers(4, 5)
+```
+
+As you can see, running this function on two numbers, returns their sum. We
+could also assign to a variable in the function and return the function.
+
+```{r}
+add_two_numbers <- function(num1, num2) {
+    my_sum <- num1 + num2
+    return(my_sum)
+}
+add_two_numbers(4, 5)
+```
+
+> ### Challenge
+> Can you write a function that calculates the mean of 3 numbers?
+
+> ```{r}
+> mean_of_three_numbers <- function(num1, num2, num3) {
+>    my_sum <- num1 + num2 + num3
+>    my_mean <- my_sum / 3
+>    return(my_mean)
+> }
+> mean_of_three_numbers(2, 4, 6)
+> ```
+
+
+## Loops and vectorization
+
+Loop, or for-loops, are essential to programming in general. However, in R, you
+should avoid them as often as possible because there are more efficient ways of
+doing things that you should use instead. It is still important that you
+understand the concept of loops and you might also use them in some of your own
+functions if there is no vectorized way of going about what you want to to.
+
+You can think of a for-loop as: "for each number contained in a list/vector,
+perform this operations" and the syntax basically says the same thing:
+
+```{r}
+v <- c(2, 4, 6)
+for (num in v) {
+    print(num)
+}
+```
+
+Instead of printing out every number to the console, we could also add numbers
+cumulatively, to calculate the sum of all the numbers in the vector:
+
+```{r}
+# To increment `w` each time, we must first create the variable,
+# which we do by setting `w <- 0`, referred to as initializing.
+# This also ensures that `w` is zero at the start of the loop and
+# don't retain the value from last time we ran this code.
+w <- 0
+for (num in v) {
+    w <- w + num
+}
+w
+```
+
+If we put what we just did inside a function, we have essentially recreated the
+`sum` function in R.
+
+```{r}
+my_sum <- function(input_vector) {
+    vector_sum <- 0
+    for (num in input_vector){
+        vector_sum <- vector_sum + num
+    }
+    return(vector_sum)
+}
+
+my_sum(v)
+```
+
+Although this gives us the same output as the built-in function `sum`, the
+built-in function has many more optimizations so it is much faster than our
+function. In R, it is always faster to try to find a way of doing things without
+writing a loop yourself. When you are reading about R, you might see suggestions
+that you should try to *vectorize* your code to make it faster. What people are
+referring to, is that you should not write for loops in R and instead use the
+ready made function that are much more efficient in working with vectors and
+essentially essentially performs operations on entire vector at once instead of
+one number at a time. If anyone is interested in more details about how this
+work, please ask me after class, but conceptually loops operate on one element
+at a time while vectorized code operate on all elements of a vector at once.
+
+*Go to the output options and set it to `html_document`, and then knit*
+
+**Remember to save your notebook file (.Rmd) on a USB stick or email it to
+yourself**
