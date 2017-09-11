@@ -16,4 +16,6 @@ Imports: rmarkdown,
     knitr,
     dplyr,
     tidyr,
-    ggplot2
+    ggplot2,
+    tidyverse,
+    GGally
