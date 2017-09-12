@@ -1,5 +1,72 @@
 ---
-title: "Assignment 1"
+title: 'Assignment 1 - Intro to programming (4 marks)'
+output:
+    html_document:
+        toc: false
 ---
 
-> Uploaded when it is handed out.
+To submit this assignment, send us the full document, including your
+code and the output. Send both the original `.Rmd` file and an exported
+[Pandoc flavored markdown
+document](http://rmarkdown.rstudio.com/markdown_document_format.html)
+(`.md`). Use the assignment `.Rmd` file we provide. Once you have
+completed the questions, in RStudio press Ctrl-Shift-K to convert the
+document to an `.md` file.
+
+1.  Get setup at home (or on a lab computer after hours). (1.5 marks)
+    -   Install [R](https://cran.rstudio.com/) and
+        [RStudio](https://www.rstudio.com/products/rstudio/download/)
+        (already installed on the lab computers).
+    -   Open a new R Notebook and read the instructions about R
+        Markdown.
+    -   Open this file in RStudio or copy its content into an open R
+        Notebook.
+    -   Insert a code chunk below, above question 2.
+    -   In the code chunk, use `install.packages("<package_name>")` to
+        install `tidyverse` and `rmarkdown`. Remember to run the code
+        chunk to execute the commands.
+    -   Load the two libraries you just installed into your environment
+        with `library(<package_name>)` (no surrounding quotation marks
+        as with `install.packages()`). Add this to the same code chunk
+        you created previously and execute it again (don't worry that
+        the `install.packages()` commands have already been executed
+        once, R is smart and checks that you already have those
+        installed).
+    -   Run `sessionInfo()` to list all the loaded packages.
+        -   You should see the following packages under 'other attached
+            packages: `rmarkdown`, `dplyr`, `purrr`, `readr`, `tidyr`,
+            `tibble`, `ggplot`, and `tidyverse`.
+    -   Since this is your first assignment, we have already completed
+        most of this question below. You still need to run this code
+        chunk on your computer to confirm that the packages installed
+        without errors and to get the `sessionInfo()` output for your
+        computer. You might receive warnings that functions from other
+        packages are masked when you load `tidyverse`, this is fine.
+
+    ``` {.r}
+    install.packages("tidyerse")
+    install.packages("rmarkdown")
+    ```
+
+    ```{r}
+    library(tidyverse)
+    library(rmarkdown)
+
+    # Expected answer
+    # The output is included below this code chunk with the appropriate packages loaded.
+    sessionInfo()
+    ```
+
+2.  What is R Markdown and why are we using it in this class? *Hint:*
+    You are using R Markdown right now to complete this assignment! (1
+    mark)
+    -   Which key combination would you use to insert a chunk of code in
+        an R Markdown document?
+    -   Which key combination would you use to execute a code chunk?
+3.  Provide a few reasons as to why it is beneficial to create
+    scripts/notebooks in a programming language rather than using a
+    spreadsheet software for exploratory data analyses? (1 mark)
+
+4.  Fill out the [pre-course
+    survey](https://docs.google.com/forms/d/e/1FAIpQLSeQ5a1LPQGdtlXSjX_zPknmpTHH8hCFMgjmTrnBLD_eHRGUhA/viewform?usp=sf_link).
+    (0.5 marks)
