@@ -231,8 +231,8 @@ weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 > What are the values after each statement in the following?
 
 > ```{r}
-> mass <- 47.5            # mass?
-> age  <- 122             # age?
+> mass <- 47.5            
+> age  <- 122            
 > mass <- mass * 2.0      # mass?
 > age  <- age - 20        # age?
 > mass_index <- mass/age  # mass_index?
@@ -397,7 +397,7 @@ You can also use the built-in command `seq`, to create a sequence of numbers
 without typing all of them in manually.
 
 ```{r}
-seq(0, 30)
+seq(0, 30) # This is the same as just `0:30`
 seq(0, 30, 3) # Every third number
 ```
 
@@ -624,8 +624,7 @@ max(heights, na.rm = TRUE)
 
 If your data include missing values, you may want to become familiar with the
 functions `is.na()`, `na.omit()`, and `complete.cases()`. See below for
-examples.
-
+examples. Prefixing with `!` returns the opposite Boolean values (i.e. `FALSE` instead of `TRUE` and `TRUE` instead of `FALSE`).
 
 ```{r}
 ## Extract those elements which are not missing values.
