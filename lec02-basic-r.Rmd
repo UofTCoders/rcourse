@@ -80,9 +80,9 @@ here. For now, let's type out a note:
 
 Under this sentence, we will insert our first code chunk. You insert a code
 chunk by either clicking the "Insert" button or pressing <kbd>Ctrl</kbd> +
-<kbd>Alt</kbd> + <kbd>i</kbd>. You could also type out the surrounding
-backticks, but this would take longer. To run a code chunk, you press the
-green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+<kbd>Alt</kbd> + <kbd>i</kbd> simultaneously. You could also type out the
+surrounding backticks, but this would take longer. To run a code chunk, you
+press the green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 
 ## Creating objects in R
@@ -111,8 +111,7 @@ x + 5
 `<-` is the assignment operator. It assigns values on the right to objects on
 the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can
 be read as 3 **goes into** `x`.[^equal_vs_arrow] In RStudio, typing
-<kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the same time as the
-<kbd>-</kbd> key) will write ` <- ` in a single keystroke.
+<kbd>Alt</kbd> + <kbd>-</kbd> will write ` <- ` in a single keystroke.
 
 [^equal_vs_arrow]: For historical reasons, you can also use `=` for assignments,
 but not in every context. Because of the
