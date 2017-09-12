@@ -46,9 +46,7 @@ document to an `.md` file.
     ``` {.r}
     install.packages("tidyerse")
     install.packages("rmarkdown")
-    ```
-
-    ```{r}
+    
     library(tidyverse)
     library(rmarkdown)
 
