@@ -48,8 +48,8 @@ asked the IT services to make sure these packages are always installed on the
 computers so that we don't have to install them every time, hopefully they will
 do so soon. If you prefer, you can also bring your own laptop to class, which
 has the advantage that you can save things permanently and that you have
-everything setup, this is up to you <!--ok to say this?-->. Let's go over the
-lesson objectives while we wait for these packages to install. 
+everything setup, this is up to you. Let's go over the lesson objectives while
+we wait for these packages to install.
 
 
 ## Learning Objectives
@@ -65,9 +65,9 @@ lesson objectives while we wait for these packages to install.
 * Correctly define and handle missing values in vectors.
 
 
-## Setting up the notebook
+## Setting up the R Notebook
 
-Let's remove the template R Studio gives us, and add a title of our own.
+Let's remove the template RStudio gives us, and add a title of our own.
 
 ```yaml
 ---
@@ -75,17 +75,18 @@ title: Introduction to R
 ---
 ```
 
-This introductory block is call the `yaml`-block and is where we specify things
-like whether we want html or PDF output, but more on that another class. For
-now, we just care about including the lecture here. Under it let's type a note:
+This header block is called the YAML header. This is where we specify whether we
+want to convert this file to a HTML or PDF file. This will be discussed in more
+detail in another class. For now, we just care about including the lecture title
+here. For now, let's type out a note:
 
 > This lecture covers fundamental R usage, such as assigning values to a
 > variable, using functions, commenting code, and more.
 
 Under this sentence, we will insert our first code chunk. You insert a code
-chunk by either clicking this button or pressing <kbd>Ctrl</kbd> +
+chunk by either clicking the "Insert" button or pressing <kbd>Ctrl</kbd> +
 <kbd>Alt</kbd> + <kbd>i</kbd>. You could also type out the surrounding
-delimiters, but this would take longer. To run a code chunk, you press this
+backticks, but this would take longer. To run a code chunk, you press the
 green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 
@@ -100,8 +101,12 @@ the console:
 ```
 
 However, to do useful and interesting things, we need to assign _values_ to
-_objects/variables_. To create an object, we need to give it a name followed by
-the assignment operator `<-`, and the value we want to assign:
+_objects_. Objects are also referred to as _variables_, and although there
+technically are minor differences between them[^objects_variables], we will use them interchangeably
+in this class. To create an object, we need to give it a name followed by the
+assignment operator `<-`, and the value we want to assign:
+
+[^objects_variables]https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
 
 ```{r}
 x <- 3
@@ -110,23 +115,17 @@ x + 5
 
 `<-` is the assignment operator. It assigns values on the right to objects on
 the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can
-be read as 3 **goes into** `x`.  For historical reasons, you can also use `=`
+be read as 3 **goes into** `x`.[^equal_vs_arrow] In RStudio, typing
+<kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the same time as the
+<kbd>-</kbd> key) will write ` <- ` in a single keystroke.
+
+[^equal_vs_arrow]For historical reasons, you can also use `=`
 for assignments, but not in every context. Because of
 the
 [slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) [differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html) in
 syntax, it is good practice to always use `<-` for assignments.
 
-In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the
-same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke.
-
-What are known as `objects` in `R` are called `variables` in many other
-programming languages.  Depending on the context, `object` and `variable` can
-have drastically different meanings.  However, in this lesson, the two words are
-used synonymously and in this introductory section, the title "Creating object
-in R" is the same as "Assigning a value to a variable" (for more information
-see: https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
-
-You can name an object in R, almost anything you want:
+You can name an object in R almost anything you want:
 
 ```{r}
 joel <- 3
@@ -151,20 +150,17 @@ for a complete list). In general, even if it's allowed, it's best to not use
 other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). If in
 doubt, check the help or use tab completion to see if the name is already in
 use. It's also best to avoid dots (`.`) within a variable name as in
-`my.dataset`. There are many functions in R with dots in their names for
-historical reasons, but because dots have a special meaning in R (for methods)
-and other programming languages, it's safest to avoid them and use underscores
-(`_`) instead. It is also recommended to use nouns for variable names, and verbs
-for function names. It's important to be consistent in the styling of your code
-(where you put spaces, how you name variables, etc.). Using a consistent coding
-style makes your code clearer to read for your future self and your
-collaborators. In R, three popular style guides are
-[Google's](https://google.github.io/styleguide/Rguide.xml), [Jean
-Fan's](http://jef.works/R-style-guide/) and the
-[tidyverse's](http://style.tidyverse.org/). The tidyverse's is very
-comprehensive and may seem overwhelming at first. You can install the
-[**`lintr`**](https://github.com/jimhester/lintr) to automatically check for
-issues in the styling of your code.
+`my.dataset`. Historically, there are many functions in R with dots in their
+name, but since dots have a [special meaning](http://adv-r.had.co.nz/S3.html) in
+R, it's better to not use them and instead use underscores (`_`). It is also
+recommended to use nouns for variable names, and verbs for function names. It's
+important to be consistent in the styling of your code (where you put spaces,
+how you name variables, etc.). Using a consistent coding style[^coding_style]
+makes your code clearer to read for your future self and your collaborators.
+RStudio will format code for you if you highlight a section of code and press
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.
+
+[^coding_style]Refer to the [class resources page](https://uoftcoders.github.io/rcourse/resources.html) for which style to adhere to.
 
 When assigning a value to an object, R does not print anything. You can force R
 to print the value by using parentheses or by typing the object name:
@@ -175,10 +171,10 @@ weight_kg <- 55    # doesn't print anything
 weight_kg          # and so does typing the name of the object
 ```
 
-The variable `weight_kg` is not stored in the computer's memory where R can
-access it, and we can start doing arithmetic with it efficiently. For instance,
-we may want to convert this weight into pounds (weight in pounds is 2.2 times
-the weight in kg):
+The variable `weight_kg` is stored in the computer's memory where R can access
+it, and we can start doing arithmetic with it efficiently. For instance, we may
+want to convert this weight into pounds (weight in pounds is 2.2 times the
+weight in kg):
 
 ```{r}
 2.2 * weight_kg
@@ -217,9 +213,9 @@ weight_kg <- 100
 
 A comment is piece of text in your code that will not be executed with the rest
 of the code, but its purpose is to be a note to the person reading the code.
-Traditionally, comments has been the only way to make notes when you are coding,
-but since we are using the R Notebook format, we can also write notes in
-markdown. Therefore, comments are not as important for us, but they are still
+Traditionally, comments have been the only way to make notes alongside your
+code, but since we are using the R Notebook format, we can also write notes in
+Markdown. Therefore, comments are not as important for us, but they are still
 the best method of leaving short notes and explanations for specific lines of
 code. The comment character in R is `#`, anything to the right of a `#` in a
 script will be ignored by R.
@@ -281,8 +277,7 @@ variable `b`. This function is very simple, because it takes just one argument.
 
 The return 'value' of a function need not be numerical (like that of `sqrt()`),
 and it also does not need to be a single item: it can be a set of things, or
-even a dataset. We'll see that when we read data files into R, as I showed you
-briefly in during the first class.
+even a dataset, as we will see later on.
 
 Arguments can be anything, not only numbers or filenames, but also other
 objects. Exactly what each argument means differs per function, and must be
@@ -301,7 +296,7 @@ s<tab>q
 ```
 
 You can see that R gives you suggestions of what functions and variables are
-available that start with the letter `s`, and thanks to `RStudio` they are
+available that start with the letter `s`, and thanks to RStudio they are
 formatted in this nice list. There are *many* suggestions here, so let's be a
 bit more specific and append a `q`, to find what we want. If we press enter or
 tab again, R will insert the selected option.
@@ -309,12 +304,12 @@ tab again, R will insert the selected option.
 You can see that R inserts a pair of parenthesis together with the name of the
 functions. This is how the function syntax looks for R and many other
 programming languages, and it means that within these parentheses, we will
-specify all the arguments, the ingredients, that we want to pass to this
+specify all the arguments (the ingredients) that we want to pass to this
 function.
 
 If we press tab again, R will helpfully display all the available parameters for
 this function that we can pass an argument to. The word *parameter* is used to
-describe the name that the argument can be passed to, more on that later.
+describe the name that the argument can be passed to. More on that later.
 
 ```{r, eval=FALSE}
 sqrt(<tab>
@@ -330,16 +325,16 @@ completion](https://support.rstudio.com/hc/en-us/articles/205273297-Code-Complet
 To read the full help about `sqrt`, we can use the question mark, or type it
 directly into the help document browser.
 
-```{r}
+```{r, eval=FALSE}
 ?sqrt
 ```
 
 As you can see, `sqrt()` takes only one argument, `x`, which needs to be a
 *numerical vector*. Don't worry too much about that is says *vector* here, I
-will talk more about that later. But briefly, a vector is a set of one or
-several numbers, and in R, every value is a vector even if it only is a single
-number. So, you don't have to do anything special in R to create a vector, but
-more on that later.
+will talk more about that later. Briefly, a numerical vector is one or more
+numbers. Every number is a vector, so you don't have to do anything special to
+create a vector. More on vectors later.
+
 
 Let's try a function that can take multiple arguments: `round()`.
 
@@ -367,7 +362,7 @@ So, above we pass the *argument* `2`, to the *parameter* `digits`. Knowing this
 nomenclature is not essential for doing your own data analysis, but it will be
 very helpful when you are reading through help documents online and in RStudio.
 
-We can leave actually, out the word `digits` since we know it comes as the
+We can leave out the word `digits` since we know it comes as the
 second parameter, after `x`.
 
 ```{r}
@@ -483,9 +478,10 @@ factors (`factor`) and arrays (`array`). In this class, we will focus on data
 frames, which is most commonly used one for data analyses.
 
 > ### Challenge
-> * We’ve seen that atomic vectors can be of type character, >   numeric (or
+>
+> * We’ve seen that atomic vectors can be of type character, numeric (or
 double), integer, and logical. But what happens if we try to mix these types in 
->   a single vector? Find out by using `class` to test these examples?
+>   a single vector? Find out by using `class` to test these examples.
 
 > ```r
 > num_char <- c(1, 2, 3, 'a')
@@ -645,7 +641,7 @@ na.omit(heights)
 ## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
 heights[complete.cases(heights)]
 ```
-Recall that you can use the `typeof()` function to find the type of your atomic vector.
+Recall that you can use the `class()` function to find the type of your atomic vector.
 
 > ### Challenge
 >
@@ -675,7 +671,7 @@ add_two_numbers <- function(num1, num2) {
 add_two_numbers(4, 5)
 ```
 
-As you can see, running this function on two numbers, returns their sum. We
+As you can see, running this function on two numbers returns their sum. We
 could also assign to a variable in the function and return the function.
 
 ```{r}
@@ -705,10 +701,10 @@ Loop, or for-loops, are essential to programming in general. However, in R, you
 should avoid them as often as possible because there are more efficient ways of
 doing things that you should use instead. It is still important that you
 understand the concept of loops and you might also use them in some of your own
-functions if there is no vectorized way of going about what you want to to.
+functions if there is no vectorized way of going about what you want to do.
 
 You can think of a for-loop as: "for each number contained in a list/vector,
-perform this operations" and the syntax basically says the same thing:
+perform this operation" and the syntax basically says the same thing:
 
 ```{r}
 v <- c(2, 4, 6)
@@ -753,8 +749,8 @@ function. In R, it is always faster to try to find a way of doing things without
 writing a loop yourself. When you are reading about R, you might see suggestions
 that you should try to *vectorize* your code to make it faster. What people are
 referring to, is that you should not write for loops in R and instead use the
-ready made function that are much more efficient in working with vectors and
-essentially essentially performs operations on entire vector at once instead of
+ready made functions that are much more efficient in working with vectors and
+essentially performs operations on entire vector at once instead of
 one number at a time. If anyone is interested in more details about how this
 work, please ask me after class, but conceptually loops operate on one element
 at a time while vectorized code operate on all elements of a vector at once.
