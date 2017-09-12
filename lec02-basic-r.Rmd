@@ -101,7 +101,7 @@ technically are minor differences between them[^objects_variables], we will use 
 in this class. To create an object, we need to give it a name followed by the
 assignment operator `<-`, and the value we want to assign:
 
-[^objects_variables]https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
+[^objects_variables]: https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
 
 ```{r}
 x <- 3
@@ -114,7 +114,7 @@ be read as 3 **goes into** `x`.[^equal_vs_arrow] In RStudio, typing
 <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the same time as the
 <kbd>-</kbd> key) will write ` <- ` in a single keystroke.
 
-[^equal_vs_arrow]For historical reasons, you can also use `=`
+[^equal_vs_arrow]: For historical reasons, you can also use `=`
 for assignments, but not in every context. Because of
 the
 [slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) [differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html) in
@@ -156,7 +156,7 @@ makes your code clearer to read for your future self and your collaborators.
 RStudio will format code for you if you highlight a section of code and press
 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.
 
-[^coding_style]Refer to the [class resources page](https://uoftcoders.github.io/rcourse/resources.html) for which style to adhere to.
+[^coding_style]: Refer to the [class resources page](https://uoftcoders.github.io/rcourse/resources.html) for which style to adhere to.
 
 When assigning a value to an object, R does not print anything. You can force R
 to print the value by using parentheses or by typing the object name:
