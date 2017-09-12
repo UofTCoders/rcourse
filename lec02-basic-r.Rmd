@@ -357,7 +357,7 @@ returned the value `3`. That's because the default is to round to the nearest
 whole number, or integer. If we want more digits we can pass an argument to the
 `digits` parameter, to specify how many decimals we want to round to.
 
-```{r, eval=FALSE}
+```{r}
 round(3.14159, digits = 2)
 ```
 
