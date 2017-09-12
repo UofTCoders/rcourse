@@ -5,16 +5,26 @@ title: Introduction to R
 **Copyright (c) Data Carpentry**
 
 *Note: This lecture content was originally created by voluntary contributions to
-[data carpentry](http://datacarpentry.org) and has been modified to
-align with the aims of EEB430. Data Carpentry is an organization focused on data
-literacy, with the objective of teaching skills to researchers to enable them to
-retrieve, view, manipulate, analyze and store their and other’s data in an open
-and reproducible way in order to extract knowledge from data. For EEB430, we are
-making all our content available under the same license, The Creative Commons, 
-license, so if someone in the future are teaching this course content available under
-the same lice*
+[Data Carpentry](http://datacarpentry.org) and has been modified to align with
+the aims of EEB430. Data Carpentry is an organization focused on data literacy,
+with the objective of teaching skills to researchers to enable them to retrieve,
+view, manipulate, analyze, and store their and other’s data in an open and
+reproducible way in order to extract knowledge from data. For EEB430, we are
+making all our content available under the same license, [The Creative
+Commons](https://creativecommons.org/), so that anyone in the future
+can re-use or modify our course content, without infringing on copyright
+licensing issues.*
 
-I am emphazing this because I think it is one of the core features of working
+The above paragraph is made explicit since it is one of the core features of
+working with an open language like R. Many smart people willingly and actively
+share their material publicly, so that others can modify and build off of the
+material themselves.
+
+By being open, we can "stand on the shoulders of giants" and to continue to
+contribute for others to then stand on our shoulders. Not only does this help
+get work done, but it also adds to a feeling of community. In fact, there is a
+common saying in the open source world:
+
 with an open language like R, many smart people readily share their material and
 discoveries not only for free, but in a way that allows others to modify and
 built on the material themselves. It really is "standing on the shoulders of
@@ -22,7 +32,8 @@ giants", and there is a common saying in the open source world:
 
 > I came for the language and stayed for the community.
 
-Which highlights the spirit, generousity, and the fun involved in many of these project.
+This saying captures the spirit, generosity, and fun involved in being a
+part of these open source projects.
 
 ------------
 
