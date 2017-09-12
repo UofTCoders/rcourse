@@ -48,6 +48,17 @@ part of these open source projects.
 * Create for-loops
 
 
+## Lecture outline
+
+- Setting up the R Notebook (5 min)
+- Creating objects/variables in R (20 min)
+- Vectors and data types (15 min)
+- Subsetting vectors (15 min)
+- Missing data (10 min)
+- Writing functions (10 min)
+- Loops and vectorization (10 min)
+
+
 ## Setting up the R Notebook
 
 Let's remove the template RStudio gives us, and add a title of our own.
