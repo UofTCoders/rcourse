@@ -97,9 +97,9 @@ the console:
 
 However, to do useful and interesting things, we need to assign _values_ to
 _objects_. Objects are also referred to as _variables_, and although there
-technically are minor differences between them[^objects_variables], we will use them interchangeably
-in this class. To create an object, we need to give it a name followed by the
-assignment operator `<-`, and the value we want to assign:
+technically are minor differences between them[^objects_variables], we will use
+them interchangeably in this class. To create an object, we need to give it a
+name followed by the assignment operator `<-`, and the value we want to assign:
 
 [^objects_variables]: https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects).
 
@@ -114,11 +114,11 @@ be read as 3 **goes into** `x`.[^equal_vs_arrow] In RStudio, typing
 <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the same time as the
 <kbd>-</kbd> key) will write ` <- ` in a single keystroke.
 
-[^equal_vs_arrow]: For historical reasons, you can also use `=`
-for assignments, but not in every context. Because of
-the
-[slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) [differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html) in
-syntax, it is good practice to always use `<-` for assignments.
+[^equal_vs_arrow]: For historical reasons, you can also use `=` for assignments,
+but not in every context. Because of the
+[slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
+[differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html)
+in syntax, it is good practice to always use `<-` for assignments.
 
 You can name an object in R almost anything you want:
 
@@ -139,13 +139,11 @@ Objects can be given any name such as `x`, `current_temperature`, or
 `subject_id`. You want your object names to be explicit and not too long. They
 cannot start with a number (`2x` is not valid, but `x2` is). R is case sensitive
 (e.g., `joel` is different from `Joel`). There are some names that cannot be
-used because they are the names of fundamental functions in R (e.g., `if`,
-`else`, `for`, see
-[here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
-for a complete list). In general, even if it's allowed, it's best to not use
-other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). If in
-doubt, check the help or use tab completion to see if the name is already in
-use. It's also best to avoid dots (`.`) within a variable name as in
+used because they are they are reserved for fundamental functions in R
+(`?Reserved` lists these words). In general, even if it's allowed, it's best to
+not use other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`).
+If in doubt, check the help or use tab completion to see if the name is already
+in use. It's also best to avoid dots (`.`) within a variable name as in
 `my.dataset`. Historically, there are many functions in R with dots in their
 name, but since dots have a [special meaning](http://adv-r.had.co.nz/S3.html) in
 R, it's better to not use them and instead use underscores (`_`). It is also
@@ -156,7 +154,9 @@ makes your code clearer to read for your future self and your collaborators.
 RStudio will format code for you if you highlight a section of code and press
 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.
 
-[^coding_style]: Refer to the [class resources page](https://uoftcoders.github.io/rcourse/resources.html) for which style to adhere to.
+[^coding_style]: Refer to the [class resources
+page](https://uoftcoders.github.io/rcourse/resources.html) for which style to
+adhere to.
 
 When assigning a value to an object, R does not print anything. You can force R
 to print the value by using parentheses or by typing the object name:
@@ -540,8 +540,8 @@ more_animals
 
 R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R
 start counting at 1, because that's what human beings typically do. Languages in
-the C family (including C++, Java, Perl, and Python) count from 0 because that's
-simpler for computers to do.
+the C family (including C++, Java, Perl, and Python) count from 0 because that
+was historically simpler for computers and can allow for more elegant code.
 
 
 ### Conditional subsetting
@@ -566,7 +566,7 @@ weight_g[weight_g > 50]
 
 You can combine multiple tests using `&` (both conditions are true, AND) or `|`
 (at least one of the conditions is true, OR), similar to how you can do when
-using a search engine online:
+using search engines online:
 
 ```{r}
 weight_g[weight_g < 30 | weight_g > 50]
@@ -657,8 +657,8 @@ Recall that you can use the `class()` function to find the type of your atomic v
 
 In this class, you will be working a lot with functions, especially those that
 someone else has already written. When you type `sum`, `c()`, or `mean()`, you
-are using a function that has be made previously and built into R. To remove
-some of the magic around these functions, we wil go through how to make a basic
+are using a function that has been made previously and built into R. To remove
+some of the magic around these functions, we will go through how to make a basic
 function of our own. Let's start with a simple example where we add two numbers
 together:
 
@@ -719,7 +719,7 @@ cumulatively, to calculate the sum of all the numbers in the vector:
 # To increment `w` each time, we must first create the variable,
 # which we do by setting `w <- 0`, referred to as initializing.
 # This also ensures that `w` is zero at the start of the loop and
-# don't retain the value from last time we ran this code.
+# doesn't retain the value from last time we ran this code.
 w <- 0
 for (num in v) {
     w <- w + num
@@ -748,10 +748,10 @@ function. In R, it is always faster to try to find a way of doing things without
 writing a loop yourself. When you are reading about R, you might see suggestions
 that you should try to *vectorize* your code to make it faster. What people are
 referring to, is that you should not write for loops in R and instead use the
-ready made functions that are much more efficient in working with vectors and
+ready-made functions that are much more efficient in working with vectors and
 essentially performs operations on entire vector at once instead of
 one number at a time. If anyone is interested in more details about how this
-work, please ask me after class, but conceptually loops operate on one element
+works, please ask me after class, but conceptually loops operate on one element
 at a time while vectorized code operate on all elements of a vector at once.
 
 *Go to the output options and set it to `html_document`, and then knit*
