@@ -33,20 +33,6 @@ part of these open source projects.
 ------------
 
 
-## Recap from intro lecture
-
-We will be working with the programming language R through an interface called
-RStudio. We will mainly be using the R Notebook, which allows us to mix R code
-with writing notes in the Markdown text format. So let's open an R Notebook in
-RStudio... You will be prompted to install a few packages, click Yes/OK. I have
-asked the IT services to make sure these packages are always installed on the
-computers so that we don't have to install them every time, hopefully they will
-do so soon. If you prefer, you can also bring your own laptop to class, which
-has the advantage that you can save things permanently and that you have
-everything setup, this is up to you. Let's go over the lesson objectives while
-we wait for these packages to install.
-
-
 ## Learning Objectives
 
 * Define the following terms as they relate to R: object, assign, call,
