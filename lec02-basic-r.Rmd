@@ -25,11 +25,6 @@ contribute for others to then stand on our shoulders. Not only does this help
 get work done, but it also adds to a feeling of community. In fact, there is a
 common saying in the open source world:
 
-with an open language like R, many smart people readily share their material and
-discoveries not only for free, but in a way that allows others to modify and
-built on the material themselves. It really is "standing on the shoulders of
-giants", and there is a common saying in the open source world:
-
 > I came for the language and stayed for the community.
 
 This saying captures the spirit, generosity, and fun involved in being a
