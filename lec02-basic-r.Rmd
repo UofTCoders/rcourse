@@ -20,7 +20,7 @@ working with an open language like R. Many smart people willingly and actively
 share their material publicly, so that others can modify and build off of the
 material themselves.
 
-By being open, we can "stand on the shoulders of giants" and to continue to
+By being open, we can "stand on the shoulders of giants" and continue to
 contribute for others to then stand on our shoulders. Not only does this help
 get work done, but it also adds to a feeling of community. In fact, there is a
 common saying in the open source world:
