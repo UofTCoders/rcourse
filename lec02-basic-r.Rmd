@@ -38,12 +38,14 @@ part of these open source projects.
 * Define the following terms as they relate to R: object, assign, call,
   function, arguments, options.
 * Create objects and assign values to them.
-* Use comments to inform script.
+* Use comments within code blocks.
 * Do simple arithmetic operations in R using values and objects.
 * Call functions and use arguments to change their default options.
 * Inspect the content of vectors and manipulate their content.
 * Subset and extract values from vectors.
 * Correctly define and handle missing values in vectors.
+* Define our own functions
+* Create for-loops
 
 
 ## Setting up the R Notebook
