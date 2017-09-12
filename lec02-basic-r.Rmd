@@ -132,7 +132,8 @@ joel <- 3
 joel + 5
 ```
 
-> ### Challenge
+> **Challenge**
+>
 > So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
 
 > ```{r}
@@ -201,7 +202,8 @@ and then change `weight_kg` to 100.
 weight_kg <- 100
 ```
 
-> ### Challenge
+> **Challenge**
+>
 > What do you think is the current content of the object `weight_lb`? 126.5 or 220?
 
 > ```{r}
@@ -231,7 +233,8 @@ to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 ```
 
-> ### Challenge
+> **Challenge**
+>
 > What are the values after each statement in the following?
 
 > ```{r}
@@ -477,7 +480,7 @@ ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`),
 factors (`factor`) and arrays (`array`). In this class, we will focus on data
 frames, which is most commonly used one for data analyses.
 
-> ### Challenge
+> **Challenge**
 >
 > * We’ve seen that atomic vectors can be of type character, numeric (or
 double), integer, and logical. But what happens if we try to mix these types in 
@@ -593,7 +596,7 @@ animals %in% c("rat", "cat", "dog", "duck", "goat")
 animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 ```
 
-> ### Challenge
+> **Challenge**
 >
 > * Can you figure out why `"four" > "five"` returns `TRUE`?
 
@@ -643,7 +646,7 @@ heights[complete.cases(heights)]
 ```
 Recall that you can use the `class()` function to find the type of your atomic vector.
 
-> ### Challenge
+> **Challenge**
 >
 > 1. Using this vector of length measurements, create a new vector with the NAs
 > removed.
@@ -682,7 +685,8 @@ add_two_numbers <- function(num1, num2) {
 add_two_numbers(4, 5)
 ```
 
-> ### Challenge
+> **Challenge**
+>
 > Can you write a function that calculates the mean of 3 numbers?
 
 > ```{r}
