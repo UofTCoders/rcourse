@@ -313,9 +313,10 @@ sqrt(<tab>
 
 There are many things in this list, but only one of them is marked in purple.
 Purple here means that it is parameter we can use for the function and yellow
-means that it is a variable that we defined earlier. There are a few other
-symbols as well, all of which can be viewed at the end of [this post about
-RStudio code
+means that it is a variable that we defined earlier.[^R-symbols]
+
+[^R-symbols]: There are a few other symbols as well, all of which can be viewed
+at the end of [this post about RStudio code
 completion](https://support.rstudio.com/hc/en-us/articles/205273297-Code-Completion).
 
 To read the full help about `sqrt`, we can use the question mark, or type it
