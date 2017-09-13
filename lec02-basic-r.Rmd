@@ -422,7 +422,7 @@ length(weight_g)
 length(animals)
 ```
 
-An important feature of a vector, is that all of the elements are the same type
+An important feature of a vector is that all of the elements are the same type
 of data. The function `class()` indicates the class (the type of element) of an
 object:
 
