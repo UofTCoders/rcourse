@@ -41,22 +41,22 @@ license, so if that anyone in the future can re-use or modify our course content
 
 Today, we will be working with real data from a longitudinal study of the
 species abundance in the Chihuahuan desert ecosystem near Portal, Arizona, USA.
-This study includes observations of plants, ants and rodents from 1977 - 2002,
+This study includes observations of plants, ants, and rodents from 1977 - 2002,
 and has been used in over 100 publications. More information is available in
 [the abstract of this paper from 2009](
 http://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full). There are several
-data sets available related to this study, and we will be working with data sets that
-have been preprocessed by the data carpentry organization to facilitate
-teaching. These are made available online as _The Portal project teaching
-database_, both at the [data carpentry
-website](http://www.datacarpentry.org/ecology-workshop/data/), and on
-[Figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459/6),
-which is a great place to publish data and figures openly to make them available
-for other researchers and to communicate findings that are not part of a longer
-paper.
+datasets available related to this study, and we will be working with datasets
+that have been preprocessed by the [Data
+Carpentry](https://www.datacarpentry.org) to facilitate teaching. These are made
+available online as _The Portal Project Teaching Database_, both at the [Data
+Carpentry website](http://www.datacarpentry.org/ecology-workshop/data/), and on
+[Figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459/6).
+Figshare is a great place to publish data, code, figures, and more openly to
+make them available for other researchers and to communicate findings that are
+not part of a longer paper.
 
 
-## Presentation of the Survey Data
+### Presentation of the survey data
 
 We are studying the species and weight of animals caught in plots in our study
 area. The dataset is stored as a comma separated value (CSV) file. Each row
@@ -64,33 +64,33 @@ holds information for a single animal, and the columns represent:
 
 | Column           | Description                        |
 |------------------|------------------------------------|
-| record_id       | Unique id for the observation      |
+| record_id        | unique id for the observation      |
 | month            | month of observation               |
 | day              | day of observation                 |
 | year             | year of observation                |
-| plot_id         | ID of a particular plot            |
-| species_id      | 2-letter code                      |
+| plot_id          | ID of a particular plot            |
+| species_id       | 2-letter code                      |
 | sex              | sex of animal ("M", "F")           |
-| hindfoot_length | length of the hindfoot in mm       |
+| hindfoot_length  | length of the hindfoot in mm       |
 | weight           | weight of the animal in grams      |
 | genus            | genus of animal                    |
 | species          | species of animal                  |
-| taxa             | e.g. Rodent, Reptile, Bird, Rabbit |
-| plot_type       | type of plot                       |
+| taxa             | e.g. rodent, reptile, bird, rabbit |
+| plot_type        | type of plot                       |
 
 To read the data into R, we are going to use a function called `read_csv`. This
-function is contained in an R-package called `readr`. R-packages are a bit like
-browser extensions, they are not essential, but can provide nifty functionality.
-We will go through R-packages in general and which ones are good for data
-analyses in particular in detail later in this lecture. Now, let's install
-`readr`:
+function is contained in an R-package called
+[`readr`](http://readr.tidyverse.org/). R-packages are a bit like browser
+extensions, they are not essential, but can provide nifty functionality. We will
+go through R-packages in general and which ones are good for data analyses in
+in detail later in this lecture. Now, let's install `readr`:
 
 ```{r, eval=FALSE}
 install.packages('readr') # You only need to install a package once
 ```
 
-Now we can use the `read_csv` function. One useful thing that `read_csv`
-enables, is the ability to read a CSV file directly from a URL, without
+Now we can use the `read_csv` function. One useful option that `read_csv`
+includes, is the ability to read a CSV file directly from a URL, without
 downloading it in a separate step:
 
 ```{r, eval=FALSE}
@@ -99,8 +99,8 @@ surveys <- readr::read_csv('https://ndownloader.figshare.com/files/2292169')
 
 However, it is often a good idea to download the data first, so you have a copy
 stored locally on your computer in case you want to do some offline analyses or
-the file online changes or is taken down. You can either download the data
-manually or form within R:
+the online version of the file changes or the file is taken down. You can either
+download the data manually or from within R:
 
 ```{r, eval=FALSE}
 download.file("https://ndownloader.figshare.com/files/2292169",
@@ -121,13 +121,14 @@ value: `surveys`.
 surveys
 ```
 
-You can see that the R Notebook provides us with this nice tabular display
-format of the data, which also includes pagination when there are many rows and
-we can click this arrow to view all the columns. Technically, this is actually a
-`tibble` rather than a data frame as indicated in the output. This is because we
-used `read_csv` to load it. Since a `tibble` is just a data frame with some
-convenient extra functionality, we will use these words interchangeably from now
-on.
+In the online html-version of this lecture, you only see the first few rows of
+this data frame. Running this code in the R Notebook, would display a nice
+tabular view of the data, which also includes pagination when there are many
+rows and we can click this arrow to view all the columns. Technically, this is
+actually a `tibble` rather than a data frame as indicated in the output. This is
+because we used `read_csv` to load it. Since a `tibble` is just a data frame
+with some convenient extra functionality, we will use these words
+interchangeably from now on.
 
 If we just want to glance at how the data frame looks, it is sufficient to display only the
 top (the first 6 lines) using the function `head()`:
@@ -142,17 +143,14 @@ Data frames are the _de facto_ data structure for most tabular data, and what we
 use for statistics and plotting.
 
 A data frame can be created by hand, but most commonly they are generated by the
-function `read_csv()`in other words, when importing spreadsheets from your hard
+function `read_csv()`. In other words, when importing spreadsheets from your hard
 drive (or the web).
 
 A data frame is the representation of data in the format of a table where the
-columns are vectors that all have the same length. Because the column are
+columns are vectors that all have the same length. Because the columns are
 vectors, they all contain the same type of data as we discussed in last class
-(e.g., characters, integers, factors). For example, here is a figure depicting a
-data frame comprising of a numeric, a character and a logical vector.
-
-We can see this when inspecting the **str**ucture of a data frame with the
-function `str()`:
+(e.g., characters, integers, factors). We can see this when inspecting the
+**str**ucture of a data frame with the function `str()`:
 
 ```{r}
 str(surveys)
@@ -168,7 +166,7 @@ they are actually integers under the hood, and you need to be careful when
 treating them like strings.
 
 
-## Inspecting `data.frame` Objects
+### Inspecting `data.frame` objects
 
 We already saw how the functions `head()` and `str()` can be useful to check the
 content and the structure of a data frame. Here is a non-exhaustive list of
@@ -176,7 +174,7 @@ functions to get a sense of the content/structure of the data. Let's try them
 out!
 
 * Size:
-    * `dim(surveys)` - returns a vector with the number of rows in the first element,
+    * `dim(surveys)` - returns a vector with the number of rows in the first element
           and the number of columns as the second element (the **dim**ensions of
           the object)
     * `nrow(surveys)` - returns the number of rows
@@ -192,14 +190,15 @@ out!
     * `rownames(surveys)` - returns the row names
 
 * Summary:
-    * `str(surveys)` - structure of the object and information about the class, length and
+    * `str(surveys)` - structure of the object and information about the class,
+    * length, and
 	   content of  each column
     * `summary(surveys)` - summary statistics for each column
 
 Note: most of these functions are "generic", they can be used on other types of
 objects besides `data.frame`.
 
-> ### Challenge
+> #### Challenge
 >
 > Based on the output of `str(surveys)`, can you answer the following questions?
 >
@@ -266,11 +265,21 @@ head(surveys[["species_id"]])     # Result is a vector
 head(surveys$species_id)          # Result is a vector
 ```
 
-For our purposes, the last three notations are equivalent. RStudio knows about
+For our purposes, these notations are equivalent. RStudio knows about
 the columns in your data frame, so you can take advantage of the autocompletion
 feature to get the full and correct column name.
 
-> ### Challenge
+Another syntax that is often used to specify column names is `$`. In this case,
+the returned object is actually a vector. We will not go into detail about this,
+but since it is such common usage, it is good to be aware of this.
+
+```{r}
+# We use `head()` since the output from vectors are not autmatically cut off and
+# we don't want to clutter the screen with all the `species_id` values
+head(surveys$species_id)          # Result is a vector
+```
+
+> #### Challenge
 >
 > 1. Create a `data.frame` (`surveys_200`) containing only the observations from
 >    row 200 of the `surveys` dataset.
@@ -301,18 +310,15 @@ surveys_head <- surveys[-c(7:nrow(surveys)),]
 --->
 
 
-## Exploratory data analyses (EDA) in R
+## R packages for data analyses
 
 There are certainly many tools built-in to base R which can be used to
 understand data, but we are going to use a package called `dplyr` which makes
-exploratory data analysis particularly intuitive and effective.
+exploratory data analysis (EDA) particularly intuitive and effective.
 
-
-### R packages
-
-First, let's explain the concept of an R-package. What we have used so far, is
+First, let's explain the concept of an R-package. What we have used so far is
 all part of base R (except `read_csv`), together with many more functions. Every
-package included in base R, will be installed on any computer where R is
+package included in base R will be installed on any computer where R is
 installed, since they are considered critical for using R, e.g. `c()`, `mean()`,
 `+`, `-`, etc. However, since R is an open language, it is easy to develop your
 own R-packages that provides new functionality and submit it to the official
@@ -357,21 +363,21 @@ glimpse(surveys)
 ```
 
 
-### Data wrangling with dplyr
+## Data wrangling with dplyr
 
 Wrangling here is used in the sense of maneuvering, managing, controlling, and
 turning your data upside down and inside out to look at it from different angles
 in order to understand it. The package **`dplyr`** provides easy tools for the
 most common data manipulation tasks. It is built to work directly with data
 frames, with many common tasks optimized by being written in a compiled language
-(C++), this means that many operations runs much faster than for similar tools
+(C++), this means that many operations runs much faster than similar tools
 in R. An additional feature is the ability to work directly with data stored in
 an external database, such as SQL-databases. The ability to work with databases
 is great because you are allowed to work with much bigger datasets (100s of GB)
 than your computer could normally handle. We will not talk in detail about this
 in class, but there are great resources online to learn more (e.g. [this lecture
-from data
-carpentry](http://www.datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)).
+from Data
+Carpentry](http://www.datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)).
 
 
 ### Selecting columns and filtering rows
@@ -392,7 +398,7 @@ filter(surveys, year == 1995)
 ```
 
 
-### Pipes
+### Chaining functions together using pipes
 
 But what if you wanted to select and filter at the same time? There are three
 ways to do this: use intermediate steps, nested functions, or pipes. With
@@ -435,7 +441,7 @@ surveys %>%
   select(species_id, sex, weight)
 ```
 
-In the above, we use the pipe to send the `surveys` dataset first through
+In the above code, we use the pipe to send the `surveys` dataset first through
 `filter()` to keep rows where `weight` is less than 5, then through `select()`
 to keep only the `species_id`, `sex`, and `weight` columns. Since `%>%` takes
 the object on its left and passes it as the first argument to the function on
@@ -468,7 +474,7 @@ surveys_sml
 Note that the final data frame is the leftmost part of this expression.
 
 A single expression can also be used to filter for several criteria, either
-matching _all_ criteria (`&`) or _any_ criteria (`|`):
+matching *all* criteria (`&`) or *any* criteria (`|`):
 
 ```{r}
 surveys %>% 
@@ -476,13 +482,13 @@ surveys %>%
     select(sex, taxa)
 ```
 
-```{r, eval=FALSE}
+```{r}
 surveys %>% 
     filter(species == 'clarki' | species == 'leucophrys') %>% 
     select(species, taxa)
 ```
 
-> ### Challenge
+> #### Challenge
 >
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
@@ -497,7 +503,7 @@ surveys %>%
 --->
 
 
-### Mutate
+### Creating new columns with mutate
 
 Frequently you'll want to create new columns based on the values in existing
 columns, for example to do unit conversions, or find the ratio of values in two
@@ -531,7 +537,7 @@ surveys %>%
 `is.na()` is a function that determines whether something is an `NA`. The `!`
 symbol negates the result, so we're asking for everything that *is not* an `NA`.
 
-> ### Challenge
+> #### Challenge
 >
 >  Create a new data frame from the `surveys` data that meets the following
 >  criteria: contains only the `species_id` column and a new column called
@@ -553,15 +559,13 @@ surveys_hindfoot_half <- surveys %>%
 --->
 
 
-### Split-apply-combine data analysis and the summarize() function
+### Split-apply-combine technique in dplyr
 
 Many data analysis tasks can be approached using the *split-apply-combine*
 paradigm: split the data into groups, apply some analysis to each group, and
 then combine the results. **`dplyr`** makes this very easy through the use of
-the `group_by()` function.
+the `group_by()` and `summarize()` functions.
 
-
-#### The `summarize()` function
 
 `group_by()` is often used together with `summarize()`, which collapses each
 group into a single-row summary of that group.  `group_by()` takes as arguments
@@ -585,7 +589,8 @@ surveys %>%
 When grouping both by `sex` and `species_id`, the first rows are for individuals
 that escaped before their sex could be determined and weighted. You may notice
 that the last column does not contain `NA` but `NaN` (which refers to "Not a
-Number", this is only visible in the interactive Notebook, not the knitted output). To avoid this, we can remove the missing values for weight before we
+Number", this is only visible in the interactive Notebook, not the knitted
+output). To avoid this, we can remove the missing values for weight before we
 attempt to calculate the summary statistics on weight. Because the missing
 values are removed, we can omit `na.rm = TRUE` when computing the mean:
 
@@ -596,7 +601,7 @@ surveys %>%
     summarize(mean_weight = mean(weight))
 ```
 
-Note that the number of not displayed rows decreased from 82 to 54. If you want
+Note that the number of displayed rows decreased from 82 to 54. If you want
 to display more data, you can use the `print()` function at the end of your
 chain with the argument `n` specifying the number of rows to display:
 
@@ -621,7 +626,7 @@ surveys %>%
 ```
 
 
-#### Tallying
+### Using tally to summarize catergorical data
 
 When working with data, it is also common to want to know the number of
 observations found for each factor or combination of factors. For this, **`dplyr`**
@@ -690,8 +695,8 @@ surveys %>%
 
 Be careful not to include anything that would split the group into subgroups,
 such as `sex`, `year` etc.
- 
-> ### Challenge
+
+> #### Challenge
 >
 > 1. How many individuals were caught in each `plot_type` surveyed?
 >
