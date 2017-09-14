@@ -3,18 +3,6 @@ title: "Manipulating and analyzing data with dplyr"
 ---
 
 
-**Copyright (c) Data Carpentry**
-
-*Note: This lecture content was originally created by voluntary contributions to
-[Data Carpentry](http://datacarpentry.org) and has been modified to
-align with the aims of EEB430. Data Carpentry is an organization focused on data
-literacy, with the objective of teaching skills to researchers to enable them to
-retrieve, view, manipulate, analyze, and store their and other’s data in an open
-and reproducible way in order to extract knowledge from data. For EEB430, we are
-making all our content available under the same license, [The Creative Commons](https://creativecommons.org/), 
-license, so if that anyone in the future can re-use or modify our course content, without infringing on copyright licensing issues.*
-
-
 > ## Learning objectives
 >
 > * Describe what a data frame is.
@@ -754,3 +742,7 @@ surveys %>%
   summarize(n = n())
 ```
 --->
+
+*Parts of this lesson material were taken and modified from [Data
+Carpentry](http://datacarpentry.org) under their CC-BY copyright license. See
+their [lesson page](http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html) for the original source.*
