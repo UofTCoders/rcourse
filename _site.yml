@@ -54,8 +54,8 @@ navbar:
       menu:
         - text: "Assignment 1"
           href: assignment-01.html
-#        - text: "Assignment 2"
-#          href: assignment-02.html
+        - text: "Assignment 2"
+          href: assignment-02.html
 #        - text: "Assignment 3"
 #          href: assignment-03.html
 #        - text: "Assignment 4"
