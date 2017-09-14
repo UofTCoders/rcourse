@@ -1,5 +1,226 @@
 ---
-title: "Assignment 2"
+title: "Assignment 2: Base R (8 marks)"
 ---
 
-> Uploaded when it is handed out.
+```{r, echo=FALSE}
+# This removes the answers for the assignments, while keeping the assignment
+# contents.
+knitr::opts_chunk$set(eval = FALSE, echo = FALSE)
+```
+
+*To submit this assignment, upload the full document on blackboard, including
+the original questions, your code, and the output. Submit both your `.Rmd`
+source file and a knitted `.html` version of the same file.*
+
+
+1. Variable assignment (1 mark)
+
+    a. Assign the value `5` to the variable/object `a`. Display `a`. (0.25
+    marks)
+
+    ```{r}
+    a <- 5
+    a
+    ```
+
+    b. Assign the result of `10/3` to the variable `b`. Display `b`. (0.25
+    marks)
+
+    ```{r}
+    b <- 10/3
+    b
+    ```
+
+    c. Assign the product of `a` and `b` to `c`. Display `c`. (0.25 marks)
+
+    ```{r}
+    c <- a * b
+    c
+    ```
+
+    d. Write a function that adds two numbers and returns their sum. Use it to
+    assign the sum of `a` and `b` to `c`. Display `c`. (In practice, there is
+    already a more sophisticated built-in function for this: `c <- sum(a, b)`)
+    (0.25 marks)
+
+    ```{r}
+    add_two_values <- function(arg1, arg2) {
+        return(arg1 + arg2)
+    }
+    c <- add_two_values(a, b)
+    c
+    ```
+
+2. Vectors (1 mark)
+
+    a. Create a vector `v` with all integers 0-30, and a vector `w` with every
+    third integer in the same range. (0.25 marks)
+
+    ```{r}
+    v <- seq(0, 30) # c(1:30)
+    v
+
+    w <- seq(0, 30, 3)
+    w
+    ```
+
+    b. What is the difference in lengths of the vectors `v' and `w`? (0.25
+    marks)
+
+    ```{r}
+    length(v) - length(w)
+    ```
+
+    c. Create a new vector, `v_square`, with the square of elements 3, 6, 7,
+    10, 15, 22, 23, 24, and 30 from the variable `v`. _Hint: Use indexing rather
+    than a for loop._ (0.25 marks)
+
+    ```{r}
+    v_square <- v[c(3,6,7,10,15,22,23,24,30)]^2
+    v_square
+    ```
+
+    d. Calculate the mean and median of the first five values from `v_square`.
+    (0.25 marks)
+
+    ```{r}
+    mean(v_square[1:5])
+    median(v_square[1:5])
+    ```
+
+3. Boolean indexing (1 mark)
+
+    a. Create a boolean vector `v_bool`, indicating which vector elements are
+    bigger than 20. How many values are over 20? _Hint: In R, TRUE = 1, and
+    FALSE = 0, so you can use simple arithmetic to find this out._ (0.5 marks)
+
+    ```{r}
+    v_bool <- v > 20
+    sum(v_bool)
+    ```
+
+    b. Use the variable `v_bool` as an index to extract the elements from `v`
+    that are bigger than 20. What are the min and max values of this new
+    vector? (0.5 marks)
+
+    ```{r}
+    min(v[v_bool])
+    max(v[v_bool])
+    ```
+
+4. Data frames (2 marks)
+
+    a. There are many built-in data frames in R, which you can find [more
+    details about
+    online](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html).
+    What are the column names of the built-in dataframe `beaver1`? How many
+    observations (rows) and variables (columns) are there? (0.5 marks)
+
+    ```{r}
+    colnames(beaver1)
+    dim(beaver1) # nrow(iris)
+    ```
+
+    b. How can you view the first 5 rows of this data frame? How can you view
+    the last 5 rows? (0.5 marks)
+
+    ```{r}
+    head(beaver1)
+    tail(beaver1)
+    ```
+
+    c. What is the min, mean, and max body temperatue in this data set? _Hint:
+    Remember that each column in a data frame is a vector, so you can use the
+    same functions as in the previous question on vectors._ (0.5 marks)
+
+    ```{r}
+    min(beaver1$temp)
+    mean(beaver1$temp)
+    max(beaver1$temp)
+    # summary(beaver1$temp)
+    ```
+
+    d. Use the `summary` function to display an overview of the `temp` column.
+    (0.5 marks)
+
+    ```{r}
+    summary(beaver1$temp)
+    ```
+
+5. Data frames with dplyr (3 marks)
+
+    a. Use dplyr to calculate the mean temperature in the dataset. (0.25 marks)
+
+    ```{r}
+    library(dplyr)
+    beaver1 %>%
+        summarize(mean_temp = mean(temp))
+    ```
+
+    b. Calculate the mean temperature for day 346. (0.5 marks)
+
+    ```{r}
+    beaver1 %>%
+        filter(day == 346) %>%
+        summarize(mean_temp_346 = mean(temp))
+    ```
+
+    c. Rather than using `filter()` to calculate the mean for each day
+    separately, the more convenient `group_by()` can be used to aggregate
+    measurements by a categorical value (such as the `day` column in `beaver`).
+    Use this approach to calculate the mean temperature and activity level for
+    each of the days in the dataset. (0.5 marks)
+
+    ```{r}
+    beaver1 %>%
+        group_by(day) %>%
+        summarize(mean_temp = mean(temp), mean_activity = mean(activ))
+    ```
+
+    d. Express in writing what the average activity level from the above
+    calculation means. _Hint: Remember that you can [read a description of the
+    columns
+    online](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)._
+    (0.25 marks)
+
+    ```{r}
+    # Expected answer:
+    # The beaver was active outside the retreat for 5.5 % of the
+    # observations on day 346 and 4.3 % of the observations on day 347.
+    ```
+
+    e. How many observations are there per day in this dataset? (0.25 marks)
+
+    ```{r}
+    beaver1 %>%
+        count(day)
+    ```
+
+    f. How many observations are there per day when the beaver is active
+    outside the retreat? (0.25 marks)
+
+    ```{r}
+    beaver1 %>%
+        filter(activ == 1) %>%
+        count(day)
+    ```
+
+    g. Was the body temperature higher when the beaver was active or inactive?
+    Is this what you would expect? (0.25 marks)
+
+    ```{r}
+    beaver1 %>%
+        group_by(activ) %>%
+        summarize(mean_temp = mean(temp))
+    ```
+
+    h. Add to your solution in `f` by also grouping by activity level *and* the
+    day of the observation. Which variable seems to be more correlated with
+    high body temperature, activity level or the day of the measurment? (0.25
+    marks)
+
+    ```{r}
+    beaver1 %>%
+        group_by(activ, day) %>%
+        summarize(mean_temp = mean(temp))
+    ```
