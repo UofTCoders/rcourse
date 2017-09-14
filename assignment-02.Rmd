@@ -30,7 +30,7 @@ your `.Rmd` source file and a knitted `.html` version of the same file.*
     a.  Create a vector `v` with all integers 0-30, and a vector `w`
         with every third integer in the same range. (0.25 marks)
 
-    b.  What is the difference in lengths of the vectors `v' and`w\`?
+    b.  What is the difference in lengths of the vectors `v` and `w`?
         (0.25 marks)
 
     c.  Create a new vector, `v_square`, with the square of elements 3,
