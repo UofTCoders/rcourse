@@ -1,70 +1,87 @@
 ---
-title: 'Assignment 1 - Intro to programming (4 marks)'
+title: "Assignment 1 - Intro to programming (4 marks)"
 output:
     html_document:
         toc: false
 ---
 
-To submit this assignment, send us the full document, including your
-code and the output. Send both the original `.Rmd` file and an exported
-[Pandoc flavored markdown
-document](http://rmarkdown.rstudio.com/markdown_document_format.html)
-(`.md`). Use the assignment `.Rmd` file we provide. Once you have
-completed the questions, in RStudio press Ctrl-Shift-K to convert the
-document to an `.md` file.
+```{r, echo=FALSE}
+# This removes the answers for the assignments, while keeping the assignment
+# contents.
+knitr::opts_chunk$set(eval = FALSE, echo = FALSE)
+```
 
-1.  Get setup at home (or on a lab computer after hours). (1.5 marks)
-    -   Install [R](https://cran.rstudio.com/) and
-        [RStudio](https://www.rstudio.com/products/rstudio/download/)
-        (already installed on the lab computers).
-    -   Open a new R Notebook and read the instructions about R
-        Markdown.
-    -   Open this file in RStudio or copy its content into an open R
-        Notebook.
-    -   Insert a code chunk below, above question 2.
-    -   In the code chunk, use `install.packages("<package_name>")` to
-        install `tidyverse` and `rmarkdown`. Remember to run the code
-        chunk to execute the commands.
-    -   Load the two libraries you just installed into your environment
-        with `library(<package_name>)` (no surrounding quotation marks
-        as with `install.packages()`). Add this to the same code chunk
-        you created previously and execute it again (don't worry that
-        the `install.packages()` commands have already been executed
-        once, R is smart and checks that you already have those
-        installed).
-    -   Run `sessionInfo()` to list all the loaded packages.
-        -   You should see the following packages under 'other attached
-            packages: `rmarkdown`, `dplyr`, `purrr`, `readr`, `tidyr`,
-            `tibble`, `ggplot`, and `tidyverse`.
-    -   Since this is your first assignment, we have already completed
-        most of this question below. You still need to run this code
-        chunk on your computer to confirm that the packages installed
-        without errors and to get the `sessionInfo()` output for your
-        computer. You might receive warnings that functions from other
-        packages are masked when you load `tidyverse`, this is fine.
+*To submit this assignment, upload the full document on blackboard, including
+the original questions, your code, and the output. Submit both your `.Rmd`
+source file and a knitted `.html` version of the same file.*
 
-    ``` {.r}
+1. Get setup at home (or on a lab computer after hours). (1.5 marks)
+    - Install [R](https://cran.rstudio.com/) and [RStudio](https://www.rstudio.com/products/rstudio/download/) (already installed on the lab computers).
+    - Open a new R Notebook and read the instructions about how to use the R Markdown syntax.
+    - Open this assignment file (`assignment-01.Rmd`) in RStudio or copy its content into an empty R Notebook.
+    - Insert a code chunk below, above question 2.
+    - In the code chunk, use `install.packages("<package_name>")` to install `tidyverse` and `rmarkdown`. Remember to run the code chunk to execute the commands.
+    - Load the two libraries you just installed into your environment with `library(<package_name>)` (no surrounding quotation marks as with `install.packages()`). Add this to the same code chunk you created previously and execute it again (don't worry that the `install.packages()` commands have already been executed once, R is smart and checks if you already have those installed).
+    - Run `sessionInfo()` to list all the loaded packages.
+        - You should see the following packages under "other attached packages": `rmarkdown`, `dplyr`, `purrr`, `readr`, `tidyr`, `tibble`,  `ggplot`, and `tidyverse`.
+    - Since this is your first assignment, we have already completed most of this question below. You still need to run the code chunk on your computer to confirm that the packages installed without errors and to get the `sessionInfo()` output for your computer. You might receive warnings that functions from other packages are masked when you load `tidyverse`, this is fine.
+
+    ```{r, echo=TRUE, eval=FALSE}
     install.packages("tidyerse")
     install.packages("rmarkdown")
-    
+
     library(tidyverse)
     library(rmarkdown)
 
+    sessionInfo()
+
     # Expected answer
     # The output is included below this code chunk with the appropriate packages loaded.
-    sessionInfo()
     ```
 
-2.  What is R Markdown and why are we using it in this class? *Hint:*
-    You are using R Markdown right now to complete this assignment! (1
-    mark)
-    -   Which key combination would you use to insert a chunk of code in
-        an R Markdown document?
-    -   Which key combination would you use to execute a code chunk?
-3.  Provide a few reasons as to why it is beneficial to create
-    scripts/notebooks in a programming language rather than using a
-    spreadsheet software for exploratory data analyses? (1 mark)
+2. What is R Markdown and why are we using it in this class? _Hint:_ You are using R Markdown right now to complete this assignment! (1 mark)
+    - Which key combination would you use to insert a chunk of code in an R Markdown document?
+    - Which key combination would you use to execute a code chunk?
 
-4.  Fill out the [pre-course
-    survey](https://docs.google.com/forms/d/e/1FAIpQLSeQ5a1LPQGdtlXSjX_zPknmpTHH8hCFMgjmTrnBLD_eHRGUhA/viewform?usp=sf_link).
-    (0.5 marks)
+```{r}
+# Expected answer
+# Joel: I think we should be quite relaxed since this is the first assignment. Unless it is completely wrong they will get the marks.
+
+# In the R Notebook, the language we are writing in is not just standard R, but an extended syntax that includes enhanced ability to document code, perform exploratory data analyses and facilitate creating reproducible reports.
+
+# This is referred to as R Markdown and builds upon the Markdown language, which allows users to keep their source document in text format and use symbols to markup sections for formatting, e.g. *emphasis/italics* and **strong emphasis/bold**, instead of creating binary and proprietary blobs where the source is not readable and the end user is reliant on support from the company to be able to read their own documents.
+
+# Using R Markdown in the R Notebook extends the functionality of Markdown, by introducing the ability to execute R-code (and other languages) and display the output within an R Markdown document, so there is not need to keep track of separate source and output documents. This makes R Markdown a great authoring framework for data science and allows entire reports, including code and outputs, to be defined in the same source document. (0.5 marks)
+
+# Ctrl + Alt + i (0.25 marks)
+
+# Ctrl + Shift + Enter (0.25 marks)
+```
+
+3. Provide a few reasons as to why it is beneficial to create documents like the R Notebooks rather than using a spreadsheet software for exploratory data analyses? (1 mark)
+
+```{r}
+# Expected answer
+# If they get >= 3/4 it is 1 mark, 2/4 = 0.5, 1/4 = 0.25.
+# Efficiency, power, speed.
+# Programming languages focused on data analyses, can perform more complex operations, executes faster, and can handle bigger data set than current spreadsheet software.
+
+# Cutting edge, utility, flexibility
+# Programming languages are more flexible than spreadsheet software and nearly anything you want to do can be done! In R many cutting edge analyses techniques are available as soon as the paper describing the technique is published, and you don't have to wait for a company to implement it in there product (if they ever will).
+
+# Reproducibility, documentation, dissemination
+# Writing down the sequence of commands in a script or notebook, makes it much easier to reproduce your analyses. This is helpful for other people, and also really helpful for yourself when you go back to analyses you performed months ago, there is no need to memorize which sequence of buttons you pressed in Excel!
+
+# Cheaper to use, more valuable skill to learn
+# R is available free of charge and learning it adds a very valuable asset to your skill set. As academic studies increase in scope and complexity, they increasingly require some type of programming for their analyses. Many companies require experience in programming for hiring for data analyses work, and view it positively for many other positions.
+
+# It is also much more fun and creative!
+```
+
+4. Fill out the [pre-course survey](https://docs.google.com/forms/d/e/1FAIpQLSeQ5a1LPQGdtlXSjX_zPknmpTHH8hCFMgjmTrnBLD_eHRGUhA/viewform?usp=sf_link). Type your student number below to confirm that you are done. (0.5 marks)
+
+```{r}
+# Expected answer
+# Check if their student number is entered in the survey.
+```
+
