@@ -1,5 +1,8 @@
 ---
 title: "Assignment 2: Base R (8 marks)"
+output:
+    html_document:
+        toc: false
 ---
 
 ```{r, echo=FALSE}
