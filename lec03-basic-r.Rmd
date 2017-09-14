@@ -428,6 +428,22 @@ and are made available via the `magrittr` package that also is included in the
 
 ```{r}
 surveys %>% 
+    select(., plot_id, species_id, weight, year) %>% 
+    filter(., year == 1995)
+```
+
+The `.` refers to the object that is passed from the previous line. In this
+example, the data frame `surveys` is passed to the `.` in the `select()`
+statement. Then, the modified data frame which is the result of the `select()`
+operation, is passed to the `.` in the filter() statement. Put more simply:
+whatever was the result from the line above the current line, will be used in
+the current line.
+
+Since it gets a bit tedious to write out the all dots, **`dplyr`** allows for
+them to be omitted. The chunk below gives the same output as the one above:
+
+```{r}
+surveys %>% 
     select(plot_id, species_id, weight, year) %>% 
     filter(year == 1995)
 ```
