@@ -86,7 +86,7 @@ surveys <- readr::read_csv('https://ndownloader.figshare.com/files/2292169')
 ```
 
 However, it is often a good idea to download the data first, so you have a copy
-stored locally on your computer in case you want to do some offline analyses or
+stored locally on your computer in case you want to do some offline analyses, or
 the online version of the file changes or the file is taken down. You can either
 download the data manually or from within R:
 
