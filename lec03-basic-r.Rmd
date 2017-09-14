@@ -29,7 +29,15 @@ license, so if that anyone in the future can re-use or modify our course content
 > the results.
 
 
-## Data set background
+## Lesson outline
+
+- Data set background (10 min)
+- What are data frames (15 min)
+- R packages for data analyses (5 min)
+- Data wrangling in dplyr (40 min)
+
+
+## Dataset background
 
 Today, we will be working with real data from a longitudinal study of the
 species abundance in the Chihuahuan desert ecosystem near Portal, Arizona, USA.
