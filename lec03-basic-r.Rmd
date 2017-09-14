@@ -15,18 +15,18 @@ making all our content available under the same license, [The Creative Commons](
 license, so if that anyone in the future can re-use or modify our course content, without infringing on copyright licensing issues.*
 
 
-> ## Learning Objectives
+> ## Learning objectives
 >
 > * Describe what a data frame is.
 > * Load external data from a .csv file into a data frame in R.
 > * Summarize the contents of a data frame in R.
 > * Understand the purpose of the **`dplyr`** package.
-> * Select certain columns in a data frame with the **`dplyr`** function `select`.
-> * Select certain rows in a data frame according to filtering conditions with the **`dplyr`** function `filter` .
-> * Link the output of one **`dplyr`** function to the input of another function with the 'pipe' operator `%>%`.
-> * Add new columns to a data frame that are functions of existing columns with `mutate`.
+> * Learn to use data wrangling commands `select`, `filter`, `%>%,` and `mutate`
+> from the **`dplyr`** package.
 > * Understand the split-apply-combine concept for data analysis.
-> * Use `summarize`, `group_by`, and `tally` to split a data frame into groups of observations, apply a summary statistics for each group, and then combine the results.
+> * Use `summarize`, `group_by`, and `tally` to split a data frame into groups
+> of observations, apply a summary statistics for each group, and then combine
+> the results.
 
 
 ## Data set background
