@@ -1,4 +1,724 @@
 ---
-title: "Introduction to data wrangling using the dplyr R package"
+title: Data wrangling and visualization in the tidyverse
 ---
 
+
+> ### Learning Objectives
+>
+> * Understand the split-apply-combine concept for data analysis.
+> * Use `summarize`, `group_by`, and `tally` to split a data frame into groups
+> of observations, apply a summary statistics for each group, and then combine
+> the results.
+> * Produce scatter plots, line plots, and histograms using ggplot.
+> * Set universal plot settings.
+> * Understand and apply faceting in ggplot.
+> * Explore scientific questions using dplyr and ggplot.
+
+
+> ### Lesson outline
+>
+> Split-apply-combine techniques in **`dplyr`** (15min)
+> Using tally to summarize categorical data (10 min)
+> Ploting with **`ggplot2`** (10 min)
+> Building plots iteratively (10 min)
+> Split-apply-combine... plot! (10 min)
+> Facetting (10 min)
+
+--------------
+
+
+## Setting up
+
+Start by loading the required packages. Both **`ggplot2`** and **`dplyr`** are
+included in the **`tidyverse`** package collection.
+
+```{r}
+# Install if needed
+# install.packages('tidyverse')
+library(tidyverse)
+```
+
+Load the data we saved in the previous lesson.
+
+```{r}
+# Download if needed
+# download.file("https://ndownloader.figshare.com/files/2292169", "data/portal_data_joined.csv")
+surveys <- read_csv('portal_data.csv')
+surveys
+```
+
+
+## Split-apply-combine technique in dplyr
+
+Many data analysis tasks can be approached using the *split-apply-combine*
+paradigm: split the data into groups, apply some analysis to each group, and
+then combine the results.
+
+**`dplyr`** makes this facilitates thiw wokflow through the use of `group_by()`
+to split data and `summarize()`, which collapses each group into a single-row
+summary of that group. The arguments to `group_by()` are the column names that
+contain the **categorical** variables for which you want to calculate the
+summary statistics. Let's view the mean `weight` by sex.
+
+```{r}
+surveys %>%
+    group_by(sex) %>%
+    summarize(mean_weight = mean(weight))
+```
+
+The mean weights become `NA` since there are individual observations that are `NA`. Let's remove those observations.
+
+```{r}
+surveys %>%
+    filter(!is.na(weight)) %>% 
+    group_by(sex) %>%
+    summarize(mean_weight = mean(weight))
+```
+
+There is one row here that is neither male or female, these are observations
+where the animal escaped before the sex could not be determined. Let's remove those as well.
+
+```{r}
+surveys %>%
+    filter(!is.na(weight) & !is.na(sex)) %>% 
+    group_by(sex) %>%
+    summarize(mean_weight = mean(weight))
+```
+
+You can also group by multiple columns:
+
+```{r}
+surveys %>%
+    filter(!is.na(weight) & !is.na(sex)) %>% 
+    group_by(genus, sex) %>%
+    summarize(mean_weight = mean(weight))
+```
+
+Since we will use the same filtered and grouped data frame in multiple code chunks below, we
+could assign this subset of the data to a new variable and use this variable in
+the subsequent code chunks instead of typing out the functions each time.
+
+```{r}
+filtered_surveys <- surveys %>%
+    filter(!is.na(weight) & !is.na(sex)) %>% 
+    group_by(genus, sex)
+```
+
+If you want to display more data, you can use the `print()` function at the end
+of your chain with the argument `n` specifying the number of rows to display.
+
+```{r}
+filtered_surveys %>%
+    summarize(mean_weight = mean(weight)) %>%
+    print(n = 15) # Will change the knitted output, not the notebook
+```
+
+Once the data are grouped, you can also summarize multiple variables at the same
+time. For instance, we could add a column indicating the minimum weight for each
+species for each sex:
+
+```{r}
+filtered_surveys %>%
+    summarize(mean_weight = mean(weight),
+              min_weight = min(weight))
+```
+
+> #### Challenge
+>
+> 1. Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
+> length for each species.
+>
+> 2. What was the heaviest animal measured in each year? Return the columns `year`,
+> `genus`, `species`, and `weight`.
+
+<!--
+```
+## Answer 1
+surveys %>%
+    filter(!is.na(hindfoot_length)) %>%
+    group_by(species_id) %>%
+    summarize(
+        mean_hindfoot_length = mean(hindfoot_length),
+        min_hindfoot_length = min(hindfoot_length),
+        max_hindfoot_length = max(hindfoot_length)
+    )
+## Answer 2
+surveys %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    filter(weight == max(weight)) %>% # This is going to compare to the max weight within each group
+    select(year, genus, species, weight) %>%
+    arrange(year)
+```
+-->
+
+
+### Using tally to summarize catergorical data
+
+When working with data, it is also common to want to know the number of
+observations found for each factor or combination of factors. For this, **`dplyr`**
+provides `tally()`. For example, if we want to group by taxa and find the
+number of observations for each taxa, we would do:
+
+```{r}
+surveys %>%
+    group_by(taxa) %>%
+    tally()
+```
+
+We can also use `tally()` when grouping on multiple variables:
+
+```{r}
+surveys %>%
+    group_by(taxa, sex) %>%
+    tally()
+```
+
+Here, `tally()` is the action applied to the groups created by `group_by()` and
+counts the total number of records for each category.
+
+If there are many groups, `tally()` is not that useful on its own. For example,
+when we want to view the five most abundant species among the observations:
+
+```{r}
+surveys %>% 
+    group_by(species) %>% 
+    tally()
+```
+
+Since there are 40 rows in this output, we would like to order the table to
+display the most abundant species first. In `dplyr`, we say that we want to
+`arrange()` the data.
+
+```{r}
+surveys %>% 
+    group_by(species) %>% 
+    tally() %>% 
+    arrange(n)
+```
+
+Still not that useful. Since we are interested in the most abundant species, we
+want to display those with the highest count first, in other words, we want to
+arrange the column `n` in descending order:
+
+```{r}
+surveys %>% 
+    group_by(species) %>% 
+    tally() %>% 
+    arrange(desc(n)) %>% 
+    head(5)
+```
+
+If we want to include more attributes about these species, we can include these
+in the call to `group_by()`:
+
+```{r}
+surveys %>% 
+    group_by(species, taxa, genus) %>% 
+    tally() %>% 
+    arrange(desc(n)) %>% 
+    head(5)
+```
+
+Be careful not to include anything that would split the group into subgroups,
+such as `sex`, `year` etc.
+
+> #### Challenge
+>
+> 1. How many individuals were caught in each `plot_type` surveyed?
+>
+> 2. You saw above how to count the number of individuals of each `sex` using a
+> combination of `group_by()` and `tally()`. How could you get the same result
+> using `group_by()` and `summarize()`? Hint: see `?n`.
+>
+
+<!---
+```{r, echo=FALSE}
+## Answer 1
+surveys %>%
+    group_by(plot_type) %>%
+    tally
+
+## Answer 2
+surveys %>%
+  group_by(sex) %>%
+  summarize(n = n())
+  
+```
+--->
+
+
+## Plotting with ggplot2
+
+**`ggplot2`** is a plotting package that makes it simple to create complex plots
+from data frames. The name **`ggplot2`** comes from its inspiration, the book "A
+grammar of graphics", and its main goal is to that allow programmer to express
+their desired outcome on a high level instead of telling the computer every
+detail about what will happen. For example, you would say "color my data by
+species" instead of "go through this data frame and plot any observations of
+species1 in blue, any observations of species2 in red, etc". Thanks to this
+functional way of interfaces with data, only minimal changes are required if the
+underlying data change or to change the type of plot. This helps in thinking
+about the data and creating publication quality plots with minimal amounts of
+adjustments and tweaking.
+
+ggplot graphics are built step by step by adding new elements, or layers. Adding layers in
+this fashion allows for extensive flexibility and customization of plots. To
+build a ggplot, we need to:
+
+1. Use the `ggplot()` function and bind the plot to a specific data frame using the  
+      `data` argument
+
+```{r}
+ggplot(data = surveys)
+```
+
+Rememer that the argument names of a function can be left out, if the arguments are provided in the right order.
+
+```{r}
+ggplot(surveys)
+```
+
+2. Define aesthetics (`aes`), by selecting the variables to be plotted and the  
+      variables to define the presentation such as plotting size, shape color, etc.
+
+```{r}
+ggplot(surveys, aes(x = weight, y = hindfoot_length))
+```
+
+3. Add `geoms` -- geometrical objects as a graphical representation of the data 
+in the plot (points, lines, bars). **`ggplot2`** offers many different geoms; we
+will use a few common ones today, including:
+      * `geom_point()` for scatter plots, dot plots, etc.
+      * `geom_line()` for trend lines, time-series, etc.  
+      * `geom_histogram()` for histograms
+
+To add a geom to the plot use `+` operator. Because we have two continuous variables,  
+let's use `geom_point()` first:
+
+```{r first-ggplot}
+# If this takes way too long on your machine, create a subset from a random
+# sample of a suitable size and continue working with this instead of `survey`.
+#survey_subset <- sample_n(surveys, size = 5000)
+
+ggplot(surveys, aes(x = weight, y = hindfoot_length)) +
+  geom_point()
+```
+
+The `+` in the **`ggplot2`** package is particularly useful because it allows you
+to modify existing `ggplot` objects. This means you can easily set up plot
+"templates" and conveniently explore different types of plots, so the above
+plot can also be generated with code like this:
+
+```{r, first-ggplot-with-plus}
+# Assign plot to a variable
+surveys_plot <- ggplot(surveys, aes(x = weight, y = hindfoot_length))
+
+# Draw the plot
+surveys_plot + geom_point()
+```
+
+Notes:
+
+- Anything you put in the `ggplot()` function can be seen by any geom layers
+  that you add (i.e., these are universal plot settings). This includes the x and
+  y axis you set up in `aes()`.
+- You can also specify aesthetics for a given geom independently of the
+  aesthetics defined globally in the `ggplot()` function.
+- The `+` sign used to add layers must be placed at the end of each line containing
+a layer. If, instead, the `+` sign is added in the line before the other layer,
+**`ggplot2`** will not add the new layer and will return an error message.
+
+
+### Building plots iteratively
+
+Building plots with ggplot is typically an iterative process. We start by
+defining the dataset we'll use, lay the axes, and choose a geom:
+
+```{r create-ggplot-object}
+ggplot(surveys, aes(x = weight, y = hindfoot_length)) +
+    geom_point()
+```
+
+Then, we start modifying this plot to extract more information from it. For
+instance, we can add transparency (`alpha`) to reduce overplotting:
+
+
+```{r adding-transparency}
+ggplot(data = surveys, aes(x = weight, y = hindfoot_length)) +
+    geom_point(alpha = 0.2)
+```
+
+Based on the hindfoot length and the weights, there appears to be 4-5 clusters
+in this data. Potentially, one of the categorical variables we have in the data
+could explain this pattern. By coloring the data points according to a
+categorical variable is an easy way to find out if there seems to be
+correlation. Let's try this with `plot_type`.
+
+```{r adding-colors}
+ggplot(surveys, aes(x = weight, y = hindfoot_length, color = plot_type)) +
+    geom_point(alpha = 0.2)
+```
+
+It seems like the type of plot the animal was captured on correlates well with some of these clusters, but there are still many that are quite mixed. Let's try to do betteer! This time, the information about the data can provide some clues to which variable to look at. The plot above alludes to that there might be 4-5 clusters, so a variable with 4-5 values is a good guess for what could explain the observed pattern in the scatter plot.
+
+```{r}
+surveys %>% 
+    summarize_all(n_distinct)
+```
+
+Remember that there are still `NA` values here, that's why there appears to be three sexes although there is only male and female. There are four taxa so that could be a good candidate, let's see which those are.
+
+```{r}
+surveys %>% 
+    distinct(taxa)
+```
+
+It seems reasonable that these taxa contain animals different enough to have diverse weights and length of their feet. Lets use this categorical variable to color the scatter plot. 
+
+```{r}
+ggplot(surveys, aes(x = weight, y = hindfoot_length, color = taxa)) +
+    geom_point(alpha = 0.2)
+```
+
+Only rodents? That was unexpected... Let's check what's going on.
+
+```{r}
+surveys %>% 
+    group_by(taxa) %>% 
+    tally()
+```
+
+There is definitely mostly rodents in our data set...
+
+```{r}
+surveys %>% 
+    filter(!is.na(hindfoot_length)) %>% # control by removing `!`
+    group_by(taxa) %>% 
+    tally()
+```
+
+...and it turns out that only rodents, have had their hindfeet measured!
+
+Let's remove all animals that did not have their hindfeet measured, including
+those rodents that did not. Animals without their weight measured will also be removed.
+
+```{r}
+surveys_hf_wt <- surveys %>% 
+    filter(!is.na(hindfoot_length) & !is.na(weight))
+
+surveys_hf_wt %>% 
+    summarize_all(n_distinct)
+```
+
+Maybe the genus can explain what we are seeing.
+
+```{r}
+ggplot(surveys_hf_wt, aes(x = weight, y = hindfoot_length, color = genus)) +
+    geom_point(alpha = 0.2)
+```
+
+Now this looks good! There is a clear separation between different genus, but also significant spread within genus, for example in the weight of the green Neotoma observations. There are also two clearly separate clusters that are both colored in olive green (Dipodomys). Maybe separating the observations into different speciese would be better?
+
+```{r}
+ggplot(surveys_hf_wt, aes(x = weight, y = hindfoot_length, color = species)) +
+    geom_point(alpha = 0.2)
+```
+
+Great! Together with the genus plot, this definitely seem to explain most of the
+variance we see in the hindfoot length and weight measurements. It is still a
+bit messy as it appears like we have around 5 clusters, but there are 21 species
+in the legend.
+
+```{r}
+surveys %>% 
+    filter(!is.na(hindfoot_length) & !is.na(weight)) %>% 
+    group_by(species) %>% 
+    tally() %>% 
+    arrange(desc(n))
+```
+
+There is a big drop from 838 to 159, let's include only those with more than 800 observations.
+
+```{r}
+abundant_species <- surveys %>% 
+    filter(!is.na(hindfoot_length) & !is.na(weight)) %>% 
+    group_by(species) %>% 
+    tally() %>% 
+    arrange(desc(n)) %>% 
+    filter(n > 800) %>% # 
+    select(species)
+
+abundant_species
+```
+
+```{r}
+surveys_abun_species <- surveys %>% 
+    filter(!is.na(hindfoot_length) &
+        !is.na(weight) &
+        species %in% abundant_species$species)
+
+surveys_abun_species
+```
+
+Still has almost 25k observations, so only 10k was removed.
+
+```{r}
+ggplot(surveys_abun_species, aes(x = weight, y = hindfoot_length, color = species)) +
+    geom_point(alpha = 0.2)
+```
+
+
+> ### Challenge
+>
+> Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
+> Is there any problem with this plot? *Hint: think about how many observations there are*
+
+<!--
+```{r}
+ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_length)) +
+    geom_point(size = 0.1, position = 'jitter')
+```
+-->
+
+
+### Split-apply-combine... plot!
+
+In this section, we will learn how to work with `**dplyr**` and `**ggplot**`
+together. Aided by the pipes (`%>%`), we can create a powerul data exploration
+workflow using these two packages.
+
+Let's calculate number of counts per year for each species. First we need
+to group the data and count records within each group:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, genus) %>%
+    tally() %>% 
+    arrange(desc(n)) # Adding arrange just to compare with histogram
+```
+
+We could assign this table to a variable, and then pass that variable to `ggplot()`.
+
+```{r}
+yearly_counts <- surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally()
+
+ggplot(yearly_counts, aes(x = n)) +
+    geom_histogram()
+```
+
+Creating an intermediate variable, would be prefereable if you are preferring a time consuming calculation, because you would not want to do that operation everytime you change some plot aesthetic.
+
+If it is not a time consuming approach and you would like the flexibility of
+changing the data summary and the plotting options in the same code chunk, you
+can pipe the output of your split-apply-combine operation to the plotting
+command:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = n)) +
+        geom_histogram()
+```
+
+We can perform a quick check that the plot corresponds to the table by coloring the histogram by species:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = n, fill = species)) + # `fill` is specific for histograms
+        geom_histogram()
+```
+
+
+Let's explore how the number of each genus varies over time. Longitudinal data
+can be visualized as a line plot with years on the x axis and counts on the y
+axis:
+
+```{r first-time-series}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n)) +
+        geom_line()
+```
+
+Unfortunately, this does not work because we plotted data for all the species
+together. We need to tell ggplot to draw a line for each species by modifying
+the aesthetic function to include `group = species_id`:
+
+```{r time-series-by-species}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n, group = species)) +
+        geom_line()
+```
+
+We will be able to distinguish species in the plot if we add colors (using `color` also automatically groups the data):
+
+```{r time-series-with-colors}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n, color = species)) + # `color` groups automatically
+        geom_line() # try adding `size = 2`
+```
+
+### Faceting
+
+ggplot has a special technique called *faceting* that allows the user to split one plot
+into multiple subplots based on a variable included in the dataset. We will use it to
+make a time series plot for each species:
+
+```{r first-facet}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n)) + #
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+Now we would like to split the line in each plot by the sex of each individual
+measured. To do that we need to make counts in the data frame grouped by `year`,
+`species_id`, and `sex`:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species, sex) %>%
+    tally()
+```
+
+We can make the faceted plot by splitting further by sex using `color` (within a single plot):
+
+```{r facet-by-species-and-sex}
+surveys_abun_species %>%
+    group_by(year, species, sex) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+There are several observations where no sex was recorded. In this case, we are not really interested in the observations of unknown sex, so we can filter out those values.
+
+```{r}
+surveys_abun_species %>%
+    filter(!is.na(sex)) %>% 
+    group_by(year, species, sex) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+It is possible specify exactly which colors to use, to avoid those that are hard
+to distinguish. We can also change the thickness of the lines, and adjust the
+xlabels so that they don't overlap. This will be discussed in much more detail
+in the data visualization lecture.
+
+```{r}
+color_names <- c('black', 'orange')
+
+surveys_abun_species %>%
+    filter(!is.na(sex)) %>% 
+    group_by(year, species, sex) %>%
+    tally() %>% 
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line(size = 1) +
+        scale_color_manual(values = color_names) +
+        facet_wrap(~ species) +
+        theme_bw() +
+        theme(text = element_text(size=12),
+               axis.text.x = element_text(angle=30, hjust=1)) 
+```
+
+
+> #### Challenge
+>
+> Use the filtered dataframe for all of these questions.
+> 1. Remember this histogram colored according to each species? Starting from that
+code, how could separate each species into its own subplot?
+> 2.
+>    a. During which year was the average weight of the animals the highest?
+>    b. Is the yearly trend the same for all species?
+> 3. Hard mode: If you were to look at the average hindfoot lenght over time for
+all animals, you would find that the trend is similar to the one for average
+weight. Do you have any idea why both the average hindfoot length and the
+average weight display the same pattern over time? *Hint: 2b is a good starting
+point to explore this.*
+
+
+<!--
+# Answers
+
+```{r}
+# 1
+ggplot(yearly_counts, aes(x = n, fill = species)) +
+    geom_histogram() +
+    facet_wrap(~ species)
+```
+    
+```{r}
+# 2.a
+surveys_abun_species %>% 
+    filter(!is.na(weight)) %>% 
+    group_by(year) %>% 
+    summarize(mean_weight = mean(weight)) %>% 
+    ggplot(aes(x = year, y = mean_weight)) +
+        geom_line()
+```
+
+```{r}
+# 2.b
+surveys_abun_species %>% 
+    filter(!is.na(weight)) %>% 
+    group_by(year, species) %>% 
+    summarize(mean_weight = mean(weight)) %>% 
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+```{r}
+# 3.a
+# Answer since theaverage hinfoot length and average weight has remained relatively constant for each individual species, the explaining variable is likely the number of species captured has shifted towards capturing more of the smaller rodents. By plotting the result of tallying by species, we can see that this is indeed the case.
+
+surveys_abun_species %>% 
+    filter(!is.na(weight)) %>% 
+    group_by(year, species) %>% 
+    tally() %>% 
+    ggplot(aes(x = year, y = n, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+```{r}
+# 3 supplementary
+# General hindfoot length trend
+surveys_abun_species %>% 
+    filter(!is.na(weight)) %>% 
+    group_by(year) %>% 
+    summarize(mean_hinfood_length = mean(hindfoot_length)) %>% 
+    ggplot(aes(x = year, y = mean_hinfood_length)) +
+        geom_line()
+
+# Per species
+surveys_abun_species %>% 
+    filter(!is.na(weight)) %>% 
+    group_by(year, species) %>% 
+    summarize(mean_weight = mean(hindfoot_length)) %>% 
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+-->
+
+*Parts of this lesson material were taken and modified from [Data
+Carpentry](http://datacarpentry.org) under their CC-BY copyright license. See
+their [lesson page](http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html) for the original source.*
