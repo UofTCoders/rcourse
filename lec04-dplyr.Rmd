@@ -54,7 +54,7 @@ Many data analysis tasks can be approached using the *split-apply-combine*
 paradigm: split the data into groups, apply some analysis to each group, and
 then combine the results.
 
-**`dplyr`** makes this facilitates thiw wokflow through the use of `group_by()`
+**`dplyr`** facilitates this workflow through the use of `group_by()`
 to split data and `summarize()`, which collapses each group into a single-row
 summary of that group. The arguments to `group_by()` are the column names that
 contain the **categorical** variables for which you want to calculate the
@@ -66,7 +66,8 @@ surveys %>%
     summarize(mean_weight = mean(weight))
 ```
 
-The mean weights become `NA` since there are individual observations that are `NA`. Let's remove those observations.
+The mean weights become `NA` since there are individual observations that are
+`NA`. Let's remove those observations.
 
 ```{r}
 surveys %>%
@@ -75,8 +76,9 @@ surveys %>%
     summarize(mean_weight = mean(weight))
 ```
 
-There is one row here that is neither male or female, these are observations
-where the animal escaped before the sex could not be determined. Let's remove those as well.
+There is one row here that is neither male nor female, these are observations
+where the animal escaped before the sex could not be determined. Let's remove
+those as well.
 
 ```{r}
 surveys %>%
@@ -94,9 +96,10 @@ surveys %>%
     summarize(mean_weight = mean(weight))
 ```
 
-Since we will use the same filtered and grouped data frame in multiple code chunks below, we
-could assign this subset of the data to a new variable and use this variable in
-the subsequent code chunks instead of typing out the functions each time.
+Since we will use the same filtered and grouped data frame in multiple code
+chunks below, we could assign this subset of the data to a new variable and use
+this variable in the subsequent code chunks instead of typing out the functions
+each time.
 
 ```{r}
 filtered_surveys <- surveys %>%
@@ -153,7 +156,7 @@ surveys %>%
 -->
 
 
-### Using tally to summarize catergorical data
+### Using tally to summarize categorical data
 
 When working with data, it is also common to want to know the number of
 observations found for each factor or combination of factors. For this, **`dplyr`**
@@ -252,7 +255,7 @@ surveys %>%
 
 **`ggplot2`** is a plotting package that makes it simple to create complex plots
 from data frames. The name **`ggplot2`** comes from its inspiration, the book "A
-grammar of graphics", and its main goal is to that allow programmer to express
+grammar of graphics", and the main goal is to allow coders to express
 their desired outcome on a high level instead of telling the computer every
 detail about what will happen. For example, you would say "color my data by
 species" instead of "go through this data frame and plot any observations of
@@ -273,28 +276,29 @@ build a ggplot, we need to:
 ggplot(data = surveys)
 ```
 
-Rememer that the argument names of a function can be left out, if the arguments are provided in the right order.
+Remember, if the arguments are provided in the right order then the names of the
+arguments can be omitted.
 
 ```{r}
 ggplot(surveys)
 ```
 
-2. Define aesthetics (`aes`), by selecting the variables to be plotted and the  
-      variables to define the presentation such as plotting size, shape color, etc.
+2. Define aesthetics (`aes`), by selecting the variables to be plotted and the
+   variables to define the presentation such as plotting size, shape color, etc.
 
 ```{r}
 ggplot(surveys, aes(x = weight, y = hindfoot_length))
 ```
 
-3. Add `geoms` -- geometrical objects as a graphical representation of the data 
+3. Add `geoms` -- geometrical objects as a graphical representation of the data
 in the plot (points, lines, bars). **`ggplot2`** offers many different geoms; we
 will use a few common ones today, including:
       * `geom_point()` for scatter plots, dot plots, etc.
-      * `geom_line()` for trend lines, time-series, etc.  
+      * `geom_line()` for trend lines, time-series, etc.
       * `geom_histogram()` for histograms
 
-To add a geom to the plot use `+` operator. Because we have two continuous variables,  
-let's use `geom_point()` first:
+To add a geom to the plot use `+` operator. Because we have two continuous
+variables, let's use `geom_point()` first:
 
 ```{r first-ggplot}
 # If this takes way too long on your machine, create a subset from a random
@@ -327,7 +331,7 @@ Notes:
   aesthetics defined globally in the `ggplot()` function.
 - The `+` sign used to add layers must be placed at the end of each line containing
 a layer. If, instead, the `+` sign is added in the line before the other layer,
-**`ggplot2`** will not add the new layer and will return an error message.
+**`ggplot2`** will not add the new layer and R will return an error message.
 
 
 ### Building plots iteratively
@@ -351,7 +355,7 @@ ggplot(data = surveys, aes(x = weight, y = hindfoot_length)) +
 
 Based on the hindfoot length and the weights, there appears to be 4-5 clusters
 in this data. Potentially, one of the categorical variables we have in the data
-could explain this pattern. By coloring the data points according to a
+could explain this pattern. Coloring the data points according to a
 categorical variable is an easy way to find out if there seems to be
 correlation. Let's try this with `plot_type`.
 
@@ -360,21 +364,30 @@ ggplot(surveys, aes(x = weight, y = hindfoot_length, color = plot_type)) +
     geom_point(alpha = 0.2)
 ```
 
-It seems like the type of plot the animal was captured on correlates well with some of these clusters, but there are still many that are quite mixed. Let's try to do betteer! This time, the information about the data can provide some clues to which variable to look at. The plot above alludes to that there might be 4-5 clusters, so a variable with 4-5 values is a good guess for what could explain the observed pattern in the scatter plot.
+It seems like the type of plot the animal was captured on correlates well with
+some of these clusters, but there are still many that are quite mixed. Let's try
+to do better! This time, the information about the data can provide some clues
+to which variable to look at. The plot above suggests that there might be 4-5
+clusters, so a variable with 4-5 values is a good guess for what could explain
+the observed pattern in the scatter plot.
 
 ```{r}
 surveys %>% 
     summarize_all(n_distinct)
 ```
 
-Remember that there are still `NA` values here, that's why there appears to be three sexes although there is only male and female. There are four taxa so that could be a good candidate, let's see which those are.
+Remember that there are still `NA` values here, that's why there appears to be
+three sexes although there is only male and female. There are four taxa so that
+could be a good candidate, let's see which those are.
 
 ```{r}
 surveys %>% 
     distinct(taxa)
 ```
 
-It seems reasonable that these taxa contain animals different enough to have diverse weights and length of their feet. Lets use this categorical variable to color the scatter plot. 
+It seems reasonable that these taxa contain animals different enough to have
+diverse weights and length of their feet. Lets use this categorical variable to
+color the scatter plot. 
 
 ```{r}
 ggplot(surveys, aes(x = weight, y = hindfoot_length, color = taxa)) +
@@ -401,7 +414,8 @@ surveys %>%
 ...and it turns out that only rodents, have had their hindfeet measured!
 
 Let's remove all animals that did not have their hindfeet measured, including
-those rodents that did not. Animals without their weight measured will also be removed.
+those rodents that did not. Animals without their weight measured will also be
+removed.
 
 ```{r}
 surveys_hf_wt <- surveys %>% 
@@ -418,7 +432,11 @@ ggplot(surveys_hf_wt, aes(x = weight, y = hindfoot_length, color = genus)) +
     geom_point(alpha = 0.2)
 ```
 
-Now this looks good! There is a clear separation between different genus, but also significant spread within genus, for example in the weight of the green Neotoma observations. There are also two clearly separate clusters that are both colored in olive green (Dipodomys). Maybe separating the observations into different speciese would be better?
+Now this looks good! There is a clear separation between different genus, but
+also significant spread within genus, for example in the weight of the green
+Neotoma observations. There are also two clearly separate clusters that are both
+colored in olive green (Dipodomys). Maybe separating the observations into
+different species would be better?
 
 ```{r}
 ggplot(surveys_hf_wt, aes(x = weight, y = hindfoot_length, color = species)) +
@@ -438,7 +456,8 @@ surveys %>%
     arrange(desc(n))
 ```
 
-There is a big drop from 838 to 159, let's include only those with more than 800 observations.
+There is a big drop from 838 to 159, let's include only those with more than 800
+observations.
 
 ```{r}
 abundant_species <- surveys %>% 
@@ -469,7 +488,7 @@ ggplot(surveys_abun_species, aes(x = weight, y = hindfoot_length, color = specie
 ```
 
 
-> ### Challenge
+> #### Challenge
 >
 > Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
 > Is there any problem with this plot? *Hint: think about how many observations there are*
@@ -485,7 +504,7 @@ ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_lengt
 ### Split-apply-combine... plot!
 
 In this section, we will learn how to work with `**dplyr**` and `**ggplot**`
-together. Aided by the pipes (`%>%`), we can create a powerul data exploration
+together. Aided by the pipes (`%>%`), we can create a powerful data exploration
 workflow using these two packages.
 
 Let's calculate number of counts per year for each species. First we need
@@ -494,11 +513,12 @@ to group the data and count records within each group:
 ```{r}
 surveys_abun_species %>%
     group_by(year, genus) %>%
-    tally() %>% 
+    tally() %>%
     arrange(desc(n)) # Adding arrange just to compare with histogram
 ```
 
-We could assign this table to a variable, and then pass that variable to `ggplot()`.
+We could assign this table to a variable, and then pass that variable to
+`ggplot()`.
 
 ```{r}
 yearly_counts <- surveys_abun_species %>%
@@ -509,7 +529,9 @@ ggplot(yearly_counts, aes(x = n)) +
     geom_histogram()
 ```
 
-Creating an intermediate variable, would be prefereable if you are preferring a time consuming calculation, because you would not want to do that operation everytime you change some plot aesthetic.
+Creating an intermediate variable would be preferable for time consuming
+calculations, because you would not want to do that operation every time you
+change the plot aesthetics.
 
 If it is not a time consuming approach and you would like the flexibility of
 changing the data summary and the plotting options in the same code chunk, you
@@ -524,7 +546,8 @@ surveys_abun_species %>%
         geom_histogram()
 ```
 
-We can perform a quick check that the plot corresponds to the table by coloring the histogram by species:
+We can perform a quick check that the plot corresponds to the table by coloring
+the histogram by species:
 
 ```{r}
 surveys_abun_species %>%
@@ -549,7 +572,7 @@ surveys_abun_species %>%
 
 Unfortunately, this does not work because we plotted data for all the species
 together. We need to tell ggplot to draw a line for each species by modifying
-the aesthetic function to include `group = species_id`:
+the aesthetic function to include `group = species`:
 
 ```{r time-series-by-species}
 surveys_abun_species %>%
@@ -559,7 +582,8 @@ surveys_abun_species %>%
         geom_line()
 ```
 
-We will be able to distinguish species in the plot if we add colors (using `color` also automatically groups the data):
+We will be able to distinguish species in the plot if we add colors (using
+`color` also automatically groups the data):
 
 ```{r time-series-with-colors}
 surveys_abun_species %>%
@@ -571,9 +595,9 @@ surveys_abun_species %>%
 
 ### Faceting
 
-ggplot has a special technique called *faceting* that allows the user to split one plot
-into multiple subplots based on a variable included in the dataset. We will use it to
-make a time series plot for each species:
+ggplot has a special technique called *faceting* that allows the user to split
+one plot into multiple subplots based on a variable included in the dataset. We
+will use it to make a time series plot for each species:
 
 ```{r first-facet}
 surveys_abun_species %>%
@@ -594,7 +618,8 @@ surveys_abun_species %>%
     tally()
 ```
 
-We can make the faceted plot by splitting further by sex using `color` (within a single plot):
+We can make the faceted plot by splitting further by sex using `color` (within a
+single plot):
 
 ```{r facet-by-species-and-sex}
 surveys_abun_species %>%
@@ -605,7 +630,9 @@ surveys_abun_species %>%
         facet_wrap(~ species)
 ```
 
-There are several observations where no sex was recorded. In this case, we are not really interested in the observations of unknown sex, so we can filter out those values.
+There are several observations where no sex was recorded. In this case, we are
+not really interested in the observations of unknown sex, so we can filter out
+those values.
 
 ```{r}
 surveys_abun_species %>%
@@ -619,7 +646,7 @@ surveys_abun_species %>%
 
 It is possible specify exactly which colors to use, to avoid those that are hard
 to distinguish. We can also change the thickness of the lines, and adjust the
-xlabels so that they don't overlap. This will be discussed in much more detail
+x labels so that they don't overlap. This will be discussed in much more detail
 in the data visualization lecture.
 
 ```{r}
@@ -641,13 +668,14 @@ surveys_abun_species %>%
 
 > #### Challenge
 >
-> Use the filtered dataframe for all of these questions.
-> 1. Remember this histogram colored according to each species? Starting from that
-code, how could separate each species into its own subplot?
+> Use the filtered data frame for all of these questions.
+
+> 1. Remember the histogram colored according to each species? Starting from that
+code, how could we separate each species into its own subplot?
 > 2.
->    a. During which year was the average weight of the animals the highest?
+>    a. Which year was the average weight of the animals the highest?
 >    b. Is the yearly trend the same for all species?
-> 3. Hard mode: If you were to look at the average hindfoot lenght over time for
+> 3. Hard mode: If you were to look at the average hindfoot length over time for
 all animals, you would find that the trend is similar to the one for average
 weight. Do you have any idea why both the average hindfoot length and the
 average weight display the same pattern over time? *Hint: 2b is a good starting
@@ -687,7 +715,11 @@ surveys_abun_species %>%
 
 ```{r}
 # 3.a
-# Answer since theaverage hinfoot length and average weight has remained relatively constant for each individual species, the explaining variable is likely the number of species captured has shifted towards capturing more of the smaller rodents. By plotting the result of tallying by species, we can see that this is indeed the case.
+# Answer: Since theaverage hinfoot length and average weight has remained
+# relatively constant for each individual species, the explaining variable is
+# likely the number of species captured has shifted towards capturing more of
+# the smaller rodents. By plotting the result of tallying by species, we can see
+# that this is indeed the case.
 
 surveys_abun_species %>% 
     filter(!is.na(weight)) %>% 
