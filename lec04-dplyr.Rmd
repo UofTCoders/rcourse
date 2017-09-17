@@ -5,14 +5,14 @@ title: Data wrangling and visualization in the tidyverse
 
 > ### Learning Objectives
 >
-> * Understand the split-apply-combine concept for data analysis.
-> * Use `summarize`, `group_by`, and `tally` to split a data frame into groups
+> - Understand the split-apply-combine concept for data analysis.
+> - Use `summarize`, `group_by`, and `tally` to split a data frame into groups
 > of observations, apply a summary statistics for each group, and then combine
 > the results.
-> * Produce scatter plots, line plots, and histograms using ggplot.
-> * Set universal plot settings.
-> * Understand and apply faceting in ggplot.
-> * Explore scientific questions using dplyr and ggplot.
+> - Produce scatter plots, line plots, and histograms using ggplot.
+> - Set universal plot settings.
+> - Understand and apply faceting in ggplot.
+> - Explore scientific questions using dplyr and ggplot.
 
 
 > ### Lesson outline
