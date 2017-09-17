@@ -299,7 +299,7 @@ will use a few common ones today, including:
 To add a geom to the plot use `+` operator. Because we have two continuous
 variables, let's use `geom_point()` first:
 
-```{r first-ggplot}
+```{r}
 # If this takes way too long on your machine, create a subset from a random
 # sample of a suitable size and continue working with this instead of `survey`.
 #survey_subset <- sample_n(surveys, size = 5000)
@@ -338,7 +338,7 @@ a layer. If, instead, the `+` sign is added in the line before the other layer,
 Building plots with ggplot is typically an iterative process. We start by
 defining the dataset we'll use, lay the axes, and choose a geom:
 
-```{r create-ggplot-object}
+```{r}
 ggplot(surveys, aes(x = weight, y = hindfoot_length)) +
     geom_point()
 ```
@@ -347,7 +347,7 @@ Then, we start modifying this plot to extract more information from it. For
 instance, we can add transparency (`alpha`) to reduce overplotting:
 
 
-```{r adding-transparency}
+```{r}
 ggplot(data = surveys, aes(x = weight, y = hindfoot_length)) +
     geom_point(alpha = 0.2)
 ```
@@ -358,7 +358,7 @@ could explain this pattern. Coloring the data points according to a
 categorical variable is an easy way to find out if there seems to be
 correlation. Let's try this with `plot_type`.
 
-```{r adding-colors}
+```{r}
 ggplot(surveys, aes(x = weight, y = hindfoot_length, color = plot_type)) +
     geom_point(alpha = 0.2)
 ```
@@ -561,7 +561,7 @@ Let's explore how the number of each genus varies over time. Longitudinal data
 can be visualized as a line plot with years on the x axis and counts on the y
 axis:
 
-```{r first-time-series}
+```{r}
 surveys_abun_species %>%
     group_by(year, species) %>%
     tally() %>%
@@ -573,7 +573,7 @@ Unfortunately, this does not work because we plotted data for all the species
 together. We need to tell ggplot to draw a line for each species by modifying
 the aesthetic function to include `group = species`:
 
-```{r time-series-by-species}
+```{r}
 surveys_abun_species %>%
     group_by(year, species) %>%
     tally() %>%
@@ -584,7 +584,7 @@ surveys_abun_species %>%
 We will be able to distinguish species in the plot if we add colors (using
 `color` also automatically groups the data):
 
-```{r time-series-with-colors}
+```{r}
 surveys_abun_species %>%
     group_by(year, species) %>%
     tally() %>%
@@ -598,7 +598,7 @@ ggplot has a special technique called *faceting* that allows the user to split
 one plot into multiple subplots based on a variable included in the dataset. We
 will use it to make a time series plot for each species:
 
-```{r first-facet}
+```{r}
 surveys_abun_species %>%
     group_by(year, species) %>%
     tally() %>%
@@ -620,7 +620,7 @@ surveys_abun_species %>%
 We can make the faceted plot by splitting further by sex using `color` (within a
 single plot):
 
-```{r facet-by-species-and-sex}
+```{r}
 surveys_abun_species %>%
     group_by(year, species, sex) %>%
     tally() %>%
