@@ -17,11 +17,11 @@ title: Data wrangling and visualization in the tidyverse
 
 > ### Lesson outline
 >
-> - Split-apply-combine techniques in **`dplyr`** (15min)
+> - Split-apply-combine techniques in **`dplyr`** (20 min)
 > - Using `tally` to summarize categorical data (10 min)
-> - Plotting with **`ggplot2`** (10 min)
-> - Building plots iteratively (10 min)
-> - Split-apply-combine... plot! (10 min)
+> - Plotting with **`ggplot2`** (15 min)
+> - Building plots iteratively (15 min)
+> - Split-apply-combine... plot! (20 min)
 > - Faceting (10 min)
 
 --------------
