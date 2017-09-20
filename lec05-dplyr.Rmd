@@ -241,15 +241,29 @@ surveys_complete <- surveys %>%
          !is.na(hindfoot_length),  # remove missing hindfoot_length
          !is.na(sex))              # remove missing sex
 
-# We could also use this expressions as an alternative to the above
-suverys_complete <- na.omit(surverys) # Omits observations with NA in *any* column
-# Or this one
-suverys_complete <- surveys %>%
-    filter(complete.cases(species_id, weight, hindfoot_length, sex)) 
+# This expression is a succinct alternative to the above
+surveys_complete_comcas <- surveys %>%
+    filter(complete.cases(species_id, weight, hindfoot_length, sex))
+
+# This is even briefer, but omits observations with NA in *any* column.
+# There is no way to control which columns to use, but it is common to want
+# to exclude all NAs, which in our case corresponds to the columns listed above.
+surveys_complete_naomit <- na.omit(surveys)
 
 # Compare the dimensions of the original and the cleaned data frame
 dim(surveys)
 dim(surveys_complete)
+dim(surveys_complete_comcas)
+dim(surveys_complete_naomit)
+```
+
+```{r}
+surveys %>%
+    filter(complete.cases(species_id, weight, hindfoot_length, sex)) 
+```
+
+```{r}
+na.omit(surveys)
 ```
 
 Now that our dataset is ready, we can save it as a CSV file in our `data`
