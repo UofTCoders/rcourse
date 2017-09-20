@@ -9,6 +9,7 @@ title: "Tidying and exporting data, reproducing figures"
 > - Reproduce existing figures from raw data.
 > - Understand which raw data is underlying a figure.
 > - Understand which types of figures are suitable to create from raw data.
+> - Explore scientific questions using dplyr and ggplot.
 > 
 > 
 > ### Lecture outline
