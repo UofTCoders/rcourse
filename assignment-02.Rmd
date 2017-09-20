@@ -100,7 +100,6 @@ your `.Rmd` source file and a knitted `.html` version of the same file.*
     g.  Was the body temperature higher when the beaver was active or
         inactive? Is this what you would expect? (0.25 marks)
 
-    h.  Add to your solution in `f` by also grouping by activity level
-        *and* the day of the observation. Which variable seems to be
-        more correlated with high body temperature, activity level or
-        the day of the measurment? (0.25 marks)
+    h.  Grouping by activity level *and* the day of the observation.
+        Which variable seems to be more related to high body
+        temperature: activity level or day of measurment? (0.25 marks)
