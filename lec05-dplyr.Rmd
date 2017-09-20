@@ -1,5 +1,5 @@
 ---
-title: "Tidy and export data, reproducing figures"
+title: "Tidying and exporting data, reproducing figures"
 ---
 
 > ### Lecture objectives
@@ -72,9 +72,10 @@ head(surveys_gw)
 ### Long to Wide with `spread`
 
 Now, to make this long data wide, we use `spread` from `tidyr` to spread out the
-different taxa into columns. `spread` takes three arguments - the data, the
-*key* column, or column with identifying information, the *values* column - the
-one with the numbers. We'll use a pipe so we can ignore the data argument.
+different taxa into columns. `spread` takes three arguments: - the data, the
+*key* column (or column with identifying information), the *values* column (the
+one with the numbers/values). We'll use a pipe so we can ignore the data
+argument.
 
 ```{r}
 surveys_gw_wide <- surveys_gw %>%
@@ -134,7 +135,7 @@ surveys_gw_wide %>%
   head()
 ```
 
-> ### Challenge
+># ### Challenge
 >
 > 1. Make a wide data frame with `year` as columns, `plot_id` as rows, and the
 >   values are the number of genera per plot. You will need to summarize before
@@ -142,7 +143,7 @@ surveys_gw_wide %>%
 >   types of a genera. It's a powerful function! See `?n_distinct` for more.
 >
 > 2. Now take that data frame, and make it long again, so each row is a unique
->    `plot_id` `year` combination.
+>    `plot_id` - `year` combination.
 >
 > 3. The `surveys` data set is not truly wide or long because there are
 >    two columns of measurement - `hindfoot_length` and `weight`.  This makes it
@@ -194,12 +195,12 @@ them with your collaborators or for archival.
 Similar to the `read_csv()` function used for reading CSV files into R, there is
 a `write_csv()` function that generates CSV files from data frames.
 
-Before using `write_csv()`, we are going to create a new folder, `data_output`,
+Before using `write_csv()`, we are going to create a new folder, `data`,
 in our working directory that will store this generated dataset. We don't want
 to write generated datasets in the same directory as our raw data. It's good
 practice to keep them separate. The `data` folder should only contain the raw,
 unaltered data, and should be left alone to make sure we don't delete or modify
-it. In contrast, our R code will generate the contents of the `data_output`
+it. In contrast, our R code will generate the contents of the `data`
 directory, so even if the files it contains are deleted, we can always
 re-generate them.
 
@@ -251,9 +252,9 @@ dim(surveys)
 dim(surveys_complete)
 ```
 
-Now that our dataset is ready, we can save it as a CSV file in our `data_output`
+Now that our dataset is ready, we can save it as a CSV file in our `data`
 folder.
 
 ```{r}
-write_csv(surveys_complete, path = "data_output/surveys_complete.csv")
+write_csv(surveys_complete, path = "data/surveys_complete.csv")
 ```
