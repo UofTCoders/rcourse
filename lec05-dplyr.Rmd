@@ -214,14 +214,16 @@ Navigate to this directory in your file browser and create a folder called data 
 Alternatively, you could use R to create this directory.
 
 ```{r}
-dir.create("data_output")
+dir.create("data")
 
-# The above will work just fine, but since it gives an error when the 
-# directory already exists, you could add a a conditional expression, which only
+# To suppress the warning, we could do
+dir.create("data", showWarnings = FALSE)
+
+# Another alternative would be to use a conditional expression, which only
 # creates the directory *if* it does not already exist. The syntax here is
 # similar to the for loop we created in the second lecture.
-if (!file.exists('data_output')) {
-    dir.create("data_output")
+if (!dir.exists('data')) {
+    dir.create("data")
 }
 ```
 
@@ -237,6 +239,12 @@ surveys_complete <- surveys %>%
          !is.na(weight),           # remove missing weight
          !is.na(hindfoot_length),  # remove missing hindfoot_length
          !is.na(sex))              # remove missing sex
+
+# We could also use this expressions as an alternative to the above
+suverys_complete <- na.omit(surverys) # Omits observations with NA in *any* column
+# Or this one
+suverys_complete <- surveys %>%
+    filter(complete.cases(species_id, weight, hindfoot_length, sex)) 
 
 # Compare the dimensions of the original and the cleaned data frame
 dim(surveys)
