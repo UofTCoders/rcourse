@@ -257,15 +257,6 @@ dim(surveys_complete_comcas)
 dim(surveys_complete_naomit)
 ```
 
-```{r}
-surveys %>%
-    filter(complete.cases(species_id, weight, hindfoot_length, sex)) 
-```
-
-```{r}
-na.omit(surveys)
-```
-
 Now that our dataset is ready, we can save it as a CSV file in our `data`
 folder.
 
