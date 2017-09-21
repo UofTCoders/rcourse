@@ -12,7 +12,6 @@ title: Data wrangling and visualization in the tidyverse
 > - Produce scatter plots, line plots, and histograms using ggplot.
 > - Set universal plot settings.
 > - Understand and apply faceting in ggplot.
-> - Explore scientific questions using dplyr and ggplot.
 
 
 > ### Lesson outline
@@ -645,8 +644,8 @@ surveys_abun_species %>%
 
 It is possible to specify exactly which colors to use, to avoid those that are
 hard to distinguish. We can also change the thickness of the lines, and adjust
-the x labels so that they don't overlap. This will be discussed in much more
-detail in the data visualization lecture.
+the x labels so that they don't overlap. This will be discussed in detail in the
+data visualization lecture.
 
 ```{r}
 color_names <- c('black', 'orange')
@@ -674,11 +673,6 @@ code, how could we separate each species into its own subplot?
 > 2.
 >    a. Which year was the average weight of the animals the highest?
 >    b. Is the yearly trend the same for all species?
-> 3. Hard mode: If you were to look at the average hindfoot length over time for
-all animals, you would find that the trend is similar to the one for average
-weight. Do you have any idea why both the average hindfoot length and the
-average weight display the same pattern over time? *Hint: 2b is a good starting
-point to explore this.*
 
 
 <!--
@@ -712,42 +706,6 @@ surveys_abun_species %>%
         facet_wrap(~ species)
 ```
 
-```{r}
-# 3.a
-# Answer: Since the average hindfoot length and average weight has remained
-# relatively constant for each individual species, the explaining variable is
-# likely the number of species captured has shifted towards capturing more of
-# the smaller rodents. By plotting the result of tallying by species, we can see
-# that this is indeed the case.
-
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-```{r}
-# 3 supplementary
-# General hindfoot length trend
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year) %>%
-    summarize(mean_hinfood_length = mean(hindfoot_length)) %>%
-    ggplot(aes(x = year, y = mean_hinfood_length)) +
-        geom_line()
-
-# Per species
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(mean_weight = mean(hindfoot_length)) %>%
-    ggplot(aes(x = year, y = mean_weight, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
 -->
 
 *Parts of this lesson material were taken and modified from [Data
