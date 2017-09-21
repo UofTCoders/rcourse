@@ -162,7 +162,7 @@ surveys_gw_wide %>%
 >    columns for `spread`.
 
 <!---
-  ```{r, echo=FALSE, purl=FALSE}
+  ```{r, echo=FALSE}
 ## Answer 1
 rich_time <- surveys %>%
   group_by(plot_id, year) %>%
@@ -436,8 +436,8 @@ for the exact colors and shapes, axis styles, or to include the small dots
 around the main lines).
 
 ```{r, eval=FALSE, echo=FALSE}
-plant_biomass %>% 
-    gather('species', 'biomass', betula_nana:vaccinium_vitis_idaea) %>% 
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
     group_by(habitat, treatment, year) %>% 
     summarize(mean_biomass = mean(biomass)) %>% 
     ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
@@ -461,7 +461,7 @@ Hints:
 
 ```{r, eval=FALSE, echo=FALSE, fig.height=9, fig.width=7}
 plant_biomass %>% 
-    gather('species', 'biomass', betula_nana:vaccinium_vitis_idaea) %>% 
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
     group_by(habitat, species, treatment, year) %>% 
     summarize(mean_biomass = mean(biomass)) %>% 
     ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
@@ -488,7 +488,7 @@ and search online to find out how to:
 color_names <- c('red', 'blue')
 
 plant_biomass %>% 
-    gather('species', 'biomass', betula_nana:vaccinium_vitis_idaea) %>% 
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
     group_by(habitat, treatment, year) %>% 
     summarize(mean_biomass = mean(biomass)) %>% 
     ggplot(aes(x = year, y = mean_biomass, color = treatment, shape = treatment)) +
