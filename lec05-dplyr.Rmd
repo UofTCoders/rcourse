@@ -34,7 +34,7 @@ Load the data we saved in the previous lesson.
 
 ```{r}
 # Download if needed
-# download.file("https://ndownloader.figshare.com/files/2292169", "data/portal_data.csv")
+# download.file("https://ndownloader.figshare.com/files/2292169", "portal_data.csv")
 surveys <- read_csv('portal_data.csv')
 surveys
 ```
@@ -260,7 +260,7 @@ dim(surveys_complete_comcas)
 dim(surveys_complete_naomit)
 ```
 
-Now that our dataset is ready, we can save it as a CSV file in our `data`
+Now that our dataset is ready, we can save it as a CSV file in our `data-processed`
 folder.
 
 ```{r}
