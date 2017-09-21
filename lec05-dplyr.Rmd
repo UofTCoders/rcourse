@@ -3,17 +3,17 @@ title: "Tidying and exporting data, reproducing figures"
 ---
 
 > ### Lecture objectives
-> 
+>
 > - Learn about tidy data.
 > - Transform data from the long to wide format.
 > - Reproduce existing figures from raw data.
 > - Understand which raw data is underlying a figure.
 > - Understand which types of figures are suitable to create from raw data.
 > - Explore scientific questions using dplyr and ggplot.
-> 
-> 
+>
+>
 > ### Lecture outline
-> 
+>
 > - Reshaping with gather and spread (25 min)
 > - Exporting data (15 min)
 > - Reproducing figures (50 min)
@@ -229,7 +229,7 @@ if (!dir.exists('data')) {
 }
 ```
 
-We are going to prepare a cleaned up version of the data without NAs. Let's 
+We are going to prepare a cleaned up version of the data without NAs. Let's
 start by removing observations for which the `species_id` is missing. Let's also
 remove observations for which `weight` and the `hindfoot_length` are missing.
 This dataset should also only contain observations of animals for which the sex
@@ -268,9 +268,9 @@ write_csv(surveys_complete, path = "data/surveys_complete.csv")
 
 ## Team Challenges
 
-These are four exercises in exploratory data analyses, which will train you to 
+These are four exercises in exploratory data analyses, which will train you to
 think about data and to use the tools you have been learning about in this class
-to solve scientific questions and to reproduce figures from the literature. To 
+to solve scientific questions and to reproduce figures from the literature. To
 solve these challenges, you will need to understand what data underlies a
 figure and how you need to manipulate it to recreate the figure.
 
@@ -371,7 +371,7 @@ surveys_abun_species %>%
     ggplot(aes(x = year, y = n, color = species)) +
         geom_line() +
         facet_wrap(~ species)
-        
+       
 # Average weight over time
 surveys_abun_species %>%
     filter(!is.na(weight)) %>%
@@ -379,7 +379,7 @@ surveys_abun_species %>%
     summarize(mean_weight = mean(weight)) %>%
     ggplot(aes(x = year, y = mean_weight, color = species)) +
         geom_line()
-        
+       
 # Total weight over time
 surveys_abun_species %>%
     filter(!is.na(weight)) %>%
@@ -418,7 +418,7 @@ under an open license and the [figures can be accessed via this
 link](http://rstb.royalsocietypublishing.org/content/368/1624/20120486.figures-only).
 
 You will be working with this dataset in assignment 3, so we have prepared the
-data for you in a format that is easier to work with. [Download the 
+data for you in a format that is easier to work with. [Download the
 data](https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv)
 and read it into a dataframe called `plant_biomass`. Confirm that the data
 frame is 180 rows by 10 columns
@@ -430,16 +430,16 @@ dim(plant_biomass) == c(180, 10)
 
 Reproduce figure 3 from the paper. Focus on the overall message on the plot,
 i.e. two panels for different habitats of the plant biomass over the year in
-grazed controls vs rodent exclosures. You do not need to get the figure 
-aesthetics to look exactly the same as in the published figures (i.e. no need 
+grazed controls vs rodent exclosures. You do not need to get the figure
+aesthetics to look exactly the same as in the published figures (i.e. no need
 for the exact colors and shapes, axis styles, or to include the small dots
 around the main lines).
 
 ```{r, eval=FALSE, echo=FALSE}
 plant_biomass %>%
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
-    group_by(habitat, treatment, year) %>% 
-    summarize(mean_biomass = mean(biomass)) %>% 
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
     ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
         geom_line() +
         geom_point() +
@@ -460,10 +460,10 @@ Hints:
   species (as in the paper figure).
 
 ```{r, eval=FALSE, echo=FALSE, fig.height=9, fig.width=7}
-plant_biomass %>% 
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
-    group_by(habitat, species, treatment, year) %>% 
-    summarize(mean_biomass = mean(biomass)) %>% 
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, species, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
     ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
         geom_line() +
         geom_point() +
@@ -487,10 +487,10 @@ and search online to find out how to:
 # I think are too much to ask for but can be nice to show
 color_names <- c('red', 'blue')
 
-plant_biomass %>% 
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>% 
-    group_by(habitat, treatment, year) %>% 
-    summarize(mean_biomass = mean(biomass)) %>% 
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
     ggplot(aes(x = year, y = mean_biomass, color = treatment, shape = treatment)) +
         geom_line(size = 0.8) +
         geom_point(size = 3) +
