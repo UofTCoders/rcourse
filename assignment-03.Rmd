@@ -21,7 +21,7 @@ title: 'Assignment 3: dplyr and ggplot (8 marks)'
         temperatures for the active and inactive conditions. Create a
         histogram with the temperature on the x-axis and color the bins
         corresponding to the activity variable. *Hint: You need to use
-        the `fill` parameter rather than `color`*(0.25 marks).
+        the `fill` parameter rather than `color`.* (0.25 marks)
 
     b.  We already know that the beaver's body temperature is correlated
         with whether it is outside the retreat or not. However, we did
@@ -71,7 +71,7 @@ title: 'Assignment 3: dplyr and ggplot (8 marks)'
         another column (`biomass`). Assign it to the variable
         `plant_biomass` to overwrite the previous data frame. *Hint:
         Make sure the output is correct before overwriting the old
-        variable* (0.75 marks)
+        variable.* (0.75 marks)
 
 3.  Data exploration (4.5 marks)
 
