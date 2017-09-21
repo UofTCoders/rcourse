@@ -48,9 +48,9 @@ from the UofT library, and it's available in the Physics library as a hard copy 
    instead of putting numbers in. In R we will mostly be simulating.) An example of a discipline where 
    the models tend to be complicated is systems biology - models of celluar pathways often try to 
    include as many components as are known, i.e. taking all the components from the following 
-   picture and creating a corresponding model.
-
-  ![Signal transduction pathway. [Image source](https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
+   picture and creating a corresponding model:  
+   
+   ![Signal transduction pathway. Image source: https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
   
 2. Models can show us something we didn't expect, that we couldn't intuit from just thinking about the problem. 
   - if your model is simple enough, it can be predictive in a broadly applicable way. We'll talk about some
@@ -65,7 +65,7 @@ so all of what I'll be telling you about is techniques and concepts that I have 
 or use very frequently and that I think are an important part of the theorist / data scientist toolkit. 
 
 3. In the next few lectures we will talk about models and about using R to analyze models. 
-We will first do this qualitatively - no math, then quantitatively. We will talk about fitting models to data,
+We will first do this qualitatively (no math), then quantitatively. We will talk about fitting models to data,
 and by the end I hope that you will be able to incorporate modelling into your project, 
 whether a model you design yourself or an existing ecological model. 
 
@@ -74,8 +74,8 @@ whether a model you design yourself or an existing ecological model.
 Let's look at some examples of one-dimensional models and talk about what we can learn from these models
 qualitatively, without doing any calculations.
 
-**Dimension**: the number of variables in your model. (Not the number of parameters - 
-variables are what track the species you're interested in.)
+**Dimension**: the number of variables in your model. (Not the number of parameters.  
+Variables are what track the species you're interested in.)
 
 Let's write down a model for the growth of a species. We want to predict how many organisms are present 
 in the population at time $t$, and to do that we need to write down an equation that describes how the
@@ -85,7 +85,7 @@ $$\frac{dN}{dt}$$
 
 If you've taken calculus, you will recognize this as the first derivative of $N$ with respect to $t$. 
 If your calculus is foggy in your memory, when you see this notation think "change in $N$ per change in $t$.
-$dN$ is the notation commonly used to mean "a small amount of $N$, so this expression mathematically describes
+$dN$ is the notation commonly used to mean "a small amount of $N$," so this expression mathematically describes
 by what small amount $N$ will change in a small amount of time $dt$. This is also sometimes written as
 $\dot{N}$. I will usually use $dN/dt$ but you may see the dot notation in the literature. 
 A single dot is shorthand for "first derivative". 
@@ -96,14 +96,14 @@ What should the growth rate of our population depend on? Let's brainstorm some t
 There are no wrong answers here: anything you can think of that makes biological sense is a reasonable thing 
 to include in a model, although after brainstorming we will write something very simple as an example.
 
-Possible answers:
+<!-- Possible answers: 
 - birth rate $r$
 - death rate $\delta$
 - number of organisms $N$
 - carrying capacity $K$
 - rate of predation
 - migration rate
-- abundance of food
+- abundance of food -->
 
 Let's make some sample data to help us come up with a simple model.
 
@@ -129,6 +129,7 @@ N_diff <- tail(population_size,-1) - head(population_size,-1) # last N-1 points 
 qplot(head(population_size,-1),N_diff)+
   geom_line(aes(x=head(population_size,-1), y=N_diff))
 ```
+
 This is a straight line, which tells us that the change in $N$ is proportional to $N$, 
 and in fact because of the way we defined time, the change in $N$ is exactly $N$. 
 
@@ -150,8 +151,6 @@ or the population increases by $N dt$ in time $dt/r$.
 
 The process we just used to get this model is probably not what you'd do in practice - 
 I just wanted to illustrate the connection between exponential growth and this differential equation.
-
-### Individual exercise
 
 If $r$ is made larger, does the population grow faster or slower? 
 
@@ -186,9 +185,7 @@ on either side of the fixed point. For a one-dimensional system, our phase portr
 We mark the fixed point(s) with circles, and we draw an arrow to the left wherever $dN/dt$ is negative, 
 and an arrow to the right wherever $dN/dt$ is positive in the regions between fixed points. 
 
-
 <!-- diagram of phase portrait --> 
-
 
 This model is a bit boring - there's only one fixed point, and it's unstable. This makes sense - 
 we are talking about exponential growth, after all. There's no upper limit. 
@@ -249,7 +246,7 @@ qplot(N_seq,dN_dt) +
 
 The fixed points are at $N=0$ and $N=80$. If we change $K$, we can figure out that the second fixed point is actually just $N=K$. 
 
-Now we draw the phase portrait:
+Now we draw the phase portrait (on blackboard):
 
 <!-- Phase portrait for logistic eqn -->
 
@@ -299,7 +296,7 @@ There is a way to model the discreteness of a population so that small populatio
 realistically, and time permitting I will talk about it a bit - it's called "stochastic simulation" 
 and the most common method is to use the Gillespie algorithm.
 
-### Lorenz simulation in R
+### Extras: Lorenz simulation in R
 ```
 # Simulation of the Lorenz system, a chaotic model (plotted in 2D)
 
