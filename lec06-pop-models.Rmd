@@ -12,55 +12,53 @@ of dynamical systems to take or audit. I also refer to "Nonlinear Dynamics and C
 a very good textbook which you might find helpful. You can find the pdf online, it's available as an e-book
 from the UofT library, and it's available in the Physics library as a hard copy course reserve.
 
-## Learning objectives:
+> ### Learning objectives:
+>
+> - Appreciate the purpose and usefulness of modelling real-world systems
+> - Understand the use of differential equations to model populations
+> - Qualitatively analyze one-dimensional population models by hand and in R
+>     - Find fixed points graphically in R
+>     - Analyze stability graphically in R
+>     - Draw one-dimensional phase portraits by hand
 
-- Appreciate the purpose and usefulness of modelling real-world systems
-- Understand the use of differential equations to model populations
-- Qualitatively analyze one-dimensional population models by hand and in R
-    - Find fixed points graphically
-    - Analyze stability graphically
-    - Draw one-dimensional phase portraits
-
-## Lesson outline:
-
-Total lesson time: 2 hours
-
-- Introduction to modelling (20 min)
-- Setting up a model (40 min)
-- Qualitative analysis of one-dimensional models (60 min)
+> ### Lesson outline:
+> 
+> Total lesson time: 2 hours
+> 
+> - Introduction to modelling (20 min)
+> - Setting up a model (40 min)
+> - Qualitative analysis of one-dimensional models (60 min)
 
 ----
 
 ## Introduction - why model?
 
-*How many have taken some theoretical ecology before?*
+<!--*How many have taken some theoretical ecology before?*-->
 
 1. Models can simplify a complex system and help us identify what's important.
-  - biology, as we all know, is extremely complicated
-  - models summarize what we think we know about a system, 
-  force us to identify the important parameters and distill them down to a manageable number of parameters
+  - Biology, as we all know, is extremely complicated.
+  - Models summarize what we think we know about a system, 
+  force us to identify the important parameters, and encourage us to distill 
+  them down to a manageable number of parameters.
    
    *Note*: that's not always how modelling is done. Sometimes you just add everything you can think of 
    to your very complicated model, and you hope by doing that, your model will be more accurate 
-   and make better predictions. But to do that you need to simulate the model - it will likely 
+   and make better predictions. But your model will likely 
    be too complicated to solve analytically. (Analytical = a version you can leave with variables 
    instead of putting numbers in. In R we will mostly be simulating.) An example of a discipline where 
    the models tend to be complicated is systems biology - models of celluar pathways often try to 
    include as many components as are known, i.e. taking all the components from the following 
    picture and creating a corresponding model.
 
-  ![Signal transduction pathway](1280px-Signal_transduction_pathways.png)
-  
-  [Image source](https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)
+  ![Signal transduction pathway. [Image source](https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
   
 2. Models can show us something we didn't expect, that we couldn't intuit from just thinking about the problem. 
   - if your model is simple enough, it can be predictive in a broadly applicable way. We'll talk about some
   famous ecological models, and the assignments will also include more examples. I will also include some
   famous examples from physics, where this field is known as *nonlinear dynamics*. Many of these classic 
   models are classic because their results weren't obvious before the model was created. 
-    - example: Lorenz model (show video)
-    - example: Lotka-volterra predator-prey model (show simulation in R)
-    - example: model from my research (show zyx vs pV)
+    - example: Lorenz model of the atmosphere which exhibits chaos ([video](https://www.youtube.com/watch?v=FYE4JKAXSfY)). I wrote a quick simulation in R which you can play around with, it's at the bottom of these notes.
+    - example: Lotka-volterra predator-prey model. 
 
 *Aside*: I do theoretical biophysics, which is quite similar to theoretical ecology in my case, 
 so all of what I'll be telling you about is techniques and concepts that I have found useful 
@@ -114,9 +112,12 @@ If we take one unit of time to be the time between divisions, we can assume that
 approximately doubles at each time point.
 
 ```{r}
+library(ggplot2) # so that we can use qplot
+
 times = seq(0, 10, by = 0.2)
 population_size <- 2^times
-plot(times,population_size)
+qplot(times,population_size) +
+  geom_line(aes(x=times,y=population_size))
 ```
 
 How do we write this assumption as a general model? Let's calculate the difference in $N$ at each time point
@@ -125,8 +126,8 @@ and plot this vs. $N$ at the previous time point.
 ```{r}
 
 N_diff <- tail(population_size,-1) - head(population_size,-1) # last N-1 points minus first N-1 points
-plot(head(population_size,-1),N_diff)
-lines(head(population_size,-1),N_diff)
+qplot(head(population_size,-1),N_diff)+
+  geom_line(aes(x=head(population_size,-1), y=N_diff))
 ```
 This is a straight line, which tells us that the change in $N$ is proportional to $N$, 
 and in fact because of the way we defined time, the change in $N$ is exactly $N$. 
@@ -177,8 +178,8 @@ the places where $dN/dt = 0$ are the fixed points of our system. Let's do this f
 N_seq <- seq(-20,20) # make a sequence of N values to plot dN/dt against
 dN_dt = N_seq  # assume r = 1
 
-plot(N_seq,dN_dt)
-lines(N_seq,0*N_seq) # a line at zero for visual aid
+qplot(N_seq,dN_dt)+
+  geom_line(aes(x=N_seq,y=0*N_seq)) # a line at zero for visual aid
 ```
 We can also tell whether the fixed points are stable or unstable by looking at the sign of $dN/dt$ 
 on either side of the fixed point. For a one-dimensional system, our phase portrait is a line of $N$. 
@@ -242,8 +243,8 @@ logistic_eqn <- function(N,r,K) { # calculate dN/dt for the logistic equation
 
 dN_dt = logistic_eqn(N_seq,r=0.5,K=80)  # notice the vectorized implementation
 
-plot(N_seq,dN_dt)
-lines(N_seq,0*N_seq) # a line at zero for visual aid
+qplot(N_seq,dN_dt) +
+  geom_line(aes(x=N_seq,y=0*N_seq)) # a line at zero for visual aid
 ```
 
 The fixed points are at $N=0$ and $N=80$. If we change $K$, we can figure out that the second fixed point is actually just $N=K$. 
@@ -297,3 +298,67 @@ looked at so far, it's what is called and **absorbing** state: once you enter it
 There is a way to model the discreteness of a population so that small population sizes are treated
 realistically, and time permitting I will talk about it a bit - it's called "stochastic simulation" 
 and the most common method is to use the Gillespie algorithm.
+
+### Lorenz simulation in R
+```
+# Simulation of the Lorenz system, a chaotic model (plotted in 2D)
+
+library(animation)
+
+ani.options(interval=.001)
+
+# dynamical equations for the lorenz system
+dotx <- function(x,y,sigma){
+    return(sigma*(y-x))
+}
+
+doty <- function(x,y,z,rho){
+    return(x*(rho-z) - y)
+}
+    
+dotz <- function(x,y,z,beta){
+    return(x*y - beta*z)
+}
+
+# parameters
+sigma <- 10
+beta <- 8/3
+rho <- 28
+
+dt <- 0.02 #timestep
+tmax <- 8
+points <- tmax/dt
+
+t_vector = seq(0, tmax, by = dt)
+
+xinit <- 0.5
+yinit <- 0.6
+zinit <- 0.7
+
+# vectors to store simulation
+x_vector<-numeric(points); y_vector<-numeric(points); z_vector<-numeric(points)
+
+# initialize variables
+x = xinit
+y = yinit
+z = zinit
+
+saveGIF({
+    count <- 1
+    for (t in t_vector){ 
+      count <- count + 1
+      dx <- dotx(x,y,sigma)*dt
+      dy <- doty(x,y,z,rho)*dt
+      dz <- dotz(x,y,z,beta)*dt
+      
+      x <- x + dx
+      y <- y + dy 
+      z <- z +  dz
+    
+      x_vector[count] <- x
+      y_vector[count] <- y
+      z_vector[count] <- z
+      plot(x_vector,y_vector, ylim = c(-30,30), xlim = c(-30,30))
+    }
+})
+```
