@@ -71,8 +71,8 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 4    | Sep 28 | Qualitative population models in two dimensions     | Madeleine      |
 | 5    | Oct 03 | Fixed points, null clines, and stability            | Madeleine      |
 | 5    | Oct 05 | Modelling in R                                      | Madeleine      |
-| 6    | Oct 10 | Statistical/probabilistic modeling                  | Luke           |
-| 6    | Oct 12 | Fitting models to data                              | Madeleine      |
+| 6    | Oct 10 | Fitting models to data                              | Madeleine      |
+| 6    | Oct 12 | Statistical/probabilistic modeling                  | Luke           |
 | 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
 | 7    | Oct 19 | Project and Git setup in RStudio                    | Luke           |
 | 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliott        |
