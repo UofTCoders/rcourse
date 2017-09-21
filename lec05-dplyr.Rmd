@@ -136,7 +136,7 @@ surveys_gw_wide %>%
   head()
 ```
 
-># ### Challenge
+> ### Challenge
 >
 > 1. Make a wide data frame with `year` as columns, `plot_id` as rows, and the
 >   values are the number of genera per plot. You will need to summarize before
