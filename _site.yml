@@ -56,8 +56,8 @@ navbar:
           href: assignment-01.html
         - text: "Assignment 2"
           href: assignment-02.html
-#        - text: "Assignment 3"
-#          href: assignment-03.html
+        - text: "Assignment 3"
+          href: assignment-03.html
 #        - text: "Assignment 4"
 #          href: assignment-04.html
 #        - text: "Assignment 5"
