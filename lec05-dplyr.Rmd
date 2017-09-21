@@ -260,7 +260,7 @@ dim(surveys_complete_comcas)
 dim(surveys_complete_naomit)
 ```
 
-Now that our dataset is ready, we can save it as a CSV file in our `data`
+Now that our dataset is ready, we can save it as a CSV file in our `data-processed`
 folder.
 
 ```{r}
