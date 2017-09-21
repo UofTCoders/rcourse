@@ -297,6 +297,12 @@ realistically, and time permitting I will talk about it a bit - it's called "sto
 and the most common method is to use the Gillespie algorithm.
 
 ### Extras: Lorenz simulation in R
+
+The following code will create a GIF of the x-y phase plane for the Lorenz system.
+
+![Lorenz system simulation](https://github.com/UofTCoders/rcourse/lorenz.gif "Lorenz simulation")
+
+
 ```
 # Simulation of the Lorenz system, a chaotic model (plotted in 2D)
 
