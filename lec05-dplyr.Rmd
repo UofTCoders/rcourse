@@ -44,12 +44,12 @@ surveys
 **`dplyr`** is one part of a larger **`tidyverse`** that enables you to work
 with data in tidy data formats. **`tidyr`** enables a wide range of
 manipulations of the structure data itself. For example, the survey data
-presented here is in almost in what we call a **long** format - every
-observation of every individual is its own row. This is an ideal format for data
-with a rich set of information per observation. It makes it difficult, however,
-to look at the relationships between measurements across plots. For example,
-what is the relationship between mean weights of different genera across the
-entire data set?
+presented here is almost in what we call a **long** format - every observation
+of every individual is its own row. This is an ideal format for data with a rich
+set of information per observation. It makes it difficult, however, to look at
+the relationships between measurements across plots. For example, what is the
+relationship between mean weights of different genera across the entire data
+set?
 
 To answer that question, we'd want each plot to have a single row, with all of
 the measurements in a single plot having their own column. This is called a
@@ -59,7 +59,7 @@ within plots and species, we might begin to have some relationships we'd want to
 examine.
 
 Let's see this in action. First, using **`dplyr`**, let's create a data frame
-with the mean body weight of each genera by plot.
+with the mean body weight of each genus by plot.
 
 ```{r}
 surveys_gw <- surveys %>%
@@ -127,8 +127,8 @@ has the same composition.
 
 We could also have used a specification for what columns to include. This can be
 useful if you have a large number of identifying columns, and it's easier to
-specify what to gather than what to leave alone. And if the columns are in a
-row, we don't even need to list them all out - just use the `:` operator!
+specify what to gather than what to leave alone. And if the columns are
+sequential, we don't even need to list them all out - just use the `:` operator!
 
 ```{r}
 surveys_gw_wide %>%
@@ -141,7 +141,7 @@ surveys_gw_wide %>%
 > 1. Make a wide data frame with `year` as columns, `plot_id` as rows, and the
 >   values are the number of genera per plot. You will need to summarize before
 >   reshaping, and use the function `n_distinct` to get the number of unique
->   types of a genera. It's a powerful function! See `?n_distinct` for more.
+>   types of a genus. It's a powerful function! See `?n_distinct` for more.
 >
 > 2. Now take that data frame, and make it long again, so each row is a unique
 >    `plot_id` - `year` combination.
@@ -198,7 +198,7 @@ a `write_csv()` function that generates CSV files from data frames.
 
 Before using `write_csv()`, we are going to create a new folder, `data`,
 in our working directory that will store this generated dataset. We don't want
-to write generated datasets in the same directory as our raw data. It's good
+to store manipulated datasets in the same directory as our raw data. It's good
 practice to keep them separate. The `data` folder should only contain the raw,
 unaltered data, and should be left alone to make sure we don't delete or modify
 it. In contrast, our R code will generate the contents of the `data`
@@ -211,7 +211,7 @@ Use the `getwd()` function to find out which is the current working directory.
 getwd()
 ```
 
-Navigate to this directory in your file browser and create a folder called data output.
+Navigate to this directory in your file browser and create a folder called data.
 
 Alternatively, you could use R to create this directory.
 
@@ -268,10 +268,10 @@ write_csv(surveys_complete, path = "data/surveys_complete.csv")
 
 ## Team Challenges
 
-These are four excersices in exploratory data analyses, where you will train to 
+These are four exercises in exploratory data analyses, which will train you to 
 think about data and to use the tools you have been learning about in this class
 to solve scientific questions and to reproduce figures from the literature. To 
-answer solve these challenges, you will need to understand what data underlies a
+solve these challenges, you will need to understand what data underlies a
 figure and how you need to manipulate it to recreate the figure.
 
 
@@ -347,13 +347,13 @@ surveys_abun_species %>%
         facet_wrap(~ species)
 ```
 
-If you were to look at the average hindfoot length over time, you would find 
-that the trends are similar to those of the average weight. Can you find an 
-explanation for why both the average hindfoot length and the average weight 
-decrease over time for all animals' average weight, but remain constant when 
-looking at individual species? Phrased another way: since each species display
+If you were to look at the average hindfoot length over time, you would find
+that the trends are similar to those of the average weight. Can you find an
+explanation for why both the average hindfoot length and the average weight
+decrease over time for all animals' average weight, but remain constant when
+looking at individual species? Phrased another way: since each species displays
 constant weight and hindfoot_length measures over time, what could be the cause
-to the notable decrease over time for the average weight of all species pooled
+of the notable decrease over time for the average weight of all species pooled
 together?
 
 ```{r, eval=FALSE, echo=FALSE}
@@ -409,7 +409,7 @@ surveys_abun_species %>%
 ```
 
 
-### 2. Reproduce figure 3 from the 
+### 2. Reproduce figure 3 from the paper
 
 For this section, you will apply your data wrangling and plotting skills to
 reproduce a couple of figures from a study on the yearly change in biomass of
@@ -420,7 +420,7 @@ link](http://rstb.royalsocietypublishing.org/content/368/1624/20120486.figures-o
 You will be working with this dataset in assignment 3, so we have prepared the
 data for you in a format that is easier to work with. [Download the 
 data](https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv)
-and read it into a dataframe called `plant_biomass`. Confirm that you data
+and read it into a dataframe called `plant_biomass`. Confirm that the data
 frame is 180 rows by 10 columns
 
 ```{r, echo=FALSE, eval=FALSE}
@@ -446,17 +446,18 @@ plant_biomass %>%
         facet_grid(~ habitat)
 ```
 
-### 3. Reproduce figure 4 from the paper.
+### 3. Reproduce figure 4 from the paper
 Use the `plant_biomass` data set and reproduce figure 4 from the paper.
 
 Hints:
 
 - To get the right dimensions of the subplots, explore how to use the function
-`facet_grid` instead of `facet_wrap`.
+  `facet_grid` instead of `facet_wrap`.
 - Remember to search online for help, e.g. "How do I change the figure size in R
-markdown?"
-- You will also need to search online to find out how you change the y-scale to
-be constant within a species, but not between species (as in the paper figure).
+  markdown?"
+- You will also need to search online or in the R documentation to find out how
+  you change the y-scale to be constant within a species, but not between
+  species (as in the paper figure).
 
 ```{r, eval=FALSE, echo=FALSE, fig.height=9, fig.width=7}
 plant_biomass %>% 
@@ -478,7 +479,7 @@ and search online to find out how to:
 - Slightly adjust the thickness of the lines.
 - Change the colors of the lines to match those online.
 - Apply a ggplot theme to make the figure background white and the overall
-figure appearance more like the paper version.
+  figure appearance more like the paper version.
 - Change the x and y label to match the paper figure.
 
 ```{r, eval=FALSE, echo=FALSE, fig.height=4, fig.width=10}
