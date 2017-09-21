@@ -196,14 +196,15 @@ them with your collaborators or for archival.
 Similar to the `read_csv()` function used for reading CSV files into R, there is
 a `write_csv()` function that generates CSV files from data frames.
 
-Before using `write_csv()`, we are going to create a new folder, `data`,
-in our working directory that will store this generated dataset. We don't want
-to store manipulated datasets in the same directory as our raw data. It's good
-practice to keep them separate. The `data` folder should only contain the raw,
+Before using `write_csv()`, we are going to create a new folder,
+`data-processed`, in our working directory that will store this generated
+dataset. We don't want to store manipulated datasets in the same directory as
+our raw data. It's good practice to keep them separate. The raw data would
+ideally be put in a `data-raw` folder, which should only contain the raw,
 unaltered data, and should be left alone to make sure we don't delete or modify
-it. In contrast, our R code will generate the contents of the `data`
-directory, so even if the files it contains are deleted, we can always
-re-generate them.
+it from how it was when we downloaded or recorded it ourself. In contrast,
+our R code will create the contents of the `data-processed` directory, so even
+if the files it contains are deleted, we can always re-generate them.
 
 Use the `getwd()` function to find out which is the current working directory.
 
@@ -211,21 +212,22 @@ Use the `getwd()` function to find out which is the current working directory.
 getwd()
 ```
 
-Navigate to this directory in your file browser and create a folder called data.
+Navigate to this directory in your file browser and create a folder called
+`data-processed`.
 
 Alternatively, you could use R to create this directory.
 
 ```{r}
-dir.create("data")
+dir.create("data-processed")
 
 # To suppress the warning, we could do
-dir.create("data", showWarnings = FALSE)
+dir.create("data-processed", showWarnings = FALSE)
 
 # Another alternative would be to use a conditional expression, which only
 # creates the directory *if* it does not already exist. The syntax here is
 # similar to the for loop we created in the second lecture.
-if (!dir.exists('data')) {
-    dir.create("data")
+if (!dir.exists('data-processed')) {
+    dir.create("data-processed")
 }
 ```
 
@@ -262,7 +264,7 @@ Now that our dataset is ready, we can save it as a CSV file in our `data`
 folder.
 
 ```{r}
-write_csv(surveys_complete, path = "data/surveys_complete.csv")
+write_csv(surveys_complete, path = "data-processed/surveys_complete.csv")
 ```
 
 
