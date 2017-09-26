@@ -60,8 +60,8 @@ Effective communication is crucial in science. The [University of Toronto provid
 You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor. Please make sure that what you submit for the final project does not overlap with what you submit for other classes, such as the 4th year research project. We will not enforce this, but the department will. 
 
 ## Lecture schedule
-| Week | Date   | Topic                                             | Instructor        |
-|------|--------|---------------------------------------------------|-------------------|
+| Week | Date   | Topic                                      | Instructor                |
+|------|--------|--------------------------------------------|---------------------------|
 | 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
 | 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
 | 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
