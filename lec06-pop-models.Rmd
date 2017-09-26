@@ -29,6 +29,10 @@ from the UofT library, and it's available in the Physics library as a hard copy 
 > - Setting up a model (40 min)
 > - Qualitative analysis of one-dimensional models (60 min)
 
+> ### Setup:
+> 
+> - Install `ggplot2`: run `install.packages('ggplot2')` in the R console.
+
 ----
 
 ## Introduction - why model?
@@ -41,7 +45,7 @@ from the UofT library, and it's available in the Physics library as a hard copy 
   force us to identify the important parameters, and encourage us to distill 
   them down to a manageable number of parameters.
    
-   *Note*: that's not always how modelling is done. Sometimes you just add everything you can think of 
+    *Note*: that's not always how modelling is done. Sometimes you just add everything you can think of 
    to your very complicated model, and you hope by doing that, your model will be more accurate 
    and make better predictions. But your model will likely 
    be too complicated to solve analytically. (Analytical = a version you can leave with variables 
@@ -51,16 +55,26 @@ from the UofT library, and it's available in the Physics library as a hard copy 
    picture and creating a corresponding model:  
    
    ![Signal transduction pathway. Image source: https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
+  - Data don't always fit theoretical models, but it is helpful to interpret data with a larger theoretical framework in mind.
   
 2. Models can show us something we didn't expect, that we couldn't intuit from just thinking about the problem. 
   - if your model is simple enough, it can be predictive in a broadly applicable way. We'll talk about some
-  famous ecological models, and the assignments will also include more examples. I will also include some
-  famous examples from physics, where this field is known as *nonlinear dynamics*. Many of these classic 
+  famous ecological models, and the assignments will include more examples. I will also include some
+  famous examples from physics, where this field is known as **nonlinear dynamics**. Many of these classic 
   models are classic because their results weren't obvious before the model was created. 
-    - example: Lorenz model of the atmosphere which exhibits chaos ([video](https://www.youtube.com/watch?v=FYE4JKAXSfY)). I wrote a quick simulation in R which you can play around with, it's at the bottom of these notes.
+    - example: Lorenz model of the atmosphere which exhibits **chaos** ([video](https://www.youtube.com/watch?v=FYE4JKAXSfY)). 
+    The equations for this system are simple, but Lorenz was surprised to find that the 
+    behaviour of the system could be very different for starting conditions that were very similar. 
+    I wrote a quick simulation in R which you can play around with, it's at the bottom of these notes.
     - example: Lotka-volterra predator-prey model. 
+    This model predicts never-ending oscillations in the populations of predator and prey species.
+    A simulation for this is also at the bottom of these notes.
+        - What else is a reasonable thing that could happen to a population of predator and prey? 
+        <!--Possible answers: 
+        - predators eat all the prey and the prey dies, then the predator dies. 
+        - predators and prey reach an unchanging steady-state -->
 
-*Aside*: I do theoretical biophysics, which is quite similar to theoretical ecology in my case, 
+     *Aside*: I do theoretical biophysics, which is quite similar to theoretical ecology in my case, 
 so all of what I'll be telling you about is techniques and concepts that I have found useful 
 or use very frequently and that I think are an important part of the theorist / data scientist toolkit. 
 
@@ -75,13 +89,22 @@ Let's look at some examples of one-dimensional models and talk about what we can
 qualitatively, without doing any calculations.
 
 **Dimension**: the number of variables in your model. (Not the number of parameters.  
-Variables are what track the species you're interested in.)
+Variables are what track the species you're interested in, 
+and parameters are numbers that specify the details of the model.)
 
 Let's write down a model for the growth of a species. We want to predict how many organisms are present 
 in the population at time $t$, and to do that we need to write down an equation that describes how the
-population changes with time. The notation for "change in population per change in time" is
+population changes with time. We will start by writing a *recursion relation*, which tells us how 
+to update the population size at time $t+ \Delta t$ from the population size at time $t$:
 
-$$\frac{dN}{dt}$$
+$$N_{t+\Delta t} = N_t + \Delta N$$
+
+$\Delta N$, the change in the population size, will depend on the specifics of our model. Let's rearrange this
+expression into the definition of a derivative by moving $\Delta N$ over and dividing both sides by $\Delta t$,
+then taking the limit of $\Delta t$ going to $0$:
+
+$$\frac{N_{t+\Delta t} - N_t}{\Delta t} = \frac{\Delta N}{\Delta t}$$
+$$lim_{\Delta t \to 0}\frac{N_{t+\Delta t} - N_t}{\Delta t} = \frac{dN}{dt}$$ 
 
 If you've taken calculus, you will recognize this as the first derivative of $N$ with respect to $t$. 
 If your calculus is foggy in your memory, when you see this notation think "change in $N$ per change in $t$.
@@ -112,22 +135,26 @@ If we take one unit of time to be the time between divisions, we can assume that
 approximately doubles at each time point.
 
 ```{r}
-library(ggplot2) # so that we can use qplot
+library(ggplot2) # ggplot2 includes the qplot function
+# qplot produces plots that are similar to ggplot, but you don't need a dataframe to use it.
+# We could use ggplot instead by first making a dataframe out of our data:
+# data <- data.frame(times, population_size)
 
-times = seq(0, 10, by = 0.2)
-population_size <- 2^times
-qplot(times,population_size) +
-  geom_line(aes(x=times,y=population_size))
+times <- seq(0, 10, by = 0.2)
+population_size <- 2 ^ times
+qplot(times, population_size) +
+  geom_line(aes(x = times, y = population_size))
 ```
 
 How do we write this assumption as a general model? Let's calculate the difference in $N$ at each time point
 and plot this vs. $N$ at the previous time point. 
 
 ```{r}
+# last N-1 points minus first N-1 points
+N_diff <- tail(population_size, -1) - head(population_size, -1) 
 
-N_diff <- tail(population_size,-1) - head(population_size,-1) # last N-1 points minus first N-1 points
-qplot(head(population_size,-1),N_diff)+
-  geom_line(aes(x=head(population_size,-1), y=N_diff))
+qplot(head(population_size, -1), N_diff) +
+  geom_line(aes(x = head(population_size, -1), y = N_diff))
 ```
 
 This is a straight line, which tells us that the change in $N$ is proportional to $N$, 
@@ -163,23 +190,25 @@ But in general, the following questions are ones you will try to answer for any 
 2. Which of the fixed points are **stable**? (If the population is slightly different from the fixed point, will it go towards it or away from it?)
 3. How do the above depend on parameters of the model?
 
----------
-
 We will see how to answer these questions quantitatively soon. But let's start by looking at them
 qualitatively. We will draw a **phase portrait** of this system, and the techniques we use will be applicable
 to almost any model you might come across. 
+
+### The exponential growth model
 
 Let's start answering these questions qualitatively for the exponential growth model. There's a lot of
 information in the differential equation we can qualitatively read off. If we plot $dN/dt$ vs $N$, 
 the places where $dN/dt = 0$ are the fixed points of our system. Let's do this for the exponential growth model. 
 
 ```{r}
-N_seq <- seq(-20,20) # make a sequence of N values to plot dN/dt against
-dN_dt = N_seq  # assume r = 1
+N_seq <-
+seq(-20, 20) # make a sequence of N values to plot dN/dt against
+dN_dt <- N_seq  # assume r = 1
 
-qplot(N_seq,dN_dt)+
-  geom_line(aes(x=N_seq,y=0*N_seq)) # a line at zero for visual aid
+qplot(N_seq, dN_dt) +
+  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
 ```
+
 We can also tell whether the fixed points are stable or unstable by looking at the sign of $dN/dt$ 
 on either side of the fixed point. For a one-dimensional system, our phase portrait is a line of $N$. 
 We mark the fixed point(s) with circles, and we draw an arrow to the left wherever $dN/dt$ is negative, 
@@ -190,35 +219,80 @@ and an arrow to the right wherever $dN/dt$ is positive in the regions between fi
 This model is a bit boring - there's only one fixed point, and it's unstable. This makes sense - 
 we are talking about exponential growth, after all. There's no upper limit. 
 
---------
+#### Challenge
+
+Find the fixed point(s) of the following differential equation.
+- Choose a value for the parameter $a$. Can you think of anything that $a$ might represent in a real population?
+   Are there any values of $a$ that don't make biological sense?
+- Plot $\frac{dN}{dt}$ vs. $N$, like we did earlier.
+- Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+
+$$\frac{dN}{dt} = N - a$$
+
+<!--
+The fixed point is shifted by $a$. This isn't really a good model, but if $a > 0$ the population will decrease 
+if $N < a$ and will increase if $N > a$ - maybe this could reflect a minimum population needed to reproduce,
+like, say, 2. If $a < 0$, $N = 0$ is still not a fixed point, but since $N$ can't really decrease below 0, 
+this doesn't really make sense. If $a = 0$, we recover the previous exponential model. 
+
+```{r}
+a <- 3 # choose some value for a
+
+N_seq <- seq(-20, 20, by = 0.2)
+dN_dt <- N_seq - a
+
+qplot(N_seq, dN_dt) +
+  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
+```
+-->
+
+### The logistic model
 
 Of course in real life there must be an upper limit to growth, otherwise the surface of the earth would be
 covered in bacteria several feet thick in a matter of hours. Let's do a quick calculation for fun - how long
 would it take for a single bacterial cell undergoing exponential growth to take over the world?
 
 ```{r}
-cell_volume = 0.6 #micrometres cubed - E. coli cell volume is ~0.6 to 0.7 micrometres^3
-growth_rate = 3 # let's say cells divide three times per hour - every 20 minutes (max growth rate of E. coli in good food conditions)
+cell_volume <- 0.6 #micrometres cubed - E. coli cell volume is ~0.6 to 0.7 micrometres^3
+growth_rate <- 3 # let's say cells divide three times per hour - every 20 minutes (max growth rate of E. coli in good food conditions)
 
-N_t <- function(N0,r,t) { # r is growth rate - divisions per hour, t is time in hours, N0 is starting population
-  return(N0*2^(r*t-1)) # the -1 is because the first doubling is included with the factor of 2
-}
+N_t <-
+  function(N0, r, t) {
+    # Calculate change in population size with time    
 
-radius_earth = 6000 # approximately 6000 km 
-SA_earth = 4*pi*radius_earth^2 # surface area of earth in km^2
+    # r: is growth rate (divisions per hour) 
+    # t: time in hours
+    # N0: starting population size
+    return(N0 * 2 ^ (r * t - 1)) # the -1 is because the first doubling is included with the factor of 2
+  }
 
-surface_covered <- function(N0,r,t) { # calculate the volume taken up by bacteria in m on the earth's surface
-  bac_volume <- N_t(N0,growth_rate,t)*cell_volume # in micrometres cubed
-  height_km = bac_volume*(1e-27)/SA_earth # assume the earth is flat compared to the height of our surface - volume is surface area x height of surface above earth. This is height in km
-  #surface_volume = height*SA_earth
-  
-  height_m = height_km*1000 # 1000 m in km
-  
-  return(height_m)
-}
+radius_earth <- 6000 # approximately 6000 km
+SA_earth <- 4 * pi * radius_earth ^ 2 # surface area of earth in km^2. pi is a predefined variable in R.
 
-t<-37
-message("The bacteria would be ", round(surface_covered(2,growth_rate,t),1),  " metres thick on the surface of the earth after ", t, " hours.") #yikes. In less than two days, we would be submerged in bacteria. 
+surface_covered <-
+  function(N0, r, t) {
+    # Calculate the height of the layer of evenly spread out bacteria on the earth's surface
+    #
+    # r : growth rate as divisions per hour
+    # t : time in hours
+    # N0 : starting population size
+    
+    bac_volume <-
+      N_t(N0, growth_rate, t) * cell_volume # in micrometres cubed
+    height_km = bac_volume * (1e-27) / SA_earth # assume the earth is flat compared to the height of our surface - volume is surface area x height of surface above earth. This is height in km.
+    # surface_volume = height*SA_earth
+    # convert bacteria volume to km cubed by dividing by 10^-27 (I googled this conversion).
+    
+    height_m <- height_km * 1000 # 1000 m in km
+    
+    return(height_m)
+  }
+
+# plot
+t <- seq(0, 38, 0.3)
+qplot(t, surface_covered(2, growth_rate, t), log = 'y', ylab = 'Height above surface (m)') 
+
+#yikes. In less than two days, we would be submerged in bacteria.
 ```
 
 Let's look at another model, the *logistic growth model*, which most of you will have seen before:
@@ -232,16 +306,18 @@ Notice that when $N$ is much smaller than $K$, this reduces to the exponential g
 Let's again plot $dN/dt$ vs. $N$ to find the fixed points:
 
 ```{r}
-N_seq <- seq(-20,100) # make a sequence of N values to plot dN/dt against
-
-logistic_eqn <- function(N,r,K) { # calculate dN/dt for the logistic equation
-  return(r*N*(1-N/K))
-}
-
-dN_dt = logistic_eqn(N_seq,r=0.5,K=80)  # notice the vectorized implementation
-
-qplot(N_seq,dN_dt) +
-  geom_line(aes(x=N_seq,y=0*N_seq)) # a line at zero for visual aid
+N_seq <-
+  seq(-20, 100) # make a sequence of N values to plot dN/dt against
+  
+logistic_eqn <-  function(N, r, K) {
+  # calculate dN/dt for the logistic equation
+  return(r * N * (1 - N / K))
+  }
+  
+dN_dt <- logistic_eqn(N_seq, r = 0.5, K = 80)  # notice the vectorized implementation
+  
+qplot(N_seq, dN_dt) +
+  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
 ```
 
 The fixed points are at $N=0$ and $N=80$. If we change $K$, we can figure out that the second fixed point is actually just $N=K$. 
@@ -267,6 +343,8 @@ but the tiniest breath of wind or tremble in your balance will knock it over and
 fixed point - the ground.
 
 ### Note: discrete vs. continuous
+
+#### Challenge
 
 There is a subtlety to these differential equation descriptions of models. To see this, calculate
 $\frac{dN}{dt}$ for $r=1$ and $N=0.1$. Is this value positive, negative, or zero? Think about what $N=0.1$
@@ -342,9 +420,9 @@ zinit <- 0.7
 x_vector<-numeric(points); y_vector<-numeric(points); z_vector<-numeric(points)
 
 # initialize variables
-x = xinit
-y = yinit
-z = zinit
+x <- xinit
+y <- yinit
+z <- zinit
 
 saveGIF({
     count <- 1
@@ -365,3 +443,76 @@ saveGIF({
     }
 })
 ```
+
+### Extras: Lotka-Volterra Predator-Prey model 
+
+![Lotka-Volterra system simulation](https://github.com/UofTCoders/rcourse/lotka-volterra.gif "Lotka-Volterra simulation")
+
+```
+# caution: this is slow
+
+library(animation)
+library(ggplot2)
+
+ani.options(interval=.00001)
+
+# dynamical equations for the lotka-volterra predator-prey model
+dotx <- function(x,y,alpha,beta){
+    return(alpha*x - beta*x*y)
+}
+
+doty <- function(x,y,gamma,delta){
+    return(delta*x*y - gamma*y)
+}
+
+# parameters
+alpha <- 0.5
+beta <- 0.6
+gamma <- 0.5
+delta <- 0.5
+
+dt <- 0.1 #timestep - should really be smaller for accuracy
+tmax <- 30
+points <- tmax/dt
+
+t_vector <- seq(dt, tmax, by = dt)
+
+xinit <- 0.5
+yinit <- 0.5
+
+# vectors to store simulation
+x_vector <- numeric(points); y_vector<-numeric(points)
+
+# initialize variables
+x <- xinit
+y <- yinit
+
+x_vector[1] <- x
+y_vector[1] <- y
+
+
+saveGIF({
+    par(mfrow=c(1,2))
+    count <- 1
+    for (t in t_vector){ 
+      dx <- dotx(x,y,alpha,beta)*dt
+      dy <- doty(x,y,gamma,delta)*dt
+      
+      x <- x + dx
+      y <- y + dy 
+    
+      x_vector[count] <- x
+      y_vector[count] <- y
+      
+      data = data.frame(t_vector, x_vector, y_vector)
+      plot(x_vector, y_vector, ylim = c(0,2.1), xlim = c(0,2.1)) 
+      plot(t_vector[1:count],x_vector[1:count],  ylim = c(0,2.1), xlim = c(0,tmax)) 
+      lines(t_vector[1:count],y_vector[1:count])
+      count <- count + 1
+    }
+})
+
+
+```
+
+
