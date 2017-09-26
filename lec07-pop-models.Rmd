@@ -6,8 +6,9 @@ output: html_document
 
 > ### Learning objectives
 >
-> - Review differential equations, one-dimensional phase portraits
->
+> - Review differential equations and one-dimensional phase portraits
+> - Numerically solve differential equations in R using Euler's method and R's ODE solver
+> - Qualitatively analyze two-dimensional models by hand and in R
 
 > ### Lesson outline
 > 
@@ -21,87 +22,46 @@ output: html_document
 > - `install.packages('ggplot2')` (or `tidyverse`)
 
 
-Demonstrate latex math formatting
+## Recap and some tips
 
-$$\frac{dN}{dt} = r N (1 - N/K)$$ 
+   - You can include math in R notebooks using [LaTeX syntax](https://en.wikibooks.org/wiki/LaTeX/Mathematics). 
 
-Recap **differential equation**: an equation that describes how a function of variables is related to
+     ``$$\frac{dN}{dt} = r N (1 - N/K)$$`` produces $$\frac{dN}{dt} = r N (1 - N/K)$$
+
+   - **Differential equation**: an equation that describes how a function of variables is related to
 derivatives of those variables. 
 
-Recap from last time: write logistic equation and show phase portrait
+   - Drawing **phase portraits** in one dimension:
 
-![Logistic equation simulation](https://github.com/UofTCoders/rcourse/raw/master/logistic.gif)
+    ![Logistic equation simulation](https://github.com/UofTCoders/rcourse/raw/master/logistic.gif)
+
+       - Fixed points: values of $N$ at which $dN/dt$, the rate of change of $N$, is $0$. 
+       Plot $dN/dt$ vs. $N$ and find the place(s) where it crosses the $x$ axis. 
+       - Stability: if you start at some $N$ close to the fixed point but not exactly on it, will you go towards (stable) or away (unstable) from the fixed point? The sign of $dN/dt$ on either side of a fixed point tells you whether $N$ will increase or decrease in that area. Draw an arrow to the right if $dN/dt$ is positive, and draw and arrow to the left if $dN/dt$ is negative. 
+
+### Challenge
+
+Find the fixed point(s) of the following differential equation.
+
+   - Plot $\frac{dN}{dt}$ vs. $N$ for $N$ ranging from $0$ to $10$.
+   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+
+$$\frac{dN}{dt} = \text{sin}(N)$$
 
 ```{r}
-library(animation)
-library(ggplot2)
+N_seq = seq(0, 10, by = 0.1)
 
-ani.options(interval=.00001)
+dN_dt = sin(N_seq)
 
-# dynamical equations for the lotka-volterra predator-prey model
-dN_dt <- function(N,r,K) {
-  r*N*(1-N/K)
-}
-
-# parameters
-K <- 150
-r <- 1
-
-dt <- 0.05 #timestep - should really be smaller for accuracy
-tmax <- 7
-points <- tmax/dt
-
-t_vector <- seq(dt, tmax, by = dt)
-
-# vectors to store simulation
-N_vector <- numeric(points); 
-
-# initialize variables
-
-
-Nmax <- 300
-N_axis <- seq(0, Nmax, by = 0.5)
-
-
-saveGIF({
-    N <- 10
-    N_vector[1] <- N
-    
-    par(mfrow=c(2,1))
-    count <- 1
-    for (t in t_vector){ 
-      dN <- dN_dt(N, r, K)*dt
-      N <- N + dN
-      N_vector[count] <- N
-      
-      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
-      lines(N_axis, 0*N_axis)
-      plot(t_vector[1:count],N_vector[1:count],  
-           ylim = c(0,Nmax), xlim = c(0,tmax), 
-           xlab = "Time", ylab = "N") 
-      lines(t_vector, (numeric(points) + 1)*K)
-      count <- count + 1
-    }
-    
-    N <- 290
-    par(mfrow=c(2,1))
-    count <- 1
-    for (t in t_vector){ 
-      dN <- dN_dt(N, r, K)*dt
-      N <- N + dN
-      N_vector[count] <- N
-      
-      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
-      lines(N_axis, 0*N_axis)
-      plot(t_vector[1:count],N_vector[1:count],  
-           ylim = c(0,Nmax), xlim = c(0,tmax), 
-           xlab = "Time", ylab = "N") 
-      lines(t_vector, (numeric(points) + 1)*K)
-      count <- count + 1
-    }
-})
+qplot(N_seq, dN_dt) +
+  geom_line(aes(x = N_seq, y = 0))
 ```
 
+
+
+$$\frac{dx}{dt} = x^2 - 1$$
+
+You can think of $dN/dt$ as a *velocity*: it tells you how fast $N$ is changing and in what direction. If we start a **trajectory** at some initial $N_0$, $dN/dt$ dictates whether $N$ will increase, decrease, or stay the same. If $N_0$ happens to be at a fixed point, $N$ will remain at $N_0$ for all time. 
 
 ## Numerically simulating models in R
 
@@ -231,4 +191,79 @@ Note: there are more types of stability besides just "stable" and "unstable". Fo
  - phase portraits
  - introduce null clines - *cline* comes from a Greek word meaning "slope"
  - introduce isoclines? null cline is a special case of isocline
+
+
+### Extras 
+
+#### Simulation of the logistic equation
+
+```
+library(animation)
+library(ggplot2)
+
+ani.options(interval=.00001)
+
+# dynamical equations for the lotka-volterra predator-prey model
+dN_dt <- function(N,r,K) {
+  r*N*(1-N/K)
+}
+
+# parameters
+K <- 150
+r <- 1
+
+dt <- 0.05 #timestep - should really be smaller for accuracy
+tmax <- 7
+points <- tmax/dt
+
+t_vector <- seq(dt, tmax, by = dt)
+
+# vectors to store simulation
+N_vector <- numeric(points); 
+
+# initialize variables
+
+
+Nmax <- 300
+N_axis <- seq(0, Nmax, by = 0.5)
+
+
+saveGIF({
+    N <- 10
+    N_vector[1] <- N
+    
+    par(mfrow=c(2,1))
+    count <- 1
+    for (t in t_vector){ 
+      dN <- dN_dt(N, r, K)*dt
+      N <- N + dN
+      N_vector[count] <- N
+      
+      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
+      lines(N_axis, 0*N_axis)
+      plot(t_vector[1:count],N_vector[1:count],  
+           ylim = c(0,Nmax), xlim = c(0,tmax), 
+           xlab = "Time", ylab = "N") 
+      lines(t_vector, (numeric(points) + 1)*K)
+      count <- count + 1
+    }
+    
+    N <- 290
+    par(mfrow=c(2,1))
+    count <- 1
+    for (t in t_vector){ 
+      dN <- dN_dt(N, r, K)*dt
+      N <- N + dN
+      N_vector[count] <- N
+      
+      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
+      lines(N_axis, 0*N_axis)
+      plot(t_vector[1:count],N_vector[1:count],  
+           ylim = c(0,Nmax), xlim = c(0,tmax), 
+           xlab = "Time", ylab = "N") 
+      lines(t_vector, (numeric(points) + 1)*K)
+      count <- count + 1
+    }
+})
+```
 
