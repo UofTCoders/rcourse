@@ -32,6 +32,7 @@ from the UofT library, and it's available in the Physics library as a hard copy 
 > ### Setup:
 > 
 > - Install `ggplot2`: run `install.packages('ggplot2')` in the R console.
+<!--> - Optional: install `animation`: run `install.packages('animation'). This is only if you want to play around with the simulations at the bottom later. -->
 
 ----
 
@@ -53,7 +54,6 @@ from the UofT library, and it's available in the Physics library as a hard copy 
    the models tend to be complicated is systems biology - models of celluar pathways often try to 
    include as many components as are known, i.e. taking all the components from the following 
    picture and creating a corresponding model:  
-   
    ![Signal transduction pathway. Image source: https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
   - Data don't always fit theoretical models, but it is helpful to interpret data with a larger theoretical framework in mind.
   
@@ -222,12 +222,13 @@ we are talking about exponential growth, after all. There's no upper limit.
 #### Challenge
 
 Find the fixed point(s) of the following differential equation.
-- Choose a value for the parameter $a$. Can you think of anything that $a$ might represent in a real population?
-   Are there any values of $a$ that don't make biological sense?
-- Plot $\frac{dN}{dt}$ vs. $N$, like we did earlier.
-- Sketch a phase portrait. Are the fixed point(s) stable or unstable?
 
 $$\frac{dN}{dt} = N - a$$
+
+   - Choose a value for the parameter $a$. Can you think of anything that $a$ might represent in a real population?
+   Are there any values of $a$ that don't make biological sense?
+   - Plot $\frac{dN}{dt}$ vs. $N$, like we did earlier.
+   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
 
 <!--
 The fixed point is shifted by $a$. This isn't really a good model, but if $a > 0$ the population will decrease 
