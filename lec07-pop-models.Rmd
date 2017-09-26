@@ -1,4 +1,234 @@
 ---
-title: "Qualitative population models in 2 dimensions"
+title: "Population models in two dimensions and numerically solving equations in R"
+author: "Madeleine Bonsma-Fisher"
+output: html_document
 ---
+
+> ### Learning objectives
+>
+> - Review differential equations, one-dimensional phase portraits
+>
+
+> ### Lesson outline
+> 
+> Total lesson time: 2 hours
+> 
+> - 
+
+> ### Setup
+> 
+> - `install.packages('deSolve')`
+> - `install.packages('ggplot2')` (or `tidyverse`)
+
+
+Demonstrate latex math formatting
+
+$$\frac{dN}{dt} = r N (1 - N/K)$$ 
+
+Recap **differential equation**: an equation that describes how a function of variables is related to
+derivatives of those variables. 
+
+Recap from last time: write logistic equation and show phase portrait
+
+![Logistic equation simulation](https://github.com/UofTCoders/rcourse/raw/master/logistic.gif)
+
+```{r}
+library(animation)
+library(ggplot2)
+
+ani.options(interval=.00001)
+
+# dynamical equations for the lotka-volterra predator-prey model
+dN_dt <- function(N,r,K) {
+  r*N*(1-N/K)
+}
+
+# parameters
+K <- 150
+r <- 1
+
+dt <- 0.05 #timestep - should really be smaller for accuracy
+tmax <- 7
+points <- tmax/dt
+
+t_vector <- seq(dt, tmax, by = dt)
+
+# vectors to store simulation
+N_vector <- numeric(points); 
+
+# initialize variables
+
+
+Nmax <- 300
+N_axis <- seq(0, Nmax, by = 0.5)
+
+
+saveGIF({
+    N <- 10
+    N_vector[1] <- N
+    
+    par(mfrow=c(2,1))
+    count <- 1
+    for (t in t_vector){ 
+      dN <- dN_dt(N, r, K)*dt
+      N <- N + dN
+      N_vector[count] <- N
+      
+      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
+      lines(N_axis, 0*N_axis)
+      plot(t_vector[1:count],N_vector[1:count],  
+           ylim = c(0,Nmax), xlim = c(0,tmax), 
+           xlab = "Time", ylab = "N") 
+      lines(t_vector, (numeric(points) + 1)*K)
+      count <- count + 1
+    }
+    
+    N <- 290
+    par(mfrow=c(2,1))
+    count <- 1
+    for (t in t_vector){ 
+      dN <- dN_dt(N, r, K)*dt
+      N <- N + dN
+      N_vector[count] <- N
+      
+      plot(N,0, ylim = c(-0.2,0.2), xlim = c(0,Nmax), ylab = "") 
+      lines(N_axis, 0*N_axis)
+      plot(t_vector[1:count],N_vector[1:count],  
+           ylim = c(0,Nmax), xlim = c(0,tmax), 
+           xlab = "Time", ylab = "N") 
+      lines(t_vector, (numeric(points) + 1)*K)
+      count <- count + 1
+    }
+})
+```
+
+
+## Numerically simulating models in R
+
+I'm moving this topic ahead so that we can use what we learn here to aid us in analyzing more complicated models in one and two dimensions. 
+
+Some differential equations are possible to solve analytically (by integration). But when we encounter equations that are hard to solve analytically, we can instead solve them **numerically**. Numerically solving a differential equation means calculating an approximate solution for the variable of interest as it evolves in time, using the information contained in the equation about the *rate of change* of the variable at each time point. 
+
+Let's use the logistic equation as an example again. Like last class, we will plot $dN/dt$ vs. $N$.
+
+```{r}
+library(ggplot2) 
+
+N_seq <-
+  seq(-20, 100) # make a sequence of N values to plot dN/dt against
+  
+logistic_eqn <-  function(N, r, K) {
+  # calculate dN/dt for the logistic equation
+  return(r * N * (1 - N / K))
+  }
+  
+dN_dt <- logistic_eqn(N_seq, r = 0.5, K = 80)  # notice the vectorized implementation
+  
+qplot(N_seq, dN_dt) +
+  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
+```
+
+$dN/dt$ is the **slope** of $N$ with respect to $t$ at a given value of $N$. We can use the slope as an update rule, exactly like the recursion equation we wrote last class that in the limit became a derivative:
+
+$$lim_{\Delta t \to 0}\frac{N_{t+\Delta t} - N_t}{\Delta t} = \frac{dN}{dt}$$ 
+
+Given a starting point $N_t$, we can *approximate* $N_{t+\Delta t}$ using the differential equation:
+
+$$\frac{N_{t+\Delta t} - N_t}{\Delta t} \approx \frac{dN}{dt} $$
+
+$$N_{t+\Delta t} \approx N_t + \frac{dN}{dt} \Delta t$$
+
+To generate a solution for $N$ as it varies with $t$, we then loop through the recursion relation above, updating $N$ at each timestep. 
+
+The image below is a cartoon of what this looks like in practice. Starting from a point $A_0$, we use the derivative to tell us in what direction we should take our next step. $\Delta t$ is a parameter we chan choose that determines how large of a step we take. 
+
+This process has several names: **Euler's method** after Leonhard Euler who wrote about it in about 1770, or **forward finite difference method**, referring to the process of stepping forward in time in small (*finite*) increments (*difference*). 
+
+![Euler's method: blue is the true solution, red is the approximate solution. Image source: https://commons.wikimedia.org/w/index.php?curid=2143753](412px-Euler_method.png)
+
+In 1770 there were no computers. It's really amazing that people were using these numerical techniques long before computers existed to automate the process. According to Wikipedia, it was partly the push to develop faster and better ways to numerically solve differential equations that led to the computer as we know it. 
+
+Lorenz simulated his famous equations on one of the earliest computers in 1960, and this was how he discovered the chaotic behaviour of the model. 
+
+From browsing Wikipedia: In the movie *Hidden Figures*, Katherine Goble Johnson uses Euler's method to numerically match the equations for hyperbolic and elliptical orbit to get the astronaut John Glenn back from space.
+
+There are many related but slightly different techniques for numerically solving differential equations. The best method will often depend on the situation, and we won't go into detail on any other methods, but you can look up *Runge-Kutta* methods if you're interested in learning more about it. 
+
+R has a package for numerically solving differential equations called `deSolve`. We will be using this package as well as implementing Euler's method ourselves. 
+
+```{r}
+# Example: deSolve with logistic eqn
+
+library(deSolve)
+logistic_fn <- function(t,state,parameters) {
+  with(as.list(c(state,parameters)),{
+    #rate of change
+    dN = r*N*(1-N/K)
+    
+    #return rate of change
+    list(c(dN))
+  })
+}
+
+parameters <- c(r=0.5,K=50)
+state <- c(N=10)
+times <- seq(0, 50, by = 0.01)
+
+out <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
+
+out2 <- ode(y = c(N=60), times = times, func = logistic_fn, parms = parameters)
+
+plot(out)
+```
+
+
+```{r}
+library(deSolve)
+help(ode) # Ordinary differential equation solver
+
+# The possible methods are all different ways of numerically solving DEs.
+
+#stiff vs. non-stiff : no precise definition, but 'stiff' generally means it's possible to be numerically unstable if the step size is too big. 
+```
+
+
+
+Solving the logistic equation analytically:
+
+**partial fractions**
+
+**separation of variables**
+
+- Explain forward finite difference: draw DE and talk about slopes
+- Compare forward finite difference solution to exact solution - maybe an assignment question?
+
+### A note on why $dt$ has to be small
+  
+If you're numerically solving a DE by forward finite difference, $dt$ must be "small". How small is small, and why does it have to be small? The answers to these are related, and to see why, let's look at what can happen if $dt$ is too big with an example from the logistic equation. 
+
+```{r}
+logistic_dN <- function(N, r, K,dt) {
+  return(r*N*(1 - N/K)*dt)
+}
+logistic_dN(400,0.5,50,1) # what happens if we make dt too large when simulating? 
+```
+  - *Do I want to cover Gillespie simulation here?? Maybe time permitting?*
+
+Another example of numerical stability problem:
+
+$\dot{y} = -2.3y$
+
+------------------
+
+Note: there are more types of stability besides just "stable" and "unstable". For a 1D system:
+-half-stable: flow is towards the fixed point in one direction, away from it in the other direction
+-fixed line segment: flow is zero along some interval rather than just at a point
+
+
+## Qualitative analysis of 2D models
+ - fixed points
+ - stability
+ - phase portraits
+ - introduce null clines - *cline* comes from a Greek word meaning "slope"
+ - introduce isoclines? null cline is a special case of isocline
 
