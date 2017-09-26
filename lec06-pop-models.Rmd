@@ -327,7 +327,7 @@ Now we draw the phase portrait (on blackboard):
 <!-- Phase portrait for logistic eqn -->
 
 As with the exponential growth model, the fixed point at $0$ is unstable, but now there is also a 
-fixed point at $K$ which is stable. This means that at long times, the system will go towards $N=K$. 
+fixed point at $K$ which is stable. This means that at longer times, the system will go towards $N=K$. 
 
 ### Note: the importance of stability
 
@@ -367,7 +367,7 @@ fairly accurate, since if $N$ is, say, 400, then a change of $\pm 1$ is a relati
 think of $N$ as varying continuously. But for small populations, the continuous description breaks down. 
 If $N$ falls below $1$, the continuous description might tell you that it can bounce back, but in reality 
 $N<1$ means the population is extinct. Even though $N=0$ was an unstable fixed point for the systems we 
-looked at so far, it's what is called and **absorbing** state: once you enter it, you can never leave 
+looked at so far, it's what is called an **absorbing** state: once you enter it, you can never leave 
 (unless we add something back in, of course). 
 
 There is a way to model the discreteness of a population so that small population sizes are treated
