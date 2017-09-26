@@ -42,7 +42,7 @@ your `.Rmd` source file and a knitted `.html` version of the same file.*
 
 3.  Boolean indexing (1 mark)
 
-    a.  Create a boolean vector `v_bool`, indicating which vector
+    a.  Create a boolean vector `v_bool`, indicating which vector `v`
         elements are bigger than 20. How many values are over 20? *Hint:
         In R, TRUE = 1, and FALSE = 0, so you can use simple arithmetic
         to find this out.* (0.5 marks)
