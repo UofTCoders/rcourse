@@ -47,15 +47,15 @@ from the UofT library, and it's available in the Physics library as a hard copy 
     force us to identify the important parameters, and encourage us to distill 
     them down to a manageable number of parameters.
 
-      *Note*: that's not always how modelling is done. Sometimes you just add everything you can think of 
-     to your very complicated model, and you hope by doing that, your model will be more accurate 
-     and make better predictions. But your model will likely 
-     be too complicated to solve analytically. (Analytical = a version you can leave with variables 
-     instead of putting numbers in. In R we will mostly be simulating.) An example of a discipline where 
-     the models tend to be complicated is systems biology - models of celluar pathways often try to 
-     include as many components as are known, i.e. taking all the components from the following 
-     picture and creating a corresponding model:  
-     ![Signal transduction pathway. Image source: https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
+         *Note*: that's not always how modelling is done. Sometimes you just add everything you can think of 
+         to your very complicated model, and you hope by doing that, your model will be more accurate 
+         and make better predictions. But your model will likely 
+         be too complicated to solve analytically. (Analytical = a version you can leave with variables 
+         instead of putting numbers in. In R we will mostly be simulating.) An example of a discipline where 
+         the models tend to be complicated is systems biology - models of celluar pathways often try to 
+         include as many components as are known, i.e. taking all the components from the following 
+         picture and creating a corresponding model:  
+         ![Signal transduction pathway. Image source: https://en.wikipedia.org/wiki/Modelling_biological_systems#/media/File:Signal_transduction_pathways.svg)](1280px-Signal_transduction_pathways.png)
     - Data don't always fit theoretical models, but it is helpful to interpret data with a larger theoretical framework in mind.
 
 2. Models can show us something we didn't expect, that we couldn't intuit from just thinking about the problem. 
@@ -381,7 +381,7 @@ and the most common method is to use the Gillespie algorithm.
 
 The following code will create a GIF of the x-y phase plane for the Lorenz system.
 
-![Lorenz system simulation](https://github.com/UofTCoders/rcourse/lorenz.gif)
+![Lorenz system simulation](https://github.com/UofTCoders/rcourse/raw/master/lorenz.gif)
 
 
 ```
@@ -449,7 +449,7 @@ saveGIF({
 
 ### Extras: Lotka-Volterra Predator-Prey model 
 
-![Lotka-Volterra system simulation](https://github.com/UofTCoders/rcourse/lotka-volterra.gif)
+![Lotka-Volterra system simulation](https://github.com/UofTCoders/rcourse/raw/master/lotka-volterra.gif)
 
 ```
 # caution: this is slow
