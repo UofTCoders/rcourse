@@ -20,7 +20,7 @@ output: html_document
 > 
 > - `install.packages('deSolve')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
-
+> - `install.packages('dplyr')` (or `tidyverse`)
 
 ## Recap and some tips
 
@@ -434,8 +434,6 @@ View(all_results) # look at what we got
 print(colnames(all_results)) # column names
 ```
 
-
-
 ```{r}
 ggplot(all_results) +
   geom_line(aes(x = time, y = X1)) +
@@ -444,9 +442,60 @@ ggplot(all_results) +
 
 ```
 
-
-
 ## Qualitative analysis of 2D models
+
+Now we'll move on to look at how to analyze two-dimensional models. **Two-dimensional** means that there are now two variables in the system (like $x$ and $y$, prey and predators) instead of one (like $N$).
+
+Many of the concepts and tools from analyzing one-dimensional models will be used here as well, but we will add some things that are specific to more than one dimension. 
+
+To motivate some of these new concepts and the idea of modelling in two dimensions, let's analyze a model of two species interacting.
+
+$$\frac{dx}{dt} = ax - bxy$$
+$$\frac{dy}{dt} = cx - dy$$
+
+This is sort of like the Lotka-Volterra predator-prey model, but the term for predator growth is $cx$ instead of $cxy$. In this model the predators will eat the prey at a constant rate, no matter how many of the predators there are. 
+
+First, we'll simulate a trajectory for the two species.
+
+```{r}
+library(deSolve)
+lotka_volterra <- function(t,y,parameters) { 
+    
+  
+    # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR
+    
+    X <- y[1]; Y <- y[2] # now the state vector y has two elements because we have two species
+    
+    a <- parameters[1]; b <- parameters[2]; c <- parameters[3]; d <- parameters[4]
+    
+    print(X)
+    print(Y)
+    
+    #rate of change
+    dx <- a*X - b*Y*X
+    dy <- c*X - d*Y
+    
+    #return rate of change
+    list(c(dx, dy))
+}
+
+parameters = c(0.5, 1, 1, 0.2)
+
+state <- c(X = 0.5, Y = 0.5) # these variables need to match the function arguments in label
+
+times <- seq(0, 50, by = 0.01)
+
+out <- ode(y = state, times = times, func = lotka_volterra, parms = parameters)
+    
+out <- data.frame(out)
+
+ggplot(out) +
+  geom_line(aes(x = time, y = X), color = 'red') +
+  geom_line(aes(x = time, y = Y), color = 'blue') 
+```
+
+It looks like we have oscillations that decay to a fixed point. To find out more generally what the fixed points are, we can plot 
+
  - fixed points
  - stability
  - phase portraits
@@ -455,26 +504,8 @@ ggplot(all_results) +
 
 
 
-```{r}
-library(deSolve)
-lotka_volterra <- function(t,y,parameters) { 
-  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR
-    
-    X <- y[1]; Y <- y[2]
-    
-    alpha <- parameters[1]; beta <- parameters[2]; gamma <- parameters[3]; delta <- parameters[4]
-    
-    print(X)
-    print(Y)
-    
-    #rate of change
-    dx <- alpha*X - beta*X*Y
-    dy <- delta*X*Y - gamma*Y
-    
-    #return rate of change
-    list(c(dx, dy))
-}
-```
+
+
 
 ```{r}
 lotka_volterra(2,y = c(0.6,0.5), parameters = c(0.5,0.6,0.7,0.8))
