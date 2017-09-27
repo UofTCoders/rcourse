@@ -1,7 +1,6 @@
 ---
-title: "Population models in two dimensions and numerically solving equations in R"
+title: "Numerically solving equations in R, population models in two dimensions"
 author: "Madeleine Bonsma-Fisher"
-output: html_document
 ---
 
 > ### Learning objectives
@@ -30,7 +29,7 @@ output: html_document
      $$\frac{dN}{dt} = r N (1 - N/K)$$
 
    - **Differential equation**: an equation that describes how a function of variables is related to
-derivatives of those variables. 
+   derivatives of those variables. 
 
    - Drawing **phase portraits** in one dimension:
 
@@ -43,61 +42,65 @@ derivatives of those variables.
        either side of a fixed point tells you whether $N$ will increase or decrease in that area. 
        Draw an arrow to the right if $dN/dt$ is positive, and draw and arrow to the left if $dN/dt$ is negative. 
 
-### Challenge
+#### Challenge
 
 Find the fixed point(s) of the following differential equation.
+
+$$\frac{dN}{dt} = \text{sin}(N)$$
 
    - Plot $\frac{dN}{dt}$ vs. $N$ for $N$ ranging from $0$ to $10$.
    - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
 
-$$\frac{dN}{dt} = \text{sin}(N)$$
-<!--
-```{r}
+
+
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
 library(ggplot2)
 
-N_seq = seq(0, 10, by = 0.1)
+N_seq <- seq(0, 10, by = 0.1)
 
-dN_dt = sin(N_seq)
+dN_dt <- sin(N_seq)
 
 qplot(N_seq, dN_dt) +
-  geom_line(aes(x = N_seq, y = 0))
+  geom_hline(aes(yintercept = 0))
 ```
--->
 
 You can think of $dN/dt$ as a *velocity*: it tells you how fast $N$ is changing and in what
 direction. If we start a **trajectory** at some initial $N_0$, $dN/dt$ dictates whether $N$ will
 increase, decrease, or stay the same. If $N_0$ happens to be at a fixed point, $N$ will remain at
 $N_0$ for all time. 
 
-### Challenge (time permitting)
+#### Challenge (time permitting)
 
 
 Find the fixed point(s) of the following differential equation.
 
+$$\frac{dx}{dt} = x^2 - 1$$
+
    - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
    - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
 
-$$\frac{dx}{dt} = x^2 - 1$$
-<!--
-```{r}
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
 library(ggplot2)
 
-x_seq = seq(-2, 2, by = 0.1)
+x_seq <- seq(-2, 2, by = 0.1)
 
-dx_dt = x_seq^2 - 1
+dx_dt <- x_seq^2 - 1
 
 qplot(x_seq, dx_dt) +
-  geom_line(aes(x = x_seq, y = 0))
+  geom_hline(aes(yintercept = 0))
 ```
--->
-
 
 ## Numerically simulating models in R
 
-I'm moving this topic ahead so that we can use what we learn here to aid us in analyzing more
-complicated models in one and two dimensions. 
-
-Some differential equations are possible to solve analytically (by integration). But when we encounter equations that are hard to solve analytically, we can instead solve them **numerically**. Numerically solving a differential equation means calculating an approximate solution for the variable of interest as it evolves in time, using the information contained in the equation about the *rate of change* of the variable at each time point. 
+Some differential equations are possible to solve analytically (by integration). 
+But when we encounter equations that are hard to solve analytically, we can instead 
+solve them **numerically**. Numerically solving a differential equation means calculating
+an approximate solution for the variable of interest as it evolves in time, using the information
+contained in the equation about the *rate of change* of the variable at each time point. 
 
 Let's use the logistic equation as an example again. Like last class, we will plot $dN/dt$ vs. $N$.
 
@@ -119,7 +122,7 @@ logistic_eqn <-  function(N, r, K) {
 dN_dt <- logistic_eqn(N_seq, r = 0.5, K = 80)
   
 qplot(N_seq, dN_dt) +
-  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
+  geom_hline(aes(yintercept = 0)) # a line at zero for visual aid
 ```
 
 $dN/dt$ is the **slope** of $N$ with respect to $t$ at a given value of $N$. 
@@ -145,11 +148,12 @@ This process has several names: **Euler's method** after Leonhard Euler who wrot
 in about 1770, or **forward finite difference method**, referring to the process of stepping 
 forward in time in small (*finite*) increments (*difference*). 
 
-![Euler's method: blue is the true solution, red is the approximate solution. Image source: https://commons.wikimedia.org/w/index.php?curid=2143753](412px-Euler_method.png)
+![Euler's method: blue is the true solution, red is the approximate solution. Image source: Wikimedia](https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Euler_method.svg/412px-Euler_method.svg.png)
 
 There are many related but slightly different techniques for numerically solving differential
 equations. The best method will often depend on the situation, and we won't go into detail on any
-other methods, but you can look up *Runge-Kutta* methods if you're interested in learning more about it. 
+other methods, but you can look up [*Runge-Kutta* methods](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods)
+if you're interested in learning more about it. 
 
 R has a package for numerically solving differential equations called `deSolve`. 
 We will be using this package as well as implementing Euler's method ourselves. 
@@ -197,7 +201,9 @@ Now we have a thing we can calculate! Plugging in the numbers we chose for $r$, 
 
 $$N_1 = 1 \times 2(1-\frac{2}{10}) + 2$$
 $$N_1 =  2+ 1.6 = 3.6$$
-We repeat the proccess to get $N_2$, and so on, remembering to evaluate $dN/dt$ at the value of $N$ from the previous timestep. The vertical bar $\vert$ instructs us to substitute $N_0$ for $N$ in the derivative. 
+We repeat the proccess to get $N_2$, and so on, remembering to evaluate $dN/dt$ at the value
+of $N$ from the previous timestep. The vertical bar $\vert$ instructs us to substitute $N_0$
+for $N$ in the derivative. 
 
 $$N_2 = \frac{dN}{dt}\vert_{N = N_1} + N_1$$
 
@@ -310,7 +316,7 @@ print(N2) # N is getting more and more negative!
  
 ```
 
-### Challenge - in groups
+#### Challenge - in groups
 
 Use Euler's method to calculate a numerical solution for the following differential equation:
 
@@ -330,6 +336,8 @@ Let's look at the documentation for `deSolve`:
 
 ```{r}
 library(deSolve)
+```
+```{r, eval=FALSE}
 help(deSolve)
 ```
 
@@ -341,7 +349,7 @@ derivatives which are written $\partial N / \partial t$).
 
 This means that the function we'll be using is called `ode`, which stands for 'ordinary differential equation'. 
 
-```{r}
+```{r, eval=FALSE}
 help(ode)
 # The possible methods are all different ways of numerically solving DEs.
 
@@ -354,8 +362,6 @@ the result is often more accurate than Euler's method and might also be faster t
 
 ```{r}
 # Example: deSolve with logistic eqn
-
-library(deSolve)
 
 # now we need to define our function a bit differently to be in the format that `ode` uses
 logistic_fn <- function(t,state,parameters) { 
@@ -371,17 +377,17 @@ logistic_fn <- function(t,state,parameters) {
   K <- parameters[2] # the second element of the parameters vector is K
 
   #rate of change
-  dN = r*N*(1-N/K)
+  dN <- r*N*(1-N/K)
     
   #return rate of change
   list(c(dN))
 }
 
-parameters <- c(r=0.5,K=50)
-state <- c(N=10)
+parameters <- c(r = 0.5, K = 50)
+state <- c(N = 10)
 times <- seq(0, 50, by = 0.01)
 
-help(ode) # look at the documentation to learn about the parameters
+#help(ode) # look at the documentation to learn about the parameters
 result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
 ```
 
@@ -391,8 +397,8 @@ Notice that by using `ode` we didn't have to write a loop explicitly ourselves, 
 choose a timestep. `ode` does under the hood a version of what we did explicitly before. 
 
 ```{r}
-print(head(result,10)) # result has a list of times and values of N at those times
-print(typeof(result)) # result is a 'double': a vector of numbers.
+print(head(result, 5)) # result has a list of times and values of N at those times
+print(class(result)) # result is a 'matrix': an array of numbers
 ```
 
 ```{r}
@@ -408,7 +414,7 @@ Now let's make a nice plot of numerical solutions from a few different starting 
 ```{r}
 library(dplyr)
 
-parameters <- c(r=0.5,K=50)
+parameters <- c(r = 0.5, K = 50)
 initial_conditions <- seq(10, 80, by = 10)
 times <- seq(0, 50, by = 0.01)
 
@@ -428,7 +434,7 @@ for (N0 in initial_conditions) {
 all_results <- bind_cols(results)
 ```
 
-```{r}
+```{r, eval=FALSE}
 View(all_results) # look at what we got
 
 print(colnames(all_results)) # column names
@@ -458,15 +464,18 @@ This is sort of like the Lotka-Volterra predator-prey model, but the term for pr
 First, we'll simulate a trajectory for the two species.
 
 ```{r}
-library(deSolve)
 lotka_volterra <- function(t,y,parameters) { 
     
   
     # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR
     
-    X <- y[1]; Y <- y[2] # now the state vector y has two elements because we have two species
+    X <- y[1] # now the state vector y has two elements because we have two species
+    Y <- y[2] 
     
-    a <- parameters[1]; b <- parameters[2]; c <- parameters[3]; d <- parameters[4]
+    a <- parameters[1]
+    b <- parameters[2]
+    c <- parameters[3]
+    d <- parameters[4]
     
     print(X)
     print(Y)
