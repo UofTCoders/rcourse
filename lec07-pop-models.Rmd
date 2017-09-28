@@ -38,6 +38,15 @@ eq_dn_dt <- "$\\frac{dN}{dt}$"
 
     `$$\frac{dN}{dt} = r N (1 - N/K)$$` produces 
     $$\frac{dN}{dt} = r N (1 - N/K)$$
+    
+  There's also a tool that let's you take pictures of math and then it will be converted to LaTeX for you!
+  
+  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Need LaTeX code in your Rmd?
+  <br><br>Hate writing it? Don&#39;t know how? Purely lazy?<br><br>Well... mathpix 0.1.0 is now on CRAN. 
+  <a href="https://t.co/uTEHzJDrIq">https://t.co/uTEHzJDrIq</a> 
+  <a href="https://t.co/QMg8OX9hyP">pic.twitter.com/QMg8OX9hyP</a></p>&mdash; 
+  Jonathan Carroll (@carroll_jono) <a href="https://twitter.com/carroll_jono/status/913037881727377408?ref_src=twsrc%5Etfw">September 27, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 - **Differential equation**: an equation that describes how a function of
 variables is related to derivatives of those variables.
