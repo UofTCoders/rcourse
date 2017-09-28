@@ -257,9 +257,10 @@ logistic_eqn <-  function(N, r, K) {
   }
 
 # parameters
-K <- 150; r <- 1  # you can put things on the same line, separated by a semicolon
+K <- 150
+r <- 1  
 
-dt <- 0.05 #timestep - the smaller, the better
+dt <- 0.05 # timestep - the smaller, the better
 tmax <- 8 # the total time we want to numerically solve for
 points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
 
@@ -269,12 +270,13 @@ t_vector <- seq(0, tmax - dt, by = dt) # time vector
 
 # initial condition
 N0 <- 10
-N_vector[1] <- N0 
+N_vector[1] <- N0
 
 N <- N0 # initialize variable N
 
-for (i in 2:points){ # start at 2 because the initial state is at position 1
-  dN <- logistic_eqn(N = N, r = r, K = K)*dt
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  dN <- logistic_eqn(N = N, r = r, K = K) * dt
   N <- N + dN # the variable N is changing at each step of the loop
   N_vector[i] <- N
 }
@@ -286,11 +288,11 @@ qplot(t_vector, N_vector,
 
 This numerical solution shows us that the population size grows until it reaches the carrying capacity $K$, the stable fixed point. 
 
-### A note on why $dt$ has to be small
+### A note on why $\Delta t$ has to be small
   
-If you're numerically solving a differential equation with Euler's method, $dt$ must be 'small'. 
+If you're numerically solving a differential equation with Euler's method, $\Delta t$ must be 'small'. 
 How small is small, and why does it have to be small? The answers to these are related, and to see why,
-let's look at what can happen if $dt$ is too big with an example from the logistic equation. 
+let's look at what can happen if $\Delta t$ is too big with an example from the logistic equation. 
 
 ```{r}
 # what happens if we make dt too large when simulating? 
@@ -302,13 +304,13 @@ K <- 50
 dt <- 1
 N0 <- 400
 
-dN <- logistic_eqn(N0, r, K)*dt # this is the change in N that we wil add to N0 to calculate N1
+dN <- logistic_eqn(N0, r, K) * dt # this is the change in N that we wil add to N0 to calculate N1
 
 N1 <- N0 + dN
 
 print(N1) # this is no good: N has shot from +400 to -1000 in a single step! 
 
-dN <- logistic_eqn(N1, r, K)*dt # calculate what the next change in N would be
+dN <- logistic_eqn(N1, r, K) * dt # calculate what the next change in N would be
 
 N2 <- N1 + dN
 
@@ -328,6 +330,10 @@ This is what's called **numerical instability** --- the numerical solution grows
 (either positive or negative) but the true solution doesn't. In the logistic equation example above,
 this numerical instability can happen if $N$ falls below $0$: the population will keep getting
 more and more negative after that. 
+
+For accuracy, $\Delta t$ should be small. But the smaller it is, the longer it will take to
+compute the numerical approximation. In practice, choose a $\Delta t$ that is small enough that
+your solution doesn't behave strangely, but large enough that you can simulate it in a reasonable amount of time. 
 
 ## Using `deSolve` in R to solve differential equations numerically
 
@@ -364,7 +370,7 @@ the result is often more accurate than Euler's method and might also be faster t
 # Example: deSolve with logistic eqn
 
 # now we need to define our function a bit differently to be in the format that `ode` uses
-logistic_fn <- function(t,state,parameters) { 
+logistic_fn <- function(t, state, parameters) {
   # Calculates dN/dt for the logistic equation
   
   # t: time point at which to evaluate derivative (doesn't actually change anything in this example)
@@ -377,7 +383,7 @@ logistic_fn <- function(t,state,parameters) {
   K <- parameters[2] # the second element of the parameters vector is K
 
   #rate of change
-  dN <- r*N*(1-N/K)
+  dN <- r * N * (1 - N / K)
     
   #return rate of change
   list(c(dN))
@@ -385,7 +391,7 @@ logistic_fn <- function(t,state,parameters) {
 
 parameters <- c(r = 0.5, K = 50)
 state <- c(N = 10)
-times <- seq(0, 50, by = 0.01)
+times <- seq(0, 50, by = 0.01) # the timestep dt is chosen by setting the increment with 'by'
 
 #help(ode) # look at the documentation to learn about the parameters
 result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
@@ -393,8 +399,7 @@ result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
 
 The output of `ode` is a vector that contains the times we requested and its calculated values of N. 
 
-Notice that by using `ode` we didn't have to write a loop explicitly ourselves, and we didn't have to
-choose a timestep. `ode` does under the hood a version of what we did explicitly before. 
+Notice that by using `ode` we didn't have to write a loop explicitly ourselves. Under the hood, `ode` performs a similar computation to what we did manually. 
 
 ```{r}
 print(head(result, 5)) # result has a list of times and values of N at those times
@@ -464,121 +469,50 @@ This is sort of like the Lotka-Volterra predator-prey model, but the term for pr
 First, we'll simulate a trajectory for the two species.
 
 ```{r}
-lotka_volterra <- function(t,y,parameters) { 
-    
+predator_prey <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
   
-    # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(X, Y))
+  # parameters: vector of parameters (c(a, b, c, d))
+  
+  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
     
-    X <- y[1] # now the state vector y has two elements because we have two species
-    Y <- y[2] 
+  #now the state vector y has two elements because we have two species
+  X <- y[1] # prey
+  Y <- y[2] 
+  
+  a <- parameters[1]
+  b <- parameters[2]
+  c <- parameters[3]
+  d <- parameters[4]
     
-    a <- parameters[1]
-    b <- parameters[2]
-    c <- parameters[3]
-    d <- parameters[4]
-    
-    print(X)
-    print(Y)
-    
-    #rate of change
-    dx <- a*X - b*Y*X
-    dy <- c*X - d*Y
-    
-    #return rate of change
-    list(c(dx, dy))
-}
+  # calculate rate of change
+  dx <- a * X - b * Y * X
+  dy <- c * X - d * Y
+  
+  # return rate of change
+  list(c(dx, dy))
+  }
+```
 
-parameters = c(0.5, 1, 1, 0.2)
+```{r}
+# run the numerical solution
 
-state <- c(X = 0.5, Y = 0.5) # these variables need to match the function arguments in label
-
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+state <- c(X = 2, Y = 2)
 times <- seq(0, 50, by = 0.01)
 
-out <- ode(y = state, times = times, func = lotka_volterra, parms = parameters)
-    
-out <- data.frame(out)
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
 
-ggplot(out) +
+ggplot(result, ylab = "Population size") +
   geom_line(aes(x = time, y = X), color = 'red') +
   geom_line(aes(x = time, y = Y), color = 'blue') 
 ```
 
-It looks like we have oscillations that decay to a fixed point. To find out more generally what the fixed points are, we can plot 
 
- - fixed points
- - stability
- - phase portraits
- - introduce null clines - *cline* comes from a Greek word meaning "slope"
- - introduce isoclines? null cline is a special case of isocline
-
-
-
-
-
-
-```{r}
-lotka_volterra(2,y = c(0.6,0.5), parameters = c(0.5,0.6,0.7,0.8))
-```
-
-
-```{r}
-# deSolve with lotka volterra
-
-#parameters = c(alpha = 0.5, beta = 0.6, gamma = 0.5, delta = 0.5)
-
-parameters = c(0.5, 0.6, 0.9, 0.5)
-
-state <- c(X = 0.5,
- Y = 0.5) # these variables need to match the function arguments in label
-
-times <- seq(0, 100, by = 0.01)
-
-out <- ode(y = state, times = times, func = lotka_volterra, parms = parameters)
-
-plot(out)
-```
-
-
-```{r}
-library(phaseR)
-
-LV_flowField <- flowField(lotka_volterra, x.lim = c(0,5), y.lim = c(-1,3),
-                          parameters = c(alpha = 0.5, beta = 0.6, gamma = 0.5, delta = 0.5),
-                          points = 21, system = 'two.dim',
-                          add = FALSE)
-                          
-```
-
-
-```{r}
-
-library(phaseR)
-
-xdot <- function(x,y,alpha) {
-  return(x - alpha*y*x)
-}
-
-ydot <- function(x,y,beta,delta) {
-  return(beta*y*x - delta*y)
-}
-
-deriv <- function(x,y,alpha,beta,delta) {
-  return 
-}
-
-
-# Plot the flow field, nullclines and several trajectories for the one
-# dimensional autonomous ODE system logistic.
-logistic.flowField <- flowField(logistic, x.lim = c(0, 5), y.lim = c(-1, 3),
-                                parameters = c(1, 2), points = 21, system = "one.dim",
-                                add = FALSE)
-logistic.nullclines <- nullclines(logistic, x.lim = c(0, 5), y.lim = c(-1, 3),
-                                  parameters = c(1, 2), system = "one.dim")
-logistic.trajectory <- trajectory(logistic, y0 = c(-0.5, 0.5, 1.5, 2.5), t.end = 5,
-                                  parameters = c(1, 2), system = "one.dim")
-
-logistic
-```
+It looks like we have oscillations that decay to a fixed point. 
 
 
 ### Extras 
@@ -600,7 +534,7 @@ dN_dt <- function(N,r,K) {
 K <- 150
 r <- 1
 
-dt <- 0.05 #timestep - should really be smaller for accuracy
+dt <- 0.05 # timestep - should really be smaller for accuracy
 tmax <- 7
 points <- tmax/dt
 
