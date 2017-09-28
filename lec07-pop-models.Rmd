@@ -3,6 +3,8 @@ title: "Numerically solving differential equations in R"
 author: "Madeleine Bonsma-Fisher"
 ---
 
+## Lesson preamble
+
 > ### Learning objectives
 >
 > - Review differential equations and one-dimensional phase portraits
@@ -21,29 +23,36 @@ author: "Madeleine Bonsma-Fisher"
 > ### Setup
 > 
 > - `install.packages('deSolve')`
+> - `install.packages('phaseR')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
 
+```{r math_shortcut, echo=FALSE}
+eq_dn_dt <- "$\\frac{dN}{dt}$"
+```
+
 ## Recap and some tips
 
-   - You can include math in R notebooks using [LaTeX syntax](https://en.wikibooks.org/wiki/LaTeX/Mathematics). 
+- You can include math in R notebooks using [LaTeX syntax](https://en.wikibooks.org/wiki/LaTeX/Mathematics). 
 
-     `$$\frac{dN}{dt} = r N (1 - N/K)$$` produces 
-     $$\frac{dN}{dt} = r N (1 - N/K)$$
+    `$$\frac{dN}{dt} = r N (1 - N/K)$$` produces 
+    $$\frac{dN}{dt} = r N (1 - N/K)$$
 
-   - **Differential equation**: an equation that describes how a function of variables is related to
-   derivatives of those variables. 
+- **Differential equation**: an equation that describes how a function of
+variables is related to derivatives of those variables.
 
-   - Drawing **phase portraits** in one dimension:
+- Drawing **phase portraits** in one dimension:
 
     ![Logistic equation simulation](https://github.com/UofTCoders/rcourse/raw/master/logistic.gif)
 
-       - Fixed points: values of $N$ at which $dN/dt$, the rate of change of $N$, is $0$. 
-       To find fixed points, plot $dN/dt$ vs. $N$ and find the place(s) where it crosses the $x$ axis. 
-       - Stability: if you start at some $N$ close to the fixed point but not exactly on it, 
-       will you go towards (stable) or away (unstable) from the fixed point? The sign of $dN/dt$ on
-       either side of a fixed point tells you whether $N$ will increase or decrease in that area. 
-       Draw an arrow to the right if $dN/dt$ is positive, and draw an arrow to the left if $dN/dt$ is negative. 
+    - Fixed points: values of $N$ at which `r eq_dn_dt`, the rate of change of $N$,
+    is $0$. To find fixed points, plot `r eq_dn_dt` vs. $N$ and find the place(s)
+    where it crosses the $x$ axis.
+    - Stability: if you start at some $N$ close to the fixed point but not exactly
+    on it, will you go towards (stable) or away (unstable) from the fixed point? The
+    sign of `r eq_dn_dt` on either side of a fixed point tells you whether $N$ will
+    increase or decrease in that area. Draw an arrow to the right if `r eq_dn_dt` is
+    positive, and draw an arrow to the left if `r eq_dn_dt` is negative.
 
 #### Challenge
 
@@ -53,8 +62,6 @@ $$\frac{dN}{dt} = \text{sin}(N)$$
 
    - Plot $\frac{dN}{dt}$ vs. $N$ for $N$ ranging from $0$ to $10$.
    - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
-
-
 
 ```{r, echo=FALSE, eval=FALSE}
 # Challenge solution
@@ -75,7 +82,6 @@ increase, decrease, or stay the same. If $N_0$ happens to be at a fixed point, $
 $N_0$ for all time. 
 
 #### Challenge (time permitting)
-
 
 Find the fixed point(s) of the following differential equation.
 
@@ -406,8 +412,8 @@ The output of `ode` is a matrix that contains the times we requested and its cal
 Notice that by using `ode` we didn't have to write a loop explicitly ourselves. Under the hood, `ode` performs a similar computation to what we did manually. 
 
 ```{r}
-print(head(result, 5)) # result has a list of times and values of N at those times
-print(class(result)) # result is a 'matrix': an array of numbers
+head(result, 5) # result has a list of times and values of N at those times
+class(result) # result is a 'matrix': an array of numbers
 ```
 
 ```{r}
@@ -427,34 +433,24 @@ parameters <- c(r = 0.5, K = 50)
 initial_conditions <- seq(10, 80, by = 10)
 times <- seq(0, 50, by = 0.01)
 
-results <- list() # make an empty list
-count <- 1
+results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>%
+    do(data.frame(
+        ode(
+            y = initial_conditions,
+            times = times,
+            func = logistic_fn,
+            parms = parameters
+        )
+    ))
 
-for (N0 in initial_conditions) {
-  
-  result <- ode(y = N0, times = times, func = logistic_fn, parms = parameters)
-  result <- data.frame(result)
-  
-  results[[count]] <- result
-  
-  count <- count + 1
-}
-
-all_results <- bind_cols(results)
-```
-
-```{r, eval=FALSE}
-View(all_results) # look at what we got
-
-print(colnames(all_results)) # column names
+head(results)
 ```
 
 ```{r}
-ggplot(all_results) +
-  geom_line(aes(x = time, y = X1)) +
-  geom_line(aes(x = time1, y = X11)) +
-  geom_line(aes(x = time7, y = X17)) # etc, we can keep adding more here
-
+results %>%
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) 
 ```
 
 ## Qualitative analysis of 2D models
