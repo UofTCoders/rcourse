@@ -1,41 +1,38 @@
 ---
 title: "Introduction to the datasets, scientific method, and team dynamics; Start the projects"
+author: "Luke Johnston"
 ---
-
------
 
 ## Lesson preamble:
 
-### Lesson objectives:
-
-- **Main goal**: 
-    - To start the process of identifying which dataset to use and some possible research questions
-- **Secondary goals**:
-    - Learn about the scientific method and *(the basics of)* how to apply it to your project
-    - Learn basics of group dynamics in a team setting, how to share responsibilities and duties
-    - Get into groups and start your projects
-
-### Lesson outline:
-
-Total lesson time: 2 hours
-
-- Datasets available for use (10-20 min)
-- What is the scientific method (20 min)
-- Team dynamics and assigning roles and tasks (15-20 min)
-- Break (10 min)
-- Getting into groups (10 min)
-    - Exercise (25-30 min)
-    - Start project work (20-25 min)
+> ### Lesson objectives:
+> 
+> - To start the process of identifying which dataset to use and some possible research questions
+> - Learn about the scientific method and (the basics of) how to apply it to your project
+> - Learn basics of group dynamics in a team setting, how to share responsibilities and duties
+> - Get into groups and start your projects
+> 
+> ### Lesson outline:
+> 
+> Total lesson time: 2 hours
+> 
+> - Datasets to use (10-20 min)
+> - The scientific method (20 min)
+> - Team dynamics and assigning roles and tasks (15-20 min)
+> - Break (10 min)
+> - Getting into groups (10 min)
+>     - Exercise (25-30 min)
+>     - Start project work (20-25 min)
 
 -----
 
-## Datasets for use
+## Datasets
 
-### List of datasets available
+### List of available datasets
 
 {{list/link them here}}
 
-## Scientific method
+## The scientific method
 
 <!-- What is the scientific method? -->
 
@@ -51,7 +48,7 @@ digraph rmarkdown {
     AnalyzeData [label = "Analyze Data", pos = "0.75,2.25!"]
     HypothesisTrue [label = "Hypothesis\nif TRUE", pos = "0,1.5!"]
     HypothesisFalse [label = "Hypothesis\nif FALSE", pos = "1.5,1.5!"]
-    Report [label = "Report/Publish", pos = "0.75,0.75!"]
+    Report [label = "Disseminate", pos = "0.75,0.75!"]
 
     Hypothesis -> CollectData -> AnalyzeData -> HypothesisTrue -> Report
     AnalyzeData -> HypothesisFalse -> {Report Hypothesis}
@@ -68,8 +65,8 @@ digraph rmarkdown {
     - What statistical or mathematical techniques have previous researchers used? Will they be used or will other ones be used? Are they appropriate (optional, may need an expert)? 
     - How will the results/data be presented or visualized?
     - Identify/describe some possible tables and figures to present the results/data.
-5. Run all analyses (or additional ones that may come up as you work with and analyze the data).
-6. Visualize or present all results from the analyses.
+5. Run the planned analyses (and additional ones that may come up as you work with and analyze the data).
+6. Visualize or present the results from the analyses.
 7. Interpret the results and how they fit in the context of the previous literature and findings.
 8. Draw conclusions based on the hypotheses/objectives.
 9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
@@ -79,7 +76,7 @@ digraph rmarkdown {
 
 ## Team dynamics
 
-### Basics of succeeding with a team
+### Basics of succeeding as a team
 
 Final assignment is in a group and to succeed, you need to understand team dynamics:
 
@@ -96,7 +93,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Essentially, groups go through stages (not always all and not always in order):
     1. Getting to know one other
     2. Feeling comfortable and safer, testing boundaries
-    3. Opening up, voicing opinions, potential for conflict
+    3. Opening up, voicing opinions, potential for conflict (which can be good!)
     4. Stronger bonds form, cooperative
     5. Greater focus and energy on completion of project
     6. Team ends after project is successfully completed
@@ -132,10 +129,13 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 
 ### As a group, complete these tasks
 
+<!-- show assigned groups -->
+
 - Get into your assigned groups
 - Introduce each other:
     - Find out everyone's name and year of study
     - Find out other things about each other (e.g. any plans for next year, etc)
+- Create a two or one word "team name". We'll use this to create a shared folder for everyone to use.
 - Assign roles to each person (these roles will be rotated in every group setting):
     - You need: facilitator, recorder, organizer
     - Discuss how and when roles will be rotated *(record it)*
@@ -150,10 +150,16 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 
 In your group, rotate roles (need a facilitator and recorder at minimum). Before the end of class, finish these:
 
-- Choose two possible datasets your team would like to work from (can also be datasets not presented in class) *(record them)*
+- Choose a possible dataset (or more) your team would like to work from (can also be datasets not presented in class) *(record them)*
 - Brainstorm as many research questions as possible for those two datasets *(record them)*
-    - Goal is to write as much ideas down
+    - Goal is to write down as many ideas as possible
     - No question is off limits and no question is too simple or too complex! 
-    - Just write what ever comes to mind
+    - (You might combine or split questions later, just get whatever down!)
+    - Just write what ever comes to mind, whether it is an idea or not. Just start writing!
 
 Make sure to *record* everything down! Many of these tasks will also be part of the assignment!
+
+## Set up GitHub account
+
+Before we finish the class, we need to prepare a bit for next class. We need to
+create a [GitHub](https://github.com) account!
