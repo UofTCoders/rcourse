@@ -1,5 +1,5 @@
 ---
-title: "Numerically solving equations in R, population models in two dimensions"
+title: "Numerically solving differential equations in R"
 author: "Madeleine Bonsma-Fisher"
 ---
 
@@ -7,13 +7,16 @@ author: "Madeleine Bonsma-Fisher"
 >
 > - Review differential equations and one-dimensional phase portraits
 > - Numerically solve differential equations in R using Euler's method and R's ODE solver
-> - Qualitatively analyze two-dimensional models by hand and in R
 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
-> 
-> - 
+>
+> - Review qualitative analysis of one-dimensional systems (20 min)
+> - Euler's method on paper (20 min)
+> - Euler's method in R (30 min)
+> - Using R's ODE-solver to numerically solve differential equations (20 min)
+> - Numerically solving two-dimensional systems (20 min)
 
 > ### Setup
 > 
@@ -40,7 +43,7 @@ author: "Madeleine Bonsma-Fisher"
        - Stability: if you start at some $N$ close to the fixed point but not exactly on it, 
        will you go towards (stable) or away (unstable) from the fixed point? The sign of $dN/dt$ on
        either side of a fixed point tells you whether $N$ will increase or decrease in that area. 
-       Draw an arrow to the right if $dN/dt$ is positive, and draw and arrow to the left if $dN/dt$ is negative. 
+       Draw an arrow to the right if $dN/dt$ is positive, and draw an arrow to the left if $dN/dt$ is negative. 
 
 #### Challenge
 
@@ -180,6 +183,7 @@ $$N_1 = \frac{dN}{dt} \Delta t + N_0$$
 $$N_1 = \frac{dN}{dt} \times 1 + N_0$$
 
 $$N_1 = \frac{dN}{dt} + N_0$$
+
 What should we put in for $dN/dt$? We know $dN/dt$ for the logistic equation is 
 
 $$\frac{dN}{dt} = rN(1-\frac{N}{K})$$
@@ -328,8 +332,8 @@ $$\frac{dx}{dt} = -2.3 x$$
 
 This is what's called **numerical instability** --- the numerical solution grows very large 
 (either positive or negative) but the true solution doesn't. In the logistic equation example above,
-this numerical instability can happen if $N$ falls below $0$: the population will keep getting
-more and more negative after that. 
+while the true solution does grow more negative if $N < 0$, we get a trajectory that doesn't make
+sense if we use a step size that's too large.
 
 For accuracy, $\Delta t$ should be small. But the smaller it is, the longer it will take to
 compute the numerical approximation. In practice, choose a $\Delta t$ that is small enough that
@@ -344,7 +348,7 @@ Let's look at the documentation for `deSolve`:
 library(deSolve)
 ```
 ```{r, eval=FALSE}
-help(deSolve)
+?deSolve
 ```
 
 This is pretty hard to read, especially if your calculus was a long time ago. The important thing to know for
@@ -356,7 +360,7 @@ derivatives which are written $\partial N / \partial t$).
 This means that the function we'll be using is called `ode`, which stands for 'ordinary differential equation'. 
 
 ```{r, eval=FALSE}
-help(ode)
+?ode
 # The possible methods are all different ways of numerically solving DEs.
 
 #stiff vs. non-stiff : no precise definition, but 'stiff' generally means it's possible to be numerically unstable if the step size is too big. 
@@ -375,7 +379,7 @@ logistic_fn <- function(t, state, parameters) {
   
   # t: time point at which to evaluate derivative (doesn't actually change anything in this example)
   # state: vector of variables (here it's just N)
-  # parameters: vector of parameters c(r, K)
+  # parameters: vector of model parameters c(r, K)
   
   N <- state 
   
@@ -393,11 +397,11 @@ parameters <- c(r = 0.5, K = 50)
 state <- c(N = 10)
 times <- seq(0, 50, by = 0.01) # the timestep dt is chosen by setting the increment with 'by'
 
-#help(ode) # look at the documentation to learn about the parameters
+#?ode # look at the documentation to learn about the parameters
 result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
 ```
 
-The output of `ode` is a vector that contains the times we requested and its calculated values of N. 
+The output of `ode` is a matrix that contains the times we requested and its calculated values of N. 
 
 Notice that by using `ode` we didn't have to write a loop explicitly ourselves. Under the hood, `ode` performs a similar computation to what we did manually. 
 
@@ -474,13 +478,13 @@ predator_prey <- function(t, y, parameters) {
   
   # t: time at which to evaluate derivatives
   # y: vector of system variables (c(X, Y))
-  # parameters: vector of parameters (c(a, b, c, d))
+  # parameters: vector of model parameters (c(a, b, c, d))
   
   # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
     
   #now the state vector y has two elements because we have two species
   X <- y[1] # prey
-  Y <- y[2] 
+  Y <- y[2] # predators
   
   a <- parameters[1]
   b <- parameters[2]
@@ -492,7 +496,7 @@ predator_prey <- function(t, y, parameters) {
   dy <- c * X - d * Y
   
   # return rate of change
-  list(c(dx, dy))
+  return(list(c(dx, dy)))
   }
 ```
 
@@ -511,9 +515,99 @@ ggplot(result, ylab = "Population size") +
   geom_line(aes(x = time, y = Y), color = 'blue') 
 ```
 
-
 It looks like we have oscillations that decay to a fixed point. 
 
+*Note*: if you are using Euler's method to solve a two-dimensional system, make sure you calculate the rates of change using the variables from the previous time step. For example, in the predator-prey model, both $\Delta x$ and $\Delta y$ depend on $x$ and $y$, and it's important that you calculate $\Delta x$ and $\Delta y$ *before* updating the values of $x$ and $y$.
+
+Here's an example. 
+
+```{r}
+# Define predator-prey equations
+
+dX_dt <- function(X, Y, a, b) {
+  # X: number of prey
+  # Y: number of predators
+  # a: growth rate of prey
+  # b: rate at which predators eat prey
+  
+  return(a * X - b * Y * X)
+}
+
+dY_dt <- function(X, Y, c, d) {
+  # X: number of prey
+  # Y: number of predators
+  # c: growth rate of predators from eating prey
+  # d: death rate for predators
+  
+  return (c * X - d * Y)
+}
+```
+
+```{r}
+# parameters
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+
+state <- c(X = 2, Y = 2)
+
+dt <- 0.01 # timestep - the smaller, the better
+tmax <- 30 # the total time we want to numerically solve for
+points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
+
+# vectors to store values of X, Y, and t at each timestep:
+X_vector <- numeric(points) # prey population size
+Y_vector <- numeric(points) # predator population size
+t_vector <- seq(0, tmax - dt, by = dt) # time vector
+
+# initial condition
+X0 <- 2
+Y0 <- 2
+X_vector[1] <- X0
+Y_vector[1] <- Y0
+
+X <- X0 # initialize variable X
+Y <- Y0 # initialize variable Y
+```
+
+This is the right way to do it.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # first calculate BOTH dX and dY
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  
+  # now update BOTH X and Y
+  X <- X + dX 
+  Y <- Y + dY
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+This is the wrong way.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # calculate dX and then update X (wrong)
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  X < X + dX
+  
+  # calculate dY and then update Y - this will use the new value of X instead of the old one.
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  Y <- Y + dY
+  
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
 
 ### Extras 
 
