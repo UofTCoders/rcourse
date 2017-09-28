@@ -136,7 +136,7 @@ logistic_eqn <-  function(N, r, K) {
   # K: carrying capacity
   # N: population size
   return(r * N * (1 - N / K))
-  }
+}
   
 dN_dt <- logistic_eqn(N_seq, r = 0.5, K = 80)
   
@@ -274,7 +274,7 @@ logistic_eqn <-  function(N, r, K) {
   # K: carrying capacity
   # N: population size
   return(r * N * (1 - N / K))
-  }
+}
 
 # parameters
 K <- 150
@@ -406,7 +406,7 @@ logistic_fn <- function(t, state, parameters) {
   dN <- r * N * (1 - N / K)
     
   #return rate of change
-  list(c(dN))
+  return(list(c(dN)))
 }
 
 parameters <- c(r = 0.5, K = 50)
@@ -505,7 +505,7 @@ predator_prey <- function(t, y, parameters) {
   
   # return rate of change
   return(list(c(dx, dy)))
-  }
+}
 ```
 
 ```{r}
@@ -629,7 +629,7 @@ ani.options(interval=.00001)
 
 # dynamical equation for the logistic model
 dN_dt <- function(N,r,K) {
-  r*N*(1-N/K)
+  return(r*N*(1-N/K))
 }
 
 # parameters
