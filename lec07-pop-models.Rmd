@@ -428,34 +428,23 @@ parameters <- c(r = 0.5, K = 50)
 initial_conditions <- seq(10, 80, by = 10)
 times <- seq(0, 50, by = 0.01)
 
-results <- list() # make an empty list
-count <- 1
-
-for (N0 in initial_conditions) {
-  
-  result <- ode(y = N0, times = times, func = logistic_fn, parms = parameters)
-  result <- data.frame(result)
-  
-  results[[count]] <- result
-  
-  count <- count + 1
-}
-
-all_results <- bind_cols(results)
-```
-
-```{r, eval=FALSE}
-View(all_results) # look at what we got
-
-print(colnames(all_results)) # column names
+results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>%
+    do(data.frame(
+        ode(
+            y = initial_conditions,
+            times = times,
+            func = logistic_fn,
+            parms = parameters
+        )
+    ))
+head(results)
 ```
 
 ```{r}
-ggplot(all_results) +
-  geom_line(aes(x = time, y = X1)) +
-  geom_line(aes(x = time1, y = X11)) +
-  geom_line(aes(x = time7, y = X17)) # etc, we can keep adding more here
-
+results %>%
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) 
 ```
 
 ## Qualitative analysis of 2D models
