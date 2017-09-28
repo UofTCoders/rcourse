@@ -123,7 +123,7 @@ title: 'Assignment 3: dplyr and ggplot (8 marks)'
 4.  Create a new column that represents the square of the biomass.
     Display the three largest `squared_biomass` observations in
     descending order. Only include the columns `year`, `squared_biomass`
-    and `species` and only observations between the years 1993 and 1998
+    and `species` and only observations between the years 2003 and 2008
     from the forest habitat. *Hint: Break this down into single criteria
     and add one at a time. You will be able to obtain the desired result
     with five operations* (1 mark)
