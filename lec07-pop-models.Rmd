@@ -26,6 +26,7 @@ author: "Madeleine Bonsma-Fisher"
 > - `install.packages('phaseR')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
+> - `install.packages('tidyr')` (or `tidyverse`)
 
 ```{r math_shortcut, echo=FALSE}
 eq_dn_dt <- "$\\frac{dN}{dt}$"
@@ -428,10 +429,11 @@ Now let's make a nice plot of numerical solutions from a few different starting 
 
 ```{r}
 library(dplyr)
+library(tidyr)
 
 parameters <- c(r = 0.5, K = 50)
 initial_conditions <- seq(10, 80, by = 10)
-times <- seq(0, 50, by = 0.01)
+times <- seq(0, 20, by = 0.01)
 
 results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>%
     do(data.frame(
@@ -450,7 +452,8 @@ head(results)
 results %>%
     gather(Column, Value, -time) %>%
     ggplot(aes(x = time, y = Value, color = Column)) +
-    geom_line(aes(x = time, y = Value)) 
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
 ```
 
 ## Qualitative analysis of 2D models
