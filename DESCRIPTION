@@ -18,4 +18,5 @@ Imports: rmarkdown,
     tidyr,
     ggplot2,
     tidyverse,
-    GGally
+    GGally,
+    deSolve
