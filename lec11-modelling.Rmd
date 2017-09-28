@@ -1,0 +1,180 @@
+---
+title: "Statistical/probabilistic modelling in R"
+---
+
+<!-- 
+brainstorm:
+
+- Some basics ?
+    - mean, sd, median, IQR
+        - plot *and* showing raw data/results (as table)
+
+- how linear regression works on real world data
+- How powerful linear regression is
+    - use Ricker model as an example
+- spurious (?) correlations (different data distribution that give the same estimate)
+
+- p-values
+    - unreliability
+    - better to estimate than test significance
+- CI
+
+
+- Comparing models
+
+Outline:
+
+- why stats/probability
+- Estimation, confidence intervals, and p-values
+- Linear regression
+    - End challenge: 
+- Model selection
+- Importance of plotting
+    - Challenge: Show simple stats and simple linear regression of the various
+    datasauRus packages. But there is a problem. Use visualization to find out
+    what's wrong with the datasets.
+
+
+-->
+
+## Lesson preamble
+
+> ### Lesson objectives:
+> 
+> - Learn the importance of visualizing your data when doing any analyses or
+> statistics
+> - Learn how to apply and interpret linear regression for a variety of data
+> - Understand probability and the importance of presenting confidence intervals
+> - Learn how to compare models using information criterion techniques
+> 
+> ### Lesson outline:
+> 
+> - Statistics and probability
+> - Linear regression 
+>     - Types of dependent ($y$) data
+>     - Types of independent ($x$) data
+> - Estimation vs hypothesis testing
+> - Model comparison techniques
+
+### Setup
+
+```{r}
+library(tidyverse)
+library(datasauRus)
+library(broom)
+```
+
+----
+
+## Statistics and probability
+
+- Theoretical models are powerful tools at explaining or understanding the world. However, they are limited in that the real-world often doesn't perfectly fit these models. The real world is messy and noisy. We use statistics and probability to determine whether what we are studying is a really
+
+
+
+
+## Estimation, confidence intervals, and p-values
+
+P-values vs estimation
+
+confidence interval
+
+<!-- how many know about p-values etc? -->
+
+
+
+
+## Generalized linear models
+
+Generalized linear models (or GLM) is statistical modelling technique that encompasses several
+I'm going to be focusing specifically on
+
+- There are so many statistical techniques out there, that are applicable to
+specific conditions or situations. We can't cover all of these niche cases, so
+instead we'll cover a technique that is (more or less) the base of a large
+majority of other statistical tests: linear regression (specifically through generalized linear models).
+
+$$ Y = \alpha + X\beta + \varepsilon $$
+
+What I hope to show in the simple case is how this regression formula actually
+covers several other statistical techniques such as ANOVA, correlation, logistic
+regression, Poisson regression. Ecological models can also be converted into a
+linear regression formula, making it easier to apply and test them against
+real-world data.
+
+Using linear regression to compare means between groups (e.g. species or sex)
+
+```{r}
+portal <- read_csv("portal_data.csv")
+portal
+
+
+tidy(glm(weight ~ year, data = portal), conf.int = TRUE)
+
+tidy(glm(Petal.Length ~ Species, data = iris, family = gaussian), conf.int = TRUE)
+
+iris %>%
+    group_by(Species) %>% 
+    summarise(Means = mean(Petal.Length))
+```
+
+
+
+### Example: Using linear regression in a Ricker model
+
+## Model comparison techniques
+
+### Information criterion
+
+## Importance of visualizing the data directly
+
+Visualizing your data before, during, and after doing statistics or modelling
+your data is incredibly important. There 
+
+#### Challenge
+
+There are 
+```{r}
+# From the datasauRus package
+datasaurus_dozen %>%
+    group_by(dataset) %>%
+    summarise(
+        mean_x = mean(x),
+        sd_x = sd(x),
+        mean_y = mean(y),
+        sd_y = sd(y)
+    )
+
+# Linear regression on each dataset
+datasaurus_dozen %>% 
+    group_by(dataset) %>% 
+    do(tidy(lm(y ~ x, data = .))[2, ])
+```
+
+
+
+
+```{r, echo=FALSE, eval=FALSE}
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
+    geom_point() +
+    theme_void() +
+    theme(legend.position = "none") +
+    facet_wrap(~ dataset, ncol = 3)
+```
+
+### Other examples of finding a problem by visualizing
+
+![Visualizing raw data vs aggregate](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)
+
+```{r}
+ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    theme(legend.position = "none") +
+    facet_wrap( ~ dataset, ncol = 3)
+```
+
+## Resources
+
+- https://stats.stackexchange.com/questions/81000/calculate-coefficients-in-a-logistic-regression-with-r
+- https://www.autodeskresearch.com/publications/samestats
