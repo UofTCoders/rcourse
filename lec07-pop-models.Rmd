@@ -407,8 +407,8 @@ Notice that by using `ode` we didn't have to write a loop explicitly ourselves, 
 choose a timestep. `ode` does under the hood a version of what we did explicitly before. 
 
 ```{r}
-print(head(result, 5)) # result has a list of times and values of N at those times
-print(class(result)) # result is a 'matrix': an array of numbers
+head(result, 5) # result has a list of times and values of N at those times
+class(result) # result is a 'matrix': an array of numbers
 ```
 
 ```{r}
