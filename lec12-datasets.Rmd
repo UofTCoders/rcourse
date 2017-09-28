@@ -51,7 +51,8 @@ digraph rmarkdown {
     Report [label = "Disseminate", pos = "0.75,0.75!"]
 
     Hypothesis -> CollectData -> AnalyzeData -> HypothesisTrue -> Report
-    AnalyzeData -> HypothesisFalse -> {Report Hypothesis}
+    AnalyzeData -> HypothesisFalse -> Report
+    {CollectData AnalyzeData Report HypothesisFalse} -> Hypothesis
 }')
 ```
 
