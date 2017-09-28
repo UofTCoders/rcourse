@@ -23,7 +23,6 @@ author: "Madeleine Bonsma-Fisher"
 > ### Setup
 > 
 > - `install.packages('deSolve')`
-> - `install.packages('phaseR')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
 > - `install.packages('tidyr')` (or `tidyverse`)
@@ -344,7 +343,51 @@ Use Euler's method to calculate a numerical solution for the following different
 
 $$\frac{dx}{dt} = -2.3 x$$
 
-  - Try a few different step sizes ($\Delta t$) such as $0.7$ and $1$. What happens if $\Delta t$ is too large?
+The exact solution is 
+
+$$x(t) = x_0 \text{e}^{-2.3t}$$
+
+  - Use an initial condition of $x_0 = 50$, and calculate your answer for $t$ from $0$ to $10$.
+  - Try a few different step sizes ($\Delta t$) such as $0.1$, $0.7$, and $1$. What happens if $\Delta t$ is too large?
+
+```{r, echo=FALSE, eval=FALSE}
+# challenge solution
+
+dx_dt <- function(x) {
+  return(-2.3 * x)
+}
+
+dt <- 0.95 # timestep - the smaller, the better
+tmax <- 10 # the total time we want to numerically solve for
+points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
+
+# vectors to store values of N and t at each timestep:
+x_vector <- numeric(points) # population size
+t_vector <- seq(0, tmax - dt, by = dt) # time vector
+
+# initial condition
+x0 <- 50
+x_vector[1] <- x0
+
+x <- x0
+
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  dx <- dx_dt(x) * dt
+  x <- x + dx # the variable N is changing at each step of the loop
+  x_vector[i] <- x
+}
+
+t_vector_small <- seq(0, tmax - 0.001, by = 0.001)
+
+qplot(t_vector, x_vector,
+      ylab = "x",
+      xlab = "Time t") +
+  geom_line(aes(x = t_vector, y = x_vector), color = 'blue') +
+  geom_line(aes(x = t_vector_small, y = x0*exp(-2.3 * t_vector_small)))
+
+```
+
 
 This is what's called **numerical instability** --- the numerical solution grows very large 
 (either positive or negative) but the true solution doesn't. In the logistic equation example above,
