@@ -1,4 +1,365 @@
 ---
 title: "Fixed points, null clines, and stability"
+author: "Madeleine Bonsma-Fisher"
 ---
+
+## Lesson preamble
+
+> ### Learning objectives
+>
+> - Review numerically solving differential equations
+> - Calculate solutions with multiple initial conditions and plot
+> - Numerically solve two-dimensional models in R
+> - Find fixed points for one and two-dimensional systems analytically
+> - Find null clines for two-dimensional systems
+> - Phase portraits of two-dimensional systems
+
+> ### Lesson outline
+> 
+> Total lesson time: 2 hours
+>
+> - 
+
+> ### Setup
+> 
+> - `install.packages('deSolve')`
+> - `install.packages('ggplot2')` (or `tidyverse`)
+> - `install.packages('dplyr')` (or `tidyverse`)
+> - `install.packages('tidyr')` (or `tidyverse`)
+
+```{r math_shortcut, echo=FALSE}
+eq_dn_dt <- "$\\frac{dN}{dt}$"
+```
+
+## Recap from last week
+
+- Drawing **phase portraits** in one dimension:
+
+    - Fixed points: values of $N$ at which `r eq_dn_dt`, the rate of change of $N$,
+    is $0$. To find fixed points, plot `r eq_dn_dt` vs. $N$ and find the place(s)
+    where it crosses the $x$ axis.
+    - Stability: if you start at some $N$ close to the fixed point but not exactly
+    on it, will you go towards (stable) or away (unstable) from the fixed point? The
+    sign of `r eq_dn_dt` on either side of a fixed point tells you whether $N$ will
+    increase or decrease in that area. Draw an arrow to the right if `r eq_dn_dt` is
+    positive, and draw an arrow to the left if `r eq_dn_dt` is negative.
+
+- Numerically solving differential equations in R: starting from an initial population size, 
+calculate a sequence of population sizes using the information contained in the differential 
+equation. The result is a **trajectory** of $N$ vs. time. 
+
+    - **Euler's method**: starting from $N_0$, find the rate of change of $N$ given by `r eq_dn_dt` 
+    evaluated at $N_0$. Approximate $N_{0 + \Delta t}$ using the following expression: 
+    
+    $$N_{t+\Delta t} \approx N_t + \frac{dN}{dt} \Delta t$$
+    Use a `for` loop in R to calculate a series of $N$ at times of interest $t$. 
+    
+    - Using R's ODE-solver `ode`: define a function that calculates `r eq_dn_dt` for your model, 
+    making sure that it's in the correct format with arguments `t`, `state`, and `parameters`.
+    Call the function `ode` and give it the parameters `y = state, times = times, 
+    func = logistic_fn, parms = parameters`
+    
+## Finding numerical solutions with multiple initial conditions
+
+Let's make a pretty plot of numerical solutions for the logistic equation from a few 
+different starting points.
+
+```{r}
+# define function to be in the format that `ode` uses
+logistic_fn <- function(t, state, parameters) {
+  # Calculates dN/dt for the logistic equation
+  
+  # t: time point at which to evaluate derivative
+  # state: vector of variables (here it's just N)
+  # parameters: vector of model parameters c(r, K)
+  
+  N <- state 
+  
+  r <- parameters[1] # the first element of the parameters vector is r
+  K <- parameters[2] # the second element of the parameters vector is K
+
+  #rate of change
+  dN <- r * N * (1 - N / K)
+    
+  #return rate of change
+  return(list(c(dN)))
+}
+```
+
+
+```{r}
+# Run ode
+
+library(dplyr)
+library(tidyr)
+library(deSolve)
+
+# define parameters for the ode function
+parameters <- c(r = 0.5, K = 50)
+initial_conditions <- seq(10, 80, by = 10)
+times <- seq(0, 15, by = 0.01)
+
+# run ode inside a loop to calculate trajectories for several initial conditions
+results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>% # CTRL-shift-m to make pipe
+  # 'do' is a dplyr function that returns a dataframe after doing a series of computations.
+  do(data.frame( # 'data.frame' converts the output of 'ode' to a dataframe
+    ode(
+      y = initial_conditions, # each time the 'do' loop runs, a new initial condition will be used
+      times = times,
+      func = logistic_fn,
+      parms = parameters
+      )
+  ))
+
+# display the first few rows of the results
+head(results)  
+```
+
+This is exactly what we wanted. We have chosen a set of initial conditions 
+(`seq(10, 80, by = 10)`) and created a dataframe that has one column of times (`time`)
+and a column for each trajectory resulting from each initial condition (`X1`, `X2`, ...). 
+Now we can use `ggplot` to plot all the trajectories.
+
+```{r}
+# make a plot
+library(ggplot2)
+
+results %>%
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+```
+
+This plot very nicely summarizes the behaviour of the logistic equation: it shows the
+path that the population size $N$ will take in time from several initial conditions. 
+Importantly, the carrying capacity $K$ which we set to be $50$ is clearly a stable 
+fixed point: all the trajectories go towards $K$. 
+
+## Qualitative analysis of 2D models
+
+Now we'll move on to look at how to analyze two-dimensional models. **Two-dimensional** 
+means that there are now two variables in the system (like $x$ and $y$, prey and predators) 
+instead of one (like $N$).
+
+Many of the concepts and tools from analyzing one-dimensional models will be used 
+here as well, but we will add some things that are specific to more than one dimension. 
+
+To motivate some of these new concepts and the idea of modelling in two dimensions, 
+let's analyze a model of two species interacting.
+
+$$\frac{dx}{dt} = ax - bxy$$
+$$\frac{dy}{dt} = cx - dy$$
+
+This is very close to the Lotka-Volterra predator-prey model, but the term for predator 
+growth is $cx$ instead of $cxy$. In this model the predators will eat the prey at a 
+constant rate, no matter how many of the predators there are. Make sure you don't use 
+these exact equations when you do the assignment!
+
+First, we'll simulate a trajectory for the two species.
+
+```{r}
+predator_prey <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(X, Y))
+  # parameters: vector of model parameters (c(a, b, c, d))
+  
+  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
+    
+  #now the state vector y has two elements because we have two species
+  X <- y[1] # prey
+  Y <- y[2] # predators
+  
+  a <- parameters[1]
+  b <- parameters[2]
+  c <- parameters[3]
+  d <- parameters[4]
+    
+  # calculate rate of change
+  dx <- a * X - b * Y * X
+  dy <- c * X - d * Y
+  
+  # return rate of change
+  return(list(c(dx, dy)))
+}
+```
+
+```{r}
+# run the numerical solution
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+state <- c(X = 2, Y = 2)
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+```
+
+```{r}
+# plot the results
+
+ggplot(result, colours()) +
+  geom_line(aes(x = time, y = X), color = 'red') +
+  geom_line(aes(x = time, y = Y), color = 'blue') +
+  labs(y = "Population size")
+```
+
+It looks like we have oscillations that decay to a fixed point. 
+
+#### Challenge
+
+Modify the plotting code above to include a legend distinguishing 'predators' and 'prey'. 
+Feel free to look up a so
+
+```{r, eval=FALSE, echo=FALSE}
+# I actually have no idea how to do this halp
+
+```
+
+*Note*: if you are using Euler's method to solve a two-dimensional system, make sure 
+you calculate the rates of change using the variables from the previous time step. For 
+example, in the predator-prey model, both $\Delta x$ and $\Delta y$ depend on $x$ and $y$, 
+and it's important that you calculate $\Delta x$ and $\Delta y$ *before* updating the 
+values of $x$ and $y$.
+
+Here's an example. 
+
+```{r}
+# Define predator-prey equations
+
+dX_dt <- function(X, Y, a, b) {
+  # X: number of prey
+  # Y: number of predators
+  # a: growth rate of prey
+  # b: rate at which predators eat prey
+  
+  return(a * X - b * Y * X)
+}
+
+dY_dt <- function(X, Y, c, d) {
+  # X: number of prey
+  # Y: number of predators
+  # c: growth rate of predators from eating prey
+  # d: death rate for predators
+  
+  return (c * X - d * Y)
+}
+```
+
+```{r}
+# parameters
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+state <- c(X = 2, Y = 2)
+
+dt <- 0.01 # timestep - the smaller, the better
+tmax <- 30 # the total time we want to numerically solve for
+points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
+
+# vectors to store values of X, Y, and t at each timestep:
+X_vector <- numeric(points) # prey population size
+Y_vector <- numeric(points) # predator population size
+t_vector <- seq(0, tmax - dt, by = dt) # time vector
+
+# initial condition
+X0 <- 2
+Y0 <- 2
+X_vector[1] <- X0
+Y_vector[1] <- Y0
+
+X <- X0 # initialize variable X
+Y <- Y0 # initialize variable Y
+```
+
+This is the right way to do it.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # first calculate BOTH dX and dY
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  
+  # now update BOTH X and Y
+  X <- X + dX 
+  Y <- Y + dY
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+This is the wrong way.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # calculate dX and then update X (wrong)
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  X < X + dX
+  
+  # calculate dY and then update Y - this will use the new value of X instead of the old one.
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  Y <- Y + dY
+  
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+## Phase portraits in two dimensions
+
+#### Challenge
+
+What were the axes of the one-dimensional phase portraits we drew?
+
+
+## Finding fixed points analytically
+
+#### Challenge
+
+Find the fixed point(s) of the following differential equation: 
+
+$$\frac{dx}{dt} = x^2 - 1$$
+
+   - First find the fixed points analytically on paper.
+   - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
+   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
+# fixed points are x = 1, x = -1
+
+library(ggplot2)
+
+x_seq <- seq(-2, 2, by = 0.1)
+
+dx_dt <- x_seq^2 - 1
+
+qplot(x_seq, dx_dt) +
+  geom_hline(aes(yintercept = 0))
+```
+
+
+## Finding null clines
+
+
+
+
+
+
+
+
+
+
+
+
 
