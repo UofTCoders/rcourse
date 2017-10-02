@@ -8,17 +8,22 @@ author: "Madeleine Bonsma-Fisher"
 > ### Learning objectives
 >
 > - Review numerically solving differential equations
-> - Calculate solutions with multiple initial conditions and plot
+> - Calculate and plot solutions with multiple initial conditions
 > - Numerically solve two-dimensional models in R
-> - Find fixed points for one and two-dimensional systems analytically
-> - Find null clines for two-dimensional systems
 > - Phase portraits of two-dimensional systems
+> - Find fixed points for one-dimensional systems analytically (time permitting)
 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
 >
-> - 
+> - Review drawing phase portraits and numerically solving equations in one dimension (10 min)
+> - Numerical solutions with multiple initial conditions (15 min)
+> - Qualitative analysis of two-dimensional models
+>      - Numerical solutions for two-dimensional models (15 min)
+>      - Phase portraits of two-dimensional systems by hand (20 min)
+>      - Using `phaseR` to create phase portraits in R (40 min)
+> - Finding fixed points analytically in one dimension (20 min)
 
 > ### Setup
 > 
@@ -136,45 +141,14 @@ path that the population size $N$ will take in time from several initial conditi
 Importantly, the carrying capacity $K$ which we set to be $50$ is clearly a stable 
 fixed point: all the trajectories go towards $K$. 
 
-## Finding fixed points analytically
-
-Up until now we've been plotting `r eq_dn_dt` vs. $N$ to find the fixed points of a system. 
-But we can also solve `r eq_dn_dt` analytically to find the fixed points. 
-
-$$\frac{dN}{dt} = rN(1-\frac{N}{K})$$
-
-First, we set `r eq_dn_dt` $=0$. 
-
-$$0 = rN(1-\frac{N}{K})$$
-
-Next, we find all the values of $N$ that satisfy this equation. If either $rN = 0$ or 
-$1-\frac{N}{K} = 0$, the equation is satisfied. This means we have two fixed points, 
-one at $N = 0$ (since $r \neq 0$) and the other at $N = K$. These are the same fixed 
-points we found graphically last week. 
-
 #### Challenge
 
-Find the fixed point(s) of the following differential equation: 
+Modify the plotting code above so that the legend lists the initial conditions for each
+line instead of `X1`, `X2`, etc. 
 
-$$\frac{dx}{dt} = x^2 - 1$$
+```{r, eval=FALSE, echo=FALSE}
+# I don't know how to do this
 
-   - First find the fixed points analytically on paper.
-   - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
-   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
-
-```{r, echo=FALSE, eval=FALSE}
-# Challenge solution
-
-# fixed points are x = 1, x = -1
-
-library(ggplot2)
-
-x_seq <- seq(-2, 2, by = 0.1)
-
-dx_dt <- x_seq^2 - 1
-
-qplot(x_seq, dx_dt) +
-  geom_hline(aes(yintercept = 0))
 ```
 
 ## Qualitative analysis of 2D models
@@ -391,7 +365,6 @@ but it's still there, hidden in the path that the populations take.
 Comparing these two ways of plotting a trajectory, we can see that oscillations in time
 look like circular motion in the phase portrait. The GIF below illustrates this.
 
-
 ```{r}
 library(animation)
 library(ggplot2)
@@ -545,24 +518,50 @@ mass_spring_trajectory <- trajectory(mass_spring,
                             system = "two.dim")
 ```
 
-## Fixed points and null clines in two-dimensional systems
+## Finding fixed points analytically (time permitting)
 
-Finding fixed points in two dimensions is similar to finding them in one dimension, but now
-we have two equations that we have to solve *simultaneously*. That means we set both $dx/dt = 0$
-and $dy/dt = 0$ and find combinations of $x$ and $y$ that make both zero at the same time. 
+Up until now we've been plotting `r eq_dn_dt` vs. $N$ to find the fixed points of a system. 
+But we can also solve `r eq_dn_dt` $=0$ analytically to find the fixed points. One advantage of
+finding the fixed points analytically is that you can see how the fixed points depend on the
+model parameters, whereas before we had to choose parameters in order to plot `r eq_dn_dt`
+and find the fixed points qualitatively.
 
-$$\frac{dx}{dt} = ax - bxy$$
-$$\frac{dy}{dt} = cx - dy$$
+$$\frac{dN}{dt} = rN(1-\frac{N}{K})$$
 
+First, we set `r eq_dn_dt` $=0$. 
 
-```{r}
+$$0 = rN(1-\frac{N}{K})$$
 
-points(4, 1, # x, y coordinates of point to plot
-       pch = 21, # pch = 21 gives a filled circle
-       # see  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
-       bg = 'black') # background colour
+Next, we find all the values of $N$ that satisfy this equation. If either $rN = 0$ or 
+$1-\frac{N}{K} = 0$, the equation is satisfied. This means we have two fixed points, 
+one at $N = 0$ (since $r \neq 0$) and the other at $N = K$. These are the same fixed 
+points we found graphically last week. Notice that one of the fixed points depends on 
+$K$, but that neither of the fixed points depend on $r$. 
+
+#### Challenge
+
+Find the fixed point(s) of the following differential equation: 
+
+$$\frac{dx}{dt} = x^2 - 1$$
+
+   - First find the fixed points analytically on paper.
+   - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
+   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
+# fixed points are x = 1, x = -1
+
+library(ggplot2)
+
+x_seq <- seq(-2, 2, by = 0.1)
+
+dx_dt <- x_seq^2 - 1
+
+qplot(x_seq, dx_dt) +
+  geom_hline(aes(yintercept = 0))
 ```
-
 
 
 
