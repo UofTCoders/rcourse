@@ -1,4 +1,274 @@
 ---
-title: "Modeling in R"
+title: "Fixed points, null clines, and stability"
+author: "Madeleine Bonsma-Fisher"
 ---
+
+## Lesson preamble
+
+> ### Learning objectives
+>
+> - Find fixed points for two-dimensional systems analytically
+> - Find null clines for two-dimensional systems
+> - Analyze stability for one and two-dimensional systems analytically
+>     - Write down the Jacobian matrix
+>     - Use R to find eigenvalues of the Jacobian
+
+> ### Lesson outline
+> 
+> Total lesson time: 2 hours
+>
+> - Review and warm-up challenge (10 minutes)
+> - 
+
+> ### Setup
+> 
+> - `install.packages('deSolve')`
+> - `install.packages('ggplot2')` (or `tidyverse`)
+> - `install.packages('dplyr')` (or `tidyverse`)
+> - `install.packages('tidyr')` (or `tidyverse`)
+
+```{r math_shortcut, echo=FALSE}
+eq_dn_dt <- "$\\frac{dN}{dt}$"
+```
+
+*Fixed points in one dimension if no time last lecture*
+
+## Fixed points in two-dimensional systems
+
+Why are we bothering to find fixed points analytically when we could find them graphically? 
+One reason that we touched on last class is that it allows us to see how the fixed points depend
+on the model parameters. Another reason is that by solving the system analytically, we can be sure
+that we found *all* the fixed points, even ones that we wouldn't find by simulating trajectories. 
+
+Finding fixed points in two dimensions is similar to finding them in one dimension, but now
+we have two equations that we have to solve *simultaneously*. That means we set both $dx/dt = 0$
+and $dy/dt = 0$ and find combinations of $x$ and $y$ that make both zero at the same time. 
+
+Let's find the fixed points for our predator-prey model:
+
+$$\frac{dx}{dt} = ax - bxy$$
+$$\frac{dy}{dt} = cx - dy$$
+
+We need to solve $0 = ax - bxy$ and $0 = cx - dy$. We have two equations and two unknowns,
+$x$ and $y$. Let's factor the equations where we can:
+
+$$0 = x(a-by)$$
+
+$$0 = cx - dy$$
+
+One possibility from the first equation is $x = 0$. If $x = 0$, then $y$ must also be $0$
+in order for $cx - dy = -dy = 0$. So one fixed point is $x = 0, y = 0$. 
+
+The other factor in the first equation gives $a = by$, so $y = a/b$. If we plug $y = a/b$
+into the second equation, we get $cx = da/b$, so $x = \frac{da}{bc}$. The second fixed point
+is $x = \frac{da}{bc}, y = \frac{a}{b}$.
+
+Let's create a phase portrait using `phaseR` and add these fixed points to the phase portrait. 
+
+#### Challenge
+
+Define a function called `predator_prey` that uses the format required by `ode` to calculate 
+and return $dx/dt$ and $dy/dt$. Feel free to refer to the notes from last class and re-use
+what you need.
+
+```{r, eval=TRUE, echo=FALSE}
+# Challenge solution - basically copy and paste from lecture 8
+
+predator_prey <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(X, Y))
+  # parameters: vector of model parameters (c(a, b, c, d))
+  
+  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
+    
+  #now the state vector y has two elements because we have two species
+  X <- y[1] # prey
+  Y <- y[2] # predators
+  
+  a <- parameters[1]
+  b <- parameters[2]
+  c <- parameters[3]
+  d <- parameters[4]
+    
+  # calculate rate of change
+  dx <- a * X - b * Y * X
+  dy <- c * X - d * Y
+  
+  # return rate of change
+  return(list(c(dx, dy)))
+}
+```
+
+Now we create the phase portrait using `phaseR`, add some trajectories, and add the fixed points.
+
+```{r}
+
+# parameters
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+params <- c(a, b, c, d)
+
+initial_conditions <-  matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
+                                   byrow = TRUE)
+
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
+pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+                          parameters = params,
+                          points = 15, # this is the density of grid points on which to plot arrows
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories
+pp_trajectory <- trajectory(predator_prey, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = initial_conditions, 
+                            t.end = 30, # how far in time to calculate the trajectories
+                            parameters = params, system = "two.dim")
+
+# plot fixed points
+
+# x = 0, y = 0 
+points(0, 0, # x, y coordinates of point to plot
+       cex = 1.5) # 'cex' stands for 'character expansion': marker size relative to default
+
+# x = ad/bc, y = a/b 
+x_star <- a * d / (b * c)
+y_star <- a / b
+points(x_star, y_star, # x, y coordinates of point to plot
+       pch = 21, # pch = 21 gives a filled circle
+       # see  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+       bg = 'black', # background colour
+       cex = 1.5) 
+```
+
+One interesting thing about this system is that $x = 0, y = 0$ is an unstable fixed point, but
+there is one direction in which trajectories are attracted to it: along the y-axis. This makes
+sense: if there are no prey ($x = 0$), then the predators must also go extinct. We will come
+back to this later when we talk about analyzing stability analytically.
+
+## Null clines in two-dimensional systems
+
+A null cline is a curve on which one of derivatives in the model is $0$. In other words, 
+it's a string of points for which one of the variables is not changing --- its rate of change
+is $0$ on that line. 
+
+Finding null clines is similar to finding fixed points, except that when we found fixed points,
+we required both derivatives to be *simultaneously* zero. For null clines, we only set one
+derivative to zero at a time, and the other one is free to do what it wants. 
+
+To find the $x$ null cline(s), the curve(s) on which $x$ will not change, we set 
+$\frac{dx}{dt} = ax - bxy$ to zero, ignoring $\frac{dy}{dt}$. 
+
+$$0 = ax - bxy$$
+
+Now we proceed exactly as if we were finding the fixed points, but we don't require that $y$
+be anything in particular. We can factor the right hand side to $x(a-by)$, which means there
+are actually two curves for which the rate of change of $x$ is $0$. One of them is at $x = 0$:
+it's a straight line on the y-axis. For any value of $y$, provided $x = 0$, $x$ won't change.
+The other one is at $y = a/b$: another straight line, this time at a fixed value of $y$.
+For any value of $x$, provided $y = a/b$, $x$ won't change. 
+
+Let's run a numerical solution for the predator-prey model we've been using and plot the null
+clines we just found.
+
+```{r}
+# run the numerical solution
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+state <- c(X = 2, Y = 2)
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+```
+
+Plot a trajectory in the phase plane and the null clines:
+
+```{r}
+
+x_seq <- seq(0, 8, by = 0.1)
+y_seq <- seq(0, 8, by = 0.1)
+
+df <- data.frame(x_seq, y_seq)
+
+p1 <- ggplot() + # assign plot to a variable so we can use it later
+  geom_point(aes(x = X, y = Y), result) + # trajectory
+  geom_line(aes(x = 0, y = y_seq), df, color = 'red') + # x null cline 1
+  geom_line(aes(x = x_seq, y = a/b), df, color = 'red') # x null cline 2
+
+p1
+```
+
+The null clines go through the places where the trajectory 'turns back' -- they go through
+the 'peaks' and 'valleys' of $x$. 
+
+Another way to think of the null clines is as if we were back to a 1D system and were
+plotting $dx/dt$ vs. $x$ for a series of values of $y$.
+
+Now let's find the null clines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the form $y(x)$, $y$ as a function of $x$, so that we can more easily plot it on our phase portrait axes. 
+
+After rearraning, we find the solution to this equation: $y = \frac{c}{d}x$. 
+
+```{r}
+p1 +
+  geom_line(aes(x = x_seq, y = x_seq*c/d), df, colour = 'blue') +
+  xlim(0, 8) +
+  ylim(0, 8)
+```
+
+The intersection(s) of the $x$ and $y$ null clines are the fixed points, so plotting null
+clines is also a way to graphically find the fixed points. This is particularly useful if 
+it's hard to solve for the fixed points. 
+
+*Note*: is there a minimum number of null clines a system must have? Are the null clines guarranteed to intersect? Are null clines always straight lines? (No, no, and no.)  
+
+$dx/dt = 3$.  
+
+
+
+#### Challenge
+
+Find the fixed point(s) and null clines analytically for the following two-dimensional 
+system. Verify your work by plotting the null clines. 
+
+
+## Quantitative stability analysis
+
+- intuition for this: assume system is linear close to the fixed point, so solutions are exponential - eigenvectors are rates of decay or growth for each eigenvector direction.
+
+Mountain pass: https://en.wikipedia.org/wiki/Mountain_pass
+
+### Calculating the Jacobian matrix
+
+### Classifying fixed points using eigenvalues of the Jacobian
+
+
+### An example in three dimensions (bac-virus-nutrients)
+
+
+
+```{r}
+# stability analysis for predator-prey model
+
+y <- 0
+x <- 0
+
+dx_dx <- a - b*y
+dx_dy <- -b*x
+dy_dx <- c
+dy_dy <- -d
+
+
+
+A<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
+e_vals<-eigen(A)$values
+
+```
+
 
