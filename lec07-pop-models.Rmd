@@ -16,9 +16,8 @@ author: "Madeleine Bonsma-Fisher"
 >
 > - Review qualitative analysis of one-dimensional systems (20 min)
 > - Euler's method on paper (20 min)
-> - Euler's method in R (30 min)
-> - Using R's ODE-solver to numerically solve differential equations (20 min)
-> - Numerically solving two-dimensional systems (20 min)
+> - Euler's method in R (40 min)
+> - Using R's ODE-solver to numerically solve differential equations (30 min)
 
 > ### Setup
 > 
@@ -89,28 +88,6 @@ You can think of $dN/dt$ as a *velocity*: it tells you how fast $N$ is changing 
 direction. If we start a **trajectory** at some initial $N_0$, $dN/dt$ dictates whether $N$ will
 increase, decrease, or stay the same. If $N_0$ happens to be at a fixed point, $N$ will remain at
 $N_0$ for all time. 
-
-#### Challenge (time permitting)
-
-Find the fixed point(s) of the following differential equation.
-
-$$\frac{dx}{dt} = x^2 - 1$$
-
-   - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
-   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
-
-```{r, echo=FALSE, eval=FALSE}
-# Challenge solution
-
-library(ggplot2)
-
-x_seq <- seq(-2, 2, by = 0.1)
-
-dx_dt <- x_seq^2 - 1
-
-qplot(x_seq, dx_dt) +
-  geom_hline(aes(yintercept = 0))
-```
 
 ## Numerically simulating models in R
 
@@ -477,188 +454,6 @@ ggplot(result) +
   geom_point(aes(x = time, y = N))
 ```
 
-Now let's make a nice plot of numerical solutions from a few different starting points.
-
-```{r}
-library(dplyr)
-library(tidyr)
-
-parameters <- c(r = 0.5, K = 50)
-initial_conditions <- seq(10, 80, by = 10)
-times <- seq(0, 20, by = 0.01)
-
-results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>%
-    do(data.frame(
-        ode(
-            y = initial_conditions,
-            times = times,
-            func = logistic_fn,
-            parms = parameters
-        )
-    ))
-
-head(results)
-```
-
-```{r}
-results %>%
-    gather(Column, Value, -time) %>%
-    ggplot(aes(x = time, y = Value, color = Column)) +
-    geom_line(aes(x = time, y = Value)) +
-    labs(y = "Population size")
-```
-
-## Qualitative analysis of 2D models
-
-Now we'll move on to look at how to analyze two-dimensional models. **Two-dimensional** means that there are now two variables in the system (like $x$ and $y$, prey and predators) instead of one (like $N$).
-
-Many of the concepts and tools from analyzing one-dimensional models will be used here as well, but we will add some things that are specific to more than one dimension. 
-
-To motivate some of these new concepts and the idea of modelling in two dimensions, let's analyze a model of two species interacting.
-
-$$\frac{dx}{dt} = ax - bxy$$
-$$\frac{dy}{dt} = cx - dy$$
-
-This is sort of like the Lotka-Volterra predator-prey model, but the term for predator growth is $cx$ instead of $cxy$. In this model the predators will eat the prey at a constant rate, no matter how many of the predators there are. 
-
-First, we'll simulate a trajectory for the two species.
-
-```{r}
-predator_prey <- function(t, y, parameters) {
-  # calculates dx/dt and dy/dt for a predator-prey model
-  
-  # t: time at which to evaluate derivatives
-  # y: vector of system variables (c(X, Y))
-  # parameters: vector of model parameters (c(a, b, c, d))
-  
-  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
-    
-  #now the state vector y has two elements because we have two species
-  X <- y[1] # prey
-  Y <- y[2] # predators
-  
-  a <- parameters[1]
-  b <- parameters[2]
-  c <- parameters[3]
-  d <- parameters[4]
-    
-  # calculate rate of change
-  dx <- a * X - b * Y * X
-  dy <- c * X - d * Y
-  
-  # return rate of change
-  return(list(c(dx, dy)))
-}
-```
-
-```{r}
-# run the numerical solution
-
-parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
-state <- c(X = 2, Y = 2)
-times <- seq(0, 50, by = 0.01)
-
-result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
-result <- data.frame(result)
-
-ggplot(result, ylab = "Population size") +
-  geom_line(aes(x = time, y = X), color = 'red') +
-  geom_line(aes(x = time, y = Y), color = 'blue') 
-```
-
-It looks like we have oscillations that decay to a fixed point. 
-
-*Note*: if you are using Euler's method to solve a two-dimensional system, make sure you calculate the rates of change using the variables from the previous time step. For example, in the predator-prey model, both $\Delta x$ and $\Delta y$ depend on $x$ and $y$, and it's important that you calculate $\Delta x$ and $\Delta y$ *before* updating the values of $x$ and $y$.
-
-Here's an example. 
-
-```{r}
-# Define predator-prey equations
-
-dX_dt <- function(X, Y, a, b) {
-  # X: number of prey
-  # Y: number of predators
-  # a: growth rate of prey
-  # b: rate at which predators eat prey
-  
-  return(a * X - b * Y * X)
-}
-
-dY_dt <- function(X, Y, c, d) {
-  # X: number of prey
-  # Y: number of predators
-  # c: growth rate of predators from eating prey
-  # d: death rate for predators
-  
-  return (c * X - d * Y)
-}
-```
-
-```{r}
-# parameters
-a <- 5
-b <- 1
-c <- 1
-d <- 0.2
-
-
-state <- c(X = 2, Y = 2)
-
-dt <- 0.01 # timestep - the smaller, the better
-tmax <- 30 # the total time we want to numerically solve for
-points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
-
-# vectors to store values of X, Y, and t at each timestep:
-X_vector <- numeric(points) # prey population size
-Y_vector <- numeric(points) # predator population size
-t_vector <- seq(0, tmax - dt, by = dt) # time vector
-
-# initial condition
-X0 <- 2
-Y0 <- 2
-X_vector[1] <- X0
-Y_vector[1] <- Y0
-
-X <- X0 # initialize variable X
-Y <- Y0 # initialize variable Y
-```
-
-This is the right way to do it.
-
-```{r}
-for (i in 2:points) {
-  # start at 2 because the initial state is at position 1
-  
-  # first calculate BOTH dX and dY
-  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
-  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
-  
-  # now update BOTH X and Y
-  X <- X + dX 
-  Y <- Y + dY
-  X_vector[i] <- X
-  Y_vector[i] <- Y
-}
-```
-
-This is the wrong way.
-
-```{r}
-for (i in 2:points) {
-  # start at 2 because the initial state is at position 1
-  
-  # calculate dX and then update X (wrong)
-  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
-  X < X + dX
-  
-  # calculate dY and then update Y - this will use the new value of X instead of the old one.
-  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
-  Y <- Y + dY
-  
-  X_vector[i] <- X
-  Y_vector[i] <- Y
-}
-```
 
 ### Extras 
 
