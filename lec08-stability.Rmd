@@ -365,35 +365,7 @@ but it's still there, hidden in the path that the populations take.
 Comparing these two ways of plotting a trajectory, we can see that oscillations in time
 look like circular motion in the phase portrait. The GIF below illustrates this.
 
-```{r}
-library(animation)
-library(ggplot2)
-
-ani.options(interval=.00001)
-
-parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
-state <- c(X = 2, Y = 2)
-times <- seq(0, 50, by = 0.01)
-
-result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
-result <- data.frame(result)
-
-saveGIF({ 
-    par(mfrow=c(2,1))
-    for (i in length(result$time)){ 
-      ggplot(result) +
-        geom_line(aes(x = result$time[1:i], y = result$X[1:i]), color = 'red') +
-        geom_line(aes(x = result$time[1:i], y = result$Y[1:i]), color = 'blue') 
-
-      ggplot(result) +
-        geom_point(aes(x = result$X[1:i], y = result$Y[1:i]))
-    }
-
-})
-
-```
-
-INSERT GIF from school computer
+![Predator-prey simulation](https://github.com/UofTCoders/rcourse/raw/master/predator-prey.gif)
 
 ### Drawing qualitative phase portraits by hand
 
@@ -564,7 +536,48 @@ qplot(x_seq, dx_dt) +
 ```
 
 
+## Extras
 
+Predator-prey simulation in R
+
+```
+library(animation)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+ani.options(interval = 0.00001)
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+state <- c(X = 2, Y = 2)
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+saveGIF({ 
+    for (i in seq(1, length(result$time), by = 50)) { 
+      result_i <- head(result, i)
+      p1 <- ggplot(result_i) +
+        geom_line(aes(x = result_i$time, y = result_i$X), color = 'red') +
+        geom_line(aes(x = result_i$time, y = result_i$Y), color = 'blue') +
+        ylim(0, 8) +
+        xlab("Time") +
+        ylab("Population size")
+
+      p2 <- ggplot(result_i) +
+        geom_point(aes(x = result_i$X, y = result_i$Y)) +
+        xlim(0, 8) +
+        ylim(0, 8) +
+        xlab("Prey population size X") +
+        ylab("Predator population size Y")
+    
+    grid.arrange(p1, p2, ncol = 2, top = "Predator-prey model")
+    }
+
+}, movie.name = "predator-prey.gif", ani.width = 900, ani.height = 600)
+
+```
 
 
 
