@@ -19,4 +19,5 @@ Imports: rmarkdown,
     ggplot2,
     tidyverse,
     GGally,
-    deSolve
+    deSolve,
+    phaseR
