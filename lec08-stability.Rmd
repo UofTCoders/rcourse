@@ -43,7 +43,7 @@ eq_dn_dt <- "$\\frac{dN}{dt}$"
 
     - Fixed points: values of $N$ at which `r eq_dn_dt`, the rate of change of $N$,
     is $0$. To find fixed points, plot `r eq_dn_dt` vs. $N$ and find the place(s)
-    where it crosses the $x$ axis.
+    where it crosses the $x$ axis ($y = 0$).
     - Stability: if you start at some $N$ close to the fixed point but not exactly
     on it, will you go towards (stable) or away (unstable) from the fixed point? The
     sign of `r eq_dn_dt` on either side of a fixed point tells you whether $N$ will
@@ -108,6 +108,7 @@ times <- seq(0, 15, by = 0.01)
 # run ode inside a loop to calculate trajectories for several initial conditions
 results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>% # CTRL-shift-m to make pipe
   # 'do' is a dplyr function that returns a dataframe after doing a series of computations.
+  # once the results are in a data frame, everything we've learned about ggplot and dplyr can be used!
   do(data.frame( # 'data.frame' converts the output of 'ode' to a dataframe
     ode(
       y = initial_conditions, # each time the 'do' loop runs, a new initial condition will be used
@@ -125,6 +126,10 @@ This is exactly what we wanted. We have chosen a set of initial conditions
 (`seq(10, 80, by = 10)`) and created a dataframe that has one column of times (`time`)
 and a column for each trajectory resulting from each initial condition (`X1`, `X2`, ...). 
 Now we can use `ggplot` to plot all the trajectories.
+```{r}
+results %>% 
+  gather(Column, Value, -time) # the minus means use all columns except that one
+```
 
 ```{r}
 # make a plot
@@ -246,7 +251,11 @@ result %>%
   labs(y = "Population size")
 ```
 
-It looks like we have oscillations that decay to a fixed point. 
+It looks like we have oscillations that decay to a fixed point. Notice that the prey population 
+(in red) dips below $1$ during each oscillation. If this was a real population, the prey would 
+have gone extinct on the first dip below $1$. This means that the parameters we've chosen aren't
+very realistic. We could instead choose parameters that would change the fixed points to real-world
+population sizes. 
 
 #### Challenge
 
@@ -381,7 +390,7 @@ $Y$ vs. $t$, we'll plot $Y$ vs. $X$: predator population size vs. prey populatio
 
 ```{r}
 ggplot(result) +
-  geom_path(aes(x = X, y = Y)) # geom_line connects the dots in the wrong way - try it out and see
+  geom_path(aes(x = X, y = Y, color = time)) # geom_line connects the dots in the wrong way - try it out and see
 ```
 
 A phase portrait in two dimensions has two axes: one for each of the variables in the system.
@@ -566,12 +575,11 @@ qplot(x_seq, dx_dt) +
   geom_hline(aes(yintercept = 0))
 ```
 
-
 ## Extras
 
 Predator-prey simulation GIF in R
 
-```{r}
+```{r, eval=FALSE}
 library(animation)
 library(ggplot2)
 library(grid)
@@ -597,7 +605,8 @@ saveGIF({
         ylab("Population size")
 
       p2 <- ggplot(result_i) +
-        geom_path(aes(x = result_i$X, y = result_i$Y)) +
+        geom_path(aes(x = result_i$X, y = result_i$Y, color = result_i$time)) +
+        guides(color = guide_legend("Time")) + 
         xlim(0, 8) +
         ylim(0, 8) +
         xlab("Prey population size X") +
