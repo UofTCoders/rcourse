@@ -126,10 +126,6 @@ This is exactly what we wanted. We have chosen a set of initial conditions
 (`seq(10, 80, by = 10)`) and created a dataframe that has one column of times (`time`)
 and a column for each trajectory resulting from each initial condition (`X1`, `X2`, ...). 
 Now we can use `ggplot` to plot all the trajectories.
-```{r}
-results %>% 
-  gather(Column, Value, -time) # the minus means use all columns except that one
-```
 
 ```{r}
 # make a plot
