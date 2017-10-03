@@ -606,7 +606,7 @@ saveGIF({
 
       p2 <- ggplot(result_i) +
         geom_path(aes(x = result_i$X, y = result_i$Y, color = result_i$time)) +
-        guides(color = guide_legend("Time")) + 
+        theme(legend.position="none") + 
         xlim(0, 8) +
         ylim(0, 8) +
         xlab("Prey population size X") +
