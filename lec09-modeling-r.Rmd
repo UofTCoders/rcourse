@@ -32,7 +32,50 @@ author: "Madeleine Bonsma-Fisher"
 eq_dn_dt <- "$\\frac{dN}{dt}$"
 ```
 
-*Fixed points in one dimension if no time last lecture*
+## Finding fixed points analytically (time permitting)
+
+Up until now we've been plotting `r eq_dn_dt` vs. $N$ to find the fixed points of a system. 
+But we can also solve `r eq_dn_dt` $=0$ analytically to find the fixed points. One advantage of
+finding the fixed points analytically is that you can see how the fixed points depend on the
+model parameters, whereas before we had to choose parameters in order to plot `r eq_dn_dt`
+and find the fixed points qualitatively.
+
+$$\frac{dN}{dt} = rN(1-\frac{N}{K})$$
+
+First, we set `r eq_dn_dt` $=0$. 
+
+$$0 = rN(1-\frac{N}{K})$$
+
+Next, we find all the values of $N$ that satisfy this equation. If either $rN = 0$ or 
+$1-\frac{N}{K} = 0$, the equation is satisfied. This means we have two fixed points, 
+one at $N = 0$ (since $r \neq 0$) and the other at $N = K$. These are the same fixed 
+points we found graphically last week. Notice that one of the fixed points depends on 
+$K$, but that neither of the fixed points depend on $r$. 
+
+#### Challenge
+
+Find the fixed point(s) of the following differential equation: 
+
+$$\frac{dx}{dt} = x^2 - 1$$
+
+   - First find the fixed points analytically on paper.
+   - Plot $\frac{dx}{dt}$ vs. $x$ for $x$ ranging from $-2$ to $2$ in $0.1$ increments.
+   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
+# fixed points are x = 1, x = -1
+
+library(ggplot2)
+
+x_seq <- seq(-2, 2, by = 0.1)
+
+dx_dt <- x_seq^2 - 1
+
+qplot(x_seq, dx_dt) +
+  geom_hline(aes(yintercept = 0))
+```
 
 ## Fixed points in two-dimensional systems
 
@@ -262,6 +305,9 @@ pp_nullclines <- nullclines(predator_prey,
            parameters = params, system = "two.dim")
 ```
 
+The vector field tells us graphically that there is one stable fixed point at ($x = 1, y = 5$) and 
+one unstable fixed point at ($x = 0, y = 0$).
+
 #### Challenge (to think about)
 
 Is there a minimum number of null clines a system must have? Are the null clines
@@ -291,9 +337,10 @@ We've now found fixed points analytically, but up until now we've been analyzing
 of the fixed points by constructing a phase portrait and looking at it. This is a perfectly good
 way to analyze stability, but we can do more: we can find out a whole lot with the quantitative
 stability analysis we're about to do:
-    - Whether a fixed point will be stable or unstable
-    - How the system will behave near a fixed point (are there oscillations, etc.)
-    - How the stability and type of a fixed point depend on the model parameters
+
+- Whether a fixed point will be stable or unstable
+- How the system will behave near a fixed point (are there oscillations, etc.)
+- How the stability and type of a fixed point depend on the model parameters
     
 The last reason in the list is in many ways the best reason. As we will see, in some models the
 number and/or stability of the fixed points depends on the system parameters, and quantitatively
@@ -374,7 +421,7 @@ qplot(x_seq, sin(x_seq)) +
   geom_hline(yintercept = 0)
 ```
 
-The four fixed points visible here are respectively unstable, stable, unstable, and stable. 
+The four fixed points visible here are respectively unstable, stable, unstable, and stable, because the slope through the fixed points is respectively positive, negative, positive, and negative.
 
 ### Stability analysis in two dimensions
 
@@ -382,7 +429,8 @@ Analyzing stability in two dimensions follows exactly the same principle, but th
 more complicated. Now instead of needing to find the slope in just one dimension, we have an
 two-dimensional surface we need to consider. 
 
-Imagine the landscape of $dx/dt$ and $dy/dt$ as an actual landscape with hills and valleys. We could have mountain peaks that represent unstable fixed points:
+Imagine the landscape of $dx/dt$ and $dy/dt$ as an actual landscape with hills and valleys. 
+We could have mountain peaks that represent unstable fixed points:
 
 ![Mt Rundle, Alberta](https://chrismartinphotography.files.wordpress.com/2014/09/mount-rundle-moonrise-c2a9-christopher-martin-95461.jpg)
 
@@ -432,7 +480,7 @@ $$J=\begin{bmatrix}
 \end{bmatrix}$$
 
 *Note*: it doesn't matter which variable is which, or which equation is called $f$ or $g$, as 
-long as the order consistent --- one function on the top row, the other on the bottom, one 
+long as the order is consistent --- one function on the top row, the other on the bottom, one 
 variable in the first column, the other in the second.
 
 Let's evaluate each of these partial derivatives.
