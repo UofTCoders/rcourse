@@ -267,7 +267,7 @@ Feel free to look up a solution online.
 
 result %>% 
   rename(Prey = X, Predator = Y) %>% 
-  gather(PredPrey, PopulationSize, -time) %>% 
+  gather(PredPrey, PopulationSize, -time) %>% # the minus means use all columns except that one
   ggplot(aes(x = time, y = PopulationSize, color = PredPrey)) +
   geom_line() +
   labs(y = "Population size")
