@@ -1,5 +1,5 @@
 ---
-title: "Fixed points, null clines, and stability"
+title: "Population models in 2 dimensions"
 author: "Madeleine Bonsma-Fisher"
 ---
 
