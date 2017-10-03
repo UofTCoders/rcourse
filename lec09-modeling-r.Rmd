@@ -87,10 +87,10 @@ predator_prey <- function(t, y, parameters) {
   X <- y[1] # prey
   Y <- y[2] # predators
   
-  a <- parameters[1]
-  b <- parameters[2]
-  c <- parameters[3]
-  d <- parameters[4]
+  a <- parameters['a']
+  b <- parameters['b']
+  c <- parameters['c']
+  d <- parameters['d']
     
   # calculate rate of change
   dx <- a * X - b * Y * X
@@ -111,7 +111,7 @@ b <- 1
 c <- 1
 d <- 0.2
 
-params <- c(a, b, c, d)
+params <- c(a = a, b = b, c = c, d = d) # so that they can be called by name
 
 initial_conditions <-  matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
                                    byrow = TRUE)
@@ -154,7 +154,7 @@ back to this later when we talk about analyzing stability analytically.
 ## Null clines in two-dimensional systems
 
 A null cline is a curve on which one of derivatives in the model is $0$. In other words, 
-it's a string of points for which one of the variables is not changing --- its rate of change
+it's a series of points for which one of the variables is not changing --- its rate of change
 is $0$ on that line. 
 
 Finding null clines is similar to finding fixed points, except that when we found fixed points,
@@ -198,22 +198,24 @@ y_seq <- seq(0, 8, by = 0.1)
 df <- data.frame(x_seq, y_seq)
 
 p1 <- ggplot() + # assign plot to a variable so we can use it later
-  geom_point(aes(x = X, y = Y), result) + # trajectory
+  geom_path(aes(x = X, y = Y), result) + # trajectory
   geom_line(aes(x = 0, y = y_seq), df, color = 'red') + # x null cline 1
   geom_line(aes(x = x_seq, y = a/b), df, color = 'red') # x null cline 2
 
 p1
 ```
 
-The null clines go through the places where the trajectory 'turns back' -- they go through
+The null clines go through the places where the trajectory turns back on itself -- they go through
 the 'peaks' and 'valleys' of $x$. 
 
-Another way to think of the null clines is as if we were back to a 1D system and were
-plotting $dx/dt$ vs. $x$ for a series of values of $y$.
+Another way to think of the null clines is as if we were back to a 1D system and were 
+plotting $dx/dt$ vs. $x$ for a series of values of $y$. The null cline passes through all
+the points where $dx/dt = 0$. 
 
-Now let's find the null clines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the form $y(x)$, $y$ as a function of $x$, so that we can more easily plot it on our phase portrait axes. 
+Now let's find the null clines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the
+form $y(x)$, $y$ as a function of $x$, so that we can more easily plot it on our phase portrait axes. 
 
-After rearraning, we find the solution to this equation: $y = \frac{c}{d}x$. 
+After rearraning, we find the solution to this equation: $y = \frac{c}{d}x$. Let's add it to the plot
 
 ```{r}
 p1 +
@@ -224,13 +226,24 @@ p1 +
 
 The intersection(s) of the $x$ and $y$ null clines are the fixed points, so plotting null
 clines is also a way to graphically find the fixed points. This is particularly useful if 
-it's hard to solve for the fixed points. 
+it's hard to solve for the fixed points analytically. 
 
-*Note*: is there a minimum number of null clines a system must have? Are the null clines guarranteed to intersect? Are null clines always straight lines? (No, no, and no.)  
+#### Challenge (to think about)
 
-$dx/dt = 3$.  
+Is there a minimum number of null clines a system must have? Are the null clines
+guarranteed to intersect? Are null clines always straight lines?  
 
+```{r, eval=FALSE, echo=FALSE}
 
+# Consider $dx/dt = 3$. Maybe this isn't truly a differential equation, but $dx/dt$ can never be 0.
+
+# If each differential equation depends on at least one of the system variables 
+# (and the equations are different), there will always be at minimum two null clines. 
+
+# The null clines are not guarranteed to intersect: it's possible to not have a fixed point. 
+# Example: dx/dt = y, dy/dt = y + 2
+
+```
 
 #### Challenge
 
@@ -240,13 +253,113 @@ system. Verify your work by plotting the null clines.
 
 ## Quantitative stability analysis
 
-- intuition for this: assume system is linear close to the fixed point, so solutions are exponential - eigenvectors are rates of decay or growth for each eigenvector direction.
+We've now found fixed points analytically, but up until now we've been analyzing the stability 
+of the fixed points by constructing a phase portrait and looking at it. This is a perfectly good
+way to analyze stability, but we can do more: we can find out a whole lot with the quantitative
+stability analysis we're about to do:
+    - Whether a fixed point will be stable or unstable
+    - How the system will behave near a fixed point (are there oscillations, etc.)
+    - How the stability and type of a fixed point depend on the model parameters
+    
+The last reason in the list is in many ways the best reason. As we will see, in some models the
+number and/or stability of the fixed points depends on the system parameters, and quantitatively
+analyzing stability will show us this.
+
+To analyze stability, we **linearize** our model: we assume the system is linear close to the fixed
+point so that we have differential equations in the form $d\vec{x}/dt \propto \vec{x}$, where 
+$\vec{x}$ is a vector of length $D$, the number of dimensions in the model. Each element of $\vec{x}$
+is a particular direction in phase space. In one dimension it's the same as the model variable, 
+but in more than one dimension the directions don't necessarily have to be the same as the model
+variables. Because the equations are in this linearized form, their solutions are exponential 
+functions. These solutions will tell us how the system behaves in the region close to the fixed 
+points. 
+
+That was a lot. Let's start looking at examples. 
+
+### Quantitative stability analysis in one dimension
+
+Let's look at the logistic equation. 
+
+$$\frac{dN}{dt} = rN (1-\frac{N}{K})$$
+
+Let's call the right-hand side of this equation $f(N)$: $f(N) = rN(1 - \frac{N}{K})$. First, we find the fixed points by setting $f(N) = 0$. $N = 0$ and $N = K$ are the fixed points.
+
+Next, to linearize this equation, we take the **derivative** of $f(N)$ with respect to $N$: we calculate $\frac{\partial f(N)}{\partial N}$. 
+
+$$f(N) = rN(1 - \frac{N}{K}) = rN - \frac{rN^2}{K}$$.
+
+In the second form it's a bit easier to take the derivative with respect to $N$.
+
+$$\frac{\partial}{\partial N} f(N) = r - \frac{2rN}{K}$$
+
+*Note*: the symbol $\partial$ stands for 'partial derivative': it means that we only worry about terms that **explicitly** depend on $N$ in this case. 
+
+#### Challenge
+
+Evaluate the following derivatives:
+
+$$\frac{d}{dx} x^2$$
+
+$$\frac{\partial}{\partial N} \text{e}^N$$
+
+$$\frac{\partial}{\partial x} \frac{y}{x}$$
+
+Now comes the magic. We evaluate the derivative we just calculated, $\frac{\partial f(N)}{\partial N}$,
+at each of the fixed points in turn. If it's **negative**, the fixed point is **stable**. If it's
+**positive**, the fixed point is **unstable**. That's all there is to it!
+
+For the fixed point $N = 0$: 
+
+$$\frac{\partial}{\partial N} f(N) \vert_{N=0} = (r - \frac{2rN}{K})\vert_{N=0} = r$$
+
+$r$ is a number we haven't chosen, but we do know that it's always positive. That means $N = 0$ is an unstable fixed point. 
+
+For the fixed point $N = K$: 
+
+$$\frac{\partial}{\partial N} f(N) \vert_{N=K} = (r - \frac{2rN}{K})\vert_{N=K} = r - \frac{2rK}{K} = -r$$
+
+If $r$ is positive, then this expression is negative, and $N=K$ is a stable fixed point.
+Notice that if we happened to make the parameter $r$ negative, the stability of the fixed points 
+would switch! These kinds of observations are much easier to make after we've quantitatively analyzed
+stability.
+
+Here's another way to think about what just happened. When we were drawing phase portraits, we looked at
+the sign of $\frac{dN}{dt}$ and drew arrows to the left or right depending on its sign. Now, by looking
+at $\frac{\partial}{\partial N} \frac{dN}{dt}$ instead, we're formally calculating the *slope* of
+$\frac{dN}{dt}$ with respect to $N$ near the fixed point: where the slope is negative, we know that 
+$N$ will be drawn back towards the fixed point, and where the slope is positive, $N$ will be pushed 
+away from the fixed point. 
+
+Let's revisit the differential equation $\frac{dx}{dt} = \text{sin}(x)$ to explore this idea.
+
+```{r}
+x_seq <- seq(0, 10, by = 0.1)
+
+qplot(x_seq, sin(x_seq)) +
+  geom_hline(yintercept = 0)
+```
+
+The four fixed points visible here are respectively unstable, stable, unstable, and stable. 
+
+### Two dimensions: calculating the Jacobian matrix
+
+Analyzing stability in two dimensions follows exactly the same principle, but the math is a little bit more complicated. Now instead of needing to find the slope in just one dimension, we have an two-dimensional surface we need to consider. 
+
+Imagine the landscape of $dx/dt$ and $dy/dt$ as an actual landscape with hills and valleys. We could have mountain peaks that represent unstable fixed points:
+
+![Mt Rundle, Alberta](https://chrismartinphotography.files.wordpress.com/2014/09/mount-rundle-moonrise-c2a9-christopher-martin-95461.jpg)
+
+We could have beautiful valleys that represent stable fixed points:
+
+![Evergreen Brickworks](https://www1.toronto.ca/City%20Of%20Toronto/Parks%20Forestry%20&%20Recreation/Events/images/brickworks-park-headerimages.jpg)
+
+We could have a treacherous mountain pass:
+
 
 Mountain pass: https://en.wikipedia.org/wiki/Mountain_pass
 
-### Calculating the Jacobian matrix
-
 ### Classifying fixed points using eigenvalues of the Jacobian
+
 
 
 ### An example in three dimensions (bac-virus-nutrients)
