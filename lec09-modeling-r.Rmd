@@ -22,6 +22,7 @@ author: "Madeleine Bonsma-Fisher"
 
 > ### Setup
 > 
+> - `install.packages('phaseR')`
 > - `install.packages('deSolve')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
@@ -104,6 +105,7 @@ predator_prey <- function(t, y, parameters) {
 Now we create the phase portrait using `phaseR`, add some trajectories, and add the fixed points.
 
 ```{r}
+library(phaseR)
 
 # parameters
 a <- 5
@@ -178,6 +180,7 @@ clines we just found.
 
 ```{r}
 # run the numerical solution
+library(deSolve)
 
 parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
 state <- c(X = 2, Y = 2)
@@ -191,6 +194,7 @@ result <- data.frame(result)
 Plot a trajectory in the phase plane and the null clines:
 
 ```{r}
+library(ggplot2)
 
 x_seq <- seq(0, 8, by = 0.1)
 y_seq <- seq(0, 8, by = 0.1)
@@ -198,9 +202,9 @@ y_seq <- seq(0, 8, by = 0.1)
 df <- data.frame(x_seq, y_seq)
 
 p1 <- ggplot() + # assign plot to a variable so we can use it later
-  geom_path(aes(x = X, y = Y), result) + # trajectory
-  geom_line(aes(x = 0, y = y_seq), df, color = 'red') + # x null cline 1
-  geom_line(aes(x = x_seq, y = a/b), df, color = 'red') # x null cline 2
+  geom_path(aes(x = X, y = Y, color = time), result) + # trajectory
+  geom_line(aes(x = 0, y = y_seq), df, color = 'dark red') + # x null cline 1
+  geom_line(aes(x = x_seq, y = a/b), df, color = 'dark red') # x null cline 2
 
 p1
 ```
@@ -227,6 +231,36 @@ p1 +
 The intersection(s) of the $x$ and $y$ null clines are the fixed points, so plotting null
 clines is also a way to graphically find the fixed points. This is particularly useful if 
 it's hard to solve for the fixed points analytically. 
+
+The `phaseR` package also includes a `nullclines` function to draw nullclines for you.
+
+```{r, eval=FALSE}
+?nullclines
+```
+
+```{r}
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
+pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+                          parameters = params,
+                          points = 15, # this is the density of grid points on which to plot arrows
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories
+pp_trajectory <- trajectory(predator_prey, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = initial_conditions, 
+                            t.end = 30, # how far in time to calculate the trajectories
+                            parameters = params, system = "two.dim")
+
+pp_nullclines <- nullclines(predator_prey, 
+           x.lim = c(0, 10), # axis limits
+           y.lim = c(0, 10),
+           # y0 is a matrix where each row is pairs of (X, Y) 
+           y0 = initial_conditions, 
+           t.end = 30, # how far in time to calculate the trajectories 
+           parameters = params, system = "two.dim")
+```
 
 #### Challenge (to think about)
 
@@ -286,7 +320,7 @@ Let's call the right-hand side of this equation $f(N)$: $f(N) = rN(1 - \frac{N}{
 
 Next, to linearize this equation, we take the **derivative** of $f(N)$ with respect to $N$: we calculate $\frac{\partial f(N)}{\partial N}$. 
 
-$$f(N) = rN(1 - \frac{N}{K}) = rN - \frac{rN^2}{K}$$.
+$$f(N) = rN(1 - \frac{N}{K}) = rN - \frac{rN^2}{K}$$
 
 In the second form it's a bit easier to take the derivative with respect to $N$.
 
@@ -312,7 +346,8 @@ For the fixed point $N = 0$:
 
 $$\frac{\partial}{\partial N} f(N) \vert_{N=0} = (r - \frac{2rN}{K})\vert_{N=0} = r$$
 
-$r$ is a number we haven't chosen, but we do know that it's always positive. That means $N = 0$ is an unstable fixed point. 
+$r$ is the growth rate, a number we haven't chosen, but we do know that it's always positive. 
+That means $N = 0$ is an unstable fixed point. 
 
 For the fixed point $N = K$: 
 
@@ -341,9 +376,11 @@ qplot(x_seq, sin(x_seq)) +
 
 The four fixed points visible here are respectively unstable, stable, unstable, and stable. 
 
-### Two dimensions: calculating the Jacobian matrix
+### Stability analysis in two dimensions
 
-Analyzing stability in two dimensions follows exactly the same principle, but the math is a little bit more complicated. Now instead of needing to find the slope in just one dimension, we have an two-dimensional surface we need to consider. 
+Analyzing stability in two dimensions follows exactly the same principle, but the math is a little bit 
+more complicated. Now instead of needing to find the slope in just one dimension, we have an
+two-dimensional surface we need to consider. 
 
 Imagine the landscape of $dx/dt$ and $dy/dt$ as an actual landscape with hills and valleys. We could have mountain peaks that represent unstable fixed points:
 
@@ -355,33 +392,176 @@ We could have beautiful valleys that represent stable fixed points:
 
 We could have a treacherous mountain pass:
 
+![Abra Malaga Pass, Peru](https://d36tnp772eyphs.cloudfront.net/blogs/1/2015/06/4a.Peru-Abra-Malaga2.jpg)
 
-Mountain pass: https://en.wikipedia.org/wiki/Mountain_pass
+Here's an idealized representation of a mountain pass. 
+
+![Idealized mountain pass, By Paulba Legend (talk), CC BY-SA 3.0](https://en.wikipedia.org/wiki/Mountain_pass#/media/File:Saddleroute3.JPG)
+
+#### Challenge
+
+Is the high point of a mountain pass a **stable** fixed point or an **unstable** fixed point? Why?
+
+```{r, eval=FALSE, echo=FALSE}
+# Challenge solution
+
+# a fixed point like a mountain pass is called a 'saddle point', and it's unstable. 
+# It has one stable direction (from the peak down into the pass) and one unstable direction (down from the pass)
+```
+
+### Calculating the Jacobian matrix
+
+We will now learn how to formally describe the stability of fixed points in two-dimensional systems --- 
+how to quantitativley distinguish all the possible landscape shapes that can surround a fixed point.
+
+Just like in the one-dimensional case, we want to calculate the slope of the two-dimensional surface 
+in the vicinity of the fixed point. To do this, we calculate four partial derivatives and arrange them
+into a matrix called the **Jacobian**.
+
+Let's use our predator-prey model as an example. We let the right-hand side of each equation 
+equal $f(x,y)$ and $g(x,y)$ respectively.
+
+$$\frac{dx}{dt} = ax - bxy = f(x,y)$$
+$$\frac{dy}{dt} = cx - dy = g(x,y)$$
+
+This is the Jacobian matrix. It's often called $J$.
+
+$$J=\begin{bmatrix}
+    \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\
+    \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y}
+\end{bmatrix}$$
+
+*Note*: it doesn't matter which variable is which, or which equation is called $f$ or $g$, as 
+long as the order consistent --- one function on the top row, the other on the bottom, one 
+variable in the first column, the other in the second.
+
+Let's evaluate each of these partial derivatives.
+
+$$\frac{\partial f}{\partial x} = \frac{\partial }{\partial x} (ax-bxy) = a - by$$
+
+Think of the partial derivative as a slice in a particular direction through a potato: you could
+look at how the potato shape changes along its long direction or its short direction, and by doing 
+a partial derivative you are slicing along only one of the directions. 
+
+$$\frac{\partial f}{\partial y} = \frac{\partial }{\partial y} (ax-bxy) = - bx$$
+$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (cx-dy) = c$$
+
+$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (cx-dy) = -d$$
+
+We can put all these terms into the Jacobian. This matrix is now the Jacobian corresponding
+to our predator-prey model.
+
+$$J=\begin{bmatrix}
+    a - by & -bx \\
+    c & -d
+\end{bmatrix}$$
 
 ### Classifying fixed points using eigenvalues of the Jacobian
 
+From here, we need to calculate the **eigenvalues** of the Jacobian matrix. The eigenvalues of a
+square matrix $A$ are numbers (often denoted $\lambda$) that satisfy the following relationship,
+where $\vec{v}$ is a vector whose length is the dimension of $A$. If $A$ is a 2-by-2 matrix, 
+$\vec{v}$ is a length-2 vector. 
+
+$$A\vec{v} = \lambda \vec{v}$$.
+
+What this means is that if the matrix $A$ is multiplied with a particular vector $\vec{v}$,
+the resulting vector is a number multiplied by the original vector. 
+
+This isn't true for just any vector. In general, this is how matrix multiplication works:
+
+$$\begin{bmatrix}
+    \alpha & \beta \\
+    \gamma & \delta
+\end{bmatrix} 
+\begin{bmatrix} 
+v_1 \\
+v_2
+\end{bmatrix} = 
+\begin{bmatrix}
+\alpha v_1 + \beta v_2 \\
+\gamma v_1 + \delta v_2
+\end{bmatrix}$$
+
+The result is a new vector, still of length 2, but not necessarily a constant multiplied by 
+the original vector $(v_1, v_2)$. 
+
+Our challenge is to find the eigenvalues of the Jacobian. We could also find the corresponding
+eigenvectors, but we don't need to for stability analysis.
+
+There is a formula to calculate eigenvalues: solve the equation $\text{Det}(A - \lambda \mathbb{1}) = 0$).
+$\text{Det}$ stands for 'determinant', and $\mathbb{1}$ is the **identity matrix**: a matrix of the same
+shape as $A$ but with $1$s on the diagonal and $0$s everywhere else.
+
+However, we won't calculate eigenvalues by hand. R has a function called `eigen` that we can use to
+directly calculate the eigenvalues of a matrix. 
+
+```{r}
+# stability analysis for predator-prey model
+
+# choose parameter values
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+# start with a fixed point to look at
+y <- 0
+x <- 0
+
+# define the partial derivatives 
+dx_dx <- a - b*y
+dx_dy <- -b*x
+dy_dx <- c
+dy_dy <- -d
+
+# create the Jacobian matrix
+J<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
+
+# calculate eigenvalues
+e_vals<-eigen(J)$values
+```
+
+There are two eigenvalues because our system is two-dimensional. What do they mean? For a set of eigenvalues ($\lambda_1$, $\lambda_2$, etc.):
+
+ - If the real part of $\lambda < 0$, that eigendirection is **stable**.
+ - If the real part of $\lambda > 0$, that eigendirection is **unstable**.
+ - If all eigenvalues have negative real parts, the fixed point is **stable**.
+ - If one or more eigenvalues has a positive real part, the fixed point is **unstable**.
+ - If the eigenvalues have an imaginary (**complex**) part, the fixed point is **oscillatory**.
+
+Let's do the other fixed point:
+
+```{r}
+# stability analysis for predator-prey model
+
+# choose parameter values
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+# the other fixed point
+y <- a / b
+x <- d * a / (b * c)
+
+# define the partial derivatives 
+dx_dx <- a - b*y
+dx_dy <- -b*x
+dy_dx <- c
+dy_dy <- -d
+
+# create the Jacobian matrix
+J<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
+
+# calculate eigenvalues
+e_vals<-eigen(J)$values
+```
 
 
 ### An example in three dimensions (bac-virus-nutrients)
 
 
 
-```{r}
-# stability analysis for predator-prey model
-
-y <- 0
-x <- 0
-
-dx_dx <- a - b*y
-dx_dy <- -b*x
-dy_dx <- c
-dy_dy <- -d
-
-
-
-A<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
-e_vals<-eigen(A)$values
-
-```
 
 
