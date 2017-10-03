@@ -27,6 +27,7 @@ author: "Madeleine Bonsma-Fisher"
 
 > ### Setup
 > 
+> - `install.packages('phaseR')` 
 > - `install.packages('deSolve')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
@@ -80,8 +81,8 @@ logistic_fn <- function(t, state, parameters) {
   
   N <- state 
   
-  r <- parameters[1] # the first element of the parameters vector is r
-  K <- parameters[2] # the second element of the parameters vector is K
+  r <- parameters['r'] # get the element labelled 'r'
+  K <- parameters['K'] # get the element labelled 'K'
 
   #rate of change
   dN <- r * N * (1 - N / K)
@@ -147,7 +148,29 @@ Modify the plotting code above so that the legend lists the initial conditions f
 line instead of `X1`, `X2`, etc. 
 
 ```{r, eval=FALSE, echo=FALSE}
-# I don't know how to do this
+# Challenge solution
+
+results %>%
+    gather(Column, Value, -time) %>%
+    mutate(Column = gsub("X", "", Column) %>% # add this
+    gsub("$", "0", .)) %>% # and this
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+
+# or
+
+results %>%
+    rename(Condition10 = X1, Condition20 = X2) %>% # etc
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+
+# or add this line before the plot
+
+names(results) <- c('time', data.matrix(results[1, -1]))
+
 
 ```
 
@@ -187,10 +210,10 @@ predator_prey <- function(t, y, parameters) {
   X <- y[1] # prey
   Y <- y[2] # predators
   
-  a <- parameters[1]
-  b <- parameters[2]
-  c <- parameters[3]
-  d <- parameters[4]
+  a <- parameters['a']
+  b <- parameters['b']
+  c <- parameters['c']
+  d <- parameters['d']
     
   # calculate rate of change
   dx <- a * X - b * Y * X
@@ -204,8 +227,8 @@ predator_prey <- function(t, y, parameters) {
 ```{r}
 # run the numerical solution
 
-parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
-state <- c(X = 2, Y = 2)
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) # parameters named so that we can access them by name
+state <- c(X = 2, Y = 2) # same thing here
 times <- seq(0, 50, by = 0.01)
 
 result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
@@ -216,7 +239,8 @@ result <- data.frame(result)
 ```{r}
 # plot the results
 
-ggplot(result) +
+result %>% 
+  ggplot() +
   geom_line(aes(x = time, y = X), color = 'red') +
   geom_line(aes(x = time, y = Y), color = 'blue') +
   labs(y = "Population size")
@@ -230,9 +254,18 @@ Modify the plotting code above to include a legend distinguishing 'predators' an
 Feel free to look up a solution online.
 
 ```{r, eval=FALSE, echo=FALSE}
-# I actually have no idea how to do this halp
+# Challenge solution
+
+result %>% 
+  rename(Prey = X, Predator = Y) %>% 
+  gather(PredPrey, PopulationSize, -time) %>% 
+  ggplot(aes(x = time, y = PopulationSize, color = PredPrey)) +
+  geom_line() +
+  labs(y = "Population size")
 
 ```
+
+### A note on using Euler's method to solve higher-dimensional systems
 
 *Note*: if you are using Euler's method to solve a two-dimensional system, make sure 
 you calculate the rates of change using the variables from the previous time step. For 
@@ -348,7 +381,7 @@ $Y$ vs. $t$, we'll plot $Y$ vs. $X$: predator population size vs. prey populatio
 
 ```{r}
 ggplot(result) +
-  geom_point(aes(x = X, y = Y)) # geom_line connects the dots strangely
+  geom_path(aes(x = X, y = Y)) # geom_line connects the dots in the wrong way - try it out and see
 ```
 
 A phase portrait in two dimensions has two axes: one for each of the variables in the system.
@@ -369,7 +402,7 @@ look like circular motion in the phase portrait. The GIF below illustrates this.
 
 ### Drawing qualitative phase portraits by hand
 
-Before we look at how to add more to phase portraits in R, let's pratice the process by hand to
+Before we look at how to add more to phase portraits in R, let's practice the process by hand to
 get familiar with it. Let's use the following two-dimensional system as an example. The two state
 variables are $x$ (position) and $v$ (velocity), and this is a model of a mass attached to a 
 spring. $dx/dt$ is the rate of change of position, and $dv/dt$ is the rate of change of velocity. 
@@ -378,7 +411,7 @@ $$\frac{dx}{dt} = v$$
 
 $$\frac{dv}{dt} = -\omega^2 x$$
 
-We want to draw a **vector field** in two dimensions to show how the system will evolve in time.
+We want to draw a **vector field** in two dimensions to show how the system will evolve through time.
 Our axes are $x$ and $v$. It doesn't matter which one is the vertical axis and which one is
 horizontal, but let's put $x$ on the x-axis and $v$ on the y-axis. These variables aren't 
 population sizes, so they can realistically be negative and non-integers. 
@@ -446,10 +479,8 @@ library(phaseR)
 Let's plot a vector field and some trajectories for the predator-prey model.
 
 ```{r}
-library(phaseR)
-
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+pp_flowField <- flowField(predator_prey, x.lim = c(0, 10), y.lim = c(0, 10),
                           parameters = c(a = 5, b = 1, c = 1, d = 0.2), # same parameters as before,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -538,9 +569,9 @@ qplot(x_seq, dx_dt) +
 
 ## Extras
 
-Predator-prey simulation in R
+Predator-prey simulation GIF in R
 
-```
+```{r}
 library(animation)
 library(ggplot2)
 library(grid)
@@ -566,7 +597,7 @@ saveGIF({
         ylab("Population size")
 
       p2 <- ggplot(result_i) +
-        geom_point(aes(x = result_i$X, y = result_i$Y)) +
+        geom_path(aes(x = result_i$X, y = result_i$Y)) +
         xlim(0, 8) +
         ylim(0, 8) +
         xlab("Prey population size X") +
