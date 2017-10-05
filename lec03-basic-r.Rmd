@@ -1,9 +1,11 @@
 ---
 title: "Manipulating and analyzing data with dplyr"
+author: Joel Östblom
 ---
 
+## Lesson preamble
 
-> ## Learning objectives
+> ### Learning objectives
 >
 > * Describe what a data frame is.
 > * Load external data from a .csv file into a data frame in R.
@@ -11,15 +13,15 @@ title: "Manipulating and analyzing data with dplyr"
 > * Understand the purpose of the **`dplyr`** package.
 > * Learn to use data wrangling commands `select`, `filter`, `%>%,` and `mutate`
 > from the **`dplyr`** package.
-
-
-> ## Lesson outline
+> 
+> ### Lesson outline
 > 
 > - Data set background (10 min)
 > - What are data frames (15 min)
 > - R packages for data analyses (5 min)
 > - Data wrangling in dplyr (40 min)
 
+-----
 
 ## Dataset background
 

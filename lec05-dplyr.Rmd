@@ -1,6 +1,9 @@
 ---
 title: "Tidying and exporting data, reproducing figures"
+author: Joel Östblom
 ---
+
+## Lesson preamble
 
 > ### Lecture objectives
 >
@@ -11,13 +14,13 @@ title: "Tidying and exporting data, reproducing figures"
 > - Understand which types of figures are suitable to create from raw data.
 > - Explore scientific questions using dplyr and ggplot.
 >
->
 > ### Lecture outline
 >
 > - Reshaping with gather and spread (25 min)
 > - Exporting data (15 min)
 > - Reproducing figures (50 min)
 
+-----
 
 ## Setting up
 
