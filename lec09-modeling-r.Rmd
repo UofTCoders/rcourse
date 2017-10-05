@@ -7,18 +7,22 @@ author: "Madeleine Bonsma-Fisher"
 
 > ### Learning objectives
 >
+> - Find fixed points for one-dimensional systems analytically
 > - Find fixed points for two-dimensional systems analytically
 > - Find nullclines for two-dimensional systems
 > - Analyze stability for one and two-dimensional systems analytically
 >     - Write down the Jacobian matrix
 >     - Use R to find eigenvalues of the Jacobian
+>     - Classify stability of fixed points using eigenvalues of the Jacobian
 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
 >
-> - Review and warm-up challenge (10 minutes)
-> - 
+> - Finding fixed points analytically (30 min)
+> - Finding and plotting nullclines (20 min)
+> - Quantitative stability analysis in one dimension (20 min)
+> - Quantitative stability analysis in two dimensions (40 min)
 
 > ### Setup
 > 
@@ -332,7 +336,36 @@ guaranteed to intersect? Are nullclines always straight lines?
 #### Challenge
 
 Find the fixed point(s) and nullclines analytically for the following two-dimensional 
-system. Verify your work by plotting the nullclines. 
+system. Verify your work by plotting the nullclines.
+
+$$\frac{dx}{dt} = 4x - y$$
+$$\frac{dy}{dt} = 2x + y$$
+
+```{r, eval=FALSE, echo=FALSE}
+
+library(tidyr)
+library(ggplot2)
+
+# nullclines
+
+# y = x/4 (x nullcline)
+# y = x/2 (y nullcline)
+
+# fixed points
+# x = 0, y = 0
+
+x_seq <- seq(-2, 2, by = 0.01)
+
+x_null <- x_seq/4
+y_null <- x_seq/2
+
+data <- data.frame(x_seq, x_null, y_null)
+
+data %>% 
+  gather(XY, Value, -x_seq) %>%
+  ggplot(aes(x = x_seq, y = Value, color = XY)) +
+  geom_line(aes(x = x_seq, y = Value)) 
+```
 
 ## Quantitative stability analysis
 
@@ -387,6 +420,8 @@ $$\frac{d}{dx} x^2$$
 $$\frac{\partial}{\partial N} \text{e}^N$$
 
 $$\frac{\partial}{\partial x} \frac{y}{x}$$
+
+------------
 
 Now comes the magic. We evaluate the derivative we just calculated, $\frac{\partial f(N)}{\partial N}$,
 at each of the fixed points in turn. If it's **negative**, the fixed point is **stable**. If it's
@@ -701,7 +736,9 @@ lines(x = c(a*d/(b*c), e_vectors2[1]), y = c(a/b, e_vectors2[2]), lty = 2, lwd =
 lines(x = c(a*d/(b*c), e_vectors2[3]), y = c(a/b, e_vectors2[4]), lty = 2, lwd = 2, col = 'purple')
 ```
 
-### An example in three dimensions (bac-virus-nutrients)
+The fixed point at ($x = 0, y = 0$) is a **saddle point**, like a mountain pass. 
+
+<!-- ### An example in three dimensions (bac-virus-nutrients) -->
 
 
 
