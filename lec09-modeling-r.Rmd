@@ -94,22 +94,22 @@ and $dy/dt = 0$ and find combinations of $x$ and $y$ that make both zero at the 
 
 Let's find the fixed points for our predator-prey model:
 
-$$\frac{dx}{dt} = ax - bxy$$
-$$\frac{dy}{dt} = cx - yd$$
+$$\frac{dx}{dt} = Ax - Bxy$$
+$$\frac{dy}{dt} = Cx - Dy$$
 
-We need to solve $0 = ax - bxy$ and $0 = cx - yd$. We have two equations and two unknowns,
+We need to solve $0 = Ax - Bxy$ and $0 = Cx - Dy$. We have two equations and two unknowns,
 $x$ and $y$. Let's factor the equations where we can:
 
-$$0 = x(a-by)$$
+$$0 = x(A-By)$$
 
-$$0 = cx - dy$$
+$$0 = Cx - Dy$$
 
 One possibility from the first equation is $x = 0$. If $x = 0$, then $y$ must also be $0$
-in order for $cx - dy = -dy = 0$. So one fixed point is $x = 0, y = 0$. 
+in order for $Cx - Dy = -Dy = 0$. So one fixed point is $x = 0, y = 0$.
 
-The other factor in the first equation gives $a = by$, so $y = a/b$. If we plug $y = a/b$
-into the second equation, we get $cx = ad/b$, so $x = \frac{ad}{bc}$. The second fixed point
-is $x = \frac{ad}{bc}, y = \frac{a}{b}$.
+The other factor in the first equation gives $A = By$, so $y = A/B$. If we plug $y = A/B$
+into the second equation, we get $Cx = AD/B$, so $x = \frac{AD}{BC}$. The second fixed point
+is $x = \frac{AD}{BC}, y = \frac{A}{B}$.
 
 Let's create a phase portrait using `phaseR` and add these fixed points to the phase portrait. 
 
@@ -127,7 +127,7 @@ predator_prey <- function(t, y, parameters) {
   
   # t: time at which to evaluate derivatives
   # y: vector of system variables (c(X, Y))
-  # parameters: vector of model parameters (c(a, b, c, d))
+  # parameters: vector of model parameters (c(A, B, C, D))
   
   # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
     
@@ -135,14 +135,14 @@ predator_prey <- function(t, y, parameters) {
   X <- y[1] # prey
   Y <- y[2] # predators
   
-  a <- parameters['a']
-  b <- parameters['b']
-  c <- parameters['c']
-  d <- parameters['d']
+  A <- parameters['A']
+  B <- parameters['B']
+  C <- parameters['C']
+  D <- parameters['D']
     
   # calculate rate of change
-  dx <- a * X - b * Y * X
-  dy <- c * X - d * Y
+  dx <- A * X - B * Y * X
+  dy <- C * X - D * Y
   
   # return rate of change
   return(list(c(dx, dy)))
@@ -155,12 +155,12 @@ Now we create the phase portrait using `phaseR`, add some trajectories, and add 
 library(phaseR)
 
 # parameters
-a <- 5
-b <- 1
-c <- 1
-d <- 0.2
+A <- 5
+B <- 1
+C <- 1
+D <- 0.2
 
-params <- c(a = a, b = b, c = c, d = d) # so that they can be called by name
+params <- c(A = A, B = B, C = C, D = D) # so that they can be called by name
 
 initial_conditions <-  matrix(c(1, 1, 
                                 8, 5, 
@@ -189,9 +189,9 @@ pp_trajectory <- trajectory(predator_prey,
 points(0, 0, # x, y coordinates of point to plot
        cex = 1.5) # 'cex' stands for 'character expansion': marker size relative to default
 
-# x = ad/bc, y = a/b 
-x_star <- a * d / (b * c)  # fixed points are often denoted with `star` i.e. x*, y*
-y_star <- a / b
+# x = AD/BC, y = A/B
+x_star <- A * D / (B * C)  # fixed points are often denoted with `star` i.e. x*, y*
+y_star <- A / B
 points(x_star, y_star, # x, y coordinates of point to plot
        pch = 21, # pch = 21 gives a filled circle, 'pch' stands for 'plotting character'
        # see  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
@@ -215,16 +215,16 @@ we required both derivatives to be *simultaneously* zero. For nullclines, we onl
 derivative to zero at a time, and the other one is free to do what it wants. 
 
 To find the $x$ nullcline(s), the curve(s) on which $x$ will not change, we set 
-$\frac{dx}{dt} = ax - bxy$ to zero, ignoring $\frac{dy}{dt}$. 
+$\frac{dx}{dt} = Ax - Bxy$ to zero, ignoring $\frac{dy}{dt}$.
 
-$$0 = ax - bxy$$
+$$0 = Ax - Bxy$$
 
 Now we proceed exactly as if we were finding the fixed points, but we don't require that $y$
-be anything in particular. We can factor the right hand side to $x(a-by)$, which means there
+be anything in particular. We can factor the right hand side to $x(A-By)$, which means there
 are actually two curves for which the rate of change of $x$ is $0$. One of them is at $x = 0$:
 it's a straight line on the y-axis. For any value of $y$, provided $x = 0$, $x$ won't change.
-The other one is at $y = a/b$: another straight line, this time at a fixed value of $y$.
-For any value of $x$, provided $y = a/b$, $x$ won't change. 
+The other one is at $y = A/B$: another straight line, this time at a fixed value of $y$.
+For any value of $x$, provided $y = A/B$, $x$ won't change.
 
 Let's run a numerical solution for the predator-prey model we've been using and plot the null
 clines we just found.
@@ -233,7 +233,7 @@ clines we just found.
 # run the numerical solution
 library(deSolve)
 
-parameters <- c(a = 5, b = 1, c = 1, d = 0.2) 
+parameters <- c(A = 5, B = 1, C = 1, D = 0.2)
 state <- c(X = 2, Y = 2)
 times <- seq(0, 50, by = 0.01)
 
@@ -255,7 +255,7 @@ df <- data.frame(x_seq, y_seq)
 p1 <- ggplot() + # assign plot to a variable so we can use it later
   geom_path(aes(x = X, y = Y, color = time), result) + # trajectory
   geom_line(aes(x = 0, y = y_seq), df, color = 'dark red') + # x nullcline 1
-  geom_line(aes(x = x_seq, y = a/b), df, color = 'dark red') # x nullcline 2
+  geom_line(aes(x = x_seq, y = A/B), df, color = 'dark red') # x nullcline 2
 
 p1
 ```
@@ -267,14 +267,14 @@ Another way to think of the nullclines is as if we were back to a 1D system and 
 plotting $dx/dt$ vs. $x$ for a series of values of $y$. The nullcline passes through all
 the points where $dx/dt = 0$. 
 
-Now let's find the nullclines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the
+Now let's find the nullclines for $y$ by solving $0 = Cx - Dy$. In general, we want an equation in the
 form $y(x)$, $y$ as a function of $x$, so that we can more easily plot it on our phase portrait axes. 
 
-After rearranging, we find the solution to this equation: $y = \frac{c}{d}x$. Let's add it to the plot
+After rearranging, we find the solution to this equation: $y = \frac{C}{D}x$. Let's add it to the plot
 
 ```{r}
 p1 +
-  geom_line(aes(x = x_seq, y = x_seq*c/d), df, colour = 'blue') +
+  geom_line(aes(x = x_seq, y = x_seq*C/D), df, colour = 'blue') +
   xlim(0, 8) +
   ylim(0, 8)
 ```
@@ -507,8 +507,8 @@ into a matrix called the **Jacobian**.
 Let's use our predator-prey model as an example. We let the right-hand side of each equation 
 equal $f(x,y)$ and $g(x,y)$ respectively.
 
-$$\frac{dx}{dt} = ax - bxy = f(x,y)$$
-$$\frac{dy}{dt} = cx - dy = g(x,y)$$
+$$\frac{dx}{dt} = Ax - Bxy = f(x,y)$$
+$$\frac{dy}{dt} = Cx - Dy = g(x,y)$$
 
 This is the Jacobian matrix. It's often called $J$.
 
@@ -523,23 +523,23 @@ variable in the first column, the other in the second.
 
 Let's evaluate each of these partial derivatives.
 
-$$\frac{\partial f}{\partial x} = \frac{\partial }{\partial x} (ax-bxy) = a - by$$
+$$\frac{\partial f}{\partial x} = \frac{\partial }{\partial x} (Ax-Bxy) = A - By$$
 
 Think of the partial derivative as a slice in a particular direction through a potato: you could
 look at how the potato shape changes along its long direction or its short direction, and by doing 
 a partial derivative you are slicing along only one of the directions. 
 
-$$\frac{\partial f}{\partial y} = \frac{\partial }{\partial y} (ax-bxy) = - bx$$
-$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (cx-dy) = c$$
+$$\frac{\partial f}{\partial y} = \frac{\partial }{\partial y} (Ax-Bxy) = - Bx$$
+$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (Cx-Dy) = C$$
 
-$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (cx-dy) = -d$$
+$$\frac{\partial g}{\partial x} = \frac{\partial }{\partial x} (Cx-Dy) = -D$$
 
 We can put all these terms into the Jacobian. This matrix is now the Jacobian corresponding
 to our predator-prey model.
 
 $$J=\begin{bmatrix}
-    a - by & -bx \\
-    c & -d
+    A - By & -Bx \\
+    C & -D
 \end{bmatrix}$$
 
 ### Classifying fixed points using eigenvalues of the Jacobian
@@ -602,20 +602,20 @@ stability to be analyzed and will have its own eigenvectors and eigenvalues.
 # stability analysis for predator-prey model
 
 # choose parameter values
-a <- 5
-b <- 1
-c <- 1
-d <- 0.2
+A <- 5
+B <- 1
+C <- 1
+D <- 0.2
 
 # start with a fixed point to look at
 y <- 0
 x <- 0
 
 # define the partial derivatives
-dx_dx <- a - b * y
-dx_dy <- -b * x
-dy_dx <- c
-dy_dy <- -d
+dx_dx <- A - B * y
+dx_dy <- -B * x
+dy_dx <- C
+dy_dy <- -D
 
 # create the Jacobian matrix
 J1 <-
@@ -646,20 +646,20 @@ Let's do the other fixed point:
 # stability analysis for predator-prey model
 
 # choose parameter values
-a <- 5
-b <- 1
-c <- 1
-d <- 0.2
+A <- 5
+B <- 1
+C <- 1
+D <- 0.2
 
 # the other fixed point
-y <- a / b
-x <- d * a / (b * c)
+y <- A / B
+x <- D * A / (B * C)
 
 # define the partial derivatives
-dx_dx <- a - b * y
-dx_dy <- -b * x
-dy_dx <- c
-dy_dy <- -d
+dx_dx <- A - B * y
+dx_dy <- -B * x
+dy_dx <- C
+dy_dy <- -D
 
 # create the Jacobian matrix
 J2 <-
@@ -727,13 +727,13 @@ lines(x = c(0, e_vectors1[1]), y = c(0, e_vectors1[2]), lty = 2, lwd = 2, col = 
 # eigenvector for eigenvalue lambda = -0.2
 lines(x = c(0, e_vectors1[3]), y = c(0, e_vectors1[4]), lty = 2, lwd = 2, col = 'purple')
 
-# plot the eigenvectors for fixed point (x = ad/bc, y = a/b) 
+# plot the eigenvectors for fixed point (x = AD/BC, y = A/B)
 
 # eigenvector for eigenvalue lambda = -0.1 + 0.9949874i
-lines(x = c(a*d/(b*c), e_vectors2[1]), y = c(a/b, e_vectors2[2]), lty = 2, lwd = 2, col = 'green')
+lines(x = c(A*D/(B*C), e_vectors2[1]), y = c(A/B, e_vectors2[2]), lty = 2, lwd = 2, col = 'green')
 
 # eigenvector for eigenvalue lambda = -0.1 - 0.9949874i
-lines(x = c(a*d/(b*c), e_vectors2[3]), y = c(a/b, e_vectors2[4]), lty = 2, lwd = 2, col = 'purple')
+lines(x = c(A*D/(B*C), e_vectors2[3]), y = c(A/B, e_vectors2[4]), lty = 2, lwd = 2, col = 'purple')
 ```
 
 The fixed point at ($x = 0, y = 0$) is a **saddle point**, like a mountain pass. 
