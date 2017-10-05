@@ -55,16 +55,21 @@ Outline:
 >     - Types of independent ($x$) data
 > - Estimation vs hypothesis testing
 > - Model comparison techniques
+> 
+> ### Setup
+>
+> - `install.packages("dplyr")`
+> - `install.packages("tidyr")`
+> - `install.packages("broom")`
+> - `install.packages("datasauRus")`
 
-### Setup
+-----
 
 ```{r}
 library(tidyverse)
 library(datasauRus)
 library(broom)
 ```
-
-----
 
 ## Statistics and probability
 
@@ -86,37 +91,148 @@ confidence interval
 
 ## Generalized linear models
 
-Generalized linear models (or GLM) is statistical modelling technique that encompasses several
-I'm going to be focusing specifically on
+Generalized linear models (or GLM) is statistical modelling technique that
+encompasses several other techniques, e.g. correlation or analysis of variance
+(ANOVA). GLM is a powerful technique that you can use on a wide range of data
+and research questions, and is the foundation for understanding how more
+advanced techniques work. This is the reason I will be covering GLM in depth.
+(For those who will go into graduate students or into research in general, you
+will likely use mixed effects model. If you can understand and grasp GLM, it
+will be substantially easier for you to understand mixed effects modeling and
+other techniques.)
 
-- There are so many statistical techniques out there, that are applicable to
-specific conditions or situations. We can't cover all of these niche cases, so
-instead we'll cover a technique that is (more or less) the base of a large
-majority of other statistical tests: linear regression (specifically through generalized linear models).
+A version of GLM that uses continuous $y$ values is called linear regression,
+which I'm going to focus on. The formula for linear regression (or GLM in
+general) is:
 
 $$ Y = \alpha + X\beta + \varepsilon $$
 
-What I hope to show in the simple case is how this regression formula actually
-covers several other statistical techniques such as ANOVA, correlation, logistic
-regression, Poisson regression. Ecological models can also be converted into a
-linear regression formula, making it easier to apply and test them against
-real-world data.
+Or, a simplified, alphabetized version is:
 
-Using linear regression to compare means between groups (e.g. species or sex)
+$$ y = m + Xb + e $$
+
+In the case of multiple linear regression (more than one $x$), it is expanded to:
+
+$$ y = m + x_1b_1 + x_2b_b +...+ x_nb_n + e $$
+
+In R we can run linear regression either using `lm` or using `glm`. We'll use
+`glm` since it can be expanded to other types of analyses. First, let's load up
+a dataset.
 
 ```{r}
+library(tidyverse)
+
 portal <- read_csv("portal_data.csv")
 portal
 
+fit1 <- glm(weight ~ year, data = portal, family = gaussian)
+summary(fit1)
 
-tidy(glm(weight ~ year, data = portal), conf.int = TRUE)
+library(broom)
+tidy(glm(weight ~ year, data = portal))
+```
 
-tidy(glm(Petal.Length ~ Species, data = iris, family = gaussian), conf.int = TRUE)
+Ok, so what does this actually mean? Let's go back to the equation and convert
+the above into the formula:
 
+$$ weight = Intercept + (year \times b) $$
+
+Let's substitute in the numbers. The intercept, is well, the intercept in the
+data above. The $b$ is the estimate for the `year`.
+
+$$ weight = 2752.13 + (year \times -1.36113) $$
+
+We can use this equation to estimate the value of weight at a given year. But
+first, let's make sure this is working correctly. Let's find out the weight at
+the very first collection visit.
+
+```{r}
+portal %>% 
+    filter(year == min(year)) %>%
+    summarize(mean_wt = mean(weight, na.rm = TRUE)) %>% 
+    as.numeric()
+```
+
+Ok, let's compare to the equation. Let's substitute year for the first year data
+was collected, which was `r min(portal$year)`.
+
+```{r}
+2752.13 + (min(portal$year) * -1.36113)
+```
+
+```{r}
+portal2 <- portal %>%
+    mutate(year = year - min(year))
+
+tidy(glm(weight ~ year, data = portal2, family = gaussian))
+```
+
+
+
+The above is for a simple, two variable linear regression. What about if we have 
+multiple predictor ($x$) variables? We do:
+
+```{r}
+fit2 <- lm(Murder ~ Income + Population, data = ds)
+summary(fit2)
+```
+
+Converted to the formula:
+
+$$ Murder = 14.34 + (Income \times -0.0189) + (Population \times 0.0003384) $$
+
+Nearly all statistical techniques (at least the basic/common ones) can be
+considered a special case of linear regression. Let's take ANOVA as an example.
+ANOVA is where the $y$ is a continuous variable and the $x$ is a discrete
+variable (usually with at least three categories). In my opinion, using linear
+regression is more useful from a scientific and interpretation perspective than
+using ANOVA. Here's how you do it:
+
+```{r}
+fit3 <- lm(Petal.Length ~ Species, data = iris)
+# To see the different categories of Species
+summary(iris$Species)
+```
+
+```{r}
+summary(fit3)
+```
+
+Converted to an equation. Setosa isn't here because it is considered the
+'intercept' since if you set Versicolor and Virginica to zero, the remaining
+'category' is Setosa. These are known as dummy variables.
+
+$$ Petal.Length = 1.46 + (Versicolor \times 2.79) + (Virginica \times 4.09) $$
+
+The estimates from the linear regression as the same as the means of each group
+(each estimate + the intercept). 
+
+```{r}
+library(dplyr)
 iris %>%
     group_by(Species) %>% 
-    summarise(Means = mean(Petal.Length))
+    summarize(means = mean(Petal.Length))
 ```
+
+Linear regression and correlation are also tightly linked, and are the same if
+the variables have been scaled (mean-centered and standardized).
+
+```{r}
+ds <- iris %>%
+    mutate_each(funs(scale), Petal.Length, Sepal.Length)
+summary(ds)
+```
+
+```{r}
+cor(ds$Petal.Length, ds$Sepal.Length)
+```
+
+```{r}
+summary(lm(Petal.Length ~ Sepal.Length, data = ds))
+```
+
+Using linear regression to compare means between groups (e.g. species or sex)
+
 
 
 
