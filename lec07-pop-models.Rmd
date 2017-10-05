@@ -9,7 +9,7 @@ author: "Madeleine Bonsma-Fisher"
 >
 > - Review differential equations and one-dimensional phase portraits
 > - Numerically solve differential equations in R using Euler's method and R's ODE solver
-
+> 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
@@ -18,13 +18,15 @@ author: "Madeleine Bonsma-Fisher"
 > - Euler's method on paper (20 min)
 > - Euler's method in R (40 min)
 > - Using R's ODE-solver to numerically solve differential equations (30 min)
-
+> 
 > ### Setup
 > 
 > - `install.packages('deSolve')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
 > - `install.packages('dplyr')` (or `tidyverse`)
 > - `install.packages('tidyr')` (or `tidyverse`)
+
+-----
 
 ```{r math_shortcut, echo=FALSE}
 eq_dn_dt <- "$\\frac{dN}{dt}$"

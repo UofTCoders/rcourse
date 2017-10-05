@@ -1,7 +1,7 @@
 ---
 title: "Qualitative review of population models"
+author: "Madeleine Bonsma-Fisher"
 ---
-
 
 ## Lesson preamble
 
@@ -35,7 +35,7 @@ from the UofT library, and it's available in the Physics library as a hard copy 
 
 <!-- - Optional: install `animation`: run `install.packages('animation'). This is only if you want to play around with the simulations at the bottom later. -->
 
-----
+-----
 
 ## Introduction - why model?
 

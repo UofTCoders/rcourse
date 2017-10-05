@@ -12,7 +12,7 @@ author: "Madeleine Bonsma-Fisher"
 > - Numerically solve two-dimensional models in R
 > - Phase portraits of two-dimensional systems
 > - Find fixed points for one-dimensional systems analytically (time permitting)
-
+> 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
@@ -24,7 +24,7 @@ author: "Madeleine Bonsma-Fisher"
 >      - Phase portraits of two-dimensional systems by hand (20 min)
 >      - Using `phaseR` to create phase portraits in R (40 min)
 > - Finding fixed points analytically in one dimension (20 min)
-
+> 
 > ### Setup
 > 
 > - `install.packages('phaseR')` 
