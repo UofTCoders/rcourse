@@ -1,5 +1,5 @@
 ---
-title: "Fixed points, null clines, and stability"
+title: "Fixed points, nullclines, and stability"
 author: "Madeleine Bonsma-Fisher"
 ---
 
@@ -8,7 +8,7 @@ author: "Madeleine Bonsma-Fisher"
 > ### Learning objectives
 >
 > - Find fixed points for two-dimensional systems analytically
-> - Find null clines for two-dimensional systems
+> - Find nullclines for two-dimensional systems
 > - Analyze stability for one and two-dimensional systems analytically
 >     - Write down the Jacobian matrix
 >     - Use R to find eigenvalues of the Jacobian
@@ -32,7 +32,7 @@ author: "Madeleine Bonsma-Fisher"
 eq_dn_dt <- "$\\frac{dN}{dt}$"
 ```
 
-## Finding fixed points analytically (time permitting)
+## Finding fixed points analytically 
 
 Up until now we've been plotting `r eq_dn_dt` vs. $N$ to find the fixed points of a system. 
 But we can also solve `r eq_dn_dt` $=0$ analytically to find the fixed points. One advantage of
@@ -91,9 +91,9 @@ and $dy/dt = 0$ and find combinations of $x$ and $y$ that make both zero at the 
 Let's find the fixed points for our predator-prey model:
 
 $$\frac{dx}{dt} = ax - bxy$$
-$$\frac{dy}{dt} = cx - dy$$
+$$\frac{dy}{dt} = cx - yd$$
 
-We need to solve $0 = ax - bxy$ and $0 = cx - dy$. We have two equations and two unknowns,
+We need to solve $0 = ax - bxy$ and $0 = cx - yd$. We have two equations and two unknowns,
 $x$ and $y$. Let's factor the equations where we can:
 
 $$0 = x(a-by)$$
@@ -104,8 +104,8 @@ One possibility from the first equation is $x = 0$. If $x = 0$, then $y$ must al
 in order for $cx - dy = -dy = 0$. So one fixed point is $x = 0, y = 0$. 
 
 The other factor in the first equation gives $a = by$, so $y = a/b$. If we plug $y = a/b$
-into the second equation, we get $cx = da/b$, so $x = \frac{da}{bc}$. The second fixed point
-is $x = \frac{da}{bc}, y = \frac{a}{b}$.
+into the second equation, we get $cx = ad/b$, so $x = \frac{ad}{bc}$. The second fixed point
+is $x = \frac{ad}{bc}, y = \frac{a}{b}$.
 
 Let's create a phase portrait using `phaseR` and add these fixed points to the phase portrait. 
 
@@ -158,8 +158,12 @@ d <- 0.2
 
 params <- c(a = a, b = b, c = c, d = d) # so that they can be called by name
 
-initial_conditions <-  matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
-                                   byrow = TRUE)
+initial_conditions <-  matrix(c(1, 1, 
+                                8, 5, 
+                                2, 0, 
+                                0, 8), 
+                              ncol = 2,
+                              byrow = TRUE)
 
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
 pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
@@ -175,17 +179,17 @@ pp_trajectory <- trajectory(predator_prey,
                             t.end = 30, # how far in time to calculate the trajectories
                             parameters = params, system = "two.dim")
 
-# plot fixed points
+# plot fixed points (using the base plotting system, which is not as good as ggplot)
 
 # x = 0, y = 0 
 points(0, 0, # x, y coordinates of point to plot
        cex = 1.5) # 'cex' stands for 'character expansion': marker size relative to default
 
 # x = ad/bc, y = a/b 
-x_star <- a * d / (b * c)
+x_star <- a * d / (b * c)  # fixed points are often denoted with `star` i.e. x*, y*
 y_star <- a / b
 points(x_star, y_star, # x, y coordinates of point to plot
-       pch = 21, # pch = 21 gives a filled circle
+       pch = 21, # pch = 21 gives a filled circle, 'pch' stands for 'plotting character'
        # see  https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
        bg = 'black', # background colour
        cex = 1.5) 
@@ -196,17 +200,17 @@ there is one direction in which trajectories are attracted to it: along the y-ax
 sense: if there are no prey ($x = 0$), then the predators must also go extinct. We will come
 back to this later when we talk about analyzing stability analytically.
 
-## Null clines in two-dimensional systems
+## Nullclines in two-dimensional systems
 
-A null cline is a curve on which one of derivatives in the model is $0$. In other words, 
+A nullcline is a curve on which one of the derivatives in the model is $0$. In other words, 
 it's a series of points for which one of the variables is not changing --- its rate of change
 is $0$ on that line. 
 
-Finding null clines is similar to finding fixed points, except that when we found fixed points,
-we required both derivatives to be *simultaneously* zero. For null clines, we only set one
+Finding nullclines is similar to finding fixed points, except that when we found fixed points,
+we required both derivatives to be *simultaneously* zero. For nullclines, we only set one
 derivative to zero at a time, and the other one is free to do what it wants. 
 
-To find the $x$ null cline(s), the curve(s) on which $x$ will not change, we set 
+To find the $x$ nullcline(s), the curve(s) on which $x$ will not change, we set 
 $\frac{dx}{dt} = ax - bxy$ to zero, ignoring $\frac{dy}{dt}$. 
 
 $$0 = ax - bxy$$
@@ -225,7 +229,7 @@ clines we just found.
 # run the numerical solution
 library(deSolve)
 
-parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+parameters <- c(a = 5, b = 1, c = 1, d = 0.2) 
 state <- c(X = 2, Y = 2)
 times <- seq(0, 50, by = 0.01)
 
@@ -234,7 +238,7 @@ result <- data.frame(result)
 
 ```
 
-Plot a trajectory in the phase plane and the null clines:
+Plot a trajectory in the phase plane and the nullclines:
 
 ```{r}
 library(ggplot2)
@@ -246,23 +250,23 @@ df <- data.frame(x_seq, y_seq)
 
 p1 <- ggplot() + # assign plot to a variable so we can use it later
   geom_path(aes(x = X, y = Y, color = time), result) + # trajectory
-  geom_line(aes(x = 0, y = y_seq), df, color = 'dark red') + # x null cline 1
-  geom_line(aes(x = x_seq, y = a/b), df, color = 'dark red') # x null cline 2
+  geom_line(aes(x = 0, y = y_seq), df, color = 'dark red') + # x nullcline 1
+  geom_line(aes(x = x_seq, y = a/b), df, color = 'dark red') # x nullcline 2
 
 p1
 ```
 
-The null clines go through the places where the trajectory turns back on itself -- they go through
+The nullclines go through the places where the trajectory turns back on itself -- they go through
 the 'peaks' and 'valleys' of $x$. 
 
-Another way to think of the null clines is as if we were back to a 1D system and were 
-plotting $dx/dt$ vs. $x$ for a series of values of $y$. The null cline passes through all
+Another way to think of the nullclines is as if we were back to a 1D system and were 
+plotting $dx/dt$ vs. $x$ for a series of values of $y$. The nullcline passes through all
 the points where $dx/dt = 0$. 
 
-Now let's find the null clines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the
+Now let's find the nullclines for $y$ by solving $0 = cx - dy$. In general, we want an equation in the
 form $y(x)$, $y$ as a function of $x$, so that we can more easily plot it on our phase portrait axes. 
 
-After rearraning, we find the solution to this equation: $y = \frac{c}{d}x$. Let's add it to the plot
+After rearranging, we find the solution to this equation: $y = \frac{c}{d}x$. Let's add it to the plot
 
 ```{r}
 p1 +
@@ -271,7 +275,7 @@ p1 +
   ylim(0, 8)
 ```
 
-The intersection(s) of the $x$ and $y$ null clines are the fixed points, so plotting null
+The intersection(s) of the $x$ and $y$ nullclines are the fixed points, so plotting null
 clines is also a way to graphically find the fixed points. This is particularly useful if 
 it's hard to solve for the fixed points analytically. 
 
@@ -310,26 +314,25 @@ one unstable fixed point at ($x = 0, y = 0$).
 
 #### Challenge (to think about)
 
-Is there a minimum number of null clines a system must have? Are the null clines
-guarranteed to intersect? Are null clines always straight lines?  
+Is there a minimum number of nullclines a system must have? Are the nullclines
+guaranteed to intersect? Are nullclines always straight lines?  
 
 ```{r, eval=FALSE, echo=FALSE}
 
 # Consider $dx/dt = 3$. Maybe this isn't truly a differential equation, but $dx/dt$ can never be 0.
 
 # If each differential equation depends on at least one of the system variables 
-# (and the equations are different), there will always be at minimum two null clines. 
+# (and the equations are different), there will always be at minimum two nullclines. 
 
-# The null clines are not guarranteed to intersect: it's possible to not have a fixed point. 
+# The nullclines are not guarranteed to intersect: it's possible to not have a fixed point. 
 # Example: dx/dt = y, dy/dt = y + 2
 
 ```
 
 #### Challenge
 
-Find the fixed point(s) and null clines analytically for the following two-dimensional 
-system. Verify your work by plotting the null clines. 
-
+Find the fixed point(s) and nullclines analytically for the following two-dimensional 
+system. Verify your work by plotting the nullclines. 
 
 ## Quantitative stability analysis
 
@@ -363,7 +366,7 @@ Let's look at the logistic equation.
 
 $$\frac{dN}{dt} = rN (1-\frac{N}{K})$$
 
-Let's call the right-hand side of this equation $f(N)$: $f(N) = rN(1 - \frac{N}{K})$. First, we find the fixed points by setting $f(N) = 0$. $N = 0$ and $N = K$ are the fixed points.
+Let's call the right-hand side of this equation $f(N)$: $f(N) = rN(1 - \frac{N}{K})$. First, we find the fixed points by setting $f(N) = 0$. The fixed points are $N = 0$ and $N = K$.
 
 Next, to linearize this equation, we take the **derivative** of $f(N)$ with respect to $N$: we calculate $\frac{\partial f(N)}{\partial N}$. 
 
@@ -426,7 +429,7 @@ The four fixed points visible here are respectively unstable, stable, unstable, 
 ### Stability analysis in two dimensions
 
 Analyzing stability in two dimensions follows exactly the same principle, but the math is a little bit 
-more complicated. Now instead of needing to find the slope in just one dimension, we have an
+more complicated. Now instead of needing to find the slope in just one dimension, we have a
 two-dimensional surface we need to consider. 
 
 Imagine the landscape of $dx/dt$ and $dy/dt$ as an actual landscape with hills and valleys. 
@@ -444,7 +447,7 @@ We could have a treacherous mountain pass:
 
 Here's an idealized representation of a mountain pass. 
 
-![Idealized mountain pass, By Paulba Legend (talk), CC BY-SA 3.0](https://en.wikipedia.org/wiki/Mountain_pass#/media/File:Saddleroute3.JPG)
+![Idealized mountain pass, By Paulba Legend (talk), CC BY-SA 3.0](https://upload.wikimedia.org/wikipedia/commons/2/29/Saddleroute3.JPG)
 
 #### Challenge
 
@@ -460,7 +463,7 @@ Is the high point of a mountain pass a **stable** fixed point or an **unstable**
 ### Calculating the Jacobian matrix
 
 We will now learn how to formally describe the stability of fixed points in two-dimensional systems --- 
-how to quantitativley distinguish all the possible landscape shapes that can surround a fixed point.
+how to quantitatively distinguish all the possible landscape shapes that can surround a fixed point.
 
 Just like in the one-dimensional case, we want to calculate the slope of the two-dimensional surface 
 in the vicinity of the fixed point. To do this, we calculate four partial derivatives and arrange them
@@ -508,15 +511,16 @@ $$J=\begin{bmatrix}
 
 From here, we need to calculate the **eigenvalues** of the Jacobian matrix. The eigenvalues of a
 square matrix $A$ are numbers (often denoted $\lambda$) that satisfy the following relationship,
-where $\vec{v}$ is a vector whose length is the dimension of $A$. If $A$ is a 2-by-2 matrix, 
-$\vec{v}$ is a length-2 vector. 
+where $\vec{v}$ is a vector whose length is the dimension of $A$. (If $A$ is a 2-by-2 matrix, 
+$\vec{v}$ is a length-2 vector.) 
 
 $$A\vec{v} = \lambda \vec{v}$$.
 
 What this means is that if the matrix $A$ is multiplied with a particular vector $\vec{v}$,
 the resulting vector is a number multiplied by the original vector. 
 
-This isn't true for just any vector. In general, this is how matrix multiplication works:
+This isn't true for just any vector. The particualr vectors that satisfy this relationship for 
+the matrix $A$ are called **eigenvectors**. In general, this is how matrix multiplication works:
 
 $$\begin{bmatrix}
     \alpha & \beta \\
@@ -534,6 +538,18 @@ v_2
 The result is a new vector, still of length 2, but not necessarily a constant multiplied by 
 the original vector $(v_1, v_2)$. 
 
+For a 2-by-2 matrix, there are in general two eigenvalues and two eigenvectors. In the language of
+stability, the eigenvectors are 'directions' in the landscape --- each one is an axis, like $x$ 
+and $y$ are axes, except that the eigenvector directions don't have to be perpendicular or oriented
+the same way as $x$ and $y$. 
+
+The eigenvalues relate to stability because they determine how the system behaves along each eigenvector
+direction. By writing our linearized system in the form $A\vec{v} = \lambda \vec{v}$, we have something
+that looks like the differential equation $dx/dt = \lambda x$, which has an exponential function
+$\text{e}^{\lambda x}$ as its solution. The eigenvalues $\lambda$ determine if the solution grows or
+shrinks: if $\lambda >0$, the solution will grow, moving away from the fixed point. If $\lambda < 0,
+the solution will shrink, moving towards the fixed point.
+
 Our challenge is to find the eigenvalues of the Jacobian. We could also find the corresponding
 eigenvectors, but we don't need to for stability analysis.
 
@@ -543,6 +559,9 @@ shape as $A$ but with $1$s on the diagonal and $0$s everywhere else.
 
 However, we won't calculate eigenvalues by hand. R has a function called `eigen` that we can use to
 directly calculate the eigenvalues of a matrix. 
+
+We need to calculate eigenvalues separately for each fixed point, since each fixed point has its own
+stability to be analyzed and will have its own eigenvectors and eigenvalues. 
 
 ```{r}
 # stability analysis for predator-prey model
@@ -557,17 +576,25 @@ d <- 0.2
 y <- 0
 x <- 0
 
-# define the partial derivatives 
-dx_dx <- a - b*y
-dx_dy <- -b*x
+# define the partial derivatives
+dx_dx <- a - b * y
+dx_dy <- -b * x
 dy_dx <- c
 dy_dy <- -d
 
 # create the Jacobian matrix
-J<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
+J1 <-
+matrix(c(dx_dx, dx_dy, 
+         dy_dx, dy_dy),
+       nrow = 2,
+       ncol = 2,
+       byrow = TRUE
+)
 
 # calculate eigenvalues
-e_vals<-eigen(J)$values
+e_vals1 <- eigen(J1)$values
+
+print(e_vals1)
 ```
 
 There are two eigenvalues because our system is two-dimensional. What do they mean? For a set of eigenvalues ($\lambda_1$, $\lambda_2$, etc.):
@@ -593,19 +620,86 @@ d <- 0.2
 y <- a / b
 x <- d * a / (b * c)
 
-# define the partial derivatives 
-dx_dx <- a - b*y
-dx_dy <- -b*x
+# define the partial derivatives
+dx_dx <- a - b * y
+dx_dy <- -b * x
 dy_dx <- c
 dy_dy <- -d
 
 # create the Jacobian matrix
-J<-matrix(c(dx_dx, dx_dy, dy_dx, dy_dy), nrow = 2, ncol = 2, byrow=TRUE);
+J2 <-
+matrix(
+c(dx_dx, dx_dy, 
+  dy_dx, dy_dy),
+nrow = 2,
+ncol = 2,
+byrow = TRUE
+)
 
 # calculate eigenvalues
-e_vals<-eigen(J)$values
+e_vals2 <- eigen(J2)$values
+
+print(e_vals2)
 ```
 
+Let's return to our phase portrait and look at what the eigenvalues and eigenvectors have to do with 
+the fixed points graphically. We can get the eigenvectors for plotting using the same function `eigen`
+but pulling out the `vectors` part instead of `values`. 
+
+```{r}
+# calculate eigenvectors
+e_vectors1 <- eigen(J1)$vectors
+e_vectors2 <- eigen(J2)$vectors
+```
+
+The eigenvectors are plotted as thick dashed lines. In each of these directions, the system will evolve
+approximately according to our linearized result: as an exponential function with parameter $\lambda$.
+When $\lambda$ is complex, this means the system will oscillate.
+
+```{r}
+par(pty='s')
+
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
+pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+                          parameters = params,
+                          points = 15, # this is the density of grid points on which to plot arrows
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories
+pp_trajectory <- trajectory(predator_prey, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = matrix(c(8, 5,
+                                          1, 1),
+                                        ncol = 2,
+                                        byrow = TRUE), 
+                            t.end = 30, # how far in time to calculate the trajectories
+                            parameters = params, system = "two.dim")
+
+pp_nullclines <- nullclines(predator_prey, 
+           x.lim = c(0, 10), # axis limits
+           y.lim = c(0, 10),
+           # y0 is a matrix where each row is pairs of (X, Y) 
+           y0 = initial_conditions, 
+           t.end = 30, # how far in time to calculate the trajectories 
+           parameters = params, system = "two.dim")
+
+# plot the eigenvectors for fixed point (x = 0, y = 0)
+
+# eigenvector for eigenvalue lambda = 5
+lines(x = c(0, e_vectors1[1]), y = c(0, e_vectors1[2]), lty = 2, lwd = 2, col = 'green')
+
+# eigenvector for eigenvalue lambda = -0.2
+lines(x = c(0, e_vectors1[3]), y = c(0, e_vectors1[4]), lty = 2, lwd = 2, col = 'purple')
+
+# plot the eigenvectors for fixed point (x = ad/bc, y = a/b) 
+
+# eigenvector for eigenvalue lambda = -0.1 + 0.9949874i
+lines(x = c(a*d/(b*c), e_vectors2[1]), y = c(a/b, e_vectors2[2]), lty = 2, lwd = 2, col = 'green')
+
+# eigenvector for eigenvalue lambda = -0.1 - 0.9949874i
+lines(x = c(a*d/(b*c), e_vectors2[3]), y = c(a/b, e_vectors2[4]), lty = 2, lwd = 2, col = 'purple')
+```
 
 ### An example in three dimensions (bac-virus-nutrients)
 
