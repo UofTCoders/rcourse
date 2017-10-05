@@ -1,7 +1,9 @@
 ---
 title: Data wrangling and visualization in the tidyverse
+author: Joel Östblom
 ---
 
+## Lesson preamble
 
 > ### Learning Objectives
 >
@@ -12,8 +14,7 @@ title: Data wrangling and visualization in the tidyverse
 > - Produce scatter plots, line plots, and histograms using ggplot.
 > - Set universal plot settings.
 > - Understand and apply faceting in ggplot.
-
-
+> 
 > ### Lesson outline
 >
 > - Split-apply-combine techniques in **`dplyr`** (20 min)
@@ -23,8 +24,7 @@ title: Data wrangling and visualization in the tidyverse
 > - Split-apply-combine... plot! (20 min)
 > - Faceting (10 min)
 
---------------
-
+-----
 
 ## Setting up
 

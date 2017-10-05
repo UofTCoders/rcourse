@@ -1,5 +1,8 @@
 ---
 title: "Assignment 5"
+output:
+    html_document:
+        toc: false
 ---
 
 > Uploaded when it is handed out.

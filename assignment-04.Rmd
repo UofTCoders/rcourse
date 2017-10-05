@@ -1,5 +1,8 @@
 ---
 title: 'Assignment 4: One-dimensional population models (8 marks)'
+output:
+    html_document:
+        toc: false
 ---
 
 *To submit this assignment, upload the full document on blackboard,

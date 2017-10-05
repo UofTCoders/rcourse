@@ -1,5 +1,6 @@
 ---
-title: Introduction to R
+title: "Introduction to R: Assignment, vectors, functions"
+author: Joel Östblom
 ---
 
 **Copyright (c) Data Carpentry**
@@ -30,34 +31,35 @@ common saying in the open source world:
 This saying captures the spirit, generosity, and fun involved in being a
 part of these open source projects.
 
-------------
+-----
 
+## Lesson Preamble
 
-## Learning Objectives
+> ### Learning Objectives
+> 
+> - Define the following terms as they relate to R: object, assign, call,
+>   function, arguments, options.
+> - Create objects and assign values to them.
+> - Use comments within code blocks.
+> - Do simple arithmetic operations in R using values and objects.
+> - Call functions and use arguments to change their default options.
+> - Inspect the content of vectors and manipulate their content.
+> - Subset and extract values from vectors.
+> - Correctly define and handle missing values in vectors.
+> - Define our own functions
+> - Create for-loops
+> 
+> ### Lecture outline
+> 
+> - Setting up the R Notebook (5 min)
+> - Creating objects/variables in R (20 min)
+> - Vectors and data types (15 min)
+> - Subsetting vectors (15 min)
+> - Missing data (10 min)
+> - Writing functions (10 min)
+> - Loops and vectorization (10 min)
 
-* Define the following terms as they relate to R: object, assign, call,
-  function, arguments, options.
-* Create objects and assign values to them.
-* Use comments within code blocks.
-* Do simple arithmetic operations in R using values and objects.
-* Call functions and use arguments to change their default options.
-* Inspect the content of vectors and manipulate their content.
-* Subset and extract values from vectors.
-* Correctly define and handle missing values in vectors.
-* Define our own functions
-* Create for-loops
-
-
-## Lecture outline
-
-- Setting up the R Notebook (5 min)
-- Creating objects/variables in R (20 min)
-- Vectors and data types (15 min)
-- Subsetting vectors (15 min)
-- Missing data (10 min)
-- Writing functions (10 min)
-- Loops and vectorization (10 min)
-
+-----
 
 ## Setting up the R Notebook
 
