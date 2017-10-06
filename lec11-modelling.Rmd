@@ -1,5 +1,6 @@
 ---
 title: "Statistical/probabilistic modelling in R"
+author: "Luke Johnston"
 ---
 
 <!-- 
@@ -41,10 +42,10 @@ Outline:
 
 > ### Lesson objectives:
 > 
-> - Learn the importance of visualizing your data when doing any analyses or
-> statistics
 > - Learn how to apply and interpret linear regression for a variety of data
 > - Understand probability and the importance of presenting confidence intervals
+> - Learn the importance of visualizing your data when doing any analyses or
+> statistics
 > - Learn how to compare models using information criterion techniques
 > 
 > ### Lesson outline:
@@ -73,19 +74,10 @@ library(broom)
 
 ## Statistics and probability
 
-- Theoretical models are powerful tools at explaining or understanding the world. However, they are limited in that the real-world often doesn't perfectly fit these models. The real world is messy and noisy. We use statistics and probability to determine whether what we are studying is a really
-
-
-
-
-## Estimation, confidence intervals, and p-values
-
-P-values vs estimation
-
-confidence interval
-
-<!-- how many know about p-values etc? -->
-
+- Theoretical models are powerful tools at explaining or understanding the
+world. However, they are limited in that the real-world often doesn't perfectly
+fit these models. The real world is messy and noisy. We use statistics and
+probability to determine whether what we are studying is a really
 
 
 
@@ -93,13 +85,13 @@ confidence interval
 
 Generalized linear models (or GLM) is statistical modelling technique that
 encompasses several other techniques, e.g. correlation or analysis of variance
-(ANOVA). GLM is a powerful technique that you can use on a wide range of data
-and research questions, and is the foundation for understanding how more
-advanced techniques work. This is the reason I will be covering GLM in depth.
-(For those who will go into graduate students or into research in general, you
-will likely use mixed effects model. If you can understand and grasp GLM, it
-will be substantially easier for you to understand mixed effects modeling and
-other techniques.)
+(ANOVA), linear regression, logistic regression. GLM is a powerful technique
+that you can use on a wide range of data and research questions, and is the
+foundation for understanding how more advanced techniques work. This is the
+reason I will be covering GLM in depth. (For those who will go into graduate
+students or into research in general, you will likely use mixed effects models.
+If you can understand and grasp GLM, it will be substantially easier for you to
+understand mixed effects modelling and other techniques.)
 
 A version of GLM that uses continuous $y$ values is called linear regression,
 which I'm going to focus on. The formula for linear regression (or GLM in
@@ -109,138 +101,160 @@ $$ Y = \alpha + X\beta + \varepsilon $$
 
 Or, a simplified, alphabetized version is:
 
-$$ y = m + Xb + e $$
+$$ y = a + Xb + e $$
 
 In the case of multiple linear regression (more than one $x$), it is expanded to:
 
-$$ y = m + x_1b_1 + x_2b_b +...+ x_nb_n + e $$
+$$ y = a + x_1b_1 + x_2b_b +...+ x_nb_n + e $$
 
-In R we can run linear regression either using `lm` or using `glm`. We'll use
-`glm` since it can be expanded to other types of analyses. First, let's load up
-a dataset.
+Where each $x$ is a variable in a data frame. In R we can run linear regression
+either using `lm` or using `glm`. We'll use `glm` since it can be expanded to
+other types of analyses. First, let's load up a dataset.
 
 ```{r}
 library(tidyverse)
-
 portal <- read_csv("portal_data.csv")
-portal
-
-fit1 <- glm(weight ~ year, data = portal, family = gaussian)
-summary(fit1)
-
-library(broom)
-tidy(glm(weight ~ year, data = portal))
 ```
 
-Ok, so what does this actually mean? Let's go back to the equation and convert
-the above into the formula:
+```{r}
+fit1 <- glm(weight ~ sex, data = portal, family = gaussian)
+summary(fit1)
+```
 
-$$ weight = Intercept + (year \times b) $$
+There's a lot of results and information contained within `fit1`, which
+`summary()` extracts and presents in a fairly nice format. However, a lot of
+this information we aren't really interested in. So let's extract only what we
+want, using the `broom` package. (get it, broom to clean up?)
+
+```{r}
+library(broom)
+tidy(fit1)
+```
+
+Much nicer! Ok, so what does this actually mean? Let's go back to the equation
+and convert the above into the formula:
+
+$$ weight = Intercept + (sexM \times b) $$
 
 Let's substitute in the numbers. The intercept, is well, the intercept in the
 data above. The $b$ is the estimate for the `year`.
 
-$$ weight = 2752.13 + (year \times -1.36113) $$
+$$ weight = 42.17 + (sexM \times 0.825) $$
 
-We can use this equation to estimate the value of weight at a given year. But
+We can use this equation to estimate the value of weight for a specific sex. But
 first, let's make sure this is working correctly. Let's find out the weight at
 the very first collection visit.
 
 ```{r}
 portal %>% 
-    filter(year == min(year)) %>%
-    summarize(mean_wt = mean(weight, na.rm = TRUE)) %>% 
-    as.numeric()
+    filter(!is.na(sex)) %>% 
+    group_by(sex) %>% 
+    summarize(mean_wt = mean(weight, na.rm = TRUE)) 
 ```
 
-Ok, let's compare to the equation. Let's substitute year for the first year data
-was collected, which was `r min(portal$year)`.
+Ok, let's compare to the equation. The variable `sexM` is 1 for male and 0 for female. So if we want to calculate the weight of female, we have to set `sexM` as 0 in the equation. Let's do it:
 
 ```{r}
-2752.13 + (min(portal$year) * -1.36113)
+42.17 + (0 * 0.825)
 ```
+
+Same as above! And for males (equal to 1):
+
+```{r}
+42.17 + (1 * 0.825)
+```
+
+Good, it matches what we calculated. Why is this useful? Well, we can add more
+terms to the GLM equation. This allows us to determine how a variable influences
+the $y$ when other variables are held constant. Since weight is probably also
+dependent on `hindfoot_length`, let's add that to the model and put the values
+into the equation.
+
+```{r}
+fit2 <- glm(weight ~ sex + hindfoot_length, data = portal)
+tidy(fit2)
+```
+
+$$ weight = -32.09 + (sexM \times -1.72) + (hindfoot\_length \times 2.56)$$
+
+Hmm, that's interesting... is a *negative* intercept... How can weight be
+negative? Well, that's because the intercept is calculated by setting *both* sex
+and hindfoot length to zero! But is physically possible that a hindfoot is
+non-existent?? No. But math doesn't care what is physically possible or not. So
+let's change that up by changing the actual value of hindfoot length in the
+dataset. There are several ways to transform the data into something that is
+meaningful to us. But first:
+
+> What does everyone think is a meaningful way to transform hindfoot length so
+we can interpret the model more appropriately?
+
+There are many ways to do it, but one way that is often used is to mean center
+the data. Mean centering is substracting each value by the mean. After mean
+centering, 0 is equal to the mean of hindfoot length.
 
 ```{r}
 portal2 <- portal %>%
-    mutate(year = year - min(year))
+    mutate(hfl_mean_center = hindfoot_length - mean(hindfoot_length, na.rm = TRUE))
 
-tidy(glm(weight ~ year, data = portal2, family = gaussian))
+fit3 <- glm(weight ~ sex + hfl_mean_center, data = portal2)
+tidy(fit3)
 ```
 
+$$ weight = 42.88 + (sexM \times -1.72) + (hfl\_mean\_center \times 2.56)$$
 
-
-The above is for a simple, two variable linear regression. What about if we have 
-multiple predictor ($x$) variables? We do:
+Much better. So if we wanted to compare males vs females who have a mean
+hindfoot length (set to 0):
 
 ```{r}
-fit2 <- lm(Murder ~ Income + Population, data = ds)
-summary(fit2)
+# Female
+42.88 + (0 * -1.72) + (0 * 2.56)
+# Male
+42.88 + (1 * -1.72) + (0 * 2.56)
 ```
-
-Converted to the formula:
-
-$$ Murder = 14.34 + (Income \times -0.0189) + (Population \times 0.0003384) $$
-
-Nearly all statistical techniques (at least the basic/common ones) can be
-considered a special case of linear regression. Let's take ANOVA as an example.
-ANOVA is where the $y$ is a continuous variable and the $x$ is a discrete
-variable (usually with at least three categories). In my opinion, using linear
-regression is more useful from a scientific and interpretation perspective than
-using ANOVA. Here's how you do it:
+Or if we wanted to see males with hindfeet 10 cm minus the mean vs 10 cm plus the mean:
 
 ```{r}
-fit3 <- lm(Petal.Length ~ Species, data = iris)
-# To see the different categories of Species
-summary(iris$Species)
+# Males 10 cm minus mean
+42.88 + (1 * -1.72) + (-10 * 2.56)
+# Male 10 cm plus mean
+42.88 + (1 * -1.72) + (10 * 2.56)
 ```
 
-```{r}
-summary(fit3)
+#### Challenge
+
+Create a new dataframe called `challenge1` that keeps only taxa of "Rodent"
+(`filter`) and with a new column (`mutate`) called "Dipodomys" where if genus
+"Dipodomys" is equal to "Yes" and if not is "No" (hint: use `ifelse`). Then,
+create a model called `fit_challenge1` that has the terms `sex`,
+`hfl_mean_center`, and `Dipodomys`. Extract the relevant information from the
+model using `tidy`. What is the weight when sex is male, hindfoot length is 5
+above the mean, and Dipodomys is yes?
+
+```{r, echo=FALSE, eval=FALSE}
+challenge1 <- portal2 %>% 
+    filter(taxa == "Rodent") %>% 
+    mutate(Dipodomys = ifelse(genus == "Dipodomys", "Yes", "No"))
+
+model_challenge1 <- glm(weight ~ sex + hfl_mean_center + Dipodomys, data = challenge1)
+tidy(model_challenge1)
 ```
 
-Converted to an equation. Setosa isn't here because it is considered the
-'intercept' since if you set Versicolor and Virginica to zero, the remaining
-'category' is Setosa. These are known as dummy variables.
-
-$$ Petal.Length = 1.46 + (Versicolor \times 2.79) + (Virginica \times 4.09) $$
-
-The estimates from the linear regression as the same as the means of each group
-(each estimate + the intercept). 
-
-```{r}
-library(dplyr)
-iris %>%
-    group_by(Species) %>% 
-    summarize(means = mean(Petal.Length))
-```
-
-Linear regression and correlation are also tightly linked, and are the same if
-the variables have been scaled (mean-centered and standardized).
-
-```{r}
-ds <- iris %>%
-    mutate_each(funs(scale), Petal.Length, Sepal.Length)
-summary(ds)
-```
-
-```{r}
-cor(ds$Petal.Length, ds$Sepal.Length)
-```
-
-```{r}
-summary(lm(Petal.Length ~ Sepal.Length, data = ds))
-```
-
-Using linear regression to compare means between groups (e.g. species or sex)
 
 
 
-
-### Example: Using linear regression in a Ricker model
+### Example: Using linear regression in a Ricker model?
 
 ## Model comparison techniques
 
 ### Information criterion
+
+## Estimation, confidence intervals, and p-values
+
+P-values vs estimation
+
+confidence interval
+
+<!-- how many know about p-values etc? -->
 
 ## Importance of visualizing the data directly
 
