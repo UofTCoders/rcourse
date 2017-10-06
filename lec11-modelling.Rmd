@@ -221,13 +221,20 @@ confidence interval
 ## Visualization as a crucial component to data analysis
 
 Visualizing your data before, during, and after doing statistics or modelling
-your data is incredibly important. There 
+your data is an incredibly important and sometimes overlooked aspect of data
+analysis. Sometimes statistics and modelling give you an answer that you sort of
+expect, but the actual data is telling a different story.
 
 #### Challenge
 
-There are 
+There are several datasets found within the `datasauRus` package. This package
+is trying to illustrate a point. First, let's look at the mean and standard
+deviation of the variables in each dataset:
+
 ```{r}
-# From the datasauRus package
+library(datasauRus)
+library(tidyverse)
+library(broom)
 datasaurus_dozen %>%
     group_by(dataset) %>%
     summarise(
@@ -236,15 +243,20 @@ datasaurus_dozen %>%
         mean_y = mean(y),
         sd_y = sd(y)
     )
+```
 
+They're all basically the same... What about for linear regression?
+
+```{r}
 # Linear regression on each dataset
 datasaurus_dozen %>% 
     group_by(dataset) %>% 
     do(tidy(lm(y ~ x, data = .))[2, ])
 ```
 
-
-
+Same thing, all are more or less the same. But, there is something seriously
+wrong with every since one of the datasets. Pair up and explore the data
+visually to see what's going on.
 
 ```{r, echo=FALSE, eval=FALSE}
 ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
@@ -254,9 +266,29 @@ ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
     facet_wrap(~ dataset, ncol = 3)
 ```
 
+
 ### Other examples of finding a problem by visualizing
 
+From what you found in the challenge above, can you see why it's dangerous to
+not visualize the data first? Sometimes
+
 ![Visualizing raw data vs aggregate](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)
+
+### Another example: Simpson's Paradox[^simpson]
+
+You all have already encountered Simpson's Paradox in the challenges of lecture
+4 and 5, where the average weight of all species decreased over time, but for
+each species weight remained constant. These types of problems are encountered
+all the time in data analysis and it is part of what makes science so hard,
+because data often doesn't behave as we expect it to. 
+
+And sometimes, by not looking at the raw data, it can lead to actual harmful
+effects. For instance, Simpson's paradox comes up in medical studies of drugs
+that could be lifesaving for a patient. If inappropriate conclusions are drawn
+because the data wasn't directly looked at, people can be harmed. This is true
+in *any* scientific field, including ecology. Policies aimed at benefitting the
+environment could in fact be *harming* it because these types of things were not
+examined. See the figure below for an illustration of Simpson's paradox.
 
 ```{r}
 ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
@@ -265,6 +297,8 @@ ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
     theme(legend.position = "none") +
     facet_wrap( ~ dataset, ncol = 3)
 ```
+
+[^simpson]: Wikipedia page on [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
 
 ## Resources
 
