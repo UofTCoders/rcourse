@@ -3,41 +3,6 @@ title: "Statistical/probabilistic modelling in R"
 author: "Luke Johnston"
 ---
 
-<!-- 
-brainstorm:
-
-- Some basics ?
-    - mean, sd, median, IQR
-        - plot *and* showing raw data/results (as table)
-
-- how linear regression works on real world data
-- How powerful linear regression is
-    - use Ricker model as an example
-- spurious (?) correlations (different data distribution that give the same estimate)
-
-- p-values
-    - unreliability
-    - better to estimate than test significance
-- CI
-
-
-- Comparing models
-
-Outline:
-
-- why stats/probability
-- Estimation, confidence intervals, and p-values
-- Linear regression
-    - End challenge: 
-- Model selection
-- Importance of plotting
-    - Challenge: Show simple stats and simple linear regression of the various
-    datasauRus packages. But there is a problem. Use visualization to find out
-    what's wrong with the datasets.
-
-
--->
-
 ## Lesson preamble
 
 > ### Lesson objectives:
