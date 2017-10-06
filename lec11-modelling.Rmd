@@ -24,16 +24,15 @@ author: "Luke Johnston"
 > 
 > ### Setup
 >
-> - `install.packages("dplyr")`
-> - `install.packages("tidyr")`
+> - `install.packages("dplyr")` # or `tidyverse`
+> - `install.packages("tidyr")` # or `tidyverse`
 > - `install.packages("broom")`
 > - `install.packages("datasauRus")`
 
 -----
 
-```{r}
+```{r, results='hide'}
 library(tidyverse)
-library(datasauRus)
 library(broom)
 ```
 
