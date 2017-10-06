@@ -27,6 +27,7 @@ author: "Luke Johnston"
 > - `install.packages("dplyr")` # or `tidyverse`
 > - `install.packages("tidyr")` # or `tidyverse`
 > - `install.packages("broom")`
+> - `install.packages("MuMIn")`
 > - `install.packages("datasauRus")`
 
 -----
