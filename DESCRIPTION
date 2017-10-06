@@ -20,4 +20,5 @@ Imports: rmarkdown,
     tidyverse,
     GGally,
     datasauRus,
-    broom
+    broom,
+    MuMIn
