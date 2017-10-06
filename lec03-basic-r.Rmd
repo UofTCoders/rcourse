@@ -189,15 +189,13 @@ objects besides `data.frame`.
 > * How many rows and how many columns are in this object?
 > * How many species have been recorded during these surveys?
 
-<!---
-```{r, echo=FALSE}
+```{r}
 ## Answers
 ##
 ## * class: data frame
 ## * how many rows: 34786,  how many columns: 13
 ## * how many species: 48
 ```
---->
 
 
 ### Indexing and subsetting data frames
@@ -281,7 +279,6 @@ head(surveys$species_id)          # Result is a vector
 >    `head(surveys)` keeping just the first through 6th rows of the surveys
 >    dataset.
 
-<!---
 ```{r}
 ## Answers
 surveys_200 <- surveys[200, ]
@@ -289,7 +286,6 @@ surveys_last <- surveys[nrow(surveys), ]
 surveys_middle <- surveys[nrow(surveys)/2, ]
 surveys_head <- surveys[-c(7:nrow(surveys)),]
 ```
---->
 
 
 ## R packages for data analyses
@@ -491,14 +487,12 @@ surveys %>%
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
 
-<!---
-```{r, eval=FALSE}
+```{r}
 ## Answer
 surveys %>%
     filter(year < 1995) %>%
     select(year, sex, weight)
 ```
---->
 
 
 ### Creating new columns with mutate
@@ -545,8 +539,7 @@ symbol negates the result, so we're asking for everything that *is not* an `NA`.
 >
 >  **Hint**: think about how the commands should be ordered to produce this data frame!
 
-<!---
-```{r, eval=FALSE}
+```{r}
 ## Answer
 surveys_hindfoot_half <- surveys %>%
     filter(!is.na(hindfoot_length)) %>%
@@ -554,6 +547,4 @@ surveys_hindfoot_half <- surveys %>%
     filter(hindfoot_half < 30) %>%
     select(species_id, hindfoot_half)
 ```
---->
-
 
