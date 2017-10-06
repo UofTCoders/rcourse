@@ -207,10 +207,6 @@ tidy(fit_challenge1)
 
 ### Example: Using linear regression in a Ricker model?
 
-## Model comparison techniques
-
-### Information criterion
-
 ## Estimation, confidence intervals, and p-values
 
 P-values vs estimation
@@ -219,7 +215,11 @@ confidence interval
 
 <!-- how many know about p-values etc? -->
 
-## Importance of visualizing the data directly
+## Model comparison techniques
+
+### Information criterion
+
+## Visualization as a crucial component to data analysis
 
 Visualizing your data before, during, and after doing statistics or modelling
 your data is incredibly important. There 
