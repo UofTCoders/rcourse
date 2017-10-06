@@ -189,22 +189,20 @@ Or if we wanted to see males with hindfeet 10 cm minus the mean vs 10 cm plus th
 
 Create a new dataframe called `challenge1` that keeps only taxa of "Rodent"
 (`filter`) and with a new column (`mutate`) called "Dipodomys" where if genus
-"Dipodomys" is equal to "Yes" and if not is "No" (hint: use `ifelse`). Then,
-create a model called `fit_challenge1` that has the terms `sex`,
-`hfl_mean_center`, and `Dipodomys`. Extract the relevant information from the
-model using `tidy`. What is the weight when sex is male, hindfoot length is 5
-above the mean, and Dipodomys is yes?
+is equal to "Dipodomys" than the value is "Yes" and if not the value is "No"
+(hint: use `ifelse`). Then, create a model called `fit_challenge1` that has the
+terms `sex`, `hfl_mean_center`, and `Dipodomys`. Extract the relevant
+information from the model using `tidy`. What is the weight when sex is female,
+hindfoot length is 5 above the mean, and Dipodomys is yes?
 
 ```{r, echo=FALSE, eval=FALSE}
 challenge1 <- portal2 %>% 
     filter(taxa == "Rodent") %>% 
     mutate(Dipodomys = ifelse(genus == "Dipodomys", "Yes", "No"))
 
-model_challenge1 <- glm(weight ~ sex + hfl_mean_center + Dipodomys, data = challenge1)
-tidy(model_challenge1)
+fit_challenge1 <- glm(weight ~ sex + hfl_mean_center + Dipodomys, data = challenge1)
+tidy(fit_challenge1)
 ```
-
-
 
 
 ### Example: Using linear regression in a Ricker model?
