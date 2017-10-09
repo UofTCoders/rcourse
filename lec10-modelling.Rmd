@@ -14,15 +14,17 @@ author: "Madeleine Bonsma-Fisher"
 > 
 > Total lesson time: 2 hours
 >
-> - Review eigenvalues and eigenvectors
-> - Vectorizing linear systems of differential equations: another perspective on eigenvalues
-> - Bifurcations
-> - Fitting models to data
->     - Fitting simulated data for a single parameters
->     - Fitting real data for two parameters
+> - Review eigenvalues and eigenvectors (10 minutes)
+> - Vectorizing linear systems of differential equations: another perspective on eigenvalues (20 minutes)
+> - Bifurcations (20 minutes)
+> - Fitting models to data 
+>     - Fitting simulated data for a single parameters (20 minutes)
+>     - Fitting real data for two parameters (40 minutes)
 
 > ### Setup
 > 
+> - Download [this plant biomass dataset](https://github.com/UofTCoders/council/blob/master/datasets/joel/plant-biomass-preprocess.csv) and put it in your working directory.
+> - `install.packages('lattice')`
 > - `install.packages('phaseR')`
 > - `install.packages('deSolve')`
 > - `install.packages('ggplot2')` (or `tidyverse`)
@@ -218,13 +220,29 @@ If $H > r$, then the second fixed point becomes negative. In a real population,
 there would now be only a single fixed point at $N=0$ since $N$ can't be negative. 
 
 Next, let's look at the stability analytically. We calculate $\frac{\partial f(N)}{\partial N}$ 
-at each fixed point, where $f(N) = rN(1-\frac{N}{K}) - HN$.
+and evaluate it at each fixed point, where $f(N) = rN(1-\frac{N}{K}) - HN$.
+
+$$\frac{\partial f(N)}{\partial N} = \frac{\partial}{\partial N} \left(rN(1-\frac{N}{K}) - HN \right) \\
+=r - \frac{2rN}{K} - H$$
 
 For the fixed point $N=0$:
 
-$$\frac{\partial f(N)}{\partial N}$$
+$$\frac{\partial f(N)}{\partial N} = r-H$$
+
+This is positive if $r > H$ and negative if $r < H$. This means $H = r$ is a 
+**bifurcation point**: at this value of $H$ (assuming $r$ is fixed), this fixed 
+point changes stability.
+
+For the fixed point $N = K\left(1-\frac{H}{r}\right)$:
+
+$$\frac{\partial f(N)}{\partial N} = -r+H$$
+
+This is positive if $r < H$ and negative if $r > H$. This fixed point also changes 
+stability at the bifurcation point $H = r$. 
 
 Finally, let's plot $dN/dt$ vs $N$ and confirm our result. 
+
+First, define a function for the model.
 
 ```{r}
 fishing_model <- function(t, y, parameters) {
@@ -241,19 +259,22 @@ fishing_model <- function(t, y, parameters) {
 }
 ```
 
+Next, we choose parameters and create a sequence to plot.
+
 ```{r}
 params <- c(r = 1, K = 150, H = 0.5)
 
 N_seq <- seq(0, 100)
 
-
 dN_seq <- fishing_model(t, y = N_seq, parameters = params)
 ```
+
+And finally we plot in the usual way.
 
 ```{r}
 library(ggplot2)
 
-dN_seq <- unlist(dN_seq)
+dN_seq <- unlist(dN_seq) # because our function returns a list, we need to convert it to numbers.
 
 data <- data.frame(N_seq, dN_seq)
 
@@ -262,43 +283,137 @@ ggplot(data) +
   geom_hline(yintercept = 0)
 ```
 
-
 ## Fitting models to data
 
-- simulate data from exponential model and do least squares
+Finding data is a massive field, and there are many different strategies for choosing 
+parameters for a model depending on the assumptions you make about your data and model.
+Today we will talk about arguably the most common way to fit data --- **least squares**
+fitting. (Linear regression is a special case of least squares fitting.) I will show you
+a method for doing 'brute force' least squares fitting so that you can fit any model you
+like using the same procedure, but there are special cases you might encounter in which
+there are faster and/or better ways to implement least squares fitting. 
 
+## Fitting simulated data with a single parameter
 
-Suppose we sample repeatedly from a population over time, and suppose we want to fit our sampled data to a logistic model.
+Suppose we sample repeatedly from a bacterial population over time, and suppose we want 
+to fit our sampled data to an exponential growth model.
 
-Let's simulate some (error-free) data from an exponential function to work with.
+Let's simulate some data from an exponential function to work with.
 
 ```{r}
 times <- seq(0,10, by = 0.2) # sample times
-K <- 100 # carrying capacity
-r <- 0.5 # growth rate
+r <- 0.2 # growth rate
 N0 <- 10 # initial population
-C = (K-N0)/N0 # constant of integration
 
-Ndata <- K*exp(r*times)/(exp(r*times)+C)
+# use the function 'rnorm' to add noise to the data
+Ndata <- N0*exp(r*times) + rnorm(n = length(times), mean = 0, sd = 0.75) 
 
-plot(times,Ndata) # check with a plot
+qplot(times,Ndata) # check with a plot
 ```
 
+Now let's assume we don't know the growth rate $r$ and we wan't to extract it from the data
+--- we want to fit the data to an exponential growth model and find the value of $r$ that
+gives the best fit.
 
+To do this, we need a way to tell if a fit is good or bad. What criteria should we use
+to determine if a fit is good?
 
-- fit plant biomass data
+One option is to just try several parameter values and try to manually adjust the 
+parameter until the fit looks good. This is imprecise and not reproducible, but it's
+often a good place to start to get an idea of what parameter range to check. 
+
+The idea behind least squares fitting is that we want to minimize the difference between
+our model's prediction and the actual data, and we do that by minimizing the sum of the
+**squares** of the **residuals**. Residuals (or **errors**) are the difference between
+the model and the data for each data point. The purpose of taking the square of each 
+residual is to take out the influence of the sign of the residual. 
+
+The sum of the squares of the residuals is just a number, and now we have a criteria we can use
+to determine which of two fits is better: whichever fit minimizes that number is the better fit.
+
+In practice, there are many ways to find the particular parameter that gives the best fit. 
+One way is to start at some parameter value, then start adjusting it by small amounts and
+checking if the fit gets better or worse. If it gets worse, go in a different direction. 
+If it gets better, keep going in that direction until it either starts getting worse again
+or the amount by which it gets better is very small. This type of algorithm is a type of
+**gradient descent**. 
+
+Another option is to try a range of parameter values and choose the one that gives the best
+fit out of that list. This is simpler to implement than the previous algorithm, but it's
+also computationally more costly --- it can take a long time. 
+
+We will do some examples of the second method today, what we'll call 'brute-force least squares'.  
+
+```{r}
+# Make a range of r parameter values to try
+r_vals <- seq(0.01, 0.3, by = 0.01)
+
+residuals_squared <- numeric(length(r_vals)) # empty vector to store results
+
+# loop through all the values, calculate what the data would look like with that value, and calculate the residuals
+
+for (i in seq(length(r_vals))) {
+  
+  r <- r_vals[i]
+  
+  # Use the known solution for the exponential model
+  # Assume we know N0 using the first data point in the series
+  predicted_N <- N0*exp(r*times)  
+  
+  residuals <- predicted_N - Ndata
+  residuals_squared[i] <- sum(residuals^2)
+}
+```
+
+Let's plot the sum of residuals squared vs. $r$ to find which value of $r$ fits best:
+
+```{r}
+
+qplot(r_vals, residuals_squared)
+
+```
+
+We can see visually that the minimum is around $r = 0.2$, but to extract that number 
+from the list we can use the function `which`:
+
+```{r}
+best_fit <- which(residuals_squared == min(residuals_squared))
+
+r_fit <- r_vals[best_fit] 
+
+print(r_fit)
+```
+
+We got the 'correct' value of $r$, the one that we originally used to simulate the data.
+
+## Fitting models with two or more parameters
+
+Now let's fit a model with more parameters, and let's use some real data.
+
+```{r}
+# The dataset downloaded at the beginning
+plant_data <- read.csv("plant-biomass-preprocess.csv")
+
+```
+
+We can use our usual tricks to see what's in our dataset:
+
+```{r, eval=FALSE}
+
+summary(plant_data)
+
+head(plant_data)
+
+colnames(plant_data)
+```
+
+Let's plot just one of the habitats, sites, and treatments vs. time and colour by species.
 
 ```{r}
 library(dplyr)
 library(tidyr)
-library(ggplot2)
 
-data <- read.csv("plant-biomass-preprocess.csv")
-```
-
-
-```{r}
-data %>% 
+plant_data %>% 
   filter(habitat == "Tundra") %>%
   filter(site == 3) %>% 
   filter(treatment == "rodentexclosure") %>% 
@@ -307,14 +422,20 @@ data %>%
   geom_point(aes(x = year, y = Value, color = Species))
 ```
 
+*Empetrum nigrum* looks like it could be following logistic growth, so let's try to fit 
+it to that. First, let's make a new variable with just the data we want to fit.
+
 ```{r}
-d2 <- data %>% 
+d2 <- plant_data %>% 
   filter(site == 3) %>% 
   filter(habitat == "Tundra") %>% 
   filter(treatment == "rodentexclosure") %>% 
   select(year, empetrum_nigrum) 
 
 ```
+
+Now we define a logistic model function so that we can numerically generate the model's
+solution and compare it to the data.
 
 ```{r}
 logistic_fn <- function(t, state, parameters) {
@@ -335,9 +456,9 @@ logistic_fn <- function(t, state, parameters) {
   #return rate of change
   return(list(c(dN)))
 }
-
-
 ```
+
+Let's try running a single numerical solution and plotting it alongside the data.
 
 ```{r}
 library(deSolve)
@@ -346,12 +467,12 @@ parameters <- c(r = 0.5, K = 150)
 state <- c(N = d2[1,2])
 times <- seq(0, 14, by = 1) # make the same time vector as the data
 
-#?ode # look at the documentation to learn about the parameters
 result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
 ```
 
 
 ```{r}
+# Plot
 result <- data.frame(result)
 
 p1 <- ggplot(d2) +
@@ -362,19 +483,15 @@ p1 +
   geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
 ```
 
-```{r}
-residuals <- result$N - d2$empetrum_nigrum
-
-sum(residuals^2)
-
-
-```
+Now we'll define a grid of $r$ and $K$ values to try, then calculate a numerical solution 
+for each combination of parameters. 
 
 ```{r}
 rvals = seq(0.05, 1.0, by = 0.05)
 Kvals = seq(120, 180, by = 5)
 
-residuals_surface = matrix(, nrow = length(rvals), ncol = length(Kvals)) # initialize matrix for likelihood calculation
+# initialize matrix for likelihood calculation
+residuals_surface = matrix(, nrow = length(rvals), ncol = length(Kvals)) 
 
 # loop over values of r and k, calculate log likelihood
 for (i in seq(length(rvals))){
@@ -388,6 +505,8 @@ for (i in seq(length(rvals))){
 
 ```
 
+We can use the library `lattice` to plot the surface:
+
 ```{r}
 library(lattice)
 
@@ -397,7 +516,7 @@ wireframe(residuals_surface,
           scales=list(arrows=FALSE)) # need to fix so that axes are correct numbers
 ```
 
-Now to extract the values of $r$ and $K$ that minimize the sum of residuals:
+Now we extract the values of $r$ and $K$ that minimize the sum of residuals:
 
 ```{r}
 
@@ -421,7 +540,6 @@ p2 +
   geom_point(aes(x = time + 1998, y = N), result, color = 'blue') +
   geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
 ```
-
 
 You can do this process with more than two parameters as well, but the search space will be larger and the simulations necessary will take longer.
 
@@ -447,8 +565,6 @@ logistic_solution <- function(N0, t, r, K) {
   return(N)
 }
 ```
-
-
 
 ```{r}
 rvals = seq(0.05, 1.0, by = 0.05)
@@ -506,6 +622,18 @@ p2 +
 ```
 
 
+### Assumptions of least squares
+
+When is it appropriate to use least squares to fit your data?  
+
+Assumptions:
+- error is Gaussian-distributed
+- all data points have the same variance in their error (this can be relaxed)
+- error is only in the dependent variable(s), not in the independent variable(s)
+
+*Note*: least-squares is the **Maximum Likelihood** solution for the assumption that errors are Gaussian distributed.
+
+*Note*: in all this talk of fitting, what we're doing doesn't tell us *which* model fits our data best, only what parameters for a particular model fit best. The choice of model is up to us. There are ways to distinguish between fits for different models, but we won't talk about them. 
 
 
 
