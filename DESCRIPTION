@@ -1,4 +1,4 @@
-Package: rcourse
+﻿Package: rcourse
 Title: Reproducible Quantitative Methods in R Course in Ecology and Evolutionary Biology
 Version: 0.0.0.9000
 Authors@R: c(
@@ -20,4 +20,5 @@ Imports: rmarkdown,
     tidyverse,
     GGally,
     deSolve,
-    phaseR
+    phaseR,
+    lattice
