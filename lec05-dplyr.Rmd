@@ -1,6 +1,9 @@
 ---
 title: "Tidying and exporting data, reproducing figures"
+author: Joel Östblom
 ---
+
+## Lesson preamble
 
 > ### Lecture objectives
 >
@@ -11,13 +14,13 @@ title: "Tidying and exporting data, reproducing figures"
 > - Understand which types of figures are suitable to create from raw data.
 > - Explore scientific questions using dplyr and ggplot.
 >
->
 > ### Lecture outline
 >
 > - Reshaping with gather and spread (25 min)
 > - Exporting data (15 min)
 > - Reproducing figures (50 min)
 
+-----
 
 ## Setting up
 
@@ -136,7 +139,7 @@ surveys_gw_wide %>%
   head()
 ```
 
-> ### Challenge
+> #### Challenge
 >
 > 1. Make a wide data frame with `year` as columns, `plot_id` as rows, and the
 >   values are the number of genera per plot. You will need to summarize before
@@ -161,8 +164,7 @@ surveys_gw_wide %>%
 >    `weight`. Hint: Remember, you only need to specify the key and value
 >    columns for `spread`.
 
-<!---
-  ```{r, echo=FALSE}
+```{r}
 ## Answer 1
 rich_time <- surveys %>%
   group_by(plot_id, year) %>%
@@ -185,7 +187,6 @@ surveys_long %>%
   summarize(mean_value = mean(value, na.rm=TRUE)) %>%
   spread(measurement, mean_value)
 ```
---->
 
 ## Exporting data
 

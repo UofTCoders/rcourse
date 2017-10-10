@@ -1,5 +1,6 @@
 ---
-title: Introduction to R
+title: "Introduction to R: Assignment, vectors, functions"
+author: Joel Östblom
 ---
 
 **Copyright (c) Data Carpentry**
@@ -30,34 +31,35 @@ common saying in the open source world:
 This saying captures the spirit, generosity, and fun involved in being a
 part of these open source projects.
 
-------------
+-----
 
+## Lesson Preamble
 
-## Learning Objectives
+> ### Learning Objectives
+> 
+> - Define the following terms as they relate to R: object, assign, call,
+>   function, arguments, options.
+> - Create objects and assign values to them.
+> - Use comments within code blocks.
+> - Do simple arithmetic operations in R using values and objects.
+> - Call functions and use arguments to change their default options.
+> - Inspect the content of vectors and manipulate their content.
+> - Subset and extract values from vectors.
+> - Correctly define and handle missing values in vectors.
+> - Define our own functions
+> - Create for-loops
+> 
+> ### Lecture outline
+> 
+> - Setting up the R Notebook (5 min)
+> - Creating objects/variables in R (20 min)
+> - Vectors and data types (15 min)
+> - Subsetting vectors (15 min)
+> - Missing data (10 min)
+> - Writing functions (10 min)
+> - Loops and vectorization (10 min)
 
-* Define the following terms as they relate to R: object, assign, call,
-  function, arguments, options.
-* Create objects and assign values to them.
-* Use comments within code blocks.
-* Do simple arithmetic operations in R using values and objects.
-* Call functions and use arguments to change their default options.
-* Inspect the content of vectors and manipulate their content.
-* Subset and extract values from vectors.
-* Correctly define and handle missing values in vectors.
-* Define our own functions
-* Create for-loops
-
-
-## Lecture outline
-
-- Setting up the R Notebook (5 min)
-- Creating objects/variables in R (20 min)
-- Vectors and data types (15 min)
-- Subsetting vectors (15 min)
-- Missing data (10 min)
-- Writing functions (10 min)
-- Loops and vectorization (10 min)
-
+-----
 
 ## Setting up the R Notebook
 
@@ -125,10 +127,10 @@ joel <- 3
 joel + 5
 ```
 
-> **Challenge**
+> #### Challenge
 >
 > So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
-
+> 
 > ```{r}
 > joel + x
 > ```
@@ -195,10 +197,10 @@ and then change `weight_kg` to 100.
 weight_kg <- 100
 ```
 
-> **Challenge**
+> #### Challenge
 >
 > What do you think is the current content of the object `weight_lb`? 126.5 or 220?
-
+> 
 > ```{r}
 > weight_lb
 > ```
@@ -226,10 +228,10 @@ to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 ```
 
-> **Challenge**
+> #### Challenge
 >
 > What are the values after each statement in the following?
-
+> 
 > ```{r}
 > mass <- 47.5            
 > age  <- 122            
@@ -474,22 +476,22 @@ ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`),
 factors (`factor`) and arrays (`array`). In this class, we will focus on data
 frames, which is most commonly used one for data analyses.
 
-> **Challenge**
+> #### Challenge
 >
 > * We’ve seen that atomic vectors can be of type character, numeric (or
 double), integer, and logical. But what happens if we try to mix these types in 
 >   a single vector? Find out by using `class` to test these examples.
-
+> 
 > ```{r}
 > num_char <- c(1, 2, 3, 'a')
 > num_logical <- c(1, 2, 3, TRUE)
 > char_logical <- c('a', 'b', 'c', TRUE)
 > tricky <- c(1, 2, 3, '4')
 > ```
-
+> 
 > <!-- * _Answer_: R implicitly converts them to all be the same type -->
 >
-
+> 
 > - This happens because vectors can be of only one data type. Instead of
 >  throwing an error and saying that you are trying to mix different types in
 >  the same vector, R tries to convert (coerce) the content of this vector to
@@ -497,7 +499,7 @@ double), integer, and logical. But what happens if we try to mix these types in
 >  can be turned into a string/character representation. It would be difficult
 >  to do it the other way around: would 5 be TRUE or FALSE? What number would
 >  't' be?
-
+> 
 > - In R, we
 >   call converting objects from one class into another class
 >   _coercion_. These conversions happen according to a hierarchy,
@@ -579,17 +581,15 @@ animals %in% c("rat", "cat", "dog", "duck", "goat")
 animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 ```
 
-> **Challenge**
+> #### Challenge
 >
 > * Can you figure out why `"four" > "five"` returns `TRUE`?
 
-<!--
-```{r}
+```{r, echo=FALSE, eval=FALSE}
 ## Answers
 ## * When using ">" or "<" on strings, R compares their alphabetical order. Here
 ##   "four" comes after "five", and therefore is "greater than" it.
 ```
--->
 
 
 ## Missing data
@@ -628,11 +628,11 @@ heights[complete.cases(heights)]
 ```
 Recall that you can use the `class()` function to find the type of your atomic vector.
 
-> **Challenge**
+> #### Challenge
 >
 > 1. Using this vector of length measurements, create a new vector with the NAs
 > removed.
-
+>
 > ```{r}
 > lengths <- c(10,24,NA,18,NA,20)
 > ```
@@ -667,10 +667,10 @@ add_two_numbers <- function(num1, num2) {
 add_two_numbers(4, 5)
 ```
 
-> **Challenge**
+> #### Challenge
 >
 > Can you write a function that calculates the mean of 3 numbers?
-
+> 
 > ```{r}
 > mean_of_three_numbers <- function(num1, num2, num3) {
 >    my_sum <- num1 + num2 + num3

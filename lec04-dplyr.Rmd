@@ -1,7 +1,9 @@
 ---
 title: Data wrangling and visualization in the tidyverse
+author: Joel Östblom
 ---
 
+## Lesson preamble
 
 > ### Learning Objectives
 >
@@ -12,8 +14,7 @@ title: Data wrangling and visualization in the tidyverse
 > - Produce scatter plots, line plots, and histograms using ggplot.
 > - Set universal plot settings.
 > - Understand and apply faceting in ggplot.
-
-
+> 
 > ### Lesson outline
 >
 > - Split-apply-combine techniques in **`dplyr`** (20 min)
@@ -23,8 +24,7 @@ title: Data wrangling and visualization in the tidyverse
 > - Split-apply-combine... plot! (20 min)
 > - Faceting (10 min)
 
---------------
-
+-----
 
 ## Setting up
 
@@ -133,8 +133,7 @@ filtered_surveys %>%
 > 2. What was the heaviest animal measured in each year? Return the columns `year`,
 > `genus`, `species`, and `weight`.
 
-<!--
-```
+```{r}
 ## Answer 1
 surveys %>%
     filter(!is.na(hindfoot_length)) %>%
@@ -152,7 +151,6 @@ surveys %>%
     select(year, genus, species, weight) %>%
     arrange(year)
 ```
--->
 
 
 ### Using tally to summarize categorical data
@@ -234,8 +232,7 @@ such as `sex`, `year` etc.
 > using `group_by()` and `summarize()`? Hint: see `?n`.
 >
 
-<!---
-```{r, echo=FALSE}
+```{r}
 ## Answer 1
 surveys %>%
     group_by(plot_type) %>%
@@ -246,7 +243,6 @@ surveys %>%
   group_by(sex) %>%
   summarize(n = n())
 ```
---->
 
 
 ## Plotting with ggplot2
@@ -491,12 +487,10 @@ ggplot(surveys_abun_species, aes(x = weight, y = hindfoot_length, color = specie
 > Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
 > Is there any problem with this plot? *Hint: think about how many observations there are*
 
-<!--
 ```{r}
 ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_length)) +
     geom_point(size = 0.1, position = 'jitter')
 ```
--->
 
 
 ### Split-apply-combine... plot!
@@ -675,10 +669,9 @@ code, how could we separate each species into its own subplot?
 >    b. Is the yearly trend the same for all species?
 
 
-<!--
-# Answers
 
 ```{r}
+# Answers
 # 1
 ggplot(yearly_counts, aes(x = n, fill = species)) +
     geom_histogram() +
@@ -705,8 +698,6 @@ surveys_abun_species %>%
         geom_line() +
         facet_wrap(~ species)
 ```
-
--->
 
 *Parts of this lesson material were taken and modified from [Data
 Carpentry](http://datacarpentry.org) under their CC-BY copyright license. See

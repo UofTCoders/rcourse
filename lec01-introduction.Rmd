@@ -1,5 +1,6 @@
 ---
 title: "Introduction to course"
+author: Joel Östblom
 ---
 
 ```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -10,27 +11,29 @@ library(GGally)
 
 ## Lesson preamble
 
-### Lesson objectives
+> ### Lesson objectives
+> 
+> - **Main goal**:
+>     - To give students an overview of the capabilities of R and how to use the
+>       R Notebook for exploratory data analyses.
+> - **Secondary goals**:
+>     - Learn about the differences between R and Excel.
+>     - Learn some basic R commands.
+>     - Learn about the markdown syntax and how to use it within the R Notebook.
+> 
+> ### Lesson outline
+> 
+> Total lesson time: 1 hour
+> 
+> - Working with computers (15 min)
+> - Programming in R (40 min)
+>     - The Basics (10 min)
+>     - RStudio and the R Notebook (5 min)
+>     - Plotting (10 min)
+>     - Saving data and generating reports (5 min)
+>     - R Markdown (10 min)
 
-- **Main goal**:
-    - To give students an overview of the capabilities of R and how to use the
-      R Notebook for exploratory data analyses.
-- **Secondary goals**:
-    - Learn about the differences between R and Excel.
-    - Learn some basic R commands.
-    - Learn about the markdown syntax and how to use it within the R Notebook.
-
-### Lesson outline
-
-Total lesson time: 1 hour
-
-- Working with computers (15 min)
-- Programming in R (40 min)
-    - The Basics (10 min)
-    - RStudio and the R Notebook (5 min)
-    - Plotting (10 min)
-    - Saving data and generating reports (5 min)
-    - R Markdown (10 min)
+-----
 
 ## Working with computers
 

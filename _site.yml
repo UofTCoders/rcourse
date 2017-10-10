@@ -22,15 +22,15 @@ navbar:
           href: lec05-dplyr.html
         - text: "Sept. 26: Qualitative review of population models"
           href: lec06-pop-models.html
-        - text: "Sept. 28: Qualitative population models in 2 dimensions"
+        - text: "Sept. 28: Modelling in R"
           href: lec07-pop-models.html
-        - text: "Oct. 03: Fixed points, null clines, and stability"
+        - text: "Oct. 03: Population models in 2 dimensions" 
           href: lec08-stability.html
-        - text: "Oct. 05: Modelling in R"
+        - text: "Oct. 05: Fixed points, null clines, and stability"
           href: lec09-modeling-r.html
-        - text: "Oct. 10: Statistical/probabilistic modelling in R"
-          href: lec10-modeling.html
-        - text: "Oct. 12: Fitting models to data"
+        - text: "Oct. 10: Fitting models to data"
+          href: lec10-modelling.html
+        - text: "Oct. 12: Statistical/probabilistic modelling in R"
           href: lec11-modeling-r.html
         - text: "Oct. 17: Introduce data sets, hypotheses, start projects"
           href: lec12-datasets.html
@@ -58,10 +58,10 @@ navbar:
           href: assignment-02.html
         - text: "Assignment 3"
           href: assignment-03.html
-#        - text: "Assignment 4"
-#          href: assignment-04.html
-#        - text: "Assignment 5"
-#          href: assignment-05.html
+        - text: "Assignment 4"
+          href: assignment-04.html
+        - text: "Assignment 5"
+          href: assignment-05.html
 #        - text: "Assignment 6"
 #          href: assignment-06.html
 #        - text: "Assignment 7"
