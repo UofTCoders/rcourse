@@ -85,7 +85,7 @@ $$E=\begin{bmatrix}
     C & D 
 \end{bmatrix}$$
 
-Two solve this, we assume that solutions exist of the form $\vec{x} = \text{e}^{\lambda t} \vec{v}$,
+To solve this, we assume that solutions exist of the form $\vec{x} = \text{e}^{\lambda t} \vec{v}$,
 where $\vec{v}$ is an unknown fixed vector (basically a "direction"), and $\lambda$ is a
 growth rate, also unknown. If we can find solutions of this form, we know they correspond
 to exponential growth or decay in the direction described by $\vec{v}$. 
@@ -290,12 +290,13 @@ ggplot(data) +
 Finding data is a massive field, and there are many different strategies for choosing 
 parameters for a model depending on the assumptions you make about your data and model.
 Today we will talk about arguably the most common way to fit data --- **least squares**
-fitting. (Linear regression is a special case of least squares fitting.) I will show you
+fitting. (Linear regression, which will be covered next class,
+is a special case of least squares fitting.) I will show you
 a method for doing 'brute force' least squares fitting so that you can fit any model you
 like using the same procedure, but there are special cases you might encounter in which
 there are faster and/or better ways to implement least squares fitting. 
 
-## Fitting simulated data with a single parameter
+### Fitting simulated data with a single parameter
 
 Suppose we sample repeatedly from a bacterial population over time, and suppose we want 
 to fit our sampled data to an exponential growth model.
@@ -348,38 +349,27 @@ We will do some examples of the second method today, what we'll call 'brute-forc
 # Make a range of r parameter values to try
 r_vals <- seq(0.01, 0.3, by = 0.01)
 
-residuals_squared <- numeric(length(r_vals)) # empty vector to store results
-
-# loop through all the values, calculate what the data would look like with that value, and calculate the residuals
-
-for (i in seq(length(r_vals))) {
-  
-  r <- r_vals[i]
-  
-  # Use the known solution for the exponential model
-  # Use the first data point in the series as N0
-  predicted_N <- Ndata[1]*exp(r*times)  
-  
-  residuals <- predicted_N - Ndata
-  residuals_squared[i] <- sum(residuals^2)
-}
+# use the function 'sapply' to loop over r_vals list
+resids_sq <- sapply(r_vals, function(r) {
+    prediction <- Ndata[1] * exp(r * times)
+    residuals <- prediction - Ndata
+    sum(residuals^2)
+})
 ```
 
 Let's plot the sum of residuals squared vs. $r$ to find which value of $r$ fits best:
 
 ```{r}
-qplot(r_vals, residuals_squared)
+qplot(r_vals, resids_sq)
 ```
 
 We can see visually that the minimum is around $r = 0.2$, but to extract that number 
 from the list we can use the function `which`:
 
 ```{r}
-best_fit <- which(residuals_squared == min(residuals_squared))
+best_fit <- which(resids_sq == min(resids_sq))
 
 r_fit <- r_vals[best_fit] 
-
-print(r_fit)
 ```
 
 We got the 'correct' value of $r$, the one that we originally used to simulate the data.
@@ -394,7 +384,7 @@ qplot(times,Ndata) +
 You can play around with this simulated data and see what happens to the fit if you 
 change the amount of noise that gets added to the data.
 
-## Fitting models with two or more parameters
+### Fitting models with two or more parameters
 
 Now let's fit a model with more parameters, and let's use some real data.
 
@@ -480,7 +470,13 @@ parameters <- c(r = 0.5, K = 150)
 state <- c(N = e_nigrum[1,2]) # the first row and second column is the initial population size
 times <- seq(0, 14, by = 1) # make the same time vector as the data
 
-result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
+result <-
+  ode(
+  y = state,
+  times = times,
+  func = logistic_fn,
+  parms = parameters
+  )
 ```
 
 ```{r}
@@ -499,8 +495,8 @@ Now we'll define a grid of $r$ and $K$ values to try, then calculate a numerical
 for each combination of parameters. 
 
 ```{r}
-rvals = seq(0.05, 1.0, by = 0.05)
-Kvals = seq(120, 180, by = 5)
+rvals <- seq(0.05, 1.0, by = 0.05)
+Kvals <- seq(120, 180, by = 5)
 
 # initialize empty matrix for likelihood calculation
 residuals_surface = matrix(, nrow = length(rvals), ncol = length(Kvals)) 
@@ -524,10 +520,13 @@ We can use the library `lattice` to plot the surface:
 ```{r}
 library(lattice)
 
-wireframe(residuals_surface,
-          shade=TRUE,
-          xlab = "R", ylab = "K",
-          scales=list(arrows=FALSE)) # fix so that axes are correct numbers
+wireframe(
+  residuals_surface,
+  shade = TRUE,
+  xlab = "R",
+  ylab = "K",
+  scales = list(arrows = FALSE) # fix so that axes are correct numbers
+  ) 
 ```
 
 Now we extract the values of $r$ and $K$ that minimize the sum of residuals:
@@ -542,8 +541,14 @@ K_fit <- Kvals[best_fit[2]] # K is varied across the columns of the surface
 And now we can plot the best fit curve with the data:
 
 ```{r}
-result <- ode(y = state, times = times, func = logistic_fn, parms = c(r = r_fit, K = K_fit))
-
+result <-
+  ode(
+  y = state,
+  times = times,
+  func = logistic_fn,
+  parms = c(r = r_fit, K = K_fit)
+  )
+  
 result <- data.frame(result)
 
 p2 <- ggplot(e_nigrum) +
@@ -572,7 +577,9 @@ good assumption.
 - The noise or error is only in the dependent variable(s), not in the independent variable(s).
 - Each data point is independent of the other data points. 
 
-*Note*: in all this talk of fitting, what we're doing doesn't tell us *which* model fits our data best, only what parameters for a particular model fit best. The choice of model is up to us. There are ways to distinguish between fits for different models, but we won't talk about them. 
+*Note*: in all this talk of fitting, what we're doing doesn't tell us *which* model fits our
+data best, only what parameters for a particular model fit best. The choice of model is up to us.
+There are ways to distinguish between fits for different models which will be discussed next class.
 
 ## Extras: Maximum Likelihood
 
