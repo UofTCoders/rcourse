@@ -32,9 +32,11 @@ author: "Luke Johnston"
 
 -----
 
-```{r, results='hide'}
+```{r setup, results='hide'}
 library(tidyverse)
 library(broom)
+library(datasauRus)
+library(MuMIn)
 ```
 
 ## Statistics and probability
@@ -77,7 +79,6 @@ either using `lm` or using `glm`. We'll use `glm` since it can be expanded to
 other types of analyses. First, let's load up a dataset.
 
 ```{r}
-library(tidyverse)
 portal <- read_csv("portal_data.csv")
 ```
 
@@ -131,9 +132,9 @@ Same as above! And for males (equal to 1):
 
 Good, it matches what we calculated. Why is this useful? Well, we can add more
 terms to the GLM equation. This allows us to determine how a variable influences
-the $y$ when other variables are held constant. Since weight is probably also
-dependent on `hindfoot_length`, let's add that to the model and put the values
-into the equation.
+the $y$ when other variables are held constant and is known as *multiple linear
+regression*. Since weight is probably also dependent on `hindfoot_length`, let's
+add that to the model and put the values into the equation.
 
 ```{r}
 fit2 <- glm(weight ~ sex + hindfoot_length, data = portal)
@@ -144,8 +145,8 @@ $$ weight = -32.09 + (sexM \times -1.72) + (hindfoot\_length \times 2.56)$$
 
 Hmm, that's interesting... is a *negative* intercept... How can weight be
 negative? Well, that's because the intercept is calculated by setting *both* sex
-and hindfoot length to zero! But is physically possible that a hindfoot is
-non-existent?? No. But math doesn't care what is physically possible or not. So
+and hindfoot length to zero! But is it physically even possible that a hindfoot be
+non-existant?? No. But math doesn't care what is physically possible or not. So
 let's change that up by changing the actual value of hindfoot length in the
 dataset. There are several ways to transform the data into something that is
 meaningful to us. But first:
@@ -187,7 +188,7 @@ Or if we wanted to see males with hindfeet 10 cm minus the mean vs 10 cm plus th
 
 #### Challenge
 
-Create a new dataframe called `challenge1` that keeps only taxa of "Rodent"
+1. Create a new dataframe called `challenge1` that keeps only taxa of "Rodent"
 (`filter`) and with a new column (`mutate`) called "Dipodomys" where if genus
 is equal to "Dipodomys" than the value is "Yes" and if not the value is "No"
 (hint: use `ifelse`). Then, create a model called `fit_challenge1` that has the
@@ -204,20 +205,80 @@ fit_challenge1 <- glm(weight ~ sex + hfl_mean_center + Dipodomys, data = challen
 tidy(fit_challenge1)
 ```
 
+2. Use the below code to create a new variable `Disease` with (random) values as
+either 0 for "Healthy" or 1 for "Diseased". Then, write up a formula using `glm`
+to analyze the role that weight, sex, and hindfoot length (*not* mean centered)
+has on disease status. Because the $y$ is not continuous, you need to
+set `family = binomial`. Run the code, check the summary (or `tidy`), put the
+numbers into an equation (as we did above) and *try* to interpret the results
+(where sex is female, weight is 50, and hindfoot length is 30).
+
+```{r}
+challenge2 <- portal %>% 
+    # rbinom randomly creates values for binary data.
+    mutate(Disease = rbinom(nrow(.), 1, 0.25))
+```
+
+```{r, echo=FALSE, eval=FALSE}
+fit_challenge2 <- glm(Disease ~ weight + sex + hfl_mean_center, 
+                      data = challenge2, family = binomial)
+summary(fit_challenge2)
+tidy(fit_challenge2)
+
+cor(portal$weight, portal$hindfoot_length, use = "complete.obs")
+```
+
+### Logistic regression
+
+### Interaction?
 
 ### Example: Using linear regression in a Ricker model?
 
 ## Estimation, confidence intervals, and p-values
 
-P-values vs estimation
+What's the point of using `glm`? Not only does it create a model with constants
+and coefficients, but it is also used to calculate how *certain* we are about
+the results. The main power of GLM comes from the ability to estimate model
+parameters and derive meaning from how certain $x$ variables (independent
+variables) influence the $y$ (dependent variable). With his model we can use to
+it *predict* what could happen to some value if we knew or could change the 
+independent variables. 
 
-confidence interval
+However, from GLM we can determine 
+
+```{r}
+fit_hf <- glm(weight ~ hindfoot_length, data = portal)
+tidy(fit_hf, conf.int = TRUE)
+```
+
+```{r}
+fit_hfsex <- glm(weight ~ hindfoot_length + sex, data = portal)
+tidy(fit_hfsex, conf.int = TRUE)
+```
+
 
 <!-- how many know about p-values etc? -->
 
 ## Model comparison techniques
 
 ### Information criterion
+
+```{r}
+library(MuMIn)
+
+fit1 <- glm(weight ~ hindfoot_length, data = portal)
+# update uses the `fit1` model and just adds terms to it.
+fit2 <- update(fit1, . ~ . + sex)
+fit3 <- update(fit1, . ~ . + sex + species)
+fit4 <- glm(log(weight) ~ hindfoot_length + sex, data = portal)
+# scale with scale = FALSE is mean-centering the data. It does the same thing as value - mean
+fit5 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex, data = portal)
+fit6 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex + species, data = portal)
+fit7 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex + species + year, data = portal)
+
+model.sel(fit1, fit2, fit3, fit4, fit5, fit6, fit7)
+```
+
 
 ## Visualization as a crucial component to data analysis
 
@@ -275,21 +336,12 @@ not visualize the data first? Sometimes
 
 ![Visualizing raw data vs aggregate](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)
 
-### Another example: Simpson's Paradox[^simpson]
-
-You all have already encountered Simpson's Paradox in the challenges of lecture
-4 and 5, where the average weight of all species decreased over time, but for
-each species weight remained constant. These types of problems are encountered
-all the time in data analysis and it is part of what makes science so hard,
-because data often doesn't behave as we expect it to. 
-
-And sometimes, by not looking at the raw data, it can lead to actual harmful
-effects. For instance, Simpson's paradox comes up in medical studies of drugs
-that could be lifesaving for a patient. If inappropriate conclusions are drawn
-because the data wasn't directly looked at, people can be harmed. This is true
-in *any* scientific field, including ecology. Policies aimed at benefitting the
-environment could in fact be *harming* it because these types of things were not
-examined. See the figure below for an illustration of Simpson's paradox.
+Another example is known as Simpon's Paradox. You all have already encountered
+Simpson's Paradox in the challenges of lecture 4 and 5, where the average weight
+of all species decreased over time, but for each species weight remained
+constant. These types of problems are encountered all the time in data analysis
+and it is part of what makes science so hard, because data often doesn't behave
+as we expect it to. The figure below illustrates Simpson's Paradox.
 
 ```{r}
 ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
@@ -299,7 +351,32 @@ ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
     facet_wrap( ~ dataset, ncol = 3)
 ```
 
+And sometimes, by not looking at the raw data, it can lead to actual harm.
+For instance, Simpson's paradox comes up in medical studies of drugs
+that could be lifesaving for a patient. If inappropriate conclusions are drawn
+because the data wasn't completely explored, people could be harmed or could
+die. This is true in *any* scientific field, including ecology. Policies aimed
+at benefitting the environment could in fact be *harming* it because these types
+of things were not examined. 
+
 [^simpson]: Wikipedia page on [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
+
+```{r}
+library(MuMIn)
+norm_data <- simpsons_paradox %>% 
+    filter(dataset == "simpson_1")
+fit_norm <- glm(y ~ x, data = norm_data)
+
+sp_data <- simpsons_paradox %>% 
+    filter(dataset == "simpson_2")
+fit_sp <- glm(y ~ x, data = sp_data)
+
+model.sel(fit_norm, fit_sp)
+```
+
+## Complete Survey?
+
+Link
 
 ## Resources
 
