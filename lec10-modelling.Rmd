@@ -63,7 +63,7 @@ solving the equation $\text{Det}(A - \lambda \mathbb{1}) = 0$.
 ## Vectorizing systems of differential equations
 
 To see why eigenvalues tell us about the stability of a fixed point, let's look
-at a linear system of diferential equations and its solution.
+at a linear system of differential equations and its solution.
 
 Consider this system of differential equations:
 
@@ -75,12 +75,12 @@ are no terms that have higher powers of $x_1$ and $x_2$ (such as $x_1 x_2$ or $x
 
 Because it's linear, this system can be written as a matrix equation:
 
-$$\frac{d \vec{x}}{dt} = A\vec{x}$$  
+$$\frac{d \vec{x}}{dt} = E\vec{x}$$  
 
 where $\vec{x}$ is two-element vector $(x_1,x_2)$, $\frac{d \vec{x}}{dt}$ is also a
 two-element vector $(\frac{d x_1}{dt}, \frac{d x_2}{dt})$, and 
 
-$$A=\begin{bmatrix}
+$$E=\begin{bmatrix}
     A & B \\
     C & D 
 \end{bmatrix}$$
@@ -94,11 +94,11 @@ Plugging $\vec{x}$ into the vector equation above:
 
 $$  \frac{d \vec{x}}{dt} = \frac{d}{dt} \text{e}^{\lambda t} \vec{v} = \lambda\text{e}^{\lambda t} \vec{v} $$
 
-$$\lambda\text{e}^{\lambda t} \vec{v} = A \text{e}^{\lambda t} \vec{v} \\
-A\vec{v} = \lambda \vec{v}$$
+$$\lambda\text{e}^{\lambda t} \vec{v} = E \text{e}^{\lambda t} \vec{v} \\
+E\vec{v} = \lambda \vec{v}$$
 
 This is an eigenvalue-eigenvector equation, which means that the directions we were
-after are the **eigenvectors** of $A$, and the growth rates are the **eigenvalues**. 
+after are the **eigenvectors** of $E$, and the growth rates are the **eigenvalues**. 
 
 ### Linear system example
 
@@ -107,25 +107,25 @@ $$\frac{dx}{dt} = y \\
 
 The matrix form of this system is 
 
-$$\frac{d \vec{x}}{dt} = A\vec{x}$$
+$$\frac{d \vec{x}}{dt} = E\vec{x}$$
 
-where the matrix $A$ is 
+where the matrix $E$ is 
 
-$$A =  \begin{bmatrix}
+$$E =  \begin{bmatrix}
     0 & 1 \\
     -2 & -3
 \end{bmatrix}$$
 
-To solve this system, we look for eigenvalues and eigenvectors of $A$:
+To solve this system, we look for eigenvalues and eigenvectors of $E$:
 
 ```{r}
-A <- matrix(c(0, 1,
+E <- matrix(c(0, 1,
               -2, -3),
             ncol = 2,
             byrow = TRUE)
 
-eigenvalues <- eigen(A)$values
-eigenvectors <- eigen(A)$vectors
+eigenvalues <- eigen(E)$values
+eigenvectors <- eigen(E)$vectors
 ```
 
 Let's look at the eigenvectors on a phase portrait.
@@ -171,8 +171,8 @@ lines(x = c(0, 2*eigenvectors[1]), y = c(0, 2*eigenvectors[2]), lty = 2, lwd = 2
 lines(x = c(0, 2*eigenvectors[3]), y = c(0, 2*eigenvectors[4]), lty = 2, lwd = 2, col = 'purple')
 ```
 
-The two eigenvector directions $\vec{v_1}$ and $\vec{v_1}$ (green and purple dashed
-lines) represent the direcions in which the flow follows $\text{e}^{\lambda_1 t} \vec{v_1}$
+The two eigenvector directions $\vec{v_1}$ and $\vec{v_2}$ (green and purple dashed
+lines) represent the directions in which the flow follows $\text{e}^{\lambda_1 t} \vec{v_1}$
 or $\text{e}^{\lambda_2 t} \vec{v_2}$. Other trajectories can be linear combinations of
 these two solutions:
 
@@ -313,7 +313,7 @@ Ndata <- N0*exp(r*times) + rnorm(n = length(times), mean = 0, sd = 0.75)
 qplot(times,Ndata) # check with a plot
 ```
 
-Now let's assume we don't know the growth rate $r$ and we wan't to extract it from the data
+Now let's assume we don't know the growth rate $r$ and we want to extract it from the data
 --- we want to fit the data to an exponential growth model and find the value of $r$ that
 gives the best fit.
 
