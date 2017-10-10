@@ -390,7 +390,7 @@ We got the 'correct' value of $r$, the one that we originally used to simulate t
 
 Now let's fit a model with more parameters, and let's use some real data.
 
-```{r}
+```{r, eval=FALSE}
 # The dataset downloaded at the beginning
 plant_data <- read.csv("plant-biomass-preprocess.csv")
 
