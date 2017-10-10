@@ -348,16 +348,16 @@ library(ggplot2)
 
 # nullclines
 
-# y = x/4 (x nullcline)
-# y = x/2 (y nullcline)
+# y = 4x (x nullcline)
+# y = -2x (y nullcline)
 
 # fixed points
 # x = 0, y = 0
 
 x_seq <- seq(-2, 2, by = 0.01)
 
-x_null <- x_seq/4
-y_null <- x_seq/2
+x_null <- 4*x_seq
+y_null <- -2*x_seq
 
 data <- data.frame(x_seq, x_null, y_null)
 
