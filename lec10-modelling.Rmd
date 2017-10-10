@@ -53,9 +53,9 @@ $$J=\begin{bmatrix}
     \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y}
 \end{bmatrix}$$
 
-- find eigenvalues at each fixed point using the function `eigen` in R, or by 
-solving the equation $\text{Det}(A - \lambda \mathbb{1}) = 0$).
-- for a set of eigenvalues ($\lambda_1$, $\lambda_2$):
+- Find eigenvalues at each fixed point using the function `eigen` in R, or by 
+solving the equation $\text{Det}(A - \lambda \mathbb{1}) = 0$.
+- For a set of eigenvalues ($\lambda_1$, $\lambda_2$):
     - If all eigenvalues have negative real parts, the fixed point is **stable**.
     - If one or more eigenvalues has a positive real part, the fixed point is **unstable**.
     - If the eigenvalues have an imaginary (**complex**) part, the fixed point is **oscillatory**.
@@ -90,9 +90,11 @@ where $\vec{v}$ is an unknown fixed vector (basically a "direction"), and $\lamb
 growth rate, also unknown. If we can find solutions of this form, we know they correspond
 to exponential growth or decay in the direction described by $\vec{v}$. 
 
-Plugging $\vec{y}$ into the vector equation above:
+Plugging $\vec{x}$ into the vector equation above:
 
-$$\lambda\text{e}^{\lambda t} \vec{v} = \text{e}^{\lambda t} \vec{v} A \vec{v} \\
+$$  \frac{d \vec{x}}{dt} = \frac{d}{dt} \text{e}^{\lambda t} \vec{v} = \lambda\text{e}^{\lambda t} \vec{v} $$
+
+$$\lambda\text{e}^{\lambda t} \vec{v} = A \text{e}^{\lambda t} \vec{v} \\
 A\vec{v} = \lambda \vec{v}$$
 
 This is an eigenvalue-eigenvector equation, which means that the directions we were
@@ -107,7 +109,7 @@ The matrix form of this system is
 
 $$\frac{d \vec{x}}{dt} = A\vec{x}$$
 
-where the matrix $A$ is as follows.
+where the matrix $A$ is 
 
 $$A =  \begin{bmatrix}
     0 & 1 \\
@@ -178,11 +180,11 @@ $$\vec{x}(t) =c_l \text{e}^{\lambda_1 t} \vec{v_1} + c_2 \text{e}^{\lambda_2 t} 
 
 Now we can see why the eigenvalues determine stability: in a linear (or linearized) 
 system, the eigenvalues determine whether the system shows exponential growth, decay, 
-or oscillations because the model solution is a combination of exponential functions 
+or oscillations, because the model solution is a combination of exponential functions 
 whose parameters are the eigenvalues. 
 
-By calculating the Jacobian, we are converting any system into a linear system like 
-the one above, and all the same logic applies.
+By calculating the Jacobian for any system we encounter, we are converting the system
+into a linear system like the one above, and all the same logic applies.
 
 ## Bifurcations 
 
@@ -195,7 +197,7 @@ definition, so let's look at an example right away.
 Here is a model that describes the population size of a species of fish as they are
 being hunted. 
 
-$$\frac{dN}{dt} = rN(1-\frac{N}{K}) - HN$$
+$$\frac{dN}{dt} = rN\left(1-\frac{N}{K}\right) - HN$$
 
 In the absence of fishing, the population is assumed to grow logistically --- this is
 the first term in the equation. The effects of fishing are modeled by the term $- HN$,
@@ -316,11 +318,9 @@ Now let's assume we don't know the growth rate $r$ and we wan't to extract it fr
 gives the best fit.
 
 To do this, we need a way to tell if a fit is good or bad. What criteria should we use
-to determine if a fit is good?
-
-One option is to just try several parameter values and try to manually adjust the 
-parameter until the fit looks good. This is imprecise and not reproducible, but it's
-often a good place to start to get an idea of what parameter range to check. 
+to determine if a fit is good? One option is to just try several parameter values and try to
+manually adjust the parameter until the fit looks good. This is imprecise and not reproducible,
+but it's often a good place to start to get an idea of what parameter range to check. 
 
 The idea behind least squares fitting is that we want to minimize the difference between
 our model's prediction and the actual data, and we do that by minimizing the sum of the
@@ -335,7 +335,7 @@ In practice, there are many ways to find the particular parameter that gives the
 One way is to start at some parameter value, then start adjusting it by small amounts and
 checking if the fit gets better or worse. If it gets worse, go in a different direction. 
 If it gets better, keep going in that direction until it either starts getting worse again
-or the amount by which it gets better is very small. This type of algorithm is a type of
+or the amount by which it gets better is very small. This type of algorithm is called
 **gradient descent**. 
 
 Another option is to try a range of parameter values and choose the one that gives the best
@@ -357,8 +357,8 @@ for (i in seq(length(r_vals))) {
   r <- r_vals[i]
   
   # Use the known solution for the exponential model
-  # Assume we know N0 using the first data point in the series
-  predicted_N <- N0*exp(r*times)  
+  # Use the first data point in the series as N0
+  predicted_N <- Ndata[1]*exp(r*times)  
   
   residuals <- predicted_N - Ndata
   residuals_squared[i] <- sum(residuals^2)
@@ -368,9 +368,7 @@ for (i in seq(length(r_vals))) {
 Let's plot the sum of residuals squared vs. $r$ to find which value of $r$ fits best:
 
 ```{r}
-
 qplot(r_vals, residuals_squared)
-
 ```
 
 We can see visually that the minimum is around $r = 0.2$, but to extract that number 
@@ -386,24 +384,40 @@ print(r_fit)
 
 We got the 'correct' value of $r$, the one that we originally used to simulate the data.
 
+Finally, let's plot the fit against the original data:
+
+```{r}
+qplot(times,Ndata) +
+  geom_line(aes(x = times, y = Ndata[1] * exp(r_fit * times)))
+```
+
+You can play around with this simulated data and see what happens to the fit if you 
+change the amount of noise that gets added to the data.
+
 ## Fitting models with two or more parameters
 
 Now let's fit a model with more parameters, and let's use some real data.
 
-```{r}
+```{r, echo=FALSE}
 # The dataset downloaded at the beginning
 plant_data <- read.csv("https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv")
+```
+
+```{r, eval=FALSE}
+# The dataset downloaded at the beginning
+# https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv
+plant_data <- read.csv("plant-biomass-preprocess.csv")
 ```
 
 We can use our usual tricks to see what's in our dataset:
 
 ```{r, eval=FALSE}
 
-summary(plant_data)
+summary(plant_data) # create a summary of the dataset
 
-head(plant_data)
+head(plant_data) # display the first few rows of the data
 
-colnames(plant_data)
+colnames(plant_data) # show the column names
 ```
 
 Let's plot just one of the habitats, sites, and treatments vs. time and colour by species.
@@ -422,10 +436,10 @@ plant_data %>%
 ```
 
 *Empetrum nigrum* looks like it could be following logistic growth, so let's try to fit 
-it to that. First, let's make a new variable with just the data we want to fit.
+the data to that model. First, let's make a new variable with just the data we want to fit.
 
 ```{r}
-d2 <- plant_data %>% 
+e_nigrum <- plant_data %>% 
   filter(site == 3) %>% 
   filter(habitat == "Tundra") %>% 
   filter(treatment == "rodentexclosure") %>% 
@@ -463,18 +477,17 @@ Let's try running a single numerical solution and plotting it alongside the data
 library(deSolve)
 
 parameters <- c(r = 0.5, K = 150)
-state <- c(N = d2[1,2])
+state <- c(N = e_nigrum[1,2]) # the first row and second column is the initial population size
 times <- seq(0, 14, by = 1) # make the same time vector as the data
 
 result <- ode(y = state, times = times, func = logistic_fn, parms = parameters)
 ```
 
-
 ```{r}
 # Plot
 result <- data.frame(result)
 
-p1 <- ggplot(d2) +
+p1 <- ggplot(e_nigrum) +
   geom_point(aes(x = year, y = empetrum_nigrum))
 
 p1 +
@@ -489,19 +502,21 @@ for each combination of parameters.
 rvals = seq(0.05, 1.0, by = 0.05)
 Kvals = seq(120, 180, by = 5)
 
-# initialize matrix for likelihood calculation
+# initialize empty matrix for likelihood calculation
 residuals_surface = matrix(, nrow = length(rvals), ncol = length(Kvals)) 
 
 # loop over values of r and k, calculate log likelihood
 for (i in seq(length(rvals))){
   for (j in seq(length(Kvals))){
-    result <- ode(y = state, times = times, func = logistic_fn, parms = c(r = rvals[i], K = Kvals[j]))
+    result <- ode(y = state, 
+                  times = times, 
+                  func = logistic_fn,
+                  parms = c(r = rvals[i], K = Kvals[j]))
     result <- data.frame(result)
-    residuals <- result$N - d2$empetrum_nigrum
+    residuals <- result$N - e_nigrum$empetrum_nigrum
     residuals_surface[i,j] <- sum(residuals^2)
   }
 }
-
 ```
 
 We can use the library `lattice` to plot the surface:
@@ -512,27 +527,26 @@ library(lattice)
 wireframe(residuals_surface,
           shade=TRUE,
           xlab = "R", ylab = "K",
-          scales=list(arrows=FALSE)) # need to fix so that axes are correct numbers
+          scales=list(arrows=FALSE)) # fix so that axes are correct numbers
 ```
 
 Now we extract the values of $r$ and $K$ that minimize the sum of residuals:
 
 ```{r}
-
 best_fit <- which(residuals_surface == min(residuals_surface), arr.ind = TRUE)
 
 r_fit <- rvals[best_fit[1]] # r is varied across the rows of the surface
 K_fit <- Kvals[best_fit[2]] # K is varied across the columns of the surface
 ```
 
-And now plot the best fit curve with the data:
+And now we can plot the best fit curve with the data:
 
 ```{r}
 result <- ode(y = state, times = times, func = logistic_fn, parms = c(r = r_fit, K = K_fit))
 
 result <- data.frame(result)
 
-p2 <- ggplot(d2) +
+p2 <- ggplot(e_nigrum) +
   geom_point(aes(x = year, y = empetrum_nigrum))
 
 p2 +
@@ -540,9 +554,85 @@ p2 +
   geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
 ```
 
-You can do this process with more than two parameters as well, but the search space will be larger and the simulations necessary will take longer.
+You can do this process with more than two parameters as well, but the search space will 
+be larger and the simulations necessary will take longer.
 
-Instead of simulating the model, if you know the analytic solution you can use it directly. 
+### Assumptions of least squares
+
+When is it appropriate to use least squares to fit your data? 
+
+Assumptions of least squares:
+
+- The noise or error is **Gaussian-distributed**: the most likely value for a data point is the
+predicted value, but there is a Gaussian distribution with some width that determines how
+likely it is that the data will have a different value. 
+- All data points have the same variance in their error: the width of the Gaussian distribution
+governing the error is the same for each data point. This can be modified though if it's not a
+good assumption. 
+- The noise or error is only in the dependent variable(s), not in the independent variable(s).
+- Each data point is independent of the other data points. 
+
+*Note*: in all this talk of fitting, what we're doing doesn't tell us *which* model fits our data best, only what parameters for a particular model fit best. The choice of model is up to us. There are ways to distinguish between fits for different models, but we won't talk about them. 
+
+## Extras: Maximum Likelihood
+
+Maximum likelihood is a way of finding parameters of a given probability distribution that
+best match data. It answers the question: which paremeter(s) make the data most likely to 
+have occured?
+
+Likelihood is defined as $P(\text{data} | \text{model})$, which you can read as *the probability
+of the data given the model*. This is subtly different from $P(\text{model} | \text{data})$, 
+the probability of the model given the data, which is what you're really after. But according to
+Bayes' theorem, these two quantities are proportional, and so in practice, maximizing the
+likelihood is equivalent to maximizing the probability of a particular model given your data. 
+
+Bayes' theorem, for the curious:
+
+$$ P(A | B) = \frac{P(B | A)P(A)}{P(B)}$$
+
+### Least squares from maximum likelihood
+
+Least squares is the maximum likelihood solution for the assumption that errors are Gaussian
+distributed. This assumption can be formulated like this: for a set of data $y$ as a function 
+of $x$, let $e_i$ be the difference between the predicted and measured value of $y$ at point
+$x_i$. We assume $e_i$ follows a **Gaussian** or **normal** distribution with mean $0$ and
+variance $\sigma$: 
+
+$$P(e_i) = \frac{1}{\sqrt{2 \pi \sigma^2}} \text{e}^{-\frac{e_i^2}{2\sigma^2}}$$
+
+We also assume that each data point $y_i$ is independent, so the probability for the entire
+dataset is a product of all the probabilities for each data point:
+
+$$P(\vec{e}) = P(e_1)P(e_2) ... P(e_N) = \prod_{i=1}^N P(e_i) $$
+
+This is the **likelihood**, this is the quantity we want to maximize. To make our lives
+easier, we can also maximize the logarithm of the likelihood instead, since the logarithm 
+is an increasing function and its maximum will still be in the same spot. 
+
+The log-likelihood is 
+
+$$\sum_{i=1}^N \text{log}P(e_i) = \sum_{i=1}^N \left( \text{log} \frac{1}{\sqrt{2 \pi \sigma^2}} - \frac{e_i^2}{2\sigma^2} \right)$$
+
+$$ = N \text{log} \frac{1}{\sqrt{2 \pi \sigma^2}} - \frac{1}{2\sigma^2}\sum_{i=1}^N e_i^2$$
+
+The first term is a constant, and so we can forget about it when looking for the maximum. 
+What we're left with is wanting to maximize
+
+$$- \frac{1}{2\sigma^2}\sum_{i=1}^N e_i^2$$
+
+Since $\sigma$ is a constant, we can drop the prefactor as well. Finally, we can change
+the sign and *minimize* what's left:
+
+$$\sum_{i=1}^N e_i^2$$
+
+But remember that $e_i$ is just the difference between the predicted $y_i$ and the actual
+data point $y_i$, so the quantity above is just the sum of the squares of the residuals,
+exactly what we want to minimize in least squares. 
+
+## Extras: using the analytic solution for a model to fit data
+
+Instead of simulating the model, if you know the analytic solution you can use it directly
+like we did with the exponential model. 
 
 This is the analytic solution for the logistic model:
 
@@ -571,8 +661,7 @@ Kvals = seq(120, 180, by = 5)
 
 residuals_surface = matrix( , nrow = length(rvals), ncol = length(Kvals)) # initialize matrix for likelihood calculation
 
-
-initial_condition <- c(N = d2[1,2])
+initial_condition <- c(N = e_nigrum[1,2])
 times <- seq(0, 14, by = 1) # make the same time vector as the data
 
 # loop over values of r and k, calculate log likelihood
@@ -580,11 +669,10 @@ for (i in seq(length(rvals))){
   for (j in seq(length(Kvals))){
     Ndata <- logistic_solution(initial_condition, times, rvals[i], Kvals[j])
     result <- data.frame(times, Ndata)
-    residuals <- result$N - d2$empetrum_nigrum
+    residuals <- result$N - e_nigrum$empetrum_nigrum
     residuals_surface[i,j] <- sum(residuals^2)
   }
 }
-
 ```
 
 
@@ -592,7 +680,7 @@ for (i in seq(length(rvals))){
 wireframe(residuals_surface,
           shade=TRUE,
           xlab = "R", ylab = "K",
-          scales=list(arrows=FALSE)) # need to fix so that axes are correct numbers
+          scales=list(arrows=FALSE)) 
 ```
 
 Now to extract the values of $r$ and $K$ that minimize the sum of residuals:
@@ -605,33 +693,15 @@ r_fit <- rvals[best_fit[1]] # r is varied across the rows of the surface
 K_fit <- Kvals[best_fit[2]] # K is varied across the columns of the surface
 ```
 
-
-
 ```{r}
 result <- ode(y = state, times = times, func = logistic_fn, parms = c(r = r_fit, K = K_fit))
 
 result <- data.frame(result)
 
-p2 <- ggplot(d2) +
+p2 <- ggplot(e_nigrum) +
   geom_point(aes(x = year, y = empetrum_nigrum))
 
 p2 +
   geom_point(aes(x = time + 1998, y = N), result, color = 'blue') +
   geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
 ```
-
-### Assumptions of least squares
-
-When is it appropriate to use least squares to fit your data?  
-
-Assumptions:
-- error is Gaussian-distributed
-- all data points have the same variance in their error (this can be relaxed)
-- error is only in the dependent variable(s), not in the independent variable(s)
-
-*Note*: least-squares is the **Maximum Likelihood** solution for the assumption that errors are Gaussian distributed.
-
-*Note*: in all this talk of fitting, what we're doing doesn't tell us *which* model fits our data best, only what parameters for a particular model fit best. The choice of model is up to us. There are ways to distinguish between fits for different models, but we won't talk about them. 
-
-
-
