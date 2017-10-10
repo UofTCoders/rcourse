@@ -390,10 +390,9 @@ We got the 'correct' value of $r$, the one that we originally used to simulate t
 
 Now let's fit a model with more parameters, and let's use some real data.
 
-```{r, eval=FALSE}
+```{r}
 # The dataset downloaded at the beginning
-plant_data <- read.csv("plant-biomass-preprocess.csv")
-
+plant_data <- read.csv("https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv")
 ```
 
 We can use our usual tricks to see what's in our dataset:
@@ -620,7 +619,6 @@ p2 +
   geom_point(aes(x = time + 1998, y = N), result, color = 'blue') +
   geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
 ```
-
 
 ### Assumptions of least squares
 
