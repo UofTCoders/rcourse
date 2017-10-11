@@ -34,24 +34,27 @@ author: "Luke Johnston"
 ```{r fig_scientific_method, echo=FALSE}
 DiagrammeR::grViz('
 digraph rmarkdown {
-    graph [layout = neato, splines = true]
+    graph [layout = neato, overlap = false, splines = true]
     node [shape = box, style = rounded]
-    Hypothesis [pos = "0.75,3.75!"]
+
+    Hypothesis [pos = "0.75,3.85!"]
     CollectData [label = "Collect Data", pos = "0.75,3!"]
     AnalyzeData [label = "Analyze Data", pos = "0.75,2.25!"]
     HypothesisTrue [label = "Hypothesis\nif TRUE", pos = "0,1.5!"]
     HypothesisFalse [label = "Hypothesis\nif FALSE", pos = "1.5,1.5!"]
-    Report [label = "Report/Publish", pos = "0.75,0.75!"]
+    Report [label = "Disseminate", pos = "0.75,0.75!"]
 
     Hypothesis -> CollectData -> AnalyzeData -> HypothesisTrue -> Report
-    AnalyzeData -> HypothesisFalse -> {Report Hypothesis}
+    AnalyzeData -> HypothesisFalse -> Report
+    {HypothesisTrue HypothesisFalse AnalyzeData CollectData} -> Hypothesis
 }')
 ```
+
 
 ### Steps in the scientific process[^sci_method]
 
 1. Identify research question(s).
-2. Look into what the previous literature shows. <!--(how much emphasis on this?)-->
+2. Look into what the previous literature shows.
 3. Create one or more hypotheses or objectives.
 4. Write up an outline or expected approach to answering those questions/objectives (analysis and presentation plan):
     - How will the data be obtained and what is the data (i.e. the source).
@@ -63,7 +66,6 @@ digraph rmarkdown {
 7. Interpret the results and how they fit in the context of the previous literature and findings.
 8. Draw conclusions based on the hypotheses/objectives.
 9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
-
 
 [^sci_method]: See [Khan Academy on Scientific Method](https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology) for a brief overview and explanation on the scientific process.
 
