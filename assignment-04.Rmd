@@ -1,0 +1,123 @@
+---
+title: 'Assignment 4: One-dimensional population models (8 marks)'
+output:
+    html_document:
+        toc: false
+---
+
+*To submit this assignment, upload the full document on blackboard,
+including the original questions, your code, and the output. Submit both
+your `.Rmd` source file and a knitted `.html` version of the same file.*
+
+*For questions that ask you to plot something by hand, indicate which
+assignment and question the plot is for and either include a photo or
+scan of it in the markdown document or hand in the hard copy.*
+
+1.  Qualitatively analyzing a one-dimensional model (2 marks)
+
+    Consider the differential equation $\frac{dx}{dt} = x(1-x)$.
+
+<!-- -->
+
+(a) Use R to plot $\frac{dx}{dt}$ vs. $x$ for $-1 \le x \le 2$. (0.5
+    marks)
+
+(b) Sketch a one-dimensional phase portrait on paper. Mark the direction
+    of the derivative in each region with arrows and label the fixed
+    points as "stable" or "unstable". (0.5 marks)
+
+(c) Qualitatively graph $x$ vs. $t$ for the following three initial
+    conditions: $x_0 = -0.5$, $x_0 = 0.5$, and $x_0 = 1.5$. What happens
+    as $t$ becomes large in each case? (1 mark)
+
+<!-- -->
+
+2.  The Allee Effect (3 marks)
+
+    Generally, as population size increases, a population will
+    experience a decreased growth rate due to greater competition for
+    resources. This is a negative density-dependent growth rate, and one
+    example of this is the logistic model.
+
+    The Allee effect introduces positive density dependence, where
+    increases in population size result in increased growth rates over a
+    certain range of population sizes. The Allee effect can be
+    incorporated into the logistic growth equation as follows:
+
+    $$\frac{dN}{dt} = rN\left(1-\frac{N}{K}\right)\left(\frac{N-A}{K}\right)$$
+
+    Here $r$ represents the growth rate of the population, $K$ is the
+    carrying capacity, and $A$ is the critical size above which the total
+    growth rate is positive.
+
+<!-- -->
+
+(a) Take $r=1$, $A=10$, and $K=50$. Use R to plot $\frac{dN}{dt}$ vs.
+    $N$ for $0 \le N \le 55$. For which values of $N$ is the growth rate
+    ($\frac{dN}{dt}$) positive or negative? (0.5 marks)
+
+(b) Sketch a one-dimensional phase portrait on paper, leaving $A$ and
+    $K$ as variables (i.e. without choosing values for $A$ and $K$, but
+    with $0 \le A < K$). Mark the direction of the derivative in each
+    region with arrows and label the fixed points as "stable" or
+    "unstable". (1 mark)
+
+(c) Use R to plot the **per capita** growth rate
+    ($\frac{1}{N}\frac{dN}{dt}$) vs. $N$ for this model of the Allee
+    effect and for the logistic growth model:
+    $\frac{dN}{dt} = rN(1-\frac{N}{K})$.
+
+    -   What do you notice about the density ($N$) dependence of the per
+        capita growth rate in each case? Hint: in the logistic model,
+        the growth rate **per capita** (per organism) decreases in a
+        straight line as $N$ increases.
+
+    -   What happens to the Allee effect as $A$ decreases? Plot curves
+        for $A=0$ and a few values of $A>0$.
+
+        The parameter $A$ controls the strength of the Allee effect: for
+        $A > 0$, the Allee effect is said to be strong, and for $A=0$,
+        the Allee effect is weak.
+
+    -   What will happen to a population experiencing a strong Allee
+        effect if the population size falls below $A$? What will happen
+        to a population experience a weak Allee effect if the population
+        size falls below $A$? (1 mark)
+
+(d) Describe two biological situations in which you might expect to see
+    an Allee effect (either weak or strong). (0.5 marks)
+
+<!-- -->
+
+3.  Analyzing a two-dimensional model (3 marks)
+
+    Consider the Lotka-Volterra predator-prey model:
+
+    $$\frac{dx}{dt} = x - \alpha y x$$
+
+    $$\frac{dy}{dt} = \beta y x - \delta y$$
+
+    where $x$ and $y$ are the prey and predator population sizes,
+    respectively. $\alpha$ is the rate at which prey are killed by
+    predators, $\beta$ is the rate at which predators grow by consuming
+    prey, and $\delta$ is the death rate of predators.
+
+<!-- -->
+
+(a) Numerically solve this system using the `ode` function from the
+    `deSolve` package. Use the parameters $\alpha = 0.6$, $\beta = 0.9$,
+    and $\delta = 0.5$. Choose $x_0 = y_0 = 0.5$ as the inital state for
+    the system. Choose a range for time that shows the behaviour of the
+    system. On the same axes, plot $x$ vs. $t$ and $y$ vs. $t$. Label
+    $x$ and $y$ and the axes. (1 mark)
+
+(b) Numerically solve the system again, but this time use a very
+    specific starting point: choose $x_0 = \delta / \beta$, and
+    $y_0 = 1/\alpha$.
+
+    -   Again plot your result: $x(t)$ and $y(t)$ on the same axes.
+        What's different? (1 mark)
+    -   The point $x_0 = \delta / \beta$, $y_0 = 1/\alpha$ is a fixed
+        point. Is it stable, unstable, or something else altogether?
+        Justify your answer by referring to the two plots you made. (1
+        mark)

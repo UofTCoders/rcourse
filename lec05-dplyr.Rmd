@@ -1,0 +1,514 @@
+---
+title: "Tidying and exporting data, reproducing figures"
+author: Joel Östblom
+---
+
+## Lesson preamble
+
+> ### Lecture objectives
+>
+> - Learn about tidy data.
+> - Transform data from the long to wide format.
+> - Reproduce existing figures from raw data.
+> - Understand which raw data is underlying a figure.
+> - Understand which types of figures are suitable to create from raw data.
+> - Explore scientific questions using dplyr and ggplot.
+>
+> ### Lecture outline
+>
+> - Reshaping with gather and spread (25 min)
+> - Exporting data (15 min)
+> - Reproducing figures (50 min)
+
+-----
+
+## Setting up
+
+Start by loading the required packages. Both **`ggplot2`** and **`dplyr`** are
+included in the **`tidyverse`** package collection.
+
+```{r}
+# Install if needed
+# install.packages('tidyverse')
+library(tidyverse)
+```
+
+Load the data we saved in the previous lesson.
+
+```{r}
+# Download if needed
+# download.file("https://ndownloader.figshare.com/files/2292169", "portal_data.csv")
+surveys <- read_csv('portal_data.csv')
+surveys
+```
+
+## Reshaping with gather and spread
+
+**`dplyr`** is one part of a larger **`tidyverse`** that enables you to work
+with data in tidy data formats. **`tidyr`** enables a wide range of
+manipulations of the structure data itself. For example, the survey data
+presented here is almost in what we call a **long** format - every observation
+of every individual is its own row. This is an ideal format for data with a rich
+set of information per observation. It makes it difficult, however, to look at
+the relationships between measurements across plots. For example, what is the
+relationship between mean weights of different genera across the entire data
+set?
+
+To answer that question, we'd want each plot to have a single row, with all of
+the measurements in a single plot having their own column. This is called a
+**wide** data format. For the `surveys` data as we have it right now, this is
+going to be one heck of a wide data frame! However, if we were to summarize data
+within plots and species, we might begin to have some relationships we'd want to
+examine.
+
+Let's see this in action. First, using **`dplyr`**, let's create a data frame
+with the mean body weight of each genus by plot.
+
+```{r}
+surveys_gw <- surveys %>%
+    filter(!is.na(weight)) %>%
+    group_by(genus, plot_id) %>%
+    summarize(mean_weight = mean(weight))
+
+head(surveys_gw)
+```
+
+### Long to Wide with `spread`
+
+Now, to make this long data wide, we use `spread` from `tidyr` to spread out the
+different taxa into columns. `spread` takes three arguments: - the data, the
+*key* column (or column with identifying information), the *values* column (the
+one with the numbers/values). We'll use a pipe so we can ignore the data
+argument.
+
+```{r}
+surveys_gw_wide <- surveys_gw %>%
+  spread(genus, mean_weight)
+
+head(surveys_gw_wide)
+```
+
+Notice that some genera have `NA` values. That's because some of those genera
+don't have any record in that plot. Sometimes it is fine to leave those as
+`NA`. Sometimes we want to fill them as zeros, in which case we would add the
+argument `fill=0`.
+
+```{r}
+surveys_gw %>%
+  spread(genus, mean_weight, fill = 0) %>%
+  head
+```
+
+We can now do things like plot the weight of *Baiomys* against *Chaetodipus* or
+examine their correlation.
+
+```{r}
+surveys_gw %>%
+  spread(genus, mean_weight, fill = 0) %>%
+  cor(use = "pairwise.complete")
+```
+
+### Wide to long with `gather`
+
+What if we had the opposite problem, and wanted to go from a wide to long
+format? For that, we use `gather` to sweep up a set of columns into one
+key-value pair. We give it the arguments of a new key and value column name, and
+then we specify which columns we either want or do not want gathered up. So, to
+go backwards from `surveys_gw_wide`, and exclude `plot_id` from the gathering,
+we would do the following:
+
+```{r}
+surveys_gw_long <- surveys_gw_wide %>%
+  gather(genus, mean_weight, -plot_id)
+
+head(surveys_gw_long)
+```
+
+Note that now the `NA` genera are included in the long format. Going from wide
+to long to wide can be a useful way to balance out a dataset so every replicate
+has the same composition.
+
+We could also have used a specification for what columns to include. This can be
+useful if you have a large number of identifying columns, and it's easier to
+specify what to gather than what to leave alone. And if the columns are
+sequential, we don't even need to list them all out - just use the `:` operator!
+
+```{r}
+surveys_gw_wide %>%
+  gather(genus, mean_weight, Baiomys:Spermophilus) %>%
+  head()
+```
+
+> #### Challenge
+>
+> 1. Make a wide data frame with `year` as columns, `plot_id` as rows, and the
+>   values are the number of genera per plot. You will need to summarize before
+>   reshaping, and use the function `n_distinct` to get the number of unique
+>   types of a genus. It's a powerful function! See `?n_distinct` for more.
+>
+> 2. Now take that data frame, and make it long again, so each row is a unique
+>    `plot_id` - `year` combination.
+>
+> 3. The `surveys` data set is not truly wide or long because there are
+>    two columns of measurement - `hindfoot_length` and `weight`.  This makes it
+>    difficult to do things like look at the relationship between mean values of
+>    each measurement per year in different plot types. Let's walk through a
+>    common solution for this type of problem. First, use `gather` to create a
+>    truly long dataset where we have a key column called `measurement` and a
+>    `value` column that takes on the value of either `hindfoot_length` or
+>    `weight`. Hint: You'll need to specify which columns are being gathered.
+>
+> 4. With this new truly long data set, calculate the average of each
+>    `measurement` in each `year` for each different `plot_type`. Then
+>    `spread` them into a wide data set with a column for `hindfoot_length` and
+>    `weight`. Hint: Remember, you only need to specify the key and value
+>    columns for `spread`.
+
+```{r}
+## Answer 1
+rich_time <- surveys %>%
+  group_by(plot_id, year) %>%
+  summarize(n_genera = n_distinct(genus)) %>%
+  spread(year, n_genera)
+
+head(rich_time)
+
+## Answer 2
+rich_time %>%
+  gather(year, n_genera, -plot_id)
+
+## Answer 3
+surveys_long <- surveys %>%
+  gather(measurement, value, hindfoot_length, weight)
+
+## Answer 4
+surveys_long %>%
+  group_by(year, measurement, plot_type) %>%
+  summarize(mean_value = mean(value, na.rm=TRUE)) %>%
+  spread(measurement, mean_value)
+```
+
+## Exporting data
+
+Now that you have learned how to use **`dplyr`** to extract information from
+or summarize your raw data, you may want to export these new datasets to share
+them with your collaborators or for archival.
+
+Similar to the `read_csv()` function used for reading CSV files into R, there is
+a `write_csv()` function that generates CSV files from data frames.
+
+Before using `write_csv()`, we are going to create a new folder,
+`data-processed`, in our working directory that will store this generated
+dataset. We don't want to store manipulated datasets in the same directory as
+our raw data. It's good practice to keep them separate. The raw data would
+ideally be put in a `data-raw` folder, which should only contain the raw,
+unaltered data, and should be left alone to make sure we don't delete or modify
+it from how it was when we downloaded or recorded it ourself. In contrast,
+our R code will create the contents of the `data-processed` directory, so even
+if the files it contains are deleted, we can always re-generate them.
+
+Use the `getwd()` function to find out which is the current working directory.
+
+```{r}
+getwd()
+```
+
+Navigate to this directory in your file browser and create a folder called
+`data-processed`.
+
+Alternatively, you could use R to create this directory.
+
+```{r}
+dir.create("data-processed")
+
+# To suppress the warning, we could do
+dir.create("data-processed", showWarnings = FALSE)
+
+# Another alternative would be to use a conditional expression, which only
+# creates the directory *if* it does not already exist. The syntax here is
+# similar to the for loop we created in the second lecture.
+if (!dir.exists('data-processed')) {
+    dir.create("data-processed")
+}
+```
+
+We are going to prepare a cleaned up version of the data without NAs. Let's
+start by removing observations for which the `species_id` is missing. Let's also
+remove observations for which `weight` and the `hindfoot_length` are missing.
+This dataset should also only contain observations of animals for which the sex
+has been determined:
+
+```{r}
+surveys_complete <- surveys %>%
+  filter(!is.na(species_id),       # remove missing species_id
+         !is.na(weight),           # remove missing weight
+         !is.na(hindfoot_length),  # remove missing hindfoot_length
+         !is.na(sex))              # remove missing sex
+
+# This expression is a succinct alternative to the above
+surveys_complete_comcas <- surveys %>%
+    filter(complete.cases(species_id, weight, hindfoot_length, sex))
+
+# This is even briefer, but omits observations with NA in *any* column.
+# There is no way to control which columns to use, but it is common to want
+# to exclude all NAs, which in our case corresponds to the columns listed above.
+surveys_complete_naomit <- na.omit(surveys)
+
+# Compare the dimensions of the original and the cleaned data frame
+dim(surveys)
+dim(surveys_complete)
+dim(surveys_complete_comcas)
+dim(surveys_complete_naomit)
+```
+
+Now that our dataset is ready, we can save it as a CSV file in our `data-processed`
+folder.
+
+```{r}
+write_csv(surveys_complete, path = "data-processed/surveys_complete.csv")
+```
+
+
+## Team Challenges
+
+These are four exercises in exploratory data analyses, which will train you to
+think about data and to use the tools you have been learning about in this class
+to solve scientific questions and to reproduce figures from the literature. To
+solve these challenges, you will need to understand what data underlies a
+figure and how you need to manipulate it to recreate the figure.
+
+
+### Setting up
+
+Start by loading the required packages. Both **`ggplot2`** and **`dplyr`** are
+included in the **`tidyverse`** package collection.
+
+```{r}
+# Install if needed
+# install.packages('tidyverse')
+library(tidyverse)
+```
+
+### 1. Explore the weight and hindfoot trends further
+
+Load the data we saved in the previous lesson.
+
+```{r}
+# Download if needed
+# download.file("https://ndownloader.figshare.com/files/2292169", "data/portal_data.csv")
+surveys <- read_csv('portal_data.csv')
+surveys
+```
+
+Let's recreate the survey data set we used in lecture 4, only containing the most abundant species (those with > 800 observations).
+
+```{r}
+abundant_species <- surveys %>%
+    filter(!is.na(hindfoot_length) & !is.na(weight)) %>%
+    group_by(species) %>%
+    tally() %>%
+    arrange(desc(n)) %>%
+    filter(n > 800) %>%
+    select(species)
+
+surveys_abun_species <- surveys %>%
+    filter(!is.na(hindfoot_length) &
+        !is.na(weight) &
+        species %in% abundant_species$species)
+
+
+# If everything loaded correctly, the dimensions of your data set should be
+# 30,320 rows x 13 columns. We could check this by displaying the entire data
+# set with `surveys_abun_species`, but also more directly by comparing the
+# dimensions of the data set to those listed above.
+dim(surveys_abun_species) == c(30320, 13)
+# Remember that `==` is for comparisons, and `=` is for assigning arguments in
+# function calls.
+
+```
+
+In the second question in the last challenge of lecture 4, we saw that the
+average weight of all the animals decreased over time, while the average weight
+for each species remained constant. Here are those plots again.
+
+```{r}
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    summarize(mean_weight = mean(weight)) %>%
+    ggplot(aes(x = year, y = mean_weight)) +
+        geom_line()
+```
+
+```{r}
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    summarize(mean_weight = mean(weight)) %>%
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+If you were to look at the average hindfoot length over time, you would find
+that the trends are similar to those of the average weight. Can you find an
+explanation for why both the average hindfoot length and the average weight
+decrease over time for all animals' average weight, but remain constant when
+looking at individual species? Phrased another way: since each species displays
+constant weight and hindfoot_length measures over time, what could be the cause
+of the notable decrease over time for the average weight of all species pooled
+together?
+
+```{r, eval=FALSE, echo=FALSE}
+# 3.a
+# Answer: Since the average hindfoot length and average weight has remained
+# relatively constant for each individual species, the explaining variable is
+# likely the number of species captured has shifted towards capturing more of
+# the smaller rodents. By plotting the result of tallying by species, we can see
+# that this is indeed the case.
+
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+       
+# Average weight over time
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    summarize(mean_weight = mean(weight)) %>%
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line()
+       
+# Total weight over time
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    summarize(total_weight = sum(weight)) %>%
+    ggplot(aes(x = year, y = total_weight, color = species)) +
+        geom_line()
+
+
+# 3 supplementary
+# All species hindfoot length trend
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    summarize(mean_hinfood_length = mean(hindfoot_length)) %>%
+    ggplot(aes(x = year, y = mean_hinfood_length)) +
+        geom_line()
+
+# Per species hindfoot length trend
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    summarize(mean_weight = mean(hindfoot_length)) %>%
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+
+### 2. Reproduce figure 3 from the paper
+
+For this section, you will apply your data wrangling and plotting skills to
+reproduce a couple of figures from a study on the yearly change in biomass of
+plants in the Abisko national park in northern Sweden. This paper is publish
+under an open license and the [figures can be accessed via this
+link](http://rstb.royalsocietypublishing.org/content/368/1624/20120486.figures-only).
+
+You will be working with this dataset in assignment 3, so we have prepared the
+data for you in a format that is easier to work with. [Download the
+data](https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv)
+and read it into a dataframe called `plant_biomass`. Confirm that the data
+frame is 180 rows by 10 columns
+
+```{r, echo=FALSE, eval=FALSE}
+plant_biomass <- read_csv('https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv')
+dim(plant_biomass) == c(180, 10)
+```
+
+Reproduce figure 3 from the paper. Focus on the overall message on the plot,
+i.e. two panels for different habitats of the plant biomass over the year in
+grazed controls vs rodent exclosures. You do not need to get the figure
+aesthetics to look exactly the same as in the published figures (i.e. no need
+for the exact colors and shapes, axis styles, or to include the small dots
+around the main lines).
+
+```{r, eval=FALSE, echo=FALSE}
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
+    ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
+        geom_line() +
+        geom_point() +
+        facet_grid(~ habitat)
+```
+
+### 3. Reproduce figure 4 from the paper
+Use the `plant_biomass` data set and reproduce figure 4 from the paper.
+
+Hints:
+
+- To get the right dimensions of the subplots, explore how to use the function
+  `facet_grid` instead of `facet_wrap`.
+- Remember to search online for help, e.g. "How do I change the figure size in R
+  markdown?"
+- You will also need to search online or in the R documentation to find out how
+  you change the y-scale to be constant within a species, but not between
+  species (as in the paper figure).
+
+```{r, eval=FALSE, echo=FALSE, fig.height=9, fig.width=7}
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, species, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
+    ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
+        geom_line() +
+        geom_point() +
+        facet_grid(species ~ habitat, scales = 'free_y')
+```
+
+### 4. Make figure 3 perfect
+
+Let's try to bring figure 3 closer to the paper version. Use the R documentation
+and search online to find out how to:
+
+- Change the size of markers in your plots and adjust them appropriately.
+- Slightly adjust the thickness of the lines.
+- Change the colors of the lines to match those online.
+- Apply a ggplot theme to make the figure background white and the overall
+  figure appearance more like the paper version.
+- Change the x and y label to match the paper figure.
+
+```{r, eval=FALSE, echo=FALSE, fig.height=4, fig.width=10}
+# There are some additional customizatios in the answer that
+# I think are too much to ask for but can be nice to show
+color_names <- c('red', 'blue')
+
+plant_biomass %>%
+    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
+    group_by(habitat, treatment, year) %>%
+    summarize(mean_biomass = mean(biomass)) %>%
+    ggplot(aes(x = year, y = mean_biomass, color = treatment, shape = treatment)) +
+        geom_line(size = 0.8) +
+        geom_point(size = 3) +
+        scale_color_manual(values = color_names) +
+        facet_grid(~ habitat) +
+        ylab('plant biomass') +
+        xlab('') +
+        theme_classic() +
+        theme(
+            strip.background = element_blank(),
+            strip.text.x = element_blank())
+
+```
+
+
+*Parts of this lesson material were taken and modified from [Data
+Carpentry](http://datacarpentry.org) under their CC-BY copyright license. See
+their [lesson page](http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html) for the original source.*

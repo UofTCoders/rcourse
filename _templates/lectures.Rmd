@@ -1,0 +1,49 @@
+---
+title: "Lecture title"
+---
+
+<!-- Make sure to remove all commented out notes -->
+
+<!-- horizontal line for website -->
+
+----
+
+<!-- Clearly stated lesson objectives -->
+
+## Lesson preamble
+
+<!-- `##` = website/pdf header 3, slide header 1 (slide title) -->
+
+### Lesson objectives:
+
+<!-- items can (but don't have to) reveal one at a time in slides -->
+
+- Item 1 
+- Item 2
+
+### Lesson outline:
+
+<!-- good to have an estimated time that each section takes, for us and them -->
+Total lesson time: {{num}} hours
+
+- Outline 1 ({{num}} min)
+- Outline 2 ({{num}} min)
+- Outline 3 ({{num}} min)
+
+<!-- horizontal line for website -->
+
+----
+
+## Header 2 ('section' header)
+
+<!-- Header 3 will be a block section in slides -->
+
+### Header 3 (slide title)
+
+```{r}
+# R code chunk
+```
+
+#### Header 4 (slide block title)
+
+## {{ Group | Individual }} exercise

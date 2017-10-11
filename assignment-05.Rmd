@@ -1,0 +1,147 @@
+---
+title: 'Assignment 5: Population models in two dimensions (8 marks)'
+output:
+    html_document:
+        toc: false
+---
+
+*To submit this assignment, upload the full document on blackboard,
+including the original questions, your code, and the output. Submit both
+your `.Rmd` source file and a knitted `.html` version of the same file.*
+
+*For questions that ask you to plot something by hand, indicate which
+assignment and question the plot is for and either include a photo or
+scan of it in the markdown document or hand in the hard copy.*
+
+1.  Quantitatively analyzing a one-dimensional model (2 marks).
+
+    Consider the differential equation $\frac{dx}{dt} = x(1-x)$ from
+    last week's assignment.
+
+<!-- -->
+
+(a) Find the fixed points (equilibrium values) of the system
+    (analytically, on paper) (0.5 marks).
+
+(b) Use R to simulate this equation and plot $x$ vs. $t$ for
+    $0 \le t \le 10$. Plot trajectories for several different starting
+    values of $x$ (initial conditions) using `ggplot` and the `do`
+    function we used in class. Based on the long-time behaviour of the
+    system, which fixed point(s) are stable and which are unstable?
+    (1 mark)
+
+(c) Analyze the stability of the fixed points on paper. Since this
+    system is one-dimensional, we only need a single derivative:
+    $\frac{\partial f(x)}{\partial x}$, where $f(x) = x(1-x)$. Calculate
+    this derivative, evaluate it at each of the fixed points, and use
+    the result to classify each point as stable or unstable (0.5 marks).
+
+<!-- -->
+
+2.  The Lotka-Volterra competition model (6 marks).
+
+    Consider the Lotka-Volterra competition model. Unlike the
+    predator-prey model considered last week, in this model the growth
+    rate of each species ($x$ and $y$) depends on the per-capita effect
+    the competing species have on each other, which can be thought of as
+    the amount of overlap in resource use. The amount of overlap for
+    each species is given by $\alpha_1$ and $\alpha_2$, respectively.
+    $\alpha_1$ and $\alpha_2$ don't need to be equal.
+
+    $$\frac{dx}{dt} = r_1 x \left(1-\frac{x+\alpha_1 y}{K_1}\right)$$
+
+    $$\frac{dy}{dt} = r_2 y \left(1-\frac{y+\alpha_2 x}{K_2}\right)$$
+
+    $r$ and $K$ are growth rates and carrying capacities, respectively.
+
+<!-- -->
+
+(a) Find the fixed points and nullclines of the system (analytically, on
+    paper). The fixed points can be found by setting $\frac{dx}{dt} = 0$
+    and $\frac{dy}{dt} = 0$ simultaneously, and the nullclines can be
+    found by setting each derivative to zero individually and solving
+    for $y$ as a function of $x$ in each case so that they can be
+    plotted on a $y$ vs. $x$ phase portrait (0.75 marks).
+
+(b) Use R to simulate these equations and plot $x$ and $y$ vs. $t$. Use
+    the symmetric case: $\alpha_1 = \alpha_2 = \alpha$, $K_1 = K_2 = K$,
+    and $r_1 = r_2 = r$. Choose $\alpha = 0.2, K = 50$, and $r = 1$.
+    Choose a starting value where $x$ is different from $y$
+    (0.75 marks).
+
+(c) Create a phase portrait for this system in R using `phaseR`. Plot
+    the following:
+    -   all the fixed points.
+    -   the nullclines found in (a). Plot all the nullclines yourself
+        instead of using `nullcline` from `phaseR` --- `nullcline`
+        doesn't always plot all the nullclines correctly.
+    -   three to four trajectories (1 marks).
+
+(d) Analyze the stability of each fixed point using the same assumptions
+    and parameter values as in part (b). Calculate the four partial
+    derivatives needed for the Jacobian:
+    $\frac{\partial f(x,y)}{\partial x}$,
+    $\frac{\partial f(x,y)}{\partial y}$,
+    $\frac{\partial g(x,y)}{\partial x}$,
+    $\frac{\partial g(x,y)}{\partial y}$, where
+    $f(x) = r_1 x \left(1-\frac{x+\alpha_1 y}{K_1}\right)$ and
+    $f(y) = r_2 y \left(1-\frac{y+\alpha_2 x}{K_2}\right)$.
+
+    For example, for the fixed point $x^* = 0$, $y^* = K$ ($x^*$
+    notation indicates fixed point):
+
+    ``` {.r}
+    # Fixed point
+    x_star <- 0;
+    y_star <- K;
+    ```
+
+    And we can use our solutions for the partial derivatives above,
+    plugging in the equilibrium values. For example, the partial
+    derivative of $f(x)$ with respect to x evaluated at the fixed point
+    above is:
+
+    ``` {.r}
+    # Partial derivatives / elements of the Jacobian
+    df_dx <- r * (1 - (x_star + alpha * y_star) / K) - (1 / K) * r * x_star
+    ```
+
+    Now create the Jacobian matrix and then calculate the eigenvalues:
+
+    ``` {.r}
+    J <- matrix(c(df_dx, df_dy, 
+                  dg_dx, dg_dy), 
+                ncol = 2, nrow = 2, 
+                byrow = TRUE)
+
+    e_vals <- eigen(J)$values
+    ```
+
+    For each point, give the eigenvalues and explain whether the fixed
+    point is stable or unstable. Will it oscillate? Explain why or why
+    not (1 marks).
+
+(e) Simplify the fixed points of the system on paper in the case when
+    $\alpha_1 = \alpha_2 = \alpha$. Create a plot in R showing $x^*$ vs.
+    $\alpha$, $y^*$ vs $\alpha$, and $x ^ * + y ^ *$ vs. $\alpha$ for \$
+    -1 &lt; \alpha &lt; 1.5\$. Label $K_1$, $K_2$, and $K_1 + K_2$ on
+    the y-axis. Use a solid line to represent stable fixed points and a
+    dashed line for unstable fixed points (2.5 marks total)
+
+    -   Are there any bifurcations (qualitative changes in the number or
+        stability of fixed points) as a function of $\alpha$? If so,
+        describe them.
+
+    -   Thinking of $\alpha$ as the parameter that controls "overlap"
+        between the two competing species, what is the biological
+        meaning of $\alpha = 0$? (Hint: compare this fixed point to the
+        non-trivial fixed point from the logistic model: $N^* = K$.)
+
+    -   What is the biological meaning of $0 < \alpha < 1$? What is the
+        biological meaning of $\alpha = 1$, and of $\alpha > 1$? (Hint:
+        what is the sum of the non-trivial fixed points $x^*$ and $y^*$
+        in each of these cases in terms of $K_1$ and $K_2$?)
+
+    -   What would happen to the system if $\alpha$ was negative? (Hint:
+        is "competition" still an appropriate name for the model if
+        $\alpha < 0$?)
