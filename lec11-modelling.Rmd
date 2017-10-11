@@ -87,11 +87,14 @@ Or, a simplified, alphabetized version is:
 
 $$ y = a + Xb + e $$
 
-In the case of multiple linear regression (more than one $x$), it is expanded to:
+Where $a$ is the intercept, $X$ is the variable, $b$ is the slope/coefficient,
+and $e$ is the error term. In the case of multiple linear regression (more than
+one $x$), it is expanded to:
 
-$$ y = a + x_1b_1 + x_2b_b +...+ x_nb_n + e $$
+$$ y = a + x_1b_1 + x_2b_2 +...+ x_nb_n + e $$
 
-Where each $x$ is a variable (either continuous or categorical) in a data frame.
+Where each $x_n$ is a variable (either continuous or categorical) in a data frame
+and $b_n$ is the variable coefficient/slope.
 
 We construct these regression models for several reasons. Sometimes we want to
 infer how some variables ($x$) cause or influence another variable ($y$). Or
