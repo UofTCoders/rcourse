@@ -63,7 +63,7 @@ questions/objectives (analysis and presentation plan):
     Will you use them? Are they appropriate (optional, may need expert)?
     - How will the results/data be presented or visualized (possible
     tables/figures)?
-5. Run all analyses (or additional ones that come may up).
+5. Run the planned analyses (or additional ones that come may up).
 6. Visualize or present all results from the analyses.
 7. Interpret the results and how they fit with the previous literature.
 8. Draw conclusions based on the hypotheses/objectives.
@@ -73,7 +73,7 @@ questions/objectives (analysis and presentation plan):
 
 ## Team dynamics
 
-### Basics of succeeding with a team
+### Basics of succeeding as a team
 
 Final assignment is in a group and to succeed, you need to understand team dynamics:
 
@@ -89,7 +89,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Essentially, groups go through stages (not always all and not always in order):
     1. Getting to know one other
     2. Feeling comfortable and safer, testing boundaries
-    3. Opening up, voicing opinions, potential for conflict
+    3. Opening up, voicing opinions, potential for conflict (which can be good!)
     4. Stronger bonds form, cooperative
     5. Greater focus and energy on completion of project
     6. Team ends after project is successfully completed
@@ -125,10 +125,13 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 
 ### As a group, complete these tasks
 
+<!-- show assigned groups -->
+
 - Get into your assigned groups
 - Introduce each other:
     - Find out everyone's name and year of study
     - Find out other things about each other (e.g. any plans for next year, etc)
+- Create a two or one word "team name". We'll use this to create a shared folder for everyone to use.
 - Assign roles to each person (these roles will be rotated in every group setting):
     - You need: facilitator, recorder, organizer
     - Discuss how and when roles will be rotated *(record it)*
@@ -168,15 +171,19 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 In your group, rotate roles (need a facilitator and recorder at minimum). Before
 the end of class, finish these:
 
-- Choose two possible datasets your team would like to work from (can also be
+- Choose two possible datasets (or more) your team would like to work from (can also be
 datasets not presented in class) *(record them)*
 - Brainstorm as many research questions as possible for those two datasets
 *(record them)*
-    - Goal is to write as much ideas down
+    - Goal is to write down as many ideas as possible
     - No question is off limits and no question is too simple or too complex! 
-    - Just write what ever comes to mind
+    - (You might combine or split questions later, just get whatever down!)
+    - Just write what ever comes to mind, whether it is an idea or not. Just start writing!
 
 Make sure to *record* everything down! Many of these tasks will also be part of
 the assignment!
 
+### Set up GitHub account
 
+Before we finish the class, we need to prepare a bit for next class. We need to
+create a [GitHub](https://github.com) account!
