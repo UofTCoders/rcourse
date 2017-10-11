@@ -1,31 +1,26 @@
 ---
 title: "Introduction to the datasets, scientific method, and team dynamics; Start the projects"
+author: "Luke Johnston"
 ---
-
------
 
 ## Lesson preamble:
 
-### Lesson objectives:
-
-- **Main goal**: 
-    - To start the process of identifying which dataset to use and some possible research questions
-- **Secondary goals**:
-    - Learn about the scientific method and *(the basics of)* how to apply it to your project
-    - Learn basics of group dynamics in a team setting, how to share responsibilities and duties
-    - Get into groups and start your projects
-
-### Lesson outline:
-
-Total lesson time: 2 hours
-
-- Datasets available for use (10-20 min)
-- What is the scientific method (20 min)
-- Team dynamics and assigning roles and tasks (15-20 min)
-- Break (10 min)
-- Getting into groups (10 min)
-    - Exercise (25-30 min)
-    - Start project work (20-25 min)
+> ### Lesson objectives:
+> 
+> - Learn about the scientific method and applying it
+> - Learn basics of group dynamics in a team setting
+> - Get into your groups, start your projects
+>       - Identify which dataset to use
+>       - Brainstorm possible research questions
+>
+> ### Lesson outline:
+>
+> - What is the scientific method (20 min)
+> - Team dynamics and assigning roles and tasks (15-20 min)
+> - Getting into groups (10 min)
+>     - Exercise (25-30 min)
+> - Start project work (20-25 min)
+> - Datasets available for use (10-20 min)
 
 -----
 
