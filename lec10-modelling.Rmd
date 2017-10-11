@@ -9,7 +9,7 @@ author: "Madeleine Bonsma-Fisher"
 >
 > - Appreciate bifurcations in models
 > - Use least squares to fit a model to data
-
+> 
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
@@ -20,7 +20,7 @@ author: "Madeleine Bonsma-Fisher"
 > - Fitting models to data 
 >     - Fitting simulated data for a single parameters (20 minutes)
 >     - Fitting real data for two parameters (40 minutes)
-
+> 
 > ### Setup
 > 
 > - Download [this plant biomass dataset](https://github.com/UofTCoders/council/blob/master/datasets/joel/plant-biomass-preprocess.csv) and put it in your working directory.
@@ -514,6 +514,36 @@ for (i in seq(length(rvals))){
   }
 }
 ```
+
+**Added:** The more R way of doing the above code is:
+
+```{r}
+logistic_pred_fn <- function(r, K) {
+    result <- ode(y = state, 
+                  times = times, 
+                  func = logistic_fn,
+                  parms = c(r = r, K = K))
+    result <- data.frame(result)
+    residuals <- result$N - e_nigrum$empetrum_nigrum
+    sum(residuals^2)
+}
+
+rvals <- seq(0.05, 1.0, by = 0.05)
+Kvals <- seq(120, 180, by = 5)
+# Create a two column data frame with every combination of rvals and Kvals
+params <- expand.grid(r = rvals, K = Kvals)
+
+# Apply the logistic_pred_fn to each combination of rvals and Kvals.
+# This is known as vectorization, which is R's strength.
+resids <- mapply(logistic_pred_fn,
+                 params$r, # First arg in logistic_pred_fn
+                 params$K) # Second arg in logistic_pred_fn
+resids <- matrix(resids, nrow = length(rvals), ncol = length(Kvals))
+
+# Check if they are the same
+identical(resids, residuals_surface)
+```
+
 
 We can use the library `lattice` to plot the surface:
 
