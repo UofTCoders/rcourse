@@ -7,7 +7,7 @@
 
 # Generate the slide html files, of only the lectures.
 rmd_files <- c(
-    NA
+    "lec12-datasets.Rmd"
 )
 
 if (!is.na(rmd_files)) {
@@ -19,7 +19,6 @@ if (!is.na(rmd_files)) {
         output_options = list(
             df_print = "kable",
             slide_level = 3,
-            incremental = TRUE,
             smaller = TRUE,
             transition = 0.01
         )

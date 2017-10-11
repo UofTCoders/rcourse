@@ -71,7 +71,8 @@ navbar:
     - text: "Slides"
       icon: fa-caret-square-o-right
       menu:
-        - text: ""
+        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
+          href: slides/lec12-datasets.html
     - text: "Resources and FAQ"
       icon: fa-question
       href: resources.html
