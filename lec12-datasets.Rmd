@@ -138,21 +138,44 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 
 ## Starting the projects
 
+### Datasets available for use
+
+- [Continuous Plankton Recorder Dataset](https://www.gbif.org/dataset/67c54f85-7910-4cbf-8de4-6f0b136a0e34)
+
+    Data on northern hemisphere plankton species, latitude, longitude, date.
+    Going back to 1946. 935 Mb size, almost 2.75 million rows of data.
+
+- [Insecta of Costa Rica](https://www.gbif.org/dataset/3e9817c1-8302-4955-87e3-a408db0ea379)
+
+    Data on insects species in Costa Rica, latitude, longitude, elevation, date.
+    1.4 Gb size, almost 3.25 million rows of data.
+
+- [Marine predator and prey body sizes](http://www.esapubs.org/archive/ecol/E089/051/default.htm#data)
+
+    Data from 27 different global locations on species, body measurements,
+    latitude, longitude, date. 21 Mb, almost 35,000 rows of data (in long
+    format).
+
+- [Mammalian life history](http://www.esapubs.org/archive/ecol/E084/093/default.htm)
+
+    Data about general mammalian life history with species, body size, lifespan,
+    litter size, and other reproductive variables. 150 Kb size, 1440 rows of
+    data.
+
 ### As a group, complete these tasks
 
-In your group, rotate roles (need a facilitator and recorder at minimum). Before the end of class, finish these:
+In your group, rotate roles (need a facilitator and recorder at minimum). Before
+the end of class, finish these:
 
-- Choose two possible datasets your team would like to work from (can also be datasets not presented in class) *(record them)*
-- Brainstorm as many research questions as possible for those two datasets *(record them)*
+- Choose two possible datasets your team would like to work from (can also be
+datasets not presented in class) *(record them)*
+- Brainstorm as many research questions as possible for those two datasets
+*(record them)*
     - Goal is to write as much ideas down
     - No question is off limits and no question is too simple or too complex! 
     - Just write what ever comes to mind
 
-Make sure to *record* everything down! Many of these tasks will also be part of the assignment!
+Make sure to *record* everything down! Many of these tasks will also be part of
+the assignment!
 
-## Datasets for use
-
-### List of datasets available
-
-{{list/link them here}}
 
