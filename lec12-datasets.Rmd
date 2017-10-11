@@ -24,12 +24,6 @@ author: "Luke Johnston"
 
 -----
 
-## Datasets for use
-
-### List of datasets available
-
-{{list/link them here}}
-
 ## Scientific method
 
 <!-- What is the scientific method? -->
@@ -152,3 +146,10 @@ In your group, rotate roles (need a facilitator and recorder at minimum). Before
     - Just write what ever comes to mind
 
 Make sure to *record* everything down! Many of these tasks will also be part of the assignment!
+
+## Datasets for use
+
+### List of datasets available
+
+{{list/link them here}}
+
