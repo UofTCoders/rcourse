@@ -56,16 +56,18 @@ digraph rmarkdown {
 1. Identify research question(s).
 2. Look into what the previous literature shows.
 3. Create one or more hypotheses or objectives.
-4. Write up an outline or expected approach to answering those questions/objectives (analysis and presentation plan):
-    - How will the data be obtained and what is the data (i.e. the source).
-    - What statistical or mathematical techniques have previous researchers used? Will they be used or will other ones be used? Are they appropriate (optional, may need an expert)? 
-    - How will the results/data be presented or visualized?
-    - Identify/describe some possible tables and figures to present the results/data.
-5. Run all analyses (or additional ones that may come up as you work with and analyze the data).
+4. Write up an outline or expected approach to answering those
+questions/objectives (analysis and presentation plan):
+    - How will the data be obtained and what is the data (i.e. the source)?
+    - What statistical/mathematical techniques have previous researchers used?
+    Will you use them? Are they appropriate (optional, may need expert)?
+    - How will the results/data be presented or visualized (possible
+    tables/figures)?
+5. Run all analyses (or additional ones that come may up).
 6. Visualize or present all results from the analyses.
-7. Interpret the results and how they fit in the context of the previous literature and findings.
+7. Interpret the results and how they fit with the previous literature.
 8. Draw conclusions based on the hypotheses/objectives.
-9. Publish your results (in blogs, pre-print archives, general archiving servers, journals, or at conferences)
+9. Disseminate your results (in blogs, pre-print archives, journals, conferences)
 
 [^sci_method]: See [Khan Academy on Scientific Method](https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology) for a brief overview and explanation on the scientific process.
 
@@ -75,8 +77,7 @@ digraph rmarkdown {
 
 Final assignment is in a group and to succeed, you need to understand team dynamics:
 
-- Everyone is different, every team is different
-- Communication is vital to work together and to achieve the goal
+- Communication is **vital** to work together and to achieve the goal
 - Teams go through various stages
 - Need consensus for group norms, goals, duties/responsibilities, and conduct/behaviour
     - Important that everyone has a stake in the project
