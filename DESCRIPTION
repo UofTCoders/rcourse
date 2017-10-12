@@ -19,6 +19,8 @@ Imports: rmarkdown,
     ggplot2,
     tidyverse,
     GGally,
+    datasauRus,
+    broom,
     deSolve,
     phaseR,
     lattice
