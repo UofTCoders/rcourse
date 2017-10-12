@@ -11,7 +11,6 @@ author: "Luke Johnston"
 > - Understand probability and the importance of presenting confidence intervals
 > - Learn the importance of visualizing your data when doing any analyses or
 > statistics
-> - Learn how to compare models using information criterion techniques
 > 
 > ### Lesson outline
 > 
