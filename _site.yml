@@ -31,7 +31,7 @@ navbar:
         - text: "Oct. 10: Fitting models to data"
           href: lec10-modelling.html
         - text: "Oct. 12: Statistical/probabilistic modelling in R"
-          href: lec11-modelling-r.html
+          href: lec11-modelling.html
         - text: "Oct. 17: Introduce data sets, hypotheses, start projects"
           href: lec12-datasets.html
         - text: "Oct. 19: Project and Git setup in RStudio, tidy data, and project work"
