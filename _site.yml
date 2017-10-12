@@ -24,7 +24,7 @@ navbar:
           href: lec06-pop-models.html
         - text: "Sept. 28: Modelling in R"
           href: lec07-pop-models.html
-        - text: "Oct. 03: Population models in 2 dimensions" 
+        - text: "Oct. 03: Population models in 2 dimensions"
           href: lec08-stability.html
         - text: "Oct. 05: Fixed points, null clines, and stability"
           href: lec09-modeling-r.html
@@ -42,7 +42,7 @@ navbar:
           href: lec15-data-viz.html
         - text: "Oct. 31: Project work, data visualizations"
           href: lec16-data-viz.html
-        - text: "Nov. 02: Reproducible workflow, metadata, R Markdown"
+        - text: "Nov. 02: Reproducible workflow, R Markdown"
           href: lec17-rmarkdown.html
         - text: "Nov. 14: Metadata and project work"
           href: lec18-metadata.html
@@ -87,4 +87,3 @@ navbar:
         - text: "GitHub"
           icon: fa-github
           href: https://github.com/uoftcoders/rcourse
-
