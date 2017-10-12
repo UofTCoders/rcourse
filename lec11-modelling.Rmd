@@ -1,5 +1,5 @@
 ---
-title: "Statistical/probabilistic modelling in R"
+title: "Statistical and probabilistic modelling in R"
 author: "Luke Johnston"
 ---
 
@@ -39,9 +39,9 @@ library(datasauRus)
 
 ## Statistics and probability
 
-Theoretical models are powerful tools at explaining or understanding the world.
+Theoretical models are powerful tools for explaining and understanding the world.
 However, they are limited in that the real-world often doesn't perfectly fit
-these models. The real world is messy and noisy. We can't always trust our data
+these models. The real world is messy and noisy. We can't always blindly trust our data
 as there are inherent biases and errors in it. Measuring it, collecting it,
 recording it, and inputting it are some of the possible sources of error and
 bias.  We use statistics and probability to determine whether the way we
@@ -72,7 +72,7 @@ correlation or analysis of variance (ANOVA), linear regression, logistic
 regression. GLM is a powerful technique that you can use on a wide range of data
 and research questions, and is the foundation for understanding how more
 advanced techniques work. This is the reason I will be covering GLM in depth.
-(For those who will go into graduate students or into research in general, you
+(For those who will go into graduate studies or into research in general, you
 will likely use mixed effects models. If you can understand and grasp GLM, it
 will be substantially easier for you to understand mixed effects modelling and
 other techniques.)
@@ -87,7 +87,8 @@ Or, a simplified, alphabetized version is:
 
 $$ y = a + Xb + e $$
 
-Where $a$ is the intercept, $X$ is the variable, $b$ is the slope/coefficient,
+Where $a$ is the intercept, $X$ is the variable (or as a matrix of all
+variables), $b$ is the slope/coefficient,
 and $e$ is the error term. In the case of multiple linear regression (more than
 one $x$), it is expanded to:
 
@@ -99,7 +100,7 @@ and $b_n$ is the variable coefficient/slope.
 We construct these regression models for several reasons. Sometimes we want to
 infer how some variables ($x$) cause or influence another variable ($y$). Or
 maybe we know that $y$ has a lot of error in the measurement or is difficult to
-measure, so we want to derive a formula in order to predict the variable based
+measure, so we want to derive a formula in order to predict $y$ based
 on more accurately measured variables. In R we can run linear regression either
 using `lm` or using `glm`. We'll use `glm` since it can be expanded to other
 types of analyses. First, let's load up a dataset.
@@ -111,7 +112,7 @@ portal <- read_csv("portal_data.csv")
 Now, let's fit a model to the data. Let's say we want to see the role that sex
 has on weight in various species in the `portal` dataset. (`gaussian` is stating 
 that `weight` is a continuous variable and that you assume the error terms have
-a gaussian, or normal, distribution.)
+a Gaussian, or normal, distribution.)
 
 ```{r}
 fit1 <- glm(weight ~ sex, data = portal, family = gaussian)
@@ -164,7 +165,7 @@ Same as above! And for males (equal to 1):
 
 Good, it matches what we calculated. Why is this useful? Well, we can add more
 terms to the GLM equation. This allows us to determine how a variable influences
-the $y$ when other variables are held constant and is known as *multiple linear
+$y$ when other variables are held constant and is known as *multiple linear
 regression*. Since weight is probably also dependent on `hindfoot_length`, let's
 add that to the model and put the values into the equation.
 
@@ -178,7 +179,7 @@ $$ weight = -32.09 + (sexM \times -1.72) + (hindfoot\_length \times 2.56)$$
 Hmm, that's interesting... is a *negative* intercept... How can weight be
 negative? Well, that's because the intercept is calculated by setting *both* sex
 and hindfoot length to zero! But is it physically even possible that a hindfoot be
-non-existant?? No. But math doesn't care what is physically possible or not.
+non-existent?? No. But math doesn't care what is physically possible or not.
 That's where your ecology/biology knowledge comes in. So let's change that up by
 changing the actual value of hindfoot length in the dataset. There are several
 ways to transform the data into something that is meaningful to us. But first:
@@ -187,7 +188,7 @@ ways to transform the data into something that is meaningful to us. But first:
 we can interpret the model more appropriately?
 
 There are many ways to do it, but one way that is often used is to mean center
-the data. Mean centering is substracting each value by the mean. After mean
+the data. Mean centering is subtracting each value by the mean. After mean
 centering, 0 is equal to the mean of hindfoot length.
 
 ```{r}
@@ -303,18 +304,19 @@ use this, we can help walk you through this more.
 ## Confidence intervals, and p-values
 
 So what's the point of using `glm`? Not only does it create a model with
-constants and coefficients, but it is also used to calculate how *certain* we
+coefficients and the magnitude (effect size), but it is also used to calculate how *certain* we
 are about the results. The main power of GLM comes from the ability to estimate
 model parameters and derive meaning from how certain $x$ variables (independent
-variables) influence the $y$ (dependent variable). With his model we can use to
-it *predict* what could happen to some value if we knew or could change the
+variables) influence the $y$ (dependent variable). We can use this model to
+*predict* what could happen to some value if we knew or could change the
 independent variables ($x$). But we also want to know whether this model
 reflects reality.
 
 From GLM we can determine the *confidence* (or rather, the *uncertainty*) we
 have about the beta ($b$) estimates. In the case of linear regression model, we
 can use `tidy` with the `conf.int` argument to calculate the confidence
-interval.
+interval. In the default case, this calculates the 95% confidence interval, or
+rather we are 95% certain that the estimate lies in this range.
 
 ```{r}
 fit_hf <- glm(weight ~ hindfoot_length, data = portal)
@@ -328,7 +330,7 @@ the estimate that hindfoot length influences weight is probably reflective of
 reality. That makes sense since longer hindfeet mean there is more space and
 amount of area for more flesh to attach to and that there is more bone, which
 adds weight. We can also be more strict about our uncertainty
-(counterintuitively, a larger confidence interval is more strict).
+(counter-intuitively, a larger confidence interval is more strict).
 
 ```{r}
 # Confidence interval of 99%
@@ -344,7 +346,7 @@ tidy(fit_hfsex, conf.int = TRUE) %>%
     select(term, estimate, conf.low, conf.high, p.value)
 ```
 
-Great! So in almost all cases, you should favour confidence intervals and
+Great! In almost all cases, you should favour confidence intervals and
 estimation over the p-value. In some parts of science (especially biomedical
 research), p-values are ubiquitous. But, there is a major problem with p-values.
 What does the p-value *mean*?
@@ -355,9 +357,12 @@ is then the null hypothesis ("females and males weigh the same") and the
 alternative hypothesis ("males are heavier than females"). Using statistical
 tests, we can calculate the p-value to give us an indication of which hypothesis
 is true. Traditionally, if the p-value is <0.05 you 'reject' the null
-hypothesis.
+hypothesis. This cut off is completely arbitrary.
 
-However, the true meaning of the p-value is a bit counter intuitive. The
+<!-- What do you all think about this cut off? this is 1 in 20 chance that
+you'll see this result if the null hypothesis was true -->
+
+However, the true meaning of the p-value is a bit counter-intuitive. The
 p-value is the probability of getting a result that is the same as or more
 extreme as what you are getting given the null hypothesis is true. There is
 nothing in that statement that says the *alternate* hypothesis is true... This
@@ -469,9 +474,9 @@ But even the type of graph you use can hide data. Check out the figure below for
 an example of that. In general, it's better to visualize the raw data points,
 but this quickly becomes a problem as you get more data.
 
-![Visualizing raw data vs aggregate](boxplot-problem.gif)
+![Visualizing raw data vs aggregate. From [this source](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)](boxplot-problem.gif)
 
-Another example is known as Simpon's Paradox. You all have already encountered
+Another example is known as Simpson's Paradox. You all have already encountered
 Simpson's Paradox in the challenges of lecture 4 and 5, where the average weight
 of all species decreased over time, but for each species weight remained
 constant. These types of problems are encountered all the time in data analysis
@@ -491,7 +496,7 @@ For instance, Simpson's paradox comes up in medical studies of drugs
 that could be lifesaving for a patient. If inappropriate conclusions are drawn
 because the data wasn't completely explored, people could be harmed or could
 die. This is true in *any* scientific field, including ecology. Policies aimed
-at benefitting the environment could in fact be *harming* it because these types
+at benefiting the environment could in fact be *harming* it because these types
 of things were not examined. 
 
 [^simpson]: Wikipedia page on [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
