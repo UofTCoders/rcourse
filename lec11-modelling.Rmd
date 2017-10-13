@@ -184,8 +184,8 @@ So if we wanted to know what the hindfoot length would be for a female of 50 wei
 ```
 
 Sometimes, depending on the research question, we want to be able to see the
-predicted $y$ after removing the other variables. To remove a variable you set
-it to zero, but a zero weight doesn't make sense. It doesn't exist! So, we can
+predicted $y$ based on a single variable after removing the other variables. To remove a variable you set
+it to zero, but a zero weight of an animal doesn't make sense. It doesn't exist! So, we can
 transform the data so that zero is possible. There are many ways to transform
 data, but one way that is often used is to mean center the data. Mean centering
 is subtracting each value by the mean. After mean centering, 0 is equal to the
