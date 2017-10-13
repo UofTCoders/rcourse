@@ -35,11 +35,14 @@ library(tidyverse)
 
 Load the data we saved in the previous lesson.
 
-```{r}
+```{r, eval=FALSE}
 # Download if needed
 # download.file("https://ndownloader.figshare.com/files/2292169", "portal_data.csv")
 surveys <- read_csv('portal_data.csv')
-surveys
+```
+
+```{r, echo=FALSE}
+surveys <- read_csv('data/portal_data.csv')
 ```
 
 ## Reshaping with gather and spread
@@ -277,7 +280,6 @@ to solve scientific questions and to reproduce figures from the literature. To
 solve these challenges, you will need to understand what data underlies a
 figure and how you need to manipulate it to recreate the figure.
 
-
 ### Setting up
 
 Start by loading the required packages. Both **`ggplot2`** and **`dplyr`** are
@@ -293,10 +295,13 @@ library(tidyverse)
 
 Load the data we saved in the previous lesson.
 
-```{r}
+```{r, eval=FALSE}
 # Download if needed
 # download.file("https://ndownloader.figshare.com/files/2292169", "data/portal_data.csv")
 surveys <- read_csv('portal_data.csv')
+```
+
+```{r}
 surveys
 ```
 
@@ -422,12 +427,12 @@ link](http://rstb.royalsocietypublishing.org/content/368/1624/20120486.figures-o
 
 You will be working with this dataset in assignment 3, so we have prepared the
 data for you in a format that is easier to work with. [Download the
-data](https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv)
+data](data/plant-biomass-preprocess.csv)
 and read it into a dataframe called `plant_biomass`. Confirm that the data
 frame is 180 rows by 10 columns
 
 ```{r, echo=FALSE, eval=FALSE}
-plant_biomass <- read_csv('https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv')
+plant_biomass <- read_csv('data/plant-biomass-preprocess.csv')
 dim(plant_biomass) == c(180, 10)
 ```
 

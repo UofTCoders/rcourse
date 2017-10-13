@@ -23,7 +23,7 @@ author: "Madeleine Bonsma-Fisher"
 > 
 > ### Setup
 > 
-> - Download [this plant biomass dataset](https://github.com/UofTCoders/council/blob/master/datasets/joel/plant-biomass-preprocess.csv) and put it in your working directory.
+> - Download [this plant biomass dataset](https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv) and put it in your working directory.
 > - `install.packages('lattice')`
 > - `install.packages('phaseR')`
 > - `install.packages('deSolve')`
@@ -388,15 +388,15 @@ change the amount of noise that gets added to the data.
 
 Now let's fit a model with more parameters, and let's use some real data.
 
-```{r, echo=FALSE}
-# The dataset downloaded at the beginning
-plant_data <- read.csv("https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv")
-```
-
 ```{r, eval=FALSE}
 # The dataset downloaded at the beginning
-# https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv
+# https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv
 plant_data <- read.csv("plant-biomass-preprocess.csv")
+```
+
+```{r, echo=FALSE}
+# The dataset downloaded at the beginning
+plant_data <- read.csv("data/plant-biomass-preprocess.csv")
 ```
 
 We can use our usual tricks to see what's in our dataset:

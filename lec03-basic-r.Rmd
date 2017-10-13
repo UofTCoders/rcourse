@@ -95,8 +95,12 @@ download.file("https://ndownloader.figshare.com/files/2292169",
 
 The data is read in by specifying its local path.
 
-```{r}
+```{r, eval=FALSE}
 surveys <- readr::read_csv('portal_data.csv')
+```
+
+```{r, echo=FALSE}
+surveys <- readr::read_csv('data/portal_data.csv')
 ```
 
 This statement produces some output regarding which data type it found in each 

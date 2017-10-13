@@ -47,7 +47,7 @@ output:
     in the [beautiful Abisko national park in northern
     Sweden](https://en.wikipedia.org/wiki/Abisko_National_Park). We have
     preprocessed this data and made [it available as a csv-file via this
-    link](https://raw.githubusercontent.com/UofTCoders/council/master/datasets/joel/plant-biomass-preprocess.csv).
+    link](https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv).
     You can find the original data and a short readme on
     [figshare](https://figshare.com/articles/Time_Series_of_plant_biomass_during_1998-2013/4149648)
     and [dryad](https://datadryad.org/resource/doi:10.5061/dryad.38s21).

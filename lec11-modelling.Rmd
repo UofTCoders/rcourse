@@ -106,8 +106,12 @@ on more accurately measured variables. In R we can run linear regression either
 using `lm` or using `glm`. We'll use `glm` since it can be expanded to other
 types of analyses. First, let's load up a dataset.
 
-```{r, message=FALSE}
+```{r, eval=FALSE}
 portal <- read_csv("portal_data.csv")
+```
+
+```{r, echo=FALSE}
+portal <- read_csv("data/portal_data.csv")
 ```
 
 Now, let's fit a model to the data. Let's say we want to see the role that sex
