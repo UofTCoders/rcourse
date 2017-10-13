@@ -53,7 +53,7 @@ variables is related to derivatives of those variables.
 
 - Drawing **phase portraits** in one dimension:
 
-    ![Logistic equation simulation](https://github.com/UofTCoders/rcourse/raw/master/logistic.gif)
+    ![Logistic equation simulation](image/logistic.gif)
 
     - Fixed points: values of $N$ at which `r eq_dn_dt`, the rate of change of $N$,
     is $0$. To find fixed points, plot `r eq_dn_dt` vs. $N$ and find the place(s)
