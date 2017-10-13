@@ -298,7 +298,7 @@ exp(-1.035 + (-0.0003 * 50) + (-0.0338 * 0) + (-0.0004 * 30))
 
 In this case, for a female with a weight of 50 and hindfoot of 30, the
 probability of disease is 0.345, or 34%. Interpretation actually gets a bit more
-complicated than that depending on if you want to look at. So depending on your
+complicated than that depending on what you want to look at. So depending on your
 final project, if you need/want to use this, we can help walk you through this
 more.
 
