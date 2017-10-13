@@ -76,6 +76,8 @@ will likely use mixed effects models. If you can understand and grasp GLM, it
 will be substantially easier for you to understand mixed effects modelling and
 other techniques.)
 
+### Linear regression
+
 A version of GLM that uses continuous $y$ values is called linear regression,
 which I'm going to focus on. The formula for linear regression (or GLM in
 general) is:
@@ -109,12 +111,12 @@ portal <- read_csv("portal_data.csv")
 ```
 
 Now, let's fit a model to the data. Let's say we want to see the role that sex
-has on weight in various species in the `portal` dataset. (`gaussian` is stating 
-that `weight` is a continuous variable and that you assume the error terms have
+has on hindfoot length in various species in the `portal` dataset. (`gaussian` is stating 
+that `hindfoot_length` is a continuous variable and that you assume the error terms have
 a Gaussian, or normal, distribution.)
 
 ```{r}
-fit1 <- glm(weight ~ sex, data = portal, family = gaussian)
+fit1 <- glm(hindfoot_length ~ sex, data = portal, family = gaussian)
 summary(fit1)
 ```
 
@@ -130,95 +132,94 @@ tidy(fit1)
 Much nicer! Ok, so what does this actually mean? Let's go back to the equation
 and convert the above into the formula:
 
-$$ weight = Intercept + (sexM \times b) $$
+$$ hindfoot\_length = Intercept + (sexM \times b) $$
 
 Let's substitute in the numbers. The intercept, is well, the intercept in the
 data above. The $b$ is the estimate for `sex`.
 
-$$ weight = 42.17 + (sexM \times 0.825) $$
+$$ hindfoot\_length = 28.836 + (sexM \times 0.872) $$
 
-We can use this equation to estimate the value of weight for a specific sex. But
-first, let's make sure this is working correctly. Let's find out the mean weight
+We can use this equation to estimate the value of hindfoot length for a specific sex. But
+first, let's make sure this is working correctly. Let's find out the mean hindfoot length
 by sex.
 
 ```{r}
 portal %>% 
     filter(!is.na(sex)) %>% 
     group_by(sex) %>% 
-    summarize(mean_wt = mean(weight, na.rm = TRUE)) 
+    summarize(mean_hfl = mean(hindfoot_length, na.rm = TRUE)) 
 ```
 
 Ok, let's compare to the equation. The variable `sexM` is 1 for male and 0 for
-female. So if we want to calculate the weight of female, we have to set `sexM`
+female. So if we want to calculate the hindfoot length of female, we have to set `sexM`
 as 0 in the equation. Let's do it:
 
 ```{r}
-42.17 + (0 * 0.825)
+28.836 + (0 * 0.872)
 ```
 
 Same as above! And for males (equal to 1):
 
 ```{r}
-42.17 + (1 * 0.825)
+28.836 + (1 * 0.872)
 ```
 
 Good, it matches what we calculated. Why is this useful? Well, we can add more
 terms to the GLM equation. This allows us to determine how a variable influences
 $y$ when other variables are held constant and is known as *multiple linear
-regression*. Since weight is probably also dependent on `hindfoot_length`, let's
+regression*. Since hindfoot length is probably also dependent on `weight`, let's
 add that to the model and put the values into the equation.
 
 ```{r}
-fit2 <- glm(weight ~ sex + hindfoot_length, data = portal)
+fit2 <- glm(hindfoot_length ~ sex + weight, data = portal)
 tidy(fit2)
 ```
 
-$$ weight = -32.09 + (sexM \times -1.72) + (hindfoot\_length \times 2.56)$$
+$$ hindfoot\_length = 21.157 + (sexM \times 0.799) + (weight \times 0.183)$$
 
-Hmm, that's interesting... is a *negative* intercept... How can weight be
-negative? Well, that's because the intercept is calculated by setting *both* sex
-and hindfoot length to zero! But is it physically even possible that a hindfoot be
-non-existent?? No. But math doesn't care what is physically possible or not.
-That's where your ecology/biology knowledge comes in. So let's change that up by
-changing the actual value of hindfoot length in the dataset. There are several
-ways to transform the data into something that is meaningful to us. But first:
+So if we wanted to know what the hindfoot length would be for a female of 50 weight:
 
-> What does everyone think is a meaningful way to transform hindfoot length so
-we can interpret the model more appropriately?
+```{r}
+21.157 + (0 * 0.799) + (50 * 0.183)
+```
 
-There are many ways to do it, but one way that is often used is to mean center
-the data. Mean centering is subtracting each value by the mean. After mean
-centering, 0 is equal to the mean of hindfoot length.
+Sometimes, depending on the research question, we want to be able to see the
+predicted $y$ based on a single variable after removing the other variables. To remove a variable you set
+it to zero, but a zero weight of an animal doesn't make sense. It doesn't exist! So, we can
+transform the data so that zero is possible. There are many ways to transform
+data, but one way that is often used is to mean center the data. Mean centering
+is subtracting each value by the mean. After mean centering, 0 is equal to the
+mean of the variable. So let's do that to weight.
 
 ```{r}
 portal2 <- portal %>%
-    mutate(hfl_mean_center = hindfoot_length - mean(hindfoot_length, na.rm = TRUE))
+    mutate(wt_center = weight - mean(weight, na.rm = TRUE))
     # You can also use `scale`
-    # mutate(hfl_mean_center = scale(hindfoot_length, scale = FALSE))
+    # mutate(wt_center = scale(weight, scale = FALSE))
 
-fit3 <- glm(weight ~ sex + hfl_mean_center, data = portal2)
+fit3 <- glm(hindfoot_length ~ sex + wt_center, data = portal2)
 tidy(fit3)
 ```
 
-$$ weight = 42.88 + (sexM \times -1.72) + (hfl\_mean\_center \times 2.56)$$
+$$ hindfoot\_length = 28.96 + (sexM \times 0.8) + (wt\_center \times 0.18)$$
 
 Much better. So if we wanted to compare males vs females who have a mean
-hindfoot length (set to 0):
+weight (set to 0):
 
 ```{r}
 # Female
-42.88 + (0 * -1.72) + (0 * 2.56)
+28.96 + (0 * 0.8) + (0 * 0.18)
 # Male
-42.88 + (1 * -1.72) + (0 * 2.56)
+28.96 + (1 * 0.8) + (0 * 0.18)
 ```
 
-Or if we wanted to see males with hindfeet 10 cm minus the mean vs 10 cm plus the mean:
+Or if we wanted to see males with weight 10 g minus the mean vs 10 g plus the mean:
 
 ```{r}
 # Males 10 cm minus mean
-42.88 + (1 * -1.72) + (-10 * 2.56)
+28.96 + (1 * 0.8) + (-10 * 0.18)
 # Male 10 cm plus mean
-42.88 + (1 * -1.72) + (10 * 2.56)
+28.96 + (1 * 0.8) + (10 * 0.18)
 ```
 
 #### Challenge
@@ -227,19 +228,19 @@ Or if we wanted to see males with hindfeet 10 cm minus the mean vs 10 cm plus th
 (`filter`) and with a new column (`mutate`) called "Dipodomys" where if genus
 is equal to "Dipodomys" than the value is "Yes" and if not the value is "No"
 (hint: use `ifelse`). Then, create a model using `glm` called `fit_challenge1`
-that has the terms `sex`, `hfl_mean_center`, and `Dipodomys`. Extract the
-relevant information from the model using `tidy`. What is the weight when sex is
-female, hindfoot length is 5 above the mean, and Dipodomys is yes?
+that has the terms `hindfoot_length` (as $y$), `sex`, `wt_center`, and `Dipodomys`. Extract the
+relevant information from the model using `tidy`. What is the hindfoot length when sex is
+female, weight is 5 above the mean, and Dipodomys is yes?
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 # Solution
 challenge1 <- portal2 %>% 
     filter(taxa == "Rodent") %>% 
     mutate(Dipodomys = ifelse(genus == "Dipodomys", "Yes", "No"))
 
-fit_challenge1 <- glm(weight ~ sex + hfl_mean_center + Dipodomys, data = challenge1)
+fit_challenge1 <- glm(hindfoot_length ~ sex + wt_center + Dipodomys, data = challenge1)
 tidy(fit_challenge1)
-73 + (-0.027 * 0) + (5.499 * 5) + (-65.377 * 1)
+22.9 + (-0.06 * 0) + (0.12 * 5) + (13.5 * 1)
 ```
 
 2. Use the below code to create a new variable `Disease` with (random) values as
@@ -258,7 +259,7 @@ challenge2 <- portal %>%
     mutate(Disease = rbinom(nrow(.), 1, 0.25))
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 # Solution
 fit_challenge2 <- glm(Disease ~ weight + sex + hindfoot_length, 
                       data = challenge2, family = binomial)
@@ -295,10 +296,11 @@ the result as the odds of an event occurring.
 exp(-1.035 + (-0.0003 * 50) + (-0.0338 * 0) + (-0.0004 * 30))
 ```
 
-In this case, for a female with a weight of 50 and hindfoot of 30, the odds of
-disease is 0.345, fairly small. Interpretation is actually a bit more
-complicated than that. So depending on your final project, if you need/want to
-use this, we can help walk you through this more.
+In this case, for a female with a weight of 50 and hindfoot of 30, the
+probability of disease is 0.345, or 34%. Interpretation actually gets a bit more
+complicated than that depending on what you want to look at. So depending on your
+final project, if you need/want to use this, we can help walk you through this
+more.
 
 ## Confidence intervals, and p-values
 
@@ -311,6 +313,8 @@ variables) influence the $y$ (dependent variable). We can use this model to
 independent variables ($x$). But we also want to know whether this model
 reflects reality.
 
+### Confidence intervals
+
 From GLM we can determine the *confidence* (or rather, the *uncertainty*) we
 have about the beta ($b$) estimates. In the case of linear regression model, we
 can use `tidy` with the `conf.int` argument to calculate the confidence
@@ -318,8 +322,8 @@ interval. In the default case, this calculates the 95% confidence interval, or
 rather we are 95% certain that the estimate lies in this range.
 
 ```{r}
-fit_hf <- glm(weight ~ hindfoot_length, data = portal)
-tidy(fit_hf, conf.int = TRUE) %>% 
+fit_wt <- glm(hindfoot_length ~ weight, data = portal)
+tidy(fit_wt, conf.int = TRUE) %>% 
     select(term, estimate, conf.low, conf.high, p.value)
 ```
 
@@ -333,15 +337,15 @@ adds weight. We can also be more strict about our uncertainty
 
 ```{r}
 # Confidence interval of 99%
-tidy(fit_hf, conf.int = TRUE, conf.level = 0.99) %>% 
+tidy(fit_wt, conf.int = TRUE, conf.level = 0.99) %>% 
     select(term, estimate, conf.low, conf.high, p.value)
 ```
 
 We can also expand the model to include more terms.
 
 ```{r}
-fit_hfsex <- glm(weight ~ hindfoot_length + sex, data = portal)
-tidy(fit_hfsex, conf.int = TRUE) %>% 
+fit_wtsex <- glm(hindfoot_length ~ weight + sex, data = portal)
+tidy(fit_wtsex, conf.int = TRUE) %>% 
     select(term, estimate, conf.low, conf.high, p.value)
 ```
 
@@ -349,6 +353,8 @@ Great! In almost all cases, you should favour confidence intervals and
 estimation over the p-value. In some parts of science (especially biomedical
 research), p-values are ubiquitous. But, there is a major problem with p-values.
 What does the p-value *mean*?
+
+### P-values are counter-intuitive
 
 P-values are based on and used in hypothesis testing. Hypothesis testing is when
 you ask a question such as "Are males heavier than females in rodents?". There
@@ -412,7 +418,9 @@ you notice?
     - `variability` to 0.5
     - `variability` to 3
 
-## Visualization as key step in analysis
+## Data visualization
+
+### A key step in all analyses
 
 Visualizing your data before, during, and after doing statistics or modelling
 your data is an incredibly important and sometimes overlooked aspect of data
@@ -450,7 +458,7 @@ Same thing, all are more or less the same. But, there is something seriously
 wrong with every since one of the datasets. Pair up and explore the data
 visually to see what's going on. Can you see it?
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 # Solution
 ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
     geom_point() +
@@ -499,29 +507,6 @@ at benefiting the environment could in fact be *harming* it because these types
 of things were not examined. 
 
 [^simpson]: Wikipedia page on [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
-
-<!-- not sure I'll get to this...
-## Model comparison techniques (optional)
-
-### Information criterion
-
-```{r, eval=FALSE, echo=FALSE}
-library(MuMIn)
-
-fit1 <- glm(weight ~ hindfoot_length, data = portal)
-# update uses the `fit1` model and just adds terms to it.
-fit2 <- update(fit1, . ~ . + sex)
-fit3 <- update(fit1, . ~ . + sex + species)
-fit4 <- glm(log(weight) ~ hindfoot_length + sex, data = portal)
-# scale with scale = FALSE is mean-centering the data. It does the same thing as value - mean
-fit5 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex, data = portal)
-fit6 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex + species, data = portal)
-fit7 <- glm(log(weight) ~ scale(hindfoot_length, scale = FALSE) + sex + species + year, data = portal)
-
-model.sel(fit1, fit2, fit3, fit4, fit5, fit6, fit7)
-```
-
--->
 
 ## Resources
 
