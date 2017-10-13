@@ -403,7 +403,7 @@ but it's still there, hidden in the path that the populations take.
 Comparing these two ways of plotting a trajectory, we can see that oscillations in time
 look like circular motion in the phase portrait. The GIF below illustrates this.
 
-![Predator-prey simulation](https://github.com/UofTCoders/rcourse/raw/master/predator-prey.gif)
+![Predator-prey simulation](image/predator-prey.gif)
 
 ### Drawing qualitative phase portraits by hand
 
@@ -611,7 +611,7 @@ saveGIF({
     grid.arrange(p1, p2, ncol = 2, top = "Predator-prey model")
     }
 
-}, movie.name = "predator-prey.gif", ani.width = 900, ani.height = 600)
+}, movie.name = "image/predator-prey.gif", ani.width = 900, ani.height = 600)
 
 ```
 

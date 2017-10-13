@@ -473,7 +473,7 @@ But even the type of graph you use can hide data. Check out the figure below for
 an example of that. In general, it's better to visualize the raw data points,
 but this quickly becomes a problem as you get more data.
 
-![Visualizing raw data vs aggregate. From [this source](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)](boxplot-problem.gif)
+![Visualizing raw data vs aggregate. From [this source](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)](image/boxplot-problem.gif)
 
 Another example is known as Simpson's Paradox. You all have already encountered
 Simpson's Paradox in the challenges of lecture 4 and 5, where the average weight
