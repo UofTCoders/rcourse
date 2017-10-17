@@ -78,7 +78,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliott        |
 | 8    | Oct 26 | Data visualization in R                             | Lindsay        |
 | 9    | Oct 31 | Project work, data visualizations                   | Lindsay        |
-| 9    | Nov 02 | Reproducible workflow, metadata, R Markdown         | Lina           |
+| 9    | Nov 02 | Reproducible workflow, R Markdown                   | Lina           |
 | -    | Nov 07 | Fall break                                          | -              |
 | -    | Nov 09 | Fall break                                          | -              |
 | 10   | Nov 14 | Project work, metadata                              | 1 TA/group     |

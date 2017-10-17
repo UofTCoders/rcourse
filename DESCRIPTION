@@ -20,6 +20,8 @@ Imports: rmarkdown,
     DiagrammeR,
     tidyverse,
     GGally,
+    datasauRus,
+    broom,
     deSolve,
     phaseR,
     lattice

@@ -31,8 +31,8 @@ navbar:
         - text: "Oct. 10: Fitting models to data"
           href: lec10-modelling.html
         - text: "Oct. 12: Statistical/probabilistic modelling in R"
-          href: lec11-modeling-r.html
-        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
+          href: lec11-modelling.html
+        - text: "Oct. 17: Introduce data sets, hypotheses, start projects"
           href: lec12-datasets.html
         - text: "Oct. 19: Project and Git setup in RStudio, tidy data, and project work"
           href: lec13-projects-r.html
@@ -42,7 +42,7 @@ navbar:
           href: lec15-data-viz.html
         - text: "Oct. 31: Project work, data visualizations"
           href: lec16-data-viz.html
-        - text: "Nov. 02: Reproducible workflow, metadata, R Markdown"
+        - text: "Nov. 02: Reproducible workflow, R Markdown"
           href: lec17-rmarkdown.html
         - text: "Nov. 14: Metadata and project work"
           href: lec18-metadata.html
@@ -62,8 +62,8 @@ navbar:
           href: assignment-04.html
         - text: "Assignment 5"
           href: assignment-05.html
-#        - text: "Assignment 6"
-#          href: assignment-06.html
+        - text: "Assignment 6"
+          href: assignment-06.html
 #        - text: "Assignment 7"
 #          href: assignment-07.html
 #        - text: "Final assignment"
@@ -88,4 +88,3 @@ navbar:
         - text: "GitHub"
           icon: fa-github
           href: https://github.com/uoftcoders/rcourse
-
