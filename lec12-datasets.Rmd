@@ -110,6 +110,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Organizer's duty:
     - Arrange for next meeting time and location
     - Send reminders to members a day or two before meeting
+    - Make and email a simple agenda of tasks to do or to discuss
 
 ### Code of conduct
 
