@@ -167,6 +167,12 @@ Final assignment is in a group and to succeed, you need to understand team dynam
     litter size, and other reproductive variables. 150 Kb size, 1440 rows of
     data.
 
+- [North American Bird Breeding Survey](https://www.pwrc.usgs.gov/BBS/?CFID=36951359&CFTOKEN=5135bf261f2f1478-471B9FA3-C648-BE26-7C2176ADADE30428)
+
+    Data about number of birds at multiple stops in North America. Many datasets
+    of varying rows that need to be linked together. ~`r (50*114)/1000` Gb size
+    (can be shortened) across >50 files.
+
 ### As a group, complete these tasks
 
 In your group, rotate roles (need a facilitator and recorder at minimum). Before
@@ -174,7 +180,9 @@ the end of class, finish these:
 
 - Choose two possible datasets (or more) your team would like to work from (can also be
 datasets not presented in class) *(record them)*
-- Brainstorm as many research questions as possible for those two datasets
+- Look into the data documentation, see what type of variables there are, what
+published articles are available.
+- Then, brainstorm as many research questions as possible for those two datasets
 *(record them)*
     - Goal is to write down as many ideas as possible
     - No question is off limits and no question is too simple or too complex! 
@@ -182,7 +190,7 @@ datasets not presented in class) *(record them)*
     - Just write what ever comes to mind, whether it is an idea or not. Just start writing!
 
 Make sure to *record* everything down! Many of these tasks will also be part of
-the assignment!
+assignment 7!
 
 ### Set up GitHub account
 
