@@ -132,7 +132,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Introduce each other:
     - Find out everyone's name and year of study
     - Find out other things about each other (e.g. any plans for next year, etc)
-- Create a two or one word "team name". We'll use this to create a shared folder for everyone to use.
+- Create a one or two word "team name". We'll use this to create a shared folder for everyone to use.
 - Assign roles to each person (these roles will be rotated in every group setting):
     - You need: facilitator, recorder, organizer
     - Discuss how and when roles will be rotated *(record it)*
