@@ -30,9 +30,9 @@ navbar:
           href: lec09-modeling-r.html
         - text: "Oct. 10: Fitting models to data"
           href: lec10-modelling.html
-        - text: "Oct. 12: Statistical/probabilistic modelling in R"
+        - text: "Oct. 12: Statistical and probabilistic modelling in R"
           href: lec11-modelling.html
-        - text: "Oct. 17: Introduce data sets, hypotheses, start projects"
+        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
           href: lec12-datasets.html
         - text: "Oct. 19: Project and Git setup in RStudio, tidy data, and project work"
           href: lec13-projects-r.html
@@ -71,7 +71,8 @@ navbar:
     - text: "Slides"
       icon: fa-caret-square-o-right
       menu:
-        - text: ""
+        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
+          href: slides/lec12-datasets.html
     - text: "Resources and FAQ"
       icon: fa-question
       href: resources.html
