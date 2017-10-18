@@ -173,6 +173,68 @@ Final assignment is in a group and to succeed, you need to understand team dynam
     of varying rows that need to be linked together. ~`r (50*114)/1000` Gb size
     (can be shortened) across >50 files.
 
+### Example hypotheses with figures
+
+> Simple hypothesis: Bigger predators eat bigger prey. 
+
+Easy to identify independent and dependent variables and visualize with plots
+and test with linear regression.
+
+> Advanced hypothesis: Which characteristics determine prey size among marine
+predators?
+
+Lot's of possible groupings available. Start with visualizing some good
+candidate variables such as predator weight and length. Realize that the
+relationship is more complex than this and start dividing the data set
+accoring to species, water temperature, weather etc. Use a combination of
+visualization and regression analyses. Fit models to the data to determine
+which types of regressions are appropriate.
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+```{r, eval=FALSE}
+# Read data online and fix colnames
+pred_prey <- read_tsv('http://www.esapubs.org/archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt')
+```
+
+```{r, echo=FALSE}
+# pred_prey <- download.file('http://www.esapubs.org/archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt',
+#                            "data/predator_prey_body_size.txt")
+pred_prey <- read_tsv("data/predator_prey_body_size.txt")
+```
+
+```{r}
+colnames(pred_prey) <- tolower(gsub(' ', '_', colnames(pred_prey)))
+
+# Only adults and some columns of interest
+adult_pred_food <- pred_prey %>% 
+    mutate(predator_lifestage = tolower(predator_lifestage)) %>% # Mix of upper and lower case...
+    filter(predator_lifestage == 'adult') %>% 
+    select(predator_common_name, predator_length, prey_mass, predator_mass)
+
+# Summarize data to plot
+plot_data <- adult_pred_food %>% 
+    group_by(predator_common_name) %>% 
+    summarize(
+        mean_pred_mass = mean(predator_mass),
+        mean_prey_mass = mean(prey_mass),
+        mean_pred_length = mean(predator_length)) %>% 
+    filter(mean_pred_mass < 8000) # "outliers"
+
+# Plot pred weight vs prey weight
+ggplot(plot_data, aes(x = mean_pred_mass, y = mean_prey_mass)) +
+    geom_point() +
+    geom_smooth()
+
+# Plot pred length vs prey weight
+ggplot(plot_data, aes(x = mean_pred_length, y = mean_prey_mass)) +
+    geom_point() +
+    geom_smooth()
+```
+
+
 ### As a group, complete these tasks
 
 In your group, rotate roles (need a facilitator and recorder at minimum). Before
