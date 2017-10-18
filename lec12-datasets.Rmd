@@ -183,10 +183,10 @@ and test with linear regression.
 > Advanced hypothesis: Which characteristics determine prey size among marine
 predators?
 
-Lot's of possible groupings available. Start with visualizing some good
+Lots of possible groupings available. Start with visualizing some good
 candidate variables such as predator weight and length. Realize that the
 relationship is more complex than this and start dividing the data set
-accoring to species, water temperature, weather etc. Use a combination of
+according to species, water temperature, weather, etc. Use a combination of
 visualization and regression analyses. Fit models to the data to determine
 which types of regressions are appropriate.
 
@@ -200,8 +200,13 @@ pred_prey <- read_tsv('http://www.esapubs.org/archive/ecol/E089/051/Predator_and
 ```
 
 ```{r, echo=FALSE}
-# pred_prey <- download.file('http://www.esapubs.org/archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt',
-#                            "data/predator_prey_body_size.txt")
+# download.file(
+#     'http://www.esapubs.org/archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt',
+#     "data/predator_prey_body_size.txt"
+#     )
+# pred_prey <- read_tsv("data/predator_prey_body_size.txt")
+# pred_prey <- sample_n(pred_prey, 1000)
+# write_tsv(pred_prey, "data/predator_prey_body_size.txt")
 pred_prey <- read_tsv("data/predator_prey_body_size.txt")
 ```
 
