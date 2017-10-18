@@ -7,10 +7,9 @@ author: "Luke Johnston"
 
 > ### Lesson objectives:
 >
-> - Learn the 5 main Git commands and the Git-RStudio interface
 > - Know why a standard/consistent folder and file structure is important
 > - Learn *a bit* about how version control and Git works
-> - Set up GitHub and know the *basics* of using it
+> - Learn the 4 main Git commands and the Git-RStudio interface
 > - Project work
 >
 > ### Lesson outline:
@@ -20,15 +19,111 @@ author: "Luke Johnston"
 > - Version control using Git 
 >     - (Basic) introduction to Git (10-15 min)
 >     - Common commands for Git (15-20 min)
->     - Exercise: Git from the command line (15 min)
 >     - Using Git in RStudio (10 min)
->     - Exercise: Git from RStudio (5 min)
 > - Quick introduction to using GitHub (5-10 min)
->     - Exercise: Setup GitHub (5-10 min)
+>     - Exercise: Fork GitHub (5-10 min)
 > - Project work
 >     - Get started/work on assignment 7 (20 min)
->     - Comment on task 4 of assignment 7 (1-2 min)
 
 -----
 
+## Git
 
+### A short introduction
+
+Include comic
+
+What is git
+
+Include why should use git or a version control system
+
+Power when collaborating
+
+A bit about how it works.
+
+#### Exercise
+
+Follow the getting setup steps from command line:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email yourname@domain.com
+```
+
+Replace "Your Name", with, well, your first and last name. Replace the fake
+email address with the email address you normally use.
+
+Confirm it works by running:
+
+```bash
+git config --list
+```
+
+### The basic commands of Git
+
+- `git add`
+- `git commit`
+- `git log`
+- `git status`
+
+We'll switch between using the command line and using the RStudio interface.
+While the RStudio interface is very useful and powerful, you will likely need to
+be familiar with the command line for some Git commands.
+
+#### Exercise
+
+Create a new markdown file called `bio.md` in the `lec13` R project. Add your
+name and one or two sentence blurb about yourself.
+
+- *Using the command line*, add this new file and commit to the history. Check
+the status and log.
+
+- *Using the RStudio Git interface*, add the new bio file, write a short but
+descriptive commit message, and hit `Commit`.
+
+### GitHub and your project
+
+In GitHub
+
+```{r}
+DiagrammeR::grViz("
+digraph {
+
+    node [shape = box, style = rounded]
+    {
+        rank = same;
+        GitHubMain [label = 'Main GitHub\nrepo (UofTCoders)']
+        GitHubFork [label = 'Forked GitHub\nrepo (yours)']
+    }
+
+    LocalRepo [label = 'Local repo']
+    
+    GitHubFork -> GitHubMain [label = 'Pull\nRequest']
+    GitHubFork -> LocalRepo [label = 'remote origin']
+    GitHubMain -> LocalRepo [label = 'remote upstream']
+}
+")
+```
+
+
+
+
+```{r}
+DiagrammeR::grViz("
+digraph {
+
+    node [shape = box, style = rounded]
+    {
+        rank = same;
+        GitHubMain [label = 'Main GitHub\nrepo (UofTCoders)']
+        GitHubFork [label = 'Forked GitHub\nrepo (yours)']
+    }
+
+    LocalRepo [label = 'Local repo']
+    
+    GitHubFork -> GitHubMain [label = 'Pull\nRequest']
+    GitHubFork -> LocalRepo [label = 'remote origin']
+    GitHubMain -> LocalRepo [label = 'remote upstream']
+}
+")
+```
