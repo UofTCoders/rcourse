@@ -1,4 +1,0 @@
----
-title: "Fitting models to data"
----
-

@@ -1,0 +1,520 @@
+---
+title: "Statistical and probabilistic modelling in R"
+author: "Luke Johnston"
+---
+
+## Lesson preamble
+
+> ### Lesson objectives
+> 
+> - Learn how to apply and interpret linear regression for a variety of data
+> - Understand probability and the importance of presenting confidence intervals
+> - Learn the importance of visualizing your data when doing any analyses or
+> statistics
+> 
+> ### Lesson outline
+> 
+> - Statistics and probability (5 min)
+> - Generalized linear models (40-50 min)
+>     - Linear regression
+>     - Logistic regression
+> - Confidence intervals and p-values (15-20 min)
+> - Importance of visualization (20 min)
+> 
+> ### Setup
+>
+> - `install.packages("dplyr")` # or `tidyverse`
+> - `install.packages("tidyr")` # or `tidyverse`
+> - `install.packages("broom")`
+> - `install.packages("datasauRus")`
+
+-----
+
+```{r setup}
+library(tidyverse)
+library(broom)
+library(datasauRus)
+```
+
+## Statistics and probability
+
+Theoretical models are powerful tools for explaining and understanding the world.
+However, they are limited in that the real-world often doesn't perfectly fit
+these models. The real world is messy and noisy. We can't always blindly trust our data
+as there are inherent biases and errors in it. Measuring it, collecting it,
+recording it, and inputting it are some of the possible sources of error and
+bias.  We use statistics and probability to determine whether the way we
+understand and conceptualize the world (as models) matches reality (even with
+the error and bias).
+
+A reason we use statistical methods in R compared to writing up the formulas and
+equations ourselves is that we can focus on answering questions without worrying
+about whether we are doing the math or computation wrong. This is of course
+dependent on the type of research questions you may be interested in (e.g. for
+more theoretical questions, doing the math and computation yourself is probably
+a goal!) and on the type of data you are using/collecting. There is a lot of
+complexity that has already been taken care of in the available R packages and
+functions. For example, the function `glm` that we will use in this lesson takes
+a maximum likelihood-based approach to estimation, which is a complex method for
+determining fit (like the least squares method of fitting you did in the
+previous lesson). That way, you can answer your research questions and not worry
+too much about the exact math involved and instead worry about the specifics of
+your field (e.g. Are you measuring the right thing? Are you collecting the right
+data? Are you asking the right questions? Is there an ecological or biological
+aspect you are missing in your analysis?)
+
+## Generalized linear models
+
+Generalized linear models (or GLM) is a family of statistical modelling
+techniques, that can also be used in place of several other techniques, e.g.
+correlation or analysis of variance (ANOVA), linear regression, logistic
+regression. GLM is a powerful technique that you can use on a wide range of data
+and research questions, and is the foundation for understanding how more
+advanced techniques work. This is the reason I will be covering GLM in depth.
+(For those who will go into graduate studies or into research in general, you
+will likely use mixed effects models. If you can understand and grasp GLM, it
+will be substantially easier for you to understand mixed effects modelling and
+other techniques.)
+
+### Linear regression
+
+A version of GLM that uses continuous $y$ values is called linear regression,
+which I'm going to focus on. The formula for linear regression (or GLM in
+general) is:
+
+$$ Y = \alpha + X\beta + \varepsilon $$
+
+Or, a simplified, alphabetized version is:
+
+$$ y = a + Xb + e $$
+
+Where $a$ is the intercept, $X$ is the variable (or as a matrix of all
+variables), $b$ is the slope/coefficient,
+and $e$ is the error term. In the case of multiple linear regression (more than
+one $x$), it is expanded to:
+
+$$ y = a + x_1b_1 + x_2b_2 +...+ x_nb_n + e $$
+
+Where each $x_n$ is a variable (either continuous or categorical) in a data frame
+and $b_n$ is the variable coefficient/slope.
+
+We construct these regression models for several reasons. Sometimes we want to
+infer how some variables ($x$) cause or influence another variable ($y$). Or
+maybe we know that $y$ has a lot of error in the measurement or is difficult to
+measure, so we want to derive a formula in order to predict $y$ based
+on more accurately measured variables. In R we can run linear regression either
+using `lm` or using `glm`. We'll use `glm` since it can be expanded to other
+types of analyses. First, let's load up a dataset.
+
+```{r, eval=FALSE}
+portal <- read_csv("portal_data.csv")
+```
+
+```{r, echo=FALSE}
+portal <- read_csv("data/portal_data.csv")
+```
+
+Now, let's fit a model to the data. Let's say we want to see the role that sex
+has on hindfoot length in various species in the `portal` dataset. (`gaussian` is stating 
+that `hindfoot_length` is a continuous variable and that you assume the error terms have
+a Gaussian, or normal, distribution.)
+
+```{r}
+fit1 <- glm(hindfoot_length ~ sex, data = portal, family = gaussian)
+summary(fit1)
+```
+
+There's a lot of results and information contained within `fit1`, which
+`summary()` extracts and presents in a fairly nice format. However, a lot of
+this information we aren't really interested in. So let's extract only what we
+want, using the `broom` package. (get it, broom to clean up?)
+
+```{r}
+tidy(fit1)
+```
+
+Much nicer! Ok, so what does this actually mean? Let's go back to the equation
+and convert the above into the formula:
+
+$$ hindfoot\_length = Intercept + (sexM \times b) $$
+
+Let's substitute in the numbers. The intercept, is well, the intercept in the
+data above. The $b$ is the estimate for `sex`.
+
+$$ hindfoot\_length = 28.836 + (sexM \times 0.872) $$
+
+We can use this equation to estimate the value of hindfoot length for a specific sex. But
+first, let's make sure this is working correctly. Let's find out the mean hindfoot length
+by sex.
+
+```{r}
+portal %>% 
+    filter(!is.na(sex)) %>% 
+    group_by(sex) %>% 
+    summarize(mean_hfl = mean(hindfoot_length, na.rm = TRUE)) 
+```
+
+Ok, let's compare to the equation. The variable `sexM` is 1 for male and 0 for
+female. So if we want to calculate the hindfoot length of female, we have to set `sexM`
+as 0 in the equation. Let's do it:
+
+```{r}
+28.836 + (0 * 0.872)
+```
+
+Same as above! And for males (equal to 1):
+
+```{r}
+28.836 + (1 * 0.872)
+```
+
+Good, it matches what we calculated. Why is this useful? Well, we can add more
+terms to the GLM equation. This allows us to determine how a variable influences
+$y$ when other variables are held constant and is known as *multiple linear
+regression*. Since hindfoot length is probably also dependent on `weight`, let's
+add that to the model and put the values into the equation.
+
+```{r}
+fit2 <- glm(hindfoot_length ~ sex + weight, data = portal)
+tidy(fit2)
+```
+
+$$ hindfoot\_length = 21.157 + (sexM \times 0.799) + (weight \times 0.183)$$
+
+So if we wanted to know what the hindfoot length would be for a female of 50 weight:
+
+```{r}
+21.157 + (0 * 0.799) + (50 * 0.183)
+```
+
+Sometimes, depending on the research question, we want to be able to see the
+predicted $y$ based on a single variable after removing the other variables. To remove a variable you set
+it to zero, but a zero weight of an animal doesn't make sense. It doesn't exist! So, we can
+transform the data so that zero is possible. There are many ways to transform
+data, but one way that is often used is to mean center the data. Mean centering
+is subtracting each value by the mean. After mean centering, 0 is equal to the
+mean of the variable. So let's do that to weight.
+
+```{r}
+portal2 <- portal %>%
+    mutate(wt_center = weight - mean(weight, na.rm = TRUE))
+    # You can also use `scale`
+    # mutate(wt_center = scale(weight, scale = FALSE))
+
+fit3 <- glm(hindfoot_length ~ sex + wt_center, data = portal2)
+tidy(fit3)
+```
+
+$$ hindfoot\_length = 28.96 + (sexM \times 0.8) + (wt\_center \times 0.18)$$
+
+Much better. So if we wanted to compare males vs females who have a mean
+weight (set to 0):
+
+```{r}
+# Female
+28.96 + (0 * 0.8) + (0 * 0.18)
+# Male
+28.96 + (1 * 0.8) + (0 * 0.18)
+```
+
+Or if we wanted to see males with weight 10 g minus the mean vs 10 g plus the mean:
+
+```{r}
+# Males 10 cm minus mean
+28.96 + (1 * 0.8) + (-10 * 0.18)
+# Male 10 cm plus mean
+28.96 + (1 * 0.8) + (10 * 0.18)
+```
+
+#### Challenge
+
+1. Create a new dataframe called `challenge1` that keeps only taxa of "Rodent"
+(`filter`) and with a new column (`mutate`) called "Dipodomys" where if genus
+is equal to "Dipodomys" than the value is "Yes" and if not the value is "No"
+(hint: use `ifelse`). Then, create a model using `glm` called `fit_challenge1`
+that has the terms `hindfoot_length` (as $y$), `sex`, `wt_center`, and `Dipodomys`. Extract the
+relevant information from the model using `tidy`. What is the hindfoot length when sex is
+female, weight is 5 above the mean, and Dipodomys is yes?
+
+```{r}
+# Solution
+challenge1 <- portal2 %>% 
+    filter(taxa == "Rodent") %>% 
+    mutate(Dipodomys = ifelse(genus == "Dipodomys", "Yes", "No"))
+
+fit_challenge1 <- glm(hindfoot_length ~ sex + wt_center + Dipodomys, data = challenge1)
+tidy(fit_challenge1)
+22.9 + (-0.06 * 0) + (0.12 * 5) + (13.5 * 1)
+```
+
+2. Use the below code to create a new variable `Disease` with (random) values as
+either 0 for "Healthy" or 1 for "Diseased". Then, write up a formula using `glm`
+to analyze the role that weight, sex, and hindfoot length (*not* mean centered)
+has on disease status. Because the $y$ is not continuous, you need to
+set `family = binomial` in `glm`. Run the code, check the summary (or `tidy`),
+put the numbers into an equation (as we did above), and *try* to interpret the
+results (where sex is female, weight is 50, and hindfoot length is 30).
+
+```{r}
+# So random numbers is the same for everyone
+set.seed(1002)
+challenge2 <- portal %>% 
+    # rbinom randomly creates values for binary data.
+    mutate(Disease = rbinom(nrow(.), 1, 0.25))
+```
+
+```{r}
+# Solution
+fit_challenge2 <- glm(Disease ~ weight + sex + hindfoot_length, 
+                      data = challenge2, family = binomial)
+summary(fit_challenge2)
+tidy(fit_challenge2)
+-1.035 + (-0.0003 * 50) + (-0.0338 * 0) + (-0.0004 * 30)
+```
+
+### Logistic regression
+
+Logistic regression is a technique that has the $y$ as a binary or categorical
+variable (e.g. female vs male, mammal vs plant vs bacteria). We won't be
+covering this in too much detail, but I will go over it to highlight the
+flexibility that GLM has in handling different types of data.
+
+The reason why the result of the challenge two above was difficult to interpret
+was because there's a bit more to logistic regression then with linear
+regression. It becomes clearer when we look at the formula:
+
+$$ logit(p) = \ln\left(\frac{P(y=1)}{P(y=0)}\right) = a + Xb + e$$
+
+In this case, the $y$ is the logged odds of the event occurring (in the
+challenge the event was disease). In order to interpret the model results, we
+need to exponentiate both sides of the equation.
+
+$$ \exp\left(\ln\left(\frac{p}{1 - p}\right)\right) = \exp(a + Xb + e)$$
+$$ \frac{p}{1 - p} = e^{a + Xb + e}$$
+
+where $p$ is the probability of the event (equal to 1, in this case of disease).
+So if we exponentiate the estimates, and solve for the formula, we can interpret
+the result as the odds of an event occurring.
+
+```{r}
+exp(-1.035 + (-0.0003 * 50) + (-0.0338 * 0) + (-0.0004 * 30))
+```
+
+In this case, for a female with a weight of 50 and hindfoot of 30, the
+probability of disease is 0.345, or 34%. Interpretation actually gets a bit more
+complicated than that depending on what you want to look at. So depending on your
+final project, if you need/want to use this, we can help walk you through this
+more.
+
+## Confidence intervals, and p-values
+
+So what's the point of using `glm`? Not only does it create a model with
+coefficients and the magnitude (effect size), but it is also used to calculate how *certain* we
+are about the results. The main power of GLM comes from the ability to estimate
+model parameters and derive meaning from how certain $x$ variables (independent
+variables) influence the $y$ (dependent variable). We can use this model to
+*predict* what could happen to some value if we knew or could change the
+independent variables ($x$). But we also want to know whether this model
+reflects reality.
+
+### Confidence intervals
+
+From GLM we can determine the *confidence* (or rather, the *uncertainty*) we
+have about the beta ($b$) estimates. In the case of linear regression model, we
+can use `tidy` with the `conf.int` argument to calculate the confidence
+interval. In the default case, this calculates the 95% confidence interval, or
+rather we are 95% certain that the estimate lies in this range.
+
+```{r}
+fit_wt <- glm(hindfoot_length ~ weight, data = portal)
+tidy(fit_wt, conf.int = TRUE) %>% 
+    select(term, estimate, conf.low, conf.high, p.value)
+```
+
+In this case, the uncertainty of the estimate for hindfoot length is between
+2.524 to 2.58, which is pretty narrow (that's a good thing). This tells us that
+the estimate that hindfoot length influences weight is probably reflective of
+reality. That makes sense since longer hindfeet mean there is more space and
+amount of area for more flesh to attach to and that there is more bone, which
+adds weight. We can also be more strict about our uncertainty
+(counter-intuitively, a larger confidence interval is more strict).
+
+```{r}
+# Confidence interval of 99%
+tidy(fit_wt, conf.int = TRUE, conf.level = 0.99) %>% 
+    select(term, estimate, conf.low, conf.high, p.value)
+```
+
+We can also expand the model to include more terms.
+
+```{r}
+fit_wtsex <- glm(hindfoot_length ~ weight + sex, data = portal)
+tidy(fit_wtsex, conf.int = TRUE) %>% 
+    select(term, estimate, conf.low, conf.high, p.value)
+```
+
+Great! In almost all cases, you should favour confidence intervals and
+estimation over the p-value. In some parts of science (especially biomedical
+research), p-values are ubiquitous. But, there is a major problem with p-values.
+What does the p-value *mean*?
+
+### P-values are counter-intuitive
+
+P-values are based on and used in hypothesis testing. Hypothesis testing is when
+you ask a question such as "Are males heavier than females in rodents?". There
+is then the null hypothesis ("females and males weigh the same") and the
+alternative hypothesis ("males are heavier than females"). Using statistical
+tests, we can calculate the p-value to give us an indication of which hypothesis
+is true. Traditionally, if the p-value is <0.05 you 'reject' the null
+hypothesis. This cut off is completely arbitrary.
+
+<!-- What do you all think about this cut off? this is 1 in 20 chance that
+you'll see this result if the null hypothesis was true -->
+
+However, the true meaning of the p-value is a bit counter-intuitive. The
+p-value is the probability of getting a result that is the same as or more
+extreme as what you are getting given the null hypothesis is true. There is
+nothing in that statement that says the *alternate* hypothesis is true... This
+is important because often researchers use the p-value to say that their
+hypothesis is true or that the p-value is the probability their hypothesis (and
+thus reality) is true. But that is not at all the case! This is why the use of
+p-values should be minimized as much as possible and to instead use estimation
+and confidence intervals.
+
+The other thing with p-values is that they are 'unstable'/'unreliable'...
+meaning they can change with even just slight differences in the data. Let's do
+a demonstration:
+
+```{r}
+num_tests <- 100
+sample_size <- 100
+actual_difference <- 0
+variability <- 1
+
+p.values <- sapply(1:num_tests, function(x) {
+    x <- rnorm(sample_size, mean = 0, 
+               sd = variability)
+    y <- rnorm(sample_size, mean = 0 + actual_difference, 
+               sd = variability)
+    tidy(t.test(x, y))[['p.value']]
+})
+
+qplot(y = p.values) +
+    geom_hline(yintercept = 0.05)
+```
+
+As you can see, we *know* that x and y are the same (both have a mean of 0 and
+standard deviation of 1). And yet, there are still ~6 or so (below the line)
+tests that show a "significant" difference between x and y! Which makes sense,
+since a p-value of 0.05 equals a 5% chance you will see another similar result
+if the null hypothesis were true. Confusing eh?
+
+#### Challenge
+
+1. Play around with the above code and try this different conditions. What do
+you notice?
+    - `sample_size` to 10
+    - `sample_size` to 500
+    - `num_tests` to 1000
+    - `num_tests` to 10
+    - `actual_difference` to 0.25
+    - `actual_difference` to 1
+    - `variability` to 0.5
+    - `variability` to 3
+
+## Data visualization
+
+### A key step in all analyses
+
+Visualizing your data before, during, and after doing statistics or modelling
+your data is an incredibly important and sometimes overlooked aspect of data
+analysis. Sometimes statistics and modelling give you an answer that you sort of
+expect, but the actual data is telling a different story.
+
+#### Challenge
+
+There are several datasets found within the `datasauRus` package. This package
+is trying to illustrate a point. First, let's look at the mean and standard
+deviation of the variables in each dataset:
+
+```{r}
+datasaurus_dozen %>%
+    group_by(dataset) %>%
+    summarise(
+        mean_x = mean(x),
+        sd_x = sd(x),
+        mean_y = mean(y),
+        sd_y = sd(y)
+    )
+```
+
+They're all basically the same... What about for linear regression? (`lm` is the
+same as `glm` with family `gaussian`.)
+
+```{r}
+# Linear regression on each dataset
+datasaurus_dozen %>% 
+    group_by(dataset) %>% 
+    do(tidy(lm(y ~ x, data = .))[2, ])
+```
+
+Same thing, all are more or less the same. But, there is something seriously
+wrong with every since one of the datasets. Pair up and explore the data
+visually to see what's going on. Can you see it?
+
+```{r}
+# Solution
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
+    geom_point() +
+    theme_void() +
+    theme(legend.position = "none") +
+    facet_wrap(~ dataset, ncol = 3)
+```
+
+### Other examples of using visualization to find a problem
+
+From what you found in the challenge above, can you see why it's dangerous to
+not visualize the data first? Sometimes just visualizing the data can give you
+greater insight into the data and meaning than any statistical or mathematical
+model can provide. (For a real-world example of this, check out this 
+[article](https://www.wired.com/2014/10/astrophysics-interstellar-black-hole/)
+on the discoveries physicists made when they created a visualization of a black
+hole based on the math when making the movie Interstellar).
+
+But even the type of graph you use can hide data. Check out the figure below for
+an example of that. In general, it's better to visualize the raw data points,
+but this quickly becomes a problem as you get more data.
+
+![Visualizing raw data vs aggregate. From [this source](https://g.redditmedia.com/Opizo6PEpuT_cL0N0tWK5g59CsMHFystdNCpYOqhu-A.gif?w=884&fm=mp4&mp4-fragmented=false&s=222875e5455c31829929add6c426a86b)](image/boxplot-problem.gif)
+
+Another example is known as Simpson's Paradox. You all have already encountered
+Simpson's Paradox in the challenges of lecture 4 and 5, where the average weight
+of all species decreased over time, but for each species weight remained
+constant. These types of problems are encountered all the time in data analysis
+and it is part of what makes science so hard, because data often doesn't behave
+as we expect it to. The figure below illustrates Simpson's Paradox.
+
+```{r}
+ggplot(simpsons_paradox, aes(x = x, y = y, colour = dataset)) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    theme(legend.position = "none") +
+    facet_wrap( ~ dataset, ncol = 3)
+```
+
+And sometimes, by not looking at the raw data, it can lead to actual harm.
+For instance, Simpson's paradox comes up in medical studies of drugs
+that could be lifesaving for a patient. If inappropriate conclusions are drawn
+because the data wasn't completely explored, people could be harmed or could
+die. This is true in *any* scientific field, including ecology. Policies aimed
+at benefiting the environment could in fact be *harming* it because these types
+of things were not examined. 
+
+[^simpson]: Wikipedia page on [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
+
+## Resources
+
+- [Calculating coefficients for logistic regression](https://stats.stackexchange.com/questions/81000/calculate-coefficients-in-a-logistic-regression-with-r)
+- [Images showing why visualization is important](https://www.autodeskresearch.com/publications/samestats)
+- [Interpreting logistic regression](https://stats.stackexchange.com/questions/171768/interpreting-coefficients-in-a-logistic-regression)
+- [Dance of the p-value video](https://www.youtube.com/watch?v=5OL1RqHrZQ8)

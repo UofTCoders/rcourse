@@ -1,5 +1,137 @@
 ---
-title: "Assignment 3"
+title: 'Assignment 3: dplyr and ggplot (8 marks)'
+output:
+    html_document:
+        toc: false
 ---
 
-> Uploaded when it is handed out.
+1.  Plotting (1 mark)
+
+    Run the block below to create a categorical variable of the `activ`
+    column. This will make dplyr recognize that there are only two
+    levels of activity (0 and 1), rather than a continuous range 0-1,
+    which will facilitate plotting.
+
+    ``` {.r}
+    library(tidyverse)
+    beaver1 <- beaver1 %>%
+        mutate(factor_activ = factor(activ))
+    ```
+
+    a.  In the previous assignment, we saw that the beaver's body
+        temperature was the highest when the beaver was outside the
+        retreat. However, we did not explore the distribution of
+        temperatures for the active and inactive conditions. Create a
+        histogram with the temperature on the x-axis and color the bins
+        corresponding to the activity variable. *Hint: You need to use
+        the `fill` parameter rather than `color`.* (0.25 marks)
+
+    b.  We already know that the beaver's body temperature is correlated
+        with whether it is outside the retreat or not. However, we did
+        not control for the time of day, maybe the beaver's temperature
+        is even better predicted by knowing what time of day it is. To
+        satisfactorily answer this question, we should perform a
+        regression analysis, but we easily can get a good overview by
+        plotting the data. Make a scatter plot with the time of day on
+        the x-axis and the body temperature on the y-axis. Color the
+        scatter points according the beaver's activity level and
+        separate the measurements into one plot per day. *Hint: To
+        separate measurements per day, you could use `filter()` and two
+        chunks of code, but try the more efficient way of facetting into
+        subplots, which we talked about in the lecture.* (0.75 marks)
+
+2.  Read in and pre-process data (1.5 marks)
+
+    Ok, that's enough about beaver body temperatures. Now you will apply
+    your data wrangling skills on the yearly change in biomass of plants
+    in the [beautiful Abisko national park in northern
+    Sweden](https://en.wikipedia.org/wiki/Abisko_National_Park). We have
+    preprocessed this data and made [it available as a csv-file via this
+    link](https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv).
+    You can find the original data and a short readme on
+    [figshare](https://figshare.com/articles/Time_Series_of_plant_biomass_during_1998-2013/4149648)
+    and [dryad](https://datadryad.org/resource/doi:10.5061/dryad.38s21).
+    The original study[^1] is available un an open access license.
+    Reading through the readme on figshare, and the study abstract will
+    increase your understanding for working with the data.
+
+    a.  Read the data directly from the provided URL, into a variable
+        called `plant_biomass` and display the first six rows. (0.25
+        mark)
+
+    b.  Convert the Latin column names into their common English names:
+        lingonberry, bilberry, bog bilberry, dwarf birch, crowberry, and
+        wavy hair grass. After this, display all column names. *Hint:
+        Search online to find out which Latin and English names pair up.
+        Check the [tidyverse style
+        guide](http://style.tidyverse.org/syntax.html#object-names) if
+        you don't remember which characters need to be replaced in
+        column/variable names.* (0.5 marks)
+
+    c.  This is a wide data frame (species make up the column names). A
+        long format is easier to analyze, so gather the species names
+        into one column (`species`) and the measurement values into
+        another column (`biomass`). Assign it to the variable
+        `plant_biomass` to overwrite the previous data frame. *Hint:
+        Make sure the output is correct before overwriting the old
+        variable.* (0.75 marks)
+
+3.  Data exploration (4.5 marks)
+
+    Now that our data is in a tidy format, we can start exploring it!
+
+    a.  What is the average biomass in g/m^2^ for all observations in
+        the study? (0.25 marks)
+
+    b.  How does the average biomass compare between the grazed control
+        sites and those that were protected from herbivores. (0.25
+        marks)
+
+    c.  Display a table of the average plant biomass for each year.
+        (0.25 marks)
+
+    d.  What is the mean plant biomass per year for the `grazedcontrol`
+        and `rodentexclosure` groups (spread these variables as separate
+        columns in a table). (0.5 marks)
+
+    e.  Compare the biomass for `grazedcontrol` with that of
+        `rodentexclosure` graphically in a line plot. What could explain
+        the big dip in biomass year 2012? *Hint: The published study
+        might be able to help with the second question...* (0.5 marks)
+
+    f.  How many distinct species are there? (0.25 marks)
+
+    g.  Check whether there is an equal number of observations per
+        species. (0.25 marks)
+
+    h.  Compare the yearly change in biomass for each species in a
+        lineplot. (0.5 marks)
+
+    i.  From the previous two questions, we found that the biomass is
+        higher in the sites with rodent exclosures (especially in recent
+        years), and that the crowberry is the dominant species. Notice
+        how the lines for `rodentexclosure` and `crowberry` are of
+        similar shape. Coincidence? Let's find out! Use a facetted line
+        plot to explore whether all plant species are impacted equally
+        by grazing. (0.75 mark)
+
+    j.  The habitat could also be affecting the biomass of different
+        species. Explore graphically if this is the case. (0.5 marks)
+
+    k.  It looks like both habitat and treatment have an effect on most
+        of the species! Let's dissect the data further by visualizing
+        the effect on each species of both the habitat and treatment by
+        facetting the plot accordingly. (0.5 marks)
+
+4.  Create a new column that represents the square of the biomass.
+    Display the three largest `squared_biomass` observations in
+    descending order. Only include the columns `year`, `squared_biomass`
+    and `species` and only observations between the years 2003 and 2008
+    from the forest habitat. *Hint: Break this down into single criteria
+    and add one at a time. You will be able to obtain the desired result
+    with five operations* (1 mark)
+
+[^1]: Olofsson J, te Beest M, Ericson L (2013) Complex biotic
+    interactions drive long-term vegetation dynamics in a subarctic
+    ecosystem. Philosophical Transactions of the Royal Society B
+    368(1624): 20120486. <https://dx.doi.org/10.1098/rstb.2012.0486>

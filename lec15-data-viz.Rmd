@@ -1,4 +1,4 @@
 ---
-title: "More on data visualizations (plus project work)"
+title: "Data visualization in R"
 ---
 

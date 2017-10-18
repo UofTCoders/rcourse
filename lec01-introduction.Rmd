@@ -1,4 +1,456 @@
 ---
 title: "Introduction to course"
+author: Joel Östblom
 ---
 
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+# Load this before class starts
+library(tidyverse)
+library(GGally)
+```
+
+## Lesson preamble
+
+> ### Lesson objectives
+> 
+> - **Main goal**:
+>     - To give students an overview of the capabilities of R and how to use the
+>       R Notebook for exploratory data analyses.
+> - **Secondary goals**:
+>     - Learn about the differences between R and Excel.
+>     - Learn some basic R commands.
+>     - Learn about the markdown syntax and how to use it within the R Notebook.
+> 
+> ### Lesson outline
+> 
+> Total lesson time: 1 hour
+> 
+> - Working with computers (15 min)
+> - Programming in R (40 min)
+>     - The Basics (10 min)
+>     - RStudio and the R Notebook (5 min)
+>     - Plotting (10 min)
+>     - Saving data and generating reports (5 min)
+>     - R Markdown (10 min)
+
+-----
+
+## Working with computers
+
+Before we get into more practical matters, I want to provide a brief background
+to the idea of working with computers. Essentially, computer work is about
+humans communicating with the computer by modulating flows of current in the
+hardware, to get the computer to carry out an advanced calculation that we are
+unable to compute efficient ourselves. Early examples of human computer
+communication was quite primitive and included actually disconnecting a wire
+and connecting it again in a different spot. Luckily, we are not doing this
+anymore, instead we have programs with graphical user interface with menus and
+buttons, that enables more efficient human to computer communication.
+
+### Graphical user interfaces vs text based user interfaces
+
+An example of such a program that I think many of you are familiar with, is
+spreadsheet software such as Microsoft Excel and LibreOffice Calc. Here, all
+the functionality of the program is accessible via hierarchical menus, and
+clicking buttons send instructions to the computer, which responds and sends
+the results back to your screen. E.g. I can click this button to send the
+instruction of coloring this cell yellow, and the computer interprets my
+instructions and then displays the results on the screen, in this case, the
+cell is highlighted yellow.
+
+Spreadsheet software is great for viewing and entering small data sets and
+creating simple visualizations fast. However, it can be tricky to design
+publication-ready figures, create automatic reproducible analysis workflows,
+perform advanced calculations, and reliably clean data sets. Even when using
+a spreadsheet program to record data, it is often beneficial to have some some
+basic programming skills to facilitate the analyses of that data.
+
+Typing commands to directly instead of searching for them in menus, is a more
+efficient approach to communicate with the computer and a powerful way of doing
+data analysis. This is initially intimidating for almost all people, but if you
+compare it to learning a new language, the process becomes more intuitive: When
+learning a language, you would initially string together sentences by looking
+up individual words in the dictionary. As you improve, you will only reference
+the dictionary occasionally since you already know most of the words, and
+eventually you will throw it out altogether because it is faster and more
+precise to speak directly. In contrast, graphical programs force you to look up
+every word in the dictionary, even if you already know what to say.
+
+### Formal and natural languages
+
+You might think it is quite tricky to learn computer languages, but it is
+actually not! You already know one, mathematics is often written the same way
+as you would write it by hand, both in Excel and R.
+
+```{r}
+d = 4 + 5
+```
+
+This is much more efficient than typing "Hi computer, could you please add
+4 and 5 for me?". Formal computer languages also avoids the ambiguity present
+in natural languages such as English. You can think of R as a combination of
+math and a formal, succinct version of English.
+
+E.g. Create a sequence of the numbers zero to thirty.
+```{r}
+seq(0, 30)
+```
+
+E.g. Create a sequence of the numbers zero to thirty and calculate the average
+value of this sequence.
+
+```{r}
+mean(seq(0, 30))
+```
+
+This is not as rich as the English language, which actually is something I am
+grateful for as an international student. There are few exceptions to the
+rules, and you rarely have to remember illogical grammar just because "that is
+how it is", I love it!
+
+And if you think it sounds complicated to remember all of these functions by
+heart, don't worry there are several places to get help. The one I use the most
+is called tab-complete: often I remember the beginning of the function I want
+to use, but I don't remember exactly what it was called. For example, if I want
+to compute the median of a set of numbers, and I don't remember if the function
+for this was just `med` or `median`, I can just type the first three letters,
+hit tab <!-- Technically twice by default in the console, but since it is once
+in Rstudio, lets skip that distinction -->  and all functions starting with
+those letters. Here I can see that it is probably `median` I want to use, and
+to be sure I can type `?median` and read what it does. I will show you a way to
+read these help pages with some nicer formatting later in this lecture.
+
+In my experience, learning programming really is similar to learning a foreign
+language - you will often learn the most from just trying to do something and
+receiving feedback (from the computer or another person)! When there is
+something you can't wrap you head around, or if you are actively trying to find
+a new way of expressing a thought, then look it up, just as you would with
+a natural language.
+
+## Programming in R
+
+### The basics
+
+With that background to some of the concepts of programming, let's compare the
+workflow of analyzing a data set in R vs in a Excel. _Pull up Excel and
+R console next to each other._ In Excel, we open a file via 'File -> Open ->
+Navigate to file'. You can conceptualize this as if there is a function
+`file.open()` for which you need to specify a file location,
+(`file.open(/home/joel/iris.csv`). In R this looks similar, it is
+`read.csv('/home/joel/iris.csv')`, <!--need to write in windows paths...--> so
+it is pretty much the same, slightly different words are used and you type them
+in instead of clicking your way to them.
+
+When you open a file in Excel, it will immediately display the content in the
+window. Likewise, the R console will display the information of the data set
+when you read it in. This sample data set that we are using for this class
+describes the length and width of sepals and petals for three species of iris
+flowers.
+
+```{r, eval=FALSE}
+read_csv('./iris.csv') # need to dry run this with windows path names...
+```
+
+```{r, echo=FALSE}
+iris <- read_csv('data/iris.csv')
+```
+
+```{r, echo=FALSE}
+iris
+```
+
+If we want to calculate something in Excel, we would highlight the column and
+then click mean... <!-- I actually don't have Excel and don't know how to do
+this, will check tomorrow... --> In R we first give the data a nick name where
+it is stored, so instead of printing out to console, these values are stored in
+this R session and we can access it by this name `iris`, (technically we say
+that we have assigned it to variable `iris`).
+
+```{r, eval=FALSE}
+iris <- read_csv('./iris.csv')
+```
+
+The arrow `<-` simply means that the output from the right hand signed is
+stored in the variable name that you write on the left hand side. Now we can
+simply ask to calculate the mean of the data frame `iris`, column
+`petal_length`:
+
+```{r}
+mean(iris$petal_length)
+```
+
+The `$` is the syntax used in R to indicate that you want to access a column in
+the data frame. If we want to know more than just the mean, the useful thing
+with R, is that we don't have to calculate these things one by one, but we can
+actually get an overview of all the columns by asking R to provide a summary of
+`iris`.
+
+```{r}
+summary(iris)
+```
+
+You can already see how it will save you time to use R instead of typing these
+calculations separately in Excel.
+ 
+### RStudio
+
+Before we continue, we are going to switch from using the R console, to using
+an interface called RStudio. RStudio includes the R console, but also many
+other convenient functionalities, which makes it easier to get started and to
+work with R. When you launch RStudio, you will see four panels:
+
+- The console is the same as what we have been using so far. The advantage with
+  using the console within RStudio is that it interacts with the other panels.
+- So, if I read in the iris data we were working with previously, we can view it
+  in the console by typing `iris`, just like before, or we can also view the
+  `iris` variable in our environment tab, which shows it to us in a spreadsheet
+  or table format.
+- This panel shows the files in the current directory, any plots we might make
+  later, and also the documentation, which we accessed earlier by typing `?` in
+  front of a function. Here, the documentation is formatted in a way that is
+  easier to read and also provides links to the related sections.
+- Finally we have the text editor panel. This is where we can write scripts,
+  i.e. putting several commands of code together and saving them as a text
+  document so that they are accessible for later and so that we can execute them
+  all at once by running the script instead of typing them in one by one.
+- Another very useful thing with RStudio is that you have access to some
+  excellent cheat sheets in PDF format straight from the menu `Help ->
+  Cheatsheets`!
+
+In the RStudio interface, we will be writing code in a format called the
+R Notebook. As the name entails, this interface works like a notebook for code,
+as it allows us to save our notes about what the code is doing, the code itself,
+and any output we get, such as plots and tables, altogether in the same
+document.
+
+When we are in the Notebook, the text we write is normal text, just as if we
+would be writing it in a text document. If we want to execute some R code, we
+need to insert a code chunk, which we can do by pressing this button, or by
+using the keyboard shortcut `Ctrl+Alt+i`. To run a code chunk, we press this
+little green arrow or the corresponding keyboard shortcut `Shift+Ctrl+Enter`.
+
+```{r}
+seq(0:30)
+```
+
+As you can see, the output appears right under the code block. This is a great
+way to perform explore your data, since you can do your analysis and write
+comments and conclusions write under it in the same document. A powerful feature
+of this workflow, is that there is no extra time needed for code documentation
+and note-taking, you're doing your analyses and taking notes at the same time,
+it is great for both taking notes at lectures and to have as a reference when
+you return to your code in the future. We will delve deeper into some of the
+neat features about the R notebook towards the end, now let's get back into
+learning about R.
+
+### Plots
+
+In R, it is straightforward to explore your data by creating nice looking
+plots. E.g. to make a scatter plot, we first tell R that we want to make a plot
+of the `iris` data frame, and we want the aesthetics of this plot to be that
+`sepal_length` is on the x axis and `sepal_width` is on the y-axis. Finally, we
+specify that we want this to be a plot of points, i.e. a scatter plot.
+
+```{r}
+ggplot(iris, aes(x = sepal_length, y = sepal_width)) +
+    geom_point()
+```
+
+This plot shows up in the plot panel in RStudio, which is convenient instead of
+having it show up as a separate window. You can already see that there seems to
+be at least some structure to the data. There is one cluster of points up the
+left corner and at least one in the lower right corner. Hmmmm, I wonder if
+these correspond to the different species of flowers... Let's find out, by
+coloring the points according to which species they are.
+
+```{r}
+ggplot(iris, aes(x = sepal_length, y = sepal_width, color = species)) +
+    geom_point()
+```
+
+Likewise, it would be really easy to make a histogram of the `petal_length` and
+color it according to the species.
+
+```{r}
+ggplot(iris, aes(x = petal_length, fill = species)) +
+    geom_histogram()
+```
+
+And we could get fancier by instructing R to split this plot in vertically
+stacked facets, or subplots, with one species in each facet.
+
+```{r}
+ggplot(iris, aes(x = petal_length, fill = species)) +
+    geom_histogram() +
+    facet_wrap(~ species, dir='v')
+```
+
+One last example, if you don't have a clear idea of what you are looking for in
+a data set, maybe you are exploring publicly available data that you have not
+generated yourself, then it can be useful to visualize the relationships
+between all the variables to get an overview of the data.
+
+```{r}
+ggpairs(iris, aes(color = species))
+```
+
+This plot is a bit overwhelming, and the purpose here is not to produce
+a publication ready figure. You can see that many of the labels are overlapping
+and not everything fits in the plotting window. We can tweak these properties,
+which we will get into later in the course. But even in its slightly rough
+form, this is a powerful data set overview for your own analyses.
+
+Hopefully, these examples have giving you an idea of how simple and powerful it
+is to use R for your exploratory data analyses. In a few lines of code, we have
+made some really nice plots, some of which are not even imaginable to create in
+Excel.
+
+### Saving data and generating reports
+
+To save our code and graphs, all we have to do is to save the R Notebook file,
+and the we can open it in RStudio next time again. However, if we want someone
+else to look at this, we can't just send them the R Notebook file, because they might
+not have RStudio installed. Another great feature of R Notebooks, is that it is
+really easy to export to HTML or PDF documents with figures and
+professional typesetting. There are actually many academic papers that are
+written entirely in this format and it is great for assignments and reports:
+I have used this myself for some of my progress updates to my supervisor. Since
+R Notebook files convert to HTML, it is also easy to publish simple good-looking
+websites in it, for example the syllabus website for this course is made this
+way via a template that Luke set up.
+
+Let's try to convert this new document. First, let's go through it and see what
+we expect the output to include. First we see this intro section here, this is
+where you specify the title of your document, what kind of output you want, and
+a few other things that we will try later. This is called the yaml-block, but
+that's not important for now. Then we have a heading, a link some bold text,
+and a few code blocks. OK, let's see what this looks like. To create the output
+document, we poetically say that we will knit our R Markdown into the HTML
+document. Luckily, it is much simpler than actually knitting something, just
+press this button here and the new document will be created.
+
+As you can see in the knitted document, the title showed up as we would expect,
+the lines with pound sign(s) in front of them were converted into headers and
+we can see both the code and its output! So the plots are generated directly in
+the report without us having to cut and paste images! If we change something in
+the code, we don't have to find the new images and paste it in again, the
+correct one will appear right in your code.
+
+### R Markdown
+
+The text format we are using in the R Notebook is called R Markdown. This format allows us to combine R code with the Markdown text format, which enables the use of certain
+characters to specify headings, bullet points, quotations and even 
+citations. A simple example of how to write in Markdown is to use a single
+asterisk or underscore to *emphasize* text (`*emphasis*`) and two asterisks or
+underscores to **strongly emphasize** text (`**strong emphasis**`). When we
+convert our R Markdown text to HTML or PDF, these will show up as italics and
+bold typeface, respectively. If you have been writing on online forums, or
+popular chat services, such as whatsapp, you might already be familiar with
+this style of writing. In case you haven't seen it before, you have just learnt
+something about whatsapp in your theoretical ecology class...
+
+To get more familiar with the Markdown syntax, let's open a new R Notebook.
+RStudio already includes a template when you create new documents, that gives
+you some instructions on how to use the syntax. We can see some of the
+formatting rules that we just mentioned. Let's add some emphasized text and see
+how it renders. Using the Markdown syntax we can organize our document with
+headings and subheadings. This is indicated by the number of pound sign in front ot
+
+Furthermore, if we want to change the style of our output document, it is quite
+easy to do so. Let's add a subheading first, and a table of contents.
+
+```yaml
+---
+title: "HTML output demo"
+output:
+  html_document:
+    toc: true
+---
+```
+
+Now we realize that we want to include numbers in the report to keep with the departmental guidelines, so let's add those.
+
+```yaml
+---
+title: "HTML output demo"
+output:
+  html_document:
+    toc: true
+    number_section: true
+---
+```
+
+We can alter the style of our report by adding a theme.
+
+```yaml
+---
+title: "HTML output demo"
+output:
+  html_document:
+    toc: true
+    number_section: true
+    theme: united
+---
+```
+
+And finally we remember that we need to hand in our assignments as PDF-files, so let's create a PDF instead of a HTML-document.
+
+```yaml
+---
+title: "PDF output demo"
+output:
+  pdf_document:
+    toc: true
+    number_section: true
+---
+```
+
+If you want to learn more about R Markdown, you can read the cheat sheets in
+RStudio and [RStudio Markdown reference
+online](http://rmarkdown.rstudio.com/authoring_basics.html).
+
+## Background experience survey
+Hopefully, this has given you an idea of how powerful and time-saving R can be
+for your data analysis, and how we will work with it in this class using the
+R Notebook. The first assignment will be available on blackboard today, and it
+is includes a few questions about RStudio and R Markdown. 1 / 4 marks on this
+assignment is to fill in a survey about your background knowledge. This is so
+that we can adjust the pace and content of the lectures and to divide you into
+groups accordingly for the class project later this fall. Please take 10 min to
+do so now by going to this page (send page to everyone's computer via the
+teaching software), or if you have to run, you can complete it at home.
+
+<!-- Only include if there is too much time left.
+## Misc
+
+### More about Markdown
+As an aside, we can learn more about Markdown, and text vs binary formats in
+general. Let's contrast writing in Markdown with writing in a word processor,
+such as MS Word or Google Docs. In the word processor, the text you are writing
+is stored on the computer in a binary source format, which means that it looks
+like gibberish to humans and only the program you used to create the document
+can read it again. If you change a text section to boldface, some part of this
+gibberish will change and look like slightly different gibberish, but there is
+no way you can tell that you just made that text bold. If the company decides
+to stop making their software or upgrades to a new version, there is no
+guarantee that you will be able to access your old documents. Likewise, if you
+change between platforms, such as windows and Mac, documents might not be
+displayed the same way.
+
+A simpler solution that guarantees that you will be able to read the documents
+you have created yourself for as long time into the future, is to use what is
+called a markup language. Instead of binary codes, markup languages uses
+characters to mark text for formatting by special software. For example in HTML
+source code, tags are used to markup text: `<strong>bold text here</strong>`.
+A browser, such as Firefox, will interpret this source code and display the
+text with a heavier font weight. You can also read the source yourself with
+_any_ text editor, and although the visual formatting is not applied, the tags
+are there so that it is easy for you to convert it to another format or for
+someone else to build a browser that can read these same HTML tags. And since
+the source code is readable by humans, you don't run the chance of losing
+access to your own work any time soon and it is easy for other people who might
+not be able to afford the same software you own to also read your work. 
+
+### RNA seq example
+Show example with my RNA-seq report I made previously.
+-->

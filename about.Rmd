@@ -2,15 +2,17 @@
 title: "About the course and instructors/TAs"
 ---
 
-## Course, a brief history
+## Course inspiration
 
 Based on [RQM](https://cbahlai.github.io/rqm-template/). Draw much inspiration and content from [Software Carpentry](https://software-carpentry.org/) and [Data Carpentry](http://www.datacarpentry.org/).
 
-## A bit about the instructors/TAs
+## The course creators and instructors/TAs
 
-- Madeleine Bonsma (Physics)
+- Madeleine Bonsma-Fisher (Physics)
 - Lindsay Coome (Psychology)
 - Luke Johnston (Nutritional Sciences)
 - Joel Ostblom (IBBME)
 - Elliott Sales de Andrade (Physics)
 - Lina Tran (Physiology)
+
+Licensing information can be found in the [license](LICENSE.html) page.
