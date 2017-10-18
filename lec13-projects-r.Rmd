@@ -1,38 +1,33 @@
 ---
-title: "Project and Git setup in RStudio, and project work"
+title: "Project and Git setup in RStudio, project work"
+author: "Luke Johnston"
 ---
-
-----
 
 ## Lesson preamble
 
-### Lesson objectives:
-
-- **Main goal**:
-    - Learn the 5 main Git commands and the Git-RStudio interface
-- **Secondary goals**:
-    - Know why a standard/consistent folder and file structure is important
-    - Learn *a bit* about how version control and Git works
-    - Set up GitHub and know the *basics* of using it
-    - Project work
-
-### Lesson outline:
-
-Total lesson time: 2 hours
-
-- Folders and files structure (5-10 min)
-    - Using R to create this structure (5 min)
-- Version control using Git 
-    - (Basic) introduction to Git (10-15 min)
-    - Common commands for Git (15-20 min)
-    - Exercise: Git from the command line (15 min)
-    - Using Git in RStudio (10 min)
-    - Exercise: Git from RStudio (5 min)
-- Quick introduction to using GitHub (5-10 min)
-    - Exercise: Setup GitHub (5-10 min)
-- Project work
-    - Get started/work on assignment 7 (20 min)
-    - Comment on task 4 of assignment 7 (1-2 min)
+> ### Lesson objectives:
+>
+> - Learn the 5 main Git commands and the Git-RStudio interface
+> - Know why a standard/consistent folder and file structure is important
+> - Learn *a bit* about how version control and Git works
+> - Set up GitHub and know the *basics* of using it
+> - Project work
+>
+> ### Lesson outline:
+>
+> - Folders and files structure (5-10 min)
+>     - Using R to create this structure (5 min)
+> - Version control using Git 
+>     - (Basic) introduction to Git (10-15 min)
+>     - Common commands for Git (15-20 min)
+>     - Exercise: Git from the command line (15 min)
+>     - Using Git in RStudio (10 min)
+>     - Exercise: Git from RStudio (5 min)
+> - Quick introduction to using GitHub (5-10 min)
+>     - Exercise: Setup GitHub (5-10 min)
+> - Project work
+>     - Get started/work on assignment 7 (20 min)
+>     - Comment on task 4 of assignment 7 (1-2 min)
 
 -----
 
