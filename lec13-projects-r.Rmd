@@ -14,14 +14,13 @@ author: "Luke Johnston"
 >
 > ### Lesson outline:
 >
-> - Version control using Git 
->     - (Basic) introduction to Git (10-15 min)
->     - Common commands for Git (15-20 min)
->     - Using Git in RStudio (10 min)
-> - Quick introduction to using GitHub (5-10 min)
->     - Exercise: Fork GitHub (5-10 min)
-> - Folders and files structure (5-10 min)
->     - Using R to create this structure (5 min)
+> - Version control using Git (35 min)
+>     - (Basic) introduction to Git 
+>     - Common commands for Git 
+> - Quick introduction to using GitHub (10 min)
+> - Folders and files structure (15 min)
+>     - R projects in RStudio
+>     - Using Git in RStudio 
 > - Project work
 >     - Get started/work on assignment 7 (20 min)
 
@@ -123,9 +122,18 @@ this new file and commit to the history. Check the status and log.
 ### GitHub and your project
 
 GitHub is a commercial, Git repository hosting service. For public repositories,
-it is free. (yeay open source!) GitHub is an extremely popular site for R packages,
+GitHub is free. (yeay open source!) GitHub is an extremely popular site for R packages,
 with many of the most popular and powerful packages all on there (all of the
-`tidyverse` packages are there, like `dplyr` and `ggplot2`).
+`tidyverse` packages are there, like `dplyr` and `ggplot2`). Your final
+assignment is also on GitHub. When collaborating on GitHub, generally you'll
+need to make a 'fork' of the original repository. In GitHub, a fork is a copy of
+the original repo. While you could make edits to the files in the GitHub repo
+using GitHub, its much faster to download ('clone') the repo onto your computer
+to edit there. The image below shows the different repos and their interactions.
+Because you are downloading ('cloning') your Forked GitHub repo, you need to
+tell your computer where to look for the fork and original GitHub repo. That's what
+the 'remote origin' (your fork) and 'remote upstream' (the original) mean. They are
+internal Git links.
 
 ```{r}
 DiagrammeR::grViz("
@@ -146,42 +154,83 @@ digraph {
 }
 ")
 ```
+
+We'll all make a fork of the team final assignment. Then we'll use `git clone`
+to download that file onto your computer.
 
 #### Exercise
 
 Because we'll be using GitHub and the final assignment team repositories, you'll
-need to add a few things to your Git settings. Add these `remotes` (links) to
+need to add something to your Git settings. Add this `remote` (link) to
 your Git repo of the final assignment:
 
 ```bash
-# Change `yourusername` to your own GitHub username.
 # Change `teamname` to your team's name (JuniorCoders or Python)
-git remote add origin https://github.com/yourusername/eeb430.2017.teamname.git
 git remote add upstream https://github.com/uoftcoders/eeb430.2017.teamname.git
 
-# you should see two lines of text
+# you should see two lines of text, one for origin (your GitHub fork) and one
+# that you just added.
 git remote -v
 ```
 
-<!--
+## File and folder structure
 
-```{r}
-DiagrammeR::grViz("
-digraph {
+You'll notice in your final assignment folder that there are several files that
+already exist. Many of these files are standard files that are included when you
+make your own R package. The reason we are using it for this assignment is because
+it provides an infrastructure to able to build and create simple to complex
+projects, in a way that is standardarized and already well-documented. Here's a
+description of each of the files/folders:
 
-    node [shape = box, style = rounded]
-    {
-        rank = same;
-        GitHubMain [label = 'Main GitHub\nrepo (UofTCoders)']
-        GitHubFork [label = 'Forked GitHub\nrepo (yours)']
-    }
+- `R/` folder will contain custom functions and other bits of R code that you'll
+use for your final report in the `doc/` folder. Sometimes your code gets too 
+complex and you need to break it down into multiple (or one) functions. Those
+functions you will save in this folder.
+- `data/` folder will contain any *small* to *medium* sized datasets you may use or
+create. Most of the practice datasets are too massive to store on Git/GitHub, so
+what you'll need to do is get everyone to have a copy of that dataset saved in the
+`data/` folder but *don't* commit it to the Git history. This is also a great place
+to save results output, since you probably don't want to run analyses on your massive
+datasets every time to create your results.
+- `doc/` contains all the R Markdown documents relevant to finishing your final report.
+- `.Rbuildignore` is a specific file for when you want to load all the R files
+in `R/`. We'll talk about this more as you do your final report.
+- `.gitignore` is a special file used by Git to tell it to ignore certain files 
+from tracking, such as files or figures that get generated from R code and data 
+that you don't need to save.
+- `DESCRIPTION` is a file that contains some metadata that is in the format 
+used when making R packages. It contains information on who the authors are,
+details about the project, what R packages you need to install for the project,
+and more.
+- `README.md` is, as the name says, a file to read. GitHub by default will show 
+this file as the first file to view in a repo. The README contains important and
+detailed information about the project.
+- `*.Rproj` tells RStudio that this folder is a project. You open this when you 
+work on your project.
 
-    LocalRepo [label = 'Local repo']
-    
-    GitHubFork -> GitHubMain [label = 'Pull\nRequest']
-    GitHubFork -> LocalRepo [label = 'remote origin']
-    GitHubMain -> LocalRepo [label = 'remote upstream']
-}
-")
-```
--->
+### R projects and Git in RStudio
+
+R projects are files that set a standard for how you and others use the files in
+your repo, when they use RStudio. Opening this file opens RStudio with the options
+and settings for your project.
+
+Let's create a new R project called `testing`. We'll also create a Git repo in this
+project. The nice thing about using this project style is that the Git interface is
+quite nice. Create a new file called `bio2.md` and switch to the Git interface (either 
+the Git tab or Git button at the top). You'll see that the common commands
+(status, add, commit, log) are all there. Let's add and commit this new file.
+
+#### Exercise
+
+Add your name and a random bit string of text to the `bio2.md` file. View what
+was changed on the RStudio Git interface. Add and commit that file. Then look in
+History to see what you changed and what was changed in the file.
+
+Now, add more lines of text and also delete some of the original text from the file.
+Check out the Git interface and see what was changed. Add and commit. Check the history.
+
+## Project work exercises
+
+Open your final assignment `Rproj` files, so that RStudio opens in that folder.
+Try to work through some of Assignment 7 (on the website), using RStudio and the
+Git interface.
