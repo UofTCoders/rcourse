@@ -7,21 +7,21 @@ author: "Luke Johnston"
 
 > ### Lesson objectives:
 >
-> - Know why a standard/consistent folder and file structure is important
 > - Learn *a bit* about how version control and Git works
 > - Learn the 4 main Git commands and the Git-RStudio interface
+> - Know why a standard/consistent folder and file structure is important
 > - Project work
 >
 > ### Lesson outline:
 >
-> - Folders and files structure (5-10 min)
->     - Using R to create this structure (5 min)
 > - Version control using Git 
 >     - (Basic) introduction to Git (10-15 min)
 >     - Common commands for Git (15-20 min)
 >     - Using Git in RStudio (10 min)
 > - Quick introduction to using GitHub (5-10 min)
 >     - Exercise: Fork GitHub (5-10 min)
+> - Folders and files structure (5-10 min)
+>     - Using R to create this structure (5 min)
 > - Project work
 >     - Get started/work on assignment 7 (20 min)
 
@@ -31,15 +31,32 @@ author: "Luke Johnston"
 
 ### A short introduction
 
-Include comic
+![[PhD Comics](http://phdcomics.com/comics.php?f=1531) on filenaming](image/comic-filenaming.gif)
 
-What is git
+The comic above is teasing about prematurely naming your thesis "FINAL", but it
+also highlights a common method that many people use to keep track of different
+versions of their files. This method involves making a copy of a file, naming it
+differently from the original, and editing the contents of that new file,
+repeated as many times as to get the document finished. This is the basic
+concept of "version control", though quite primitive. More formal and structured
+methods of version control keep track of what exactly changed, when, and by
+whom (like how Google Docs). Git is one such system of version control. Git is
+specially powerful when your project involves more than just a single file or
+has any type of code or data involved.
 
-Include why should use git or a version control system
+[Git](https://git-scm.com/book/en/v2) is a software that keeps detailed tracking
+of your files and folders, keeping a history of exact characters that have been
+changed. It's very powerful, open source, and is very popular among software
+developers, programmers, R coders, and scientists. This is one of the main
+reasons why we will be learning Git, because it has this massive online
+community, support, and documentation. Git is especially powerful with
+collaborating on more complex projects (such as a research project).
 
-Power when collaborating
-
-A bit about how it works.
+Git works by using several commands to track files ('add'), save ('commit') them
+to history, check the 'status' of your folders and files (in a project/parent
+folder, called a 'repo'), and see the history (the 'log') of what was saved. You
+can do some much more advanced and powerful things in Git, but this lesson we'll 
+focus on the basics (which you many only ever use).
 
 #### Exercise
 
@@ -61,29 +78,54 @@ git config --list
 
 ### The basic commands of Git
 
+There are a few commands that you will use regularly when you start using Git.
+In fact, you may never need to use more than this depending on what you do.
+
 - `git add`
 - `git commit`
 - `git log`
 - `git status`
 
-We'll switch between using the command line and using the RStudio interface.
-While the RStudio interface is very useful and powerful, you will likely need to
-be familiar with the command line for some Git commands.
+For your final assignment, you will be using a few more commands that we will
+cover a bit in this lesson and much more next week.
+
+- `git remote`
+- `git push`
+- `git pull`
+- `git checkout`
+- `git branch` (maybe)
+
+But first, let's focus on the first four basic commands.
+
+- `git add` tells Git to start 'tracking' or watching the file(s) you point to
+and put them into the 'staging area' (see the image below).
+- `git commit` tells Git to take the changes made to the files you select and
+save them into the history, moving files from the 'staging area' into the
+history.
+- `git log` shows you the history of your git repository (all the changes made
+to the files; this is all contained in the `.git/` folder).
+- `git status` gives you a brief overview of what is going on in your git
+repository.
+
+![Image of the Stages from the [Git Basics Book](https://git-scm.com/book/en/v2/)](https://git-scm.com/book/en/v2/images/areas.png)
+
+RStudio has an excellent Git interface, mainly for the basic things. However,
+for slightly more complicated things you will need to use the shell (or terminal
+or command line, they all mean the same). So we'll start by learning how to use
+the terminal, then switch to using the RStudio interface.
 
 #### Exercise
 
 Create a new markdown file called `bio.md` in the `lec13` R project. Add your
-name and one or two sentence blurb about yourself.
-
-- *Using the command line*, add this new file and commit to the history. Check
-the status and log.
-
-- *Using the RStudio Git interface*, add the new bio file, write a short but
-descriptive commit message, and hit `Commit`.
+name and one or two sentence blurb about yourself. *Using the command line*, add
+this new file and commit to the history. Check the status and log.
 
 ### GitHub and your project
 
-In GitHub
+GitHub is a commercial, Git repository hosting service. For public repositories,
+it is free. (yeay open source!) GitHub is an extremely popular site for R packages,
+with many of the most popular and powerful packages all on there (all of the
+`tidyverse` packages are there, like `dplyr` and `ggplot2`).
 
 ```{r}
 DiagrammeR::grViz("
@@ -105,8 +147,23 @@ digraph {
 ")
 ```
 
+#### Exercise
 
+Because we'll be using GitHub and the final assignment team repositories, you'll
+need to add a few things to your Git settings. Add these `remotes` (links) to
+your Git repo of the final assignment:
 
+```bash
+# Change `yourusername` to your own GitHub username.
+# Change `teamname` to your team's name (JuniorCoders or Python)
+git remote add origin https://github.com/yourusername/eeb430.2017.teamname.git
+git remote add upstream https://github.com/uoftcoders/eeb430.2017.teamname.git
+
+# you should see two lines of text
+git remote -v
+```
+
+<!--
 
 ```{r}
 DiagrammeR::grViz("
@@ -127,3 +184,4 @@ digraph {
 }
 ")
 ```
+-->
