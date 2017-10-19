@@ -34,7 +34,7 @@ navbar:
           href: lec11-modelling.html
         - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
           href: lec12-datasets.html
-        - text: "Oct. 19: Project and Git setup in RStudio, tidy data, and project work"
+        - text: "Oct. 19: Project and Git in RStudio, and project work"
           href: lec13-projects-r.html
         - text: "Oct. 24: Scientific collaboration, Git and GitHub"
           href: lec14-git.html
