@@ -152,7 +152,7 @@ digraph {
     LocalRepo [label = 'Local repo']
     
     GitHubFork -> GitHubMain [label = 'Pull\nRequest']
-    GitHubFork -> LocalRepo [label = 'remote origin']
+    GitHubFork -> LocalRepo [label = 'remote origin             ']
     GitHubMain -> LocalRepo [label = 'remote upstream']
 }
 ")
