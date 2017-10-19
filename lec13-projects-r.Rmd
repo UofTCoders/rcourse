@@ -113,6 +113,9 @@ for slightly more complicated things you will need to use the terminal.
 So we'll start by learning how to use
 the terminal, then switch to using the RStudio interface.
 
+We'll go through the process of creating a Git repository (repo) and using the
+basic four commands during class.
+
 #### Exercise
 
 Create a new Markdown file called `bio.md` in the Git repo we created in class. Add your
