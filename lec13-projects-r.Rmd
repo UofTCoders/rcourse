@@ -237,3 +237,9 @@ Check out the Git interface and see what was changed. Add and commit. Check the 
 Open your final assignment `Rproj` files, so that RStudio opens in that folder.
 Try to work through some of Assignment 7 (on the website), using RStudio and the
 Git interface.
+
+## Resources
+
+- Excellent [tutorial](https://swcarpentry.github.io/git-novice/) on using Git
+from [Software Carpentry](https://software-carpentry.org/). First five sections 
+on the Software Carpentry website are relevant for this lesson.
