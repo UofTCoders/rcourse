@@ -109,13 +109,13 @@ repository.
 ![Image of the Stages from the [Git Basics Book](https://git-scm.com/book/en/v2/)](https://git-scm.com/book/en/v2/images/areas.png)
 
 RStudio has an excellent Git interface, mainly for the basic things. However,
-for slightly more complicated things you will need to use the shell (or terminal
-or command line, they all mean the same). So we'll start by learning how to use
+for slightly more complicated things you will need to use the terminal.
+So we'll start by learning how to use
 the terminal, then switch to using the RStudio interface.
 
 #### Exercise
 
-Create a new markdown file called `bio.md` in the `lec13` R project. Add your
+Create a new Markdown file called `bio.md` in the Git repo we created in class. Add your
 name and one or two sentence blurb about yourself. *Using the command line*, add
 this new file and commit to the history. Check the status and log.
 
@@ -132,8 +132,8 @@ using GitHub, its much faster to download ('clone') the repo onto your computer
 to edit there. The image below shows the different repos and their interactions.
 Because you are downloading ('cloning') your Forked GitHub repo, you need to
 tell your computer where to look for the fork and original GitHub repo. That's what
-the 'remote origin' (your fork) and 'remote upstream' (the original) mean. They are
-internal Git links.
+the 'remote origin' (your fork) and 'remote upstream' (the original) mean. Git 
+stores these links to the GitHub repos in these 'origin' and 'upstream' pointers.
 
 ```{r}
 DiagrammeR::grViz("
@@ -156,7 +156,7 @@ digraph {
 ```
 
 We'll all make a fork of the team final assignment. Then we'll use `git clone`
-to download that file onto your computer.
+to download that repo onto your computer.
 
 #### Exercise
 
@@ -178,8 +178,8 @@ git remote -v
 You'll notice in your final assignment folder that there are several files that
 already exist. Many of these files are standard files that are included when you
 make your own R package. The reason we are using it for this assignment is because
-it provides an infrastructure to able to build and create simple to complex
-projects, in a way that is standardarized and already well-documented. Here's a
+it provides an infrastructure to be able to build and create simple to complex
+projects, in a way that is standardized and already well-documented. Here's a
 description of each of the files/folders:
 
 - `R/` folder will contain custom functions and other bits of R code that you'll
@@ -222,7 +222,7 @@ the Git tab or Git button at the top). You'll see that the common commands
 
 #### Exercise
 
-Add your name and a random bit string of text to the `bio2.md` file. View what
+Add your name and a random string of text to the `bio2.md` file. View what
 was changed on the RStudio Git interface. Add and commit that file. Then look in
 History to see what you changed and what was changed in the file.
 
