@@ -1,5 +1,39 @@
 ---
-title: "Final assignment"
+title: "Final assignment: Scientific report"
+output:
+    html_document:
+        toc: false
 ---
 
-> Uploaded when it is handed out.
+The final assignment is fairly straightforward, but also challenging. You, as a
+team, must write up a scientific report/manuscript. The best way to think about 
+this assignment is to imagine you are a scientist and you are writing a paper
+to publish your research. This is essentially what we expect of you from the
+final report.
+
+So, your report should have at least these sections: "Background and Rationale",
+"Research Objectives and Hypotheses", "Methods" (with "Data Description" and
+"Data Analysis" subsections), "Results", "Discussion", and "Final Conclusion".
+
+For the report, you are expected to:
+
+- Search the previous research and literature on your research questions (this
+doesn't have to be extensive).
+- Have clear and explicit objectives and hypotheses.
+- Adequately describe and properly cite the data source you will analyze.
+- Describe your data analysis in sufficient detail for others to understand what
+you did and why.
+- Show all the results of your pre-planned data analysis and any additional 
+explorations you did.
+- Discuss the meaning of your results and how they fit with the previous
+literature.
+
+The report and associated code is expected to:
+
+- Be entirely reproducible.
+- Have well documented code.
+
+You are also expected to:
+
+- Work well as a team.
+- Use Git and GitHub to show your work and workflow with your team.
