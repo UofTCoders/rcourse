@@ -16,6 +16,7 @@ title: "Reproducible workflow, R Markdown"
 >     - How we can improve reproducibility (20 min)
 >     - What are the barriers to reproducibility? (20 min)
 > - Intermediate topics in R Markdown (50 min)
+>     - Online Tutorial (10 min)
 >     - Lists, Tables
 >     - Images, Figures
 >     - In-Line Citations & Bibliography
