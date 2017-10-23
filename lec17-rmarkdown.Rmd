@@ -1,4 +1,264 @@
 ---
-title: "Reproducible workflow, metadata, R Markdown"
+title: "Reproducible workflow, R Markdown"
 ---
+## Lesson preamble
 
+> ### Lesson objectives:
+>
+> - Learn why reproducibility in science is important
+> - Discuss how we can improve reproducibility of our research
+> - RMarkdown formatting: including images, citations, footnotes, and output formats.
+>
+> ### Lesson outline:
+>
+> - Reproducible Science (50 min)
+>     - Introduction to the problem and discussion (20 min)
+>     - How we can improve reproducibility (20 min)
+>     - What are the barriers to reproducibility? (20 min)
+> - Intermediate topics in R Markdown (50 min)
+>     - Lists, Tables
+>     - Images, Figures
+>     - In-Line Citations & Bibliography
+>     - Footnotes
+>     - Output Formatting Options
+
+----
+## Reproducible Science
+
+What does reproducibility mean to you? Let's discuss what each of these may entail:
+
+- Computational reproducibility
+- Scientific reproducibility
+- Statistical reproducibility
+
+### Why do we care about reproducibility?
+
+Take 5-10 minutes to read over the following blog post section on [reproducibility in science](http://bioconnector.org/workshops/r-rmarkdown.html#who_cares_about_reproducible_research) and [what's in it for you](http://bioconnector.org/workshops/r-rmarkdown.html#what’s_in_it_for_you).
+
+Now, let's discuss the following questions:
+1. Why does reproducibility matter in science?
+2. What do you think about when you hear the terms "open science"?
+3. How does open science translate back to the issue of reproducibility
+    - How does it affect collaboration, and the progress of science?
+
+### What are ways we can make research more reproducible?
+
+- Learning from software engineers who have used continuous integration to keep track of their projects in an automated fashion (helping to prevent from human error) for years. This includes the following:
+    - analyses/models are run as scripts that can be replicated on other machines and environments
+    - code is version-controlled (e.g. Git/Github)
+    - code is well tested
+    - for a take on "Continuous Analysis", read this [article from ELife](https://elifesciences.org/labs/e623676c/reproducibility-automated)
+- For more recommendations on reproducible research, especially as it pertains to coding practices, read more [here](http://bioconnector.org/workshops/r-rmarkdown.html#some_recommendations_for_reproducible_research)
+
+### What are the barriers to reproducibility?
+
+- Brainstorm reasons why scientists are not readily embracing reproducible science.
+
+```{r, echo=FALSE}
+#Some ideas:
+#    - workflows are hard to document at every step
+#    - we already have systems in place that work, and would be hard/time consuming to upend them
+#    - people and skills, currently low adoption and hard to force collaborators to change
+```
+
+### Further Reading
+- This book called [Practice Reproducible Research](https://www.practicereproducibleresearch.org/)
+has many high level examples of how reproducible research looks in practice and further reading on the topic
+- Nature has a series of articles, editorials and research on the [challenges in  reproducible research](http://www.nature.com/news/reproducibility-1.17552)
+
+## R Markdown & Knitr
+
+R Markdown makes use of Pandoc's markdown formatting. We've seen a lot of the basic components to format our text so far, but to see the complete list, please visit the [official documentation](http://pandoc.org/MANUAL.html#pandocs-markdown).
+
+Before we start, everybody can do this 10 minute tutorial on markdown: http://commonmark.org/help/tutorial/
+
+### Lists, Tables, In-Line Code
+#### Lists
+**Unordered Lists (i.e. bullets)**
+```
+- Unordered list item
+    - Unordered list sub-item
+- Unordered list item
+```
+- Unordered list item
+    - Unordered list sub-item
+- Unordered list item
+
+**Ordered Lists (i.e. numbers)**
+```
+1. Ordered list item
+    1. Ordered list sub-item
+    2. Ordered list sub-item
+2. Ordered list item
+```
+1. Ordered list item
+    1. Ordered list sub-item
+    2. Ordered list sub-item
+2. Ordered list item
+
+#### Tables
+The `knitr` package has a function called `kable` that helps to display tables from an `r` code chunk nicely. It is best to use `echo=FALSE` and `results='asis'`.
+
+`r ''````{r, echo=FALSE, results='asis'}
+library(knitr)
+kable(head(mtcars))
+```
+
+You can also set the default data frame printing via the `df_print` option in your YAML metadata under `output` to do this automatically.
+
+```
+---
+title: Document
+output:
+    html_document:
+        df_print:kable
+---
+```
+
+#### In-line code
+
+If you want to state a value in your data in your text, it is best to reference to the actual variable or code containing that value rather than manually writing it out. Here is an example:
+
+There are `r ''``r nrow(df)` samples in this experiment.
+
+
+### Images and Figures
+To include an image, use the following syntax:
+```
+[caption for my image](path/to/image.png)
+```
+If you would like the caption you wrote to be included underneath your image, put the following in your YAML metadata:
+
+`fig_caption: yes`
+
+As you've learned in doing in your assignments, both the code and output of your `r` code chunk such as figures will show up in your output document. However, using code chunk options `echo` and `eval`, you can suppress output of the code underlying a graph, and only show the resulting plot from your code or vice versa. In this case, you probably want the former, and it would look like this:
+
+`r ''````{r, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data=mtcars)
+```
+
+You can also set the figure height and width too using the `fig.height` and `fig.width` options.
+
+`r ''````{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data=mtcars)
+```
+
+### In-Line Citations & Bibliography
+
+Pandoc can automatically generate citations and a bibliography in a number of styles. In order to use this feature, you will need to specify a bibliography file using the bibliography metadata field in a YAML metadata section. For example:
+
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib
+---
+```
+
+Many bibliography formats are accepted (see the [R Markdown guides](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)), such as a .bib file which many citation managers can generate for you and will hold all the references you need for your document (e.g. [EndNote](https://www.reed.edu/cis/help/LaTeX/EndNote.html))
+
+Every entry in your bibliography file should have a shorthand key id which when preceded by '@' allows you to reference the citation in-line. They usually go within square brackets and are separated by semicolons.
+
+```
+One Citation:
+Some fact [@Smith2014]
+
+Multiple Citations:
+Statement [@Smith2014; @Logan1997].
+```
+
+To make a bibliography, you may also want to specify a citation style guide to format your bibliography (in the form of a .csl file). The official repository for recognized citation styles is available here: https://github.com/citation-style-language/styles
+
+#### Exercise
+Take some time to find the style guide for your field and to download that file.
+
+Once you have the correct .csl file, you can specify it in your YAML metadata:
+
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib
+csl: nature.csl
+---
+```
+
+### Footnotes
+
+```
+This is what a footnote looks like.[^1] Here is another.[^2]
+
+[^1]: My first footnote.
+[^2]: My second footnote.
+
+This will produce the following:
+```
+This is what a footnote looks like.[^1] Here is another.[^2]
+
+[^1]: My first footnote.
+[^2]: My second footnote.
+
+
+### Output Formatting Options
+
+#### Changing the output file format
+To change the output format of your .Rmd file, try changing the `output` metadata in the YAML header from "html_document" to "pdf_document"
+
+#### Table of Contents
+
+To add a table of contents generated from the headers of your document, use
+the `toc` option as `true` and specify the depth of headers to list via `toc_depth` where the default is 3. These sections can also be numbered by using the `number_sections` option.
+
+```
+---
+title: "Making TOCs"
+output:
+    pdf_document:
+        toc: true
+        toc_depth: 2
+        number_sections: true
+---
+```
+
+#### Figure Options
+Some figure options can be set in the YAML header.
+
+- `fig_width` and `fig_height` can be used to control the default figure width and height (7x5 is used by default)
+
+- `fig_caption` controls whether figures are rendered with captions
+
+### Exercise
+
+1. Open up RStudio and make a new R Markdown file.
+2. Set up the YAML metadata:
+    - title is "Lecture 17 Exercise"
+    - author (you)
+    - output to pdf
+    - make a table of contents
+    - figure height and width should be set to 10
+3. Make a header called "Beavers Plot" and below create any simple plot using the `beavers` dataset in an R chunk where the code is suppressed, but the plot is shown.
+4. Make a header called "R Markdown" and below it, recreate the following:
+
+- Fruits
+    1. Apple
+    2. **Orange**
+    3. Banana
+    4. Tomato[^3]
+- Vegetables
+    1. _Brussel Sprouts_
+    2. Carrots
+
+[^3]: Often confused for a vegetable
+
+- Iris Dataset
+```{r, asis=TRUE, echo=FALSE}
+library(knitr)
+kable(head(iris))
+```
+
+5. Now Knit the file to pdf and compare with your neighbour to see if you got the same output and work together to fix any issues.
+
+### Resources
+- The [R Markdown documentation](http://rmarkdown.rstudio.com/lesson-1.html) from RStudio can be a very helpful guide.
