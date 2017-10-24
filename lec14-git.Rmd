@@ -84,6 +84,8 @@ automatically *move forward* as commits are made. Divergent commits (two
 commits with the same parent) could be considered "virtual" branches. Since
 they are simply pointers, branches in Git are very lightweight.
 
+![Examples of branching](image/branches.svg)
+
 ### Why use them?
 
 - To keep experimental work apart
@@ -100,8 +102,8 @@ they are simply pointers, branches in Git are very lightweight.
 ### Switching branches
 
 - `git checkout <branch name>`
-- `git checkout -b <branch name> [commit]` --- Create and switch
-        in one go
+- `git checkout -b <branch name> [commit]` --- Create and switch to a branch in
+  one go
 
 ## Merging
 
@@ -120,8 +122,9 @@ There are two kinds of merges in Git:
 #### Challenge
 
 - Make 3 separate branches starting at the *same commit*.
-- Add `file1.txt` (with any content) to the first branch, and `file2.txt` (with any content) to the
-  second branch. Remember to commit these changes.
+- Add `file1.txt` (with any content inside ) to the first branch, and
+  `file2.txt` (with any content inside) to the second branch. Remember to
+  commit these changes.
     - What happens when you try to merge the second branch into the first branch?
     - Do you think there would be any difference if you merged in the opposite
       direction?
@@ -131,9 +134,9 @@ There are two kinds of merges in Git:
 
 ## Pull requests on GitHub
 
-A *pull request* is appeal to someone else merge in your commits, that is, a
-"request" that they "pull" your changes into their repo. We will do this on
-GitHub shortly.
+A *pull request* is asking someone else to merge in your commits to another
+repo, that is, a "request" that they "pull" your changes into their repo. We
+will do this on GitHub shortly.
 
 ### Syncing with GitHub
 
