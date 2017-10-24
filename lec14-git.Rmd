@@ -88,7 +88,7 @@ they are simply pointers, branches in Git are very lightweight.
 
 ### Why use them?
 
-- To keep experimental work apart
+- To keep experimental work separate
 - To separate trials
 - To ease collaboration
 - To separate bug fixes from development
@@ -122,7 +122,7 @@ There are two kinds of merges in Git:
 #### Challenge
 
 - Make 3 separate branches starting at the *same commit*.
-- Add `file1.txt` (with any content inside ) to the first branch, and
+- Add `file1.txt` (with any content inside) to the first branch, and
   `file2.txt` (with any content inside) to the second branch. Remember to
   commit these changes.
     - What happens when you try to merge the second branch into the first branch?
