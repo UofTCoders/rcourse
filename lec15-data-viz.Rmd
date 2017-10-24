@@ -1,4 +1,241 @@
+
 ---
-title: "Data visualization in R"
+title: Data visualization in R
+author: Lindsay Coome
 ---
 
+## Lesson preamble
+
+> ### Learning Objectives
+>
+> - Making better plots for outreach and communication.
+> - Review how to produce scatter plots with trendlines using ggplot.
+> - Make bar and other graphs using ggplot.
+> - Advanced faceting and segmenting data.
+> - Altering asthetic features in ggplot.
+> - Making interactive and quick graphs.
+> 
+> ### Lesson outline
+>
+> - How to visualize data (20 min)
+> - ggplot basics (10 min)
+> - Basics and faceting (15 min)
+> - Aesthetics and plot types (20 min)
+> - Interactive and quick graphing (10 min)
+
+-----
+
+#WHAT MAKES A GOOD GRAPH?
+> #### Challenge
+>
+> What makes a bad graph? What makes an ugly graph to you?
+>
+
+
+There are many considerations to take into account when creating a graph.
+Data types:
+* Nominal
+* Ordinal
+* Interval
+* Ratio
+And data features:
+* Scalar
+* Vector
+* Tensor
+
+Ask: "what kind of data/information is it?"
+* Numerical?
+* What type?
+* Spatial?
+* How many dimensions?
+* Nominal/categorical?
+* Narrative?
+
+## TUFTE'S GUIDELINES
+* Reduce non-data ink
+* Enhance the data ink
+
+Reduces the proportion of graphic’s ink devoted to the non-redundant display of data-information
+
+Avoid "chartjunk" - extraneous visual elements that detract from message
+
+Visual Attribute    | Non-Data | Data
+--------------------|----------|-------
+Line Thickness      | Thin     | Thick
+Size                | Small    | Big
+Brightness Contrast | Decrease | Increase
+Colour Saturation   | Decrease | Increase
+
+#COLOUR RULES
+* Large background colors should be quiet, muted to let brighter colors stand out
+* To highlight some element of a figure, using a bright colour can be effective
+* However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
+* Here is a reference sheet with all the colours and colour names in R:
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+#SUMMARY
+* Determine what type of data you have and how your data will be used
+* Determine how many variable types are in your data
+* Decide on a visual treatment for each of the variables 
+* Focus on the data in your visual representation
+
+#MORE RESOURCES ON GENERAL PLOTTING GUIDELINES
+http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833
+https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283
+http://www.cookbook-r.com/Graphs/
+https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+## WHAT IS GGPLOT?
+ggplot2 is meant to be an implementation of the Grammar of Graphics, hence gg-plot. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
+
+## COMPONENTS OF A GGPLOT2 PLOT
+Plots convey information through various aspects of their aesthetics. Some aesthetics that plots use are:
+
+* x position
+* y position
+* size of elements
+* shape of elements
+* color of elements
+
+The elements in a plot are geometric shapes, like
+
+* points
+* lines
+* line segments
+* bars
+* text
+
+Some of these geometries have their own particular aesthetics. For instance:
+
+**points**
+
+* point shape
+* point size
+
+**lines**
+
+* line type
+* line weight
+
+**bars**
+
+* y minimum
+* y maximum
+* fill color
+* outline color
+
+**text**
+
+* label value
+
+#SETTING UP
+Load the required packages:
+```{r}
+#library(ggplot2)
+```
+
+##LET'S GET STARTED!
+
+Here is an example of the base plotting functions in R:
+```{r cars}
+plot(cars)
+hist(cars$speed)
+```
+
+You've already made a few basic plots in ggplot.
+
+We'll investigate the dataset we're going to use to make some graphs....
+```{r}
+library(ggplot2)
+str(iris)
+```
+
+Recall:
+* geom_point() for scatter plots, dot plots, etc.
+* geom_line() for trend lines, time-series, etc.
+* geom_histogram() for histograms
+
+Once we've defined the structure of our graph,  we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
+```{r}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length))+
+  geom_point()
+```
+
+You can also save the structure of the graph to a variable and then add layers and other attributes to it. Let's do that:
+```{r}
+g <- ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length)) 
+g + geom_point()
+```
+
+We can add other "layers" of graphs to our first graph. Let's add a trend line to our scatterplot:
+```{r}
+g + geom_point() + 
+  geom_smooth() 
+```
+
+We can also "facet" our graphs, which means dividing a plot into subplots based on the values of one or more discrete variables.
+```{r}
+g + geom_point() + geom_smooth() + facet_grid(.~Species)
+```
+
+There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheetsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+
+> #### Challenge
+>
+> Create another faceted graph using this dataset that is interpretable. Does faceting help communicate the 
+> information contained in the graph? Why or why not?
+>
+
+
+
+We can play around with the labels on our facet:
+```{r}
+g + geom_point() + geom_smooth() + facet_grid(.~Species, labeller = label_both) +
+  ylab("Sepal Length") +
+  xlab ("Sepal Width")
+```
+
+Let's say we don't want to facet, but we want to colour the dots depending on the species:
+```{r}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
+  ylab("Sepal Length") +
+  xlab ("Sepal Width")
+```
+
+We can change other aesthetic features of the graph. Let's get rid of the color aspect of our structure and change the colour and size of the points:
+```{r}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length)) + geom_point(color="steelblue", size=4)
+
+```
+
+Going back to our graph coloured by species, what if we want to change other aspects, like the theme, or centre the title?
+
+```{r}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
+  ylab("Sepal Length") +
+  xlab ("Sepal Width") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+  
+```
+
+
+What if we want a bar graph of Sepal Length by Species?
+```{r}
+ggplot(iris, aes(x=Species, y=Sepal.Length)) + geom_bar(stat="identity")+
+  ylab("Sepal Length") +
+  xlab ("Species") +
+ggtitle("Sepal Width by Sepal Length") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Violin plot?
+```{r}
+ggplot(iris, aes(x=Species, y=Sepal.Length)) + geom_violin()+
+  ylab("Sepal Length") +
+  xlab ("Species") +
+ggtitle("Sepal Width by Sepal Length") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
