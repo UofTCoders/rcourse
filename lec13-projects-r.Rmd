@@ -63,7 +63,7 @@ Follow the getting setup steps from command line:
 
 ```bash
 git config --global user.name "Your Name"
-git config --global user.email yourname@domain.com
+git config --global user.email yourname@example.com
 ```
 
 Replace "Your Name", with, well, your first and last name. Replace the fake

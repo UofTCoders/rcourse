@@ -1,4 +1,149 @@
 ---
 title: "Scientific collaboration, Git, and GitHub"
+author: "Elliott Sales de Andrade"
 ---
 
+## Lesson preamble
+
+> ### Lesson objectives:
+>
+> - Practice using the 4 main Git commands and the Git-RStudio interface
+> - Learn how and when to use branches
+> - Learn how to effectively use Pull Requests
+> - Project work
+>
+> ### Lesson outline:
+>
+> - Review basic Git usage (15 min)
+> - Branching in Git (30 min)
+> - Pull requests on GitHub (30 min)
+> - Project work
+>     - Continue working on assignment 7 (20 min)
+
+-----
+
+## Git
+
+### Recap
+
+#### Shell commands
+
+What do these do?
+
+- `ls`
+- `cd`
+- `touch`
+- `echo`
+- `>`
+- `cat`
+
+#### Setup
+
+Follow the getting setup steps from command line:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email yourname@example.com
+```
+
+Replace "Your Name", with, well, your first and last name. Replace the fake
+email address with the email address you normally use.
+
+Confirm it works by running:
+
+```bash
+git config --list
+```
+
+#### Basic Git commands
+
+What do these do?
+
+- `git init`
+- `git clone`
+- `git diff`
+- `git add`
+- `git commit`
+- `git log`
+- `git status`
+- `git remote`
+
+## Branching
+
+Git commit history is a [directed acyclic
+graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) (or DAG), which
+means that every single commit always has at least one 'parent' commit (the
+previous commit(s) in the history), and any individual commit can have multiple
+'children'. This history can be traced back through the 'lineage' or
+'ancestry'.
+
+### What are branches?
+
+Branches are simply a *named pointer* to a commit in the DAG, which
+automatically *move forward* as commits are made. Divergent commits (two
+commits with the same parent) could be considered "virtual" branches. Since
+they are simply pointers, branches in Git are very lightweight.
+
+![Examples of branching](image/branches.svg)
+
+### Why use them?
+
+- To keep experimental work separate
+- To separate trials
+- To ease collaboration
+- To separate bug fixes from development
+
+### Managing branches
+
+- `git branch <name> [commit]`
+- `git branch -d <name>`
+- `git branch [-l]`
+
+### Switching branches
+
+- `git checkout <branch name>`
+- `git checkout -b <branch name> [commit]` --- Create and switch to a branch in
+  one go
+
+## Merging
+
+When you merge two branches together, the commit histories get merged together
+as well. This makes it easier to work collaboratively on a project, since each
+individual could work on their own branches, without dealing with the messiness
+that could come from working all on one branch.
+
+There are two kinds of merges in Git:
+
+- `git merge --ff-only`, a fast-forward merge: this is commonly used implicitly
+  when pulling.
+- `git merge --no-ff`, a non-fast-forward merge: this is used to combine
+  branches back together.
+
+#### Challenge
+
+- Make 3 separate branches starting at the *same commit*.
+- Add `file1.txt` (with any content inside) to the first branch, and
+  `file2.txt` (with any content inside) to the second branch. Remember to
+  commit these changes.
+    - What happens when you try to merge the second branch into the first branch?
+    - Do you think there would be any difference if you merged in the opposite
+      direction?
+- On the third branch, add `file1.txt` with *different* contents than the first
+  branch.
+    - What happens this time if you try to merge with the first branch?
+
+## Pull requests on GitHub
+
+A *pull request* is asking someone else to merge in your commits to another
+repo, that is, a "request" that they "pull" your changes into their repo. We
+will do this on GitHub shortly.
+
+### Syncing with GitHub
+
+- `git push [<remote>] [<branch>]`
+- `git fetch [<remote>]`
+- `git pull [<remote>] [<branch>]` --- `fetch` + `merge`
+
+### Make a pull request
+
+Let's make a pull request now, as described during lecture.
