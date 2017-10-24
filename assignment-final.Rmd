@@ -5,20 +5,26 @@ output:
         toc: false
 ---
 
-The final assignment is fairly straightforward, but also challenging. You, as a
-team, must write up a scientific report/manuscript. The best way to think about 
-this assignment is to imagine you are a scientist and you are writing a paper
-to publish your research. This is essentially what we expect of you from the
-final report.
+The final assignment is straightforward, but challenging. As a
+team, you will work together to compile your findings into a scientific report. 
+Imagine you are scientists writing a paper to publish your results in a
+peer-reviewed journal.
 
-So, your report should have at least these sections: "Background and Rationale",
-"Research Objectives and Hypotheses", "Methods" (with "Data Description" and
-"Data Analysis" subsections), "Results", "Discussion", and "Final Conclusion".
+Your report should have at least these sections: 
+
+- "Background and Rationale"
+- "Research Objectives and Hypotheses" 
+- "Methods" (with "Data Description" and "Data Analysis" subsections)
+- "Results"
+- "Discussion"
+- "Final Conclusion".
 
 For the report, you are expected to:
 
-- Search the previous research and literature on your research questions (this
-doesn't have to be extensive).
+- Search the previous research and literature on your research questions (*note*:
+for this report, this is not terribly important and it will be worth very little
+marks. Don't waste much time on this. We use this more so it helps you with your
+analysis).
 - Have clear and explicit objectives and hypotheses.
 - Adequately describe and properly cite the data source you will analyze.
 - Describe your data analysis in sufficient detail for others to understand what
