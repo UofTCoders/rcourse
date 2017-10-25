@@ -17,7 +17,7 @@ Your report should have at least these sections:
 - "Methods" (with "Data Description" and "Data Analysis" subsections)
 - "Results"
 - "Discussion"
-- "Final Conclusion".
+- "Final Conclusion"
 
 For the report, you are expected to:
 
@@ -43,6 +43,11 @@ You are also expected to:
 
 - Work well as a team.
 - Use Git and GitHub to show your work and workflow with your team.
+
+As a *guideline*, aim for at least 2500 words and about 6-8 figures/tables.
+*This is **not** a hard criteria*. We are flexible in these *guidelines*, since
+we want you to learn to work as a team and create a scientific product. You'll
+be surprised how quickly the words, figures, and tables start adding up.
 
 ## Grading rubric
 
