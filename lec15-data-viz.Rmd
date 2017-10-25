@@ -36,17 +36,20 @@ author: Lindsay Coome
 There are many considerations to take into account when creating a graph.
 
 Data types:
+
 * Nominal (labels without quantitative values)
 * Ordinal (the order of the values is what’s important, but the magnitude of difference between each value is not really known)
 * Interval (interval scales are numeric scales in which we know not only the order, but also the exact differences between the values)
 * Ratio (same properties as interval scales but with an absolute zero, e.g. height)
 
 And data features:
+
 * Scalar (simple magnitude or quantity)
 * Vector (magnitude and direction)
 * Tensor (vectors + other attributes)
 
 Ask: "what kind of data/information is it?"
+
 * What type?
 * Numerical?
 * Spatial?
@@ -69,6 +72,8 @@ Size                | Small    | Big
 Brightness Contrast | Decrease | Increase
 Colour Saturation   | Decrease | Increase
 
+[More on Edward Tufte](https://www.edwardtufte.com/tufte/)
+
 ## Colour rules
 * Large background colours should be quiet, muted to let brighter colors stand out
 * To highlight some element of a figure, using a bright colour can be effective
@@ -89,8 +94,8 @@ Colour Saturation   | Decrease | Increase
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
 ## What is ggplot?
-ggplot2 is meant to be an implementation of the Grammar of Graphics, hence gg-plot. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
-Here is the [ggplot book](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html).
+ggplot2 is inspired by the principles from the [Grammar of Graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html) and also named thereafter. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
+
 
 ## Components of a ggplot plot
 Plots convey information through various aspects of their aesthetics. Some aesthetics that plots use are:
@@ -136,8 +141,12 @@ Some of these geometries have their own particular aesthetics. For instance:
 Load or install the required packages:
 ```{r}
 library(ggplot2)
+```
+
+```{r eval=FALSE}
 install.packages("plotly")
 ```
+
 
 ## Let's get started!
 
@@ -160,7 +169,7 @@ Recall:
 * geom_line() for trend lines, time-series, etc.
 * geom_histogram() for histograms
 
-Once we've defined the structure of our graph,  we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
+Once we've defined the structure of our graph, we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()
@@ -191,7 +200,7 @@ Let's say we don't want to facet, but we want to colour the dots depending on th
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point()
 ```
 
-We can change other aesthetic features of the graph. Let's get rid of the color aspect of our structure and change the colour and size of the points:
+We can change other aesthetic features of the graph. Let's get rid of the colour aspect of our structure and change the colour and size of the points:
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point(color="steelblue", size=4)
 ```
@@ -201,7 +210,7 @@ Going back to our graph coloured by species, what if we want to change other asp
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point() +
   ylab("Sepal Length") +
-  xlab ("Sepal Width") +
+  xlab("Sepal Width") +
   ggtitle("Sepal Width by Sepal Length") +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
