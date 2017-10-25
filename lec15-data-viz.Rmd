@@ -10,22 +10,24 @@ author: Lindsay Coome
 >
 > - Making better plots for outreach and communication.
 > - Review how to produce scatter plots with trendlines using ggplot.
-> - Make bar and other graphs using ggplot.
 > - Advanced faceting and segmenting data.
 > - Altering asthetic features in ggplot.
+> - Make bar and other graphs using ggplot.
 > - Making interactive and quick graphs.
+> - Saving graphs.
 > 
 > ### Lesson outline
 >
 > - How to visualize data (20 min)
 > - ggplot basics (10 min)
-> - Basics and faceting (15 min)
-> - Aesthetics and plot types (20 min)
+> - Basics and faceting (10 min)
+> - Aesthetics and plot types (25 min)
 > - Interactive and quick graphing (10 min)
+> - Saving graphs (5 min)
 
 -----
 
-#WHAT MAKES A GOOD GRAPH?
+## What makes a good graph?
 > #### Challenge
 >
 > What makes a bad graph? What makes an ugly graph to you?
@@ -51,7 +53,7 @@ Ask: "what kind of data/information is it?"
 * Nominal/categorical?
 * Narrative?
 
-## TUFTE'S GUIDELINES
+## Tufte's guidelines
 * Reduce non-data ink
 * Enhance the data ink
 
@@ -66,29 +68,29 @@ Size                | Small    | Big
 Brightness Contrast | Decrease | Increase
 Colour Saturation   | Decrease | Increase
 
-#COLOUR RULES
-* Large background colors should be quiet, muted to let brighter colors stand out
+## Colour rules
+* Large background colours should be quiet, muted to let brighter colors stand out
 * To highlight some element of a figure, using a bright colour can be effective
 * However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
 * Here is a reference sheet with all the colours and colour names in R:
 http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
 
-#SUMMARY
+## Summary
 * Determine what type of data you have and how your data will be used
 * Determine how many variable types are in your data
 * Decide on a visual treatment for each of the variables 
 * Focus on the data in your visual representation
 
-#MORE RESOURCES ON GENERAL PLOTTING GUIDELINES
-http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833
-https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283
-http://www.cookbook-r.com/Graphs/
-https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+## More general resources on plotting
+* http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833
+* https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283
+* http://www.cookbook-r.com/Graphs/
+* https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
 
-## WHAT IS GGPLOT?
+## What is ggplot?
 ggplot2 is meant to be an implementation of the Grammar of Graphics, hence gg-plot. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
 
-## COMPONENTS OF A GGPLOT2 PLOT
+## Components of a ggplot plot
 Plots convey information through various aspects of their aesthetics. Some aesthetics that plots use are:
 
 * x position
@@ -128,13 +130,13 @@ Some of these geometries have their own particular aesthetics. For instance:
 
 * label value
 
-#SETTING UP
+#Setting up
 Load the required packages:
 ```{r}
-#library(ggplot2)
+library(ggplot2)
 ```
 
-##LET'S GET STARTED!
+## Let's get started!
 
 Here is an example of the base plotting functions in R:
 ```{r cars}
@@ -180,26 +182,10 @@ g + geom_point() + geom_smooth() + facet_grid(.~Species)
 
 There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheetsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
 
-> #### Challenge
->
-> Create another faceted graph using this dataset that is interpretable. Does faceting help communicate the 
-> information contained in the graph? Why or why not?
->
-
-
-
-We can play around with the labels on our facet:
-```{r}
-g + geom_point() + geom_smooth() + facet_grid(.~Species, labeller = label_both) +
-  ylab("Sepal Length") +
-  xlab ("Sepal Width")
-```
 
 Let's say we don't want to facet, but we want to colour the dots depending on the species:
 ```{r}
-ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
-  ylab("Sepal Length") +
-  xlab ("Sepal Width")
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()
 ```
 
 We can change other aesthetic features of the graph. Let's get rid of the color aspect of our structure and change the colour and size of the points:
@@ -214,11 +200,48 @@ Going back to our graph coloured by species, what if we want to change other asp
 ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
   ylab("Sepal Length") +
   xlab ("Sepal Width") +
+  ggtitle("Sepal Width by Sepal Length") +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
   
 ```
+What about changing the font? Let's get rid of the theme for a moment, which changes many aspects of the aesthetics at once. Let's spend some time building our own theme...
 
+```{r}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
+  ylab("Sepal Length") +
+  xlab ("Sepal Width") +
+  ggtitle("Sepal Width by Sepal Length") +
+  theme(plot.title = element_text(hjust = 0.5), 
+        text = element_text(size = 8, family='Times'),
+        legend.title=element_blank())
+  
+```
+
+
+You can add your own alterations to themes. For example, here is an APA theme built on top of the base theme_bw(). Themes can be saved into variables so they don't need to be typed out every time you use a graph.
+
+
+```{r}
+
+apatheme <- theme_bw()+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.border=element_blank(),
+        axis.line=element_line(),
+        text=element_text(family='Times'),
+        legend.title=element_blank())
+
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, color=Species)) + geom_point()+
+  ylab("Sepal Length") +
+  xlab ("Sepal Width") +
+  ggtitle("Sepal Width by Sepal Length") +
+  apatheme
+  
+```
+
+
+## Bar graphs
 
 What if we want a bar graph of Sepal Length by Species?
 ```{r}
@@ -230,7 +253,8 @@ ggtitle("Sepal Width by Sepal Length") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Violin plot?
+## Violin plots
+
 ```{r}
 ggplot(iris, aes(x=Species, y=Sepal.Length)) + geom_violin()+
   ylab("Sepal Length") +
@@ -239,3 +263,79 @@ ggtitle("Sepal Width by Sepal Length") +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+## Box plots
+
+
+ We can use boxplots to visualize the distribution Sepal Length within each species:
+
+ ```{r boxplot}
+ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+     geom_boxplot()
+ ```
+
+> #### Challenge
+>
+> Would you say this is more or less informative than the violin plot we just made?
+>
+
+By adding points to boxplot, we can have a better idea of the number of
+measurements and of their distribution:
+
+ ```{r boxplot-with-points}
+ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+     geom_boxplot(alpha = 0) +
+     geom_jitter(alpha = 0.3, color = "tomato")
+ ```
+ 
+ Notice how the boxplot layer is behind the jitter layer? What do you need to
+ change in the code to put the boxplot in front of the points such that it's not
+ hidden?
+ 
+> #### Challenge
+>
+> So far, we've looked at the distribution of sepal length within species.  Try making a
+> new plot to explore the distribution of another variable within each species.
+>
+
+
+What about making interactive graphs in R?
+There is a package called plotly that lets us make our ggplot2 graphs interactive:
+```{r}
+library(plotly)
+g <- ggplot(iris, aes(Species)) + geom_bar()
+p=ggplotly(g)
+p
+```
+
+> #### Challenge
+>
+> Create another type of interactive graph (i.e. not a bar graph) using these data. What kinds of graphs
+> might interactivity add or improve the communication and clarity of your message to?
+>
+
+Here is qplot, a way of making super quick scatterplots in R.
+```{r}
+qplot(Petal.Length, Sepal.Length, data = iris)
+```
+
+
+Finally, saving graphs. When using ggsave, R by default saves the last graph you plotted. You can also use the GUI to export and save as an image or PDF.
+```{r}
+ggsave("filename.jpg")
+ggsave("filename.jpg", width = 20, height = 20, units = "cm")
+```
+
+
+## More resources on ggplot2
+[ggplot2 documentation](http://had.co.nz/ggplot2/)
+
+[Book by Hadley Wickham](https://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
+
+[ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+
+[r graph gallery for inspiration (not just limited to ggplot2 graphs)](https://www.r-graph-gallery.com/all-graphs/)
+
+*Parts of this lesson material were taken and modified from [Software
+Carpentry](https://software-carpentry.org) under their CC-BY copyright license. See
+their [lesson page](http://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the original source.*
