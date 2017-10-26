@@ -1,5 +1,8 @@
 ---
 title: 'Assignment: Data visualization (8 marks)'
+output:
+    html_document:
+        toc: false
 ---
 
 <!-- keep this part -->
@@ -25,6 +28,23 @@ CO2 <- datasets::CO2
     - theme: theme_light
     - smoothing method: 'loess' (default)
     - smoothing function alpha: 0.2
+    
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+
+CO2 <- datasets::CO2
+color_names <- c('gray', 'orange')
+ggplot(CO2, aes(x = conc, y = uptake, color = Treatment)) + 
+    geom_point(alpha = 0.6) + 
+    geom_smooth(method = 'loess', alpha = 0.2) + 
+    facet_wrap( ~ Type) +
+    scale_color_manual(values = color_names) + 
+    theme_light() +
+    theme(legend.position = 'top') +
+    xlab("Concentration") + 
+    ylab("CO2 Uptake")
+```
+
 
 2.  Create your own custom ggplot2 theme for your team. You'll use this
     theme when making all of your graphs for your final report. Work
