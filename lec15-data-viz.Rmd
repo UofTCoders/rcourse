@@ -10,7 +10,7 @@ author: Lindsay Coome
 > - Making better plots for outreach and communication.
 > - Review how to produce scatter plots with trendlines using ggplot.
 > - Advanced faceting and segmenting data.
-> - Altering asthetic features in ggplot.
+> - Altering aesthetic features in ggplot.
 > - Make bar and other graphs using ggplot.
 > - Making interactive and quick graphs.
 > - Saving graphs.
@@ -34,8 +34,6 @@ author: Lindsay Coome
 > #### Challenge
 >
 > What makes a bad graph? What makes an ugly graph to you?
->
-
 
 There are many considerations to take into account when creating a graph.
 
@@ -85,7 +83,6 @@ Colour Saturation   | Decrease | Increase
 * To highlight some element of a figure, using a bright colour can be effective
 * However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
 * Here is a reference sheet with all the [colours and colour names in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
-
 
 ## Summary
 
@@ -210,8 +207,7 @@ g + geom_point() +
     facet_grid(. ~ Species)
 ```
 
-There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheetsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
-
+There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
 
 Let's say we don't want to facet, but we want to colour the dots depending on the species:
 
@@ -253,7 +249,6 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
         legend.title = element_blank()
         )
 ```
-
 
 You can add your own alterations to themes. For example, here is an APA theme built on top of the base theme_bw(). Themes can be saved into variables so they don't need to be typed out every time you use a graph.
 
@@ -310,8 +305,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 ## Box plots
 
-
- We can use boxplots to visualize the distribution Sepal Length within each species:
+We can use boxplots to visualize the distribution Sepal Length within each species:
 
 ```{r boxplot}
 ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
@@ -383,17 +377,15 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
     geom_boxplot(alpha = 0) +
     geom_jitter(alpha = 0.3, color = "tomato")
 ```
- 
- Notice how the boxplot layer is behind the jitter layer? What do you need to
- change in the code to put the boxplot in front of the points such that it's not
- hidden?
- 
+
+Notice how the boxplot layer is behind the jitter layer? What do you need to
+change in the code to put the boxplot in front of the points such that it's not
+hidden?
+
 > #### Challenge
 >
 > So far, we've looked at the distribution of sepal length within species.  Try making a
 > new plot to explore the distribution of another variable within each species.
->
-
 
 What about making interactive graphs in R?
 There is a package called plotly that lets us make our ggplot2 graphs interactive:
@@ -417,7 +409,6 @@ Finally, saving graphs. When using ggsave, R by default saves the last graph you
 ggsave("filename.jpg")
 ggsave("filename.jpg", width = 20, height = 20, units = "cm")
 ```
-
 
 ## More resources on ggplot2
 
