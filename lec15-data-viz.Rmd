@@ -317,13 +317,18 @@ What if we want a bar graph of Sepal Length by Species?
 
 ```{r}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat='summary', fun.y='mean') +
     ylab("Sepal Length") +
     xlab("Species") +
     ggtitle("Sepal Length by Species") +
     theme_bw() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
+
+As you can see, it is a bit cumbersome to create barplots of means with ggplot
+(you need to add `stat='summary', fun.y='mean'`). The default behavior of
+`geom_bar` is to count observations instead of summarize them, which actually is
+a more appropriate use of a barplot for reasons that we will cover below.
 
 ## Violin plots
 
@@ -429,8 +434,9 @@ lets us make our ggplot2 graphs interactive:
 
 ```{r}
 library(plotly)
-g <- ggplot(iris, aes(Species)) + 
-    geom_bar()
+
+g <- ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+    geom_bar(stat='summary', fun.y='mean')
 p <- ggplotly(g)
 p
 ```
