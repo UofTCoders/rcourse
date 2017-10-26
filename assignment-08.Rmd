@@ -1,0 +1,80 @@
+---
+title: 'Assignment: Data visualization (8 marks)'
+output:
+    html_document:
+        toc: false
+---
+
+<!-- keep this part -->
+*To submit this assignment, upload the full document on blackboard,
+including the original questions, your code, and the output. Submit both
+your `.Rmd` source file and a knitted `.html` version of the same file.*
+
+1.  Recreate a customized plot using what you've learned (3.5 marks).
+
+    We will use the CO2 dataset studying the cold tolerance on the grass
+    species *Echinochloa crus-galli*.
+
+```{r}
+# Load the CO2 dataset in base R (there is also a co2 dataset, be careful with capitalization)
+CO2 <- datasets::CO2
+```
+
+    Recreate the plot below using the following specified parameters:
+
+    - colors: grey & orange (*Hint:* Use `scale_color_manual`. Check the help docs)
+    - point size: 3
+    - point alpha: 0.6
+    - theme: theme_light
+    - smoothing method: 'loess' (default)
+    - smoothing function alpha: 0.2
+    
+![Figure for question 1](image/assignment-8-figure-q1.png)
+
+2.  Create your own custom ggplot2 theme for your team. You'll use this
+    theme when making all of your graphs for your final report. Work
+    with your team, using the code below as the base, to decide how you
+    want all your graphs to look like. What we exactly expect as an
+    answer isn't specific, but we do expect you and your team to try to
+    make an effort at making your own custom and visually appealling
+    theme. See the links below for help and documentation on changing
+    all aspects of your graph theme. Paste the code in this question. (4
+    marks)
+
+```{r}
+library(ggplot2)
+# Sample data and plot to use to create your theme
+p <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = cut(Petal.Length, 3))) +
+    geom_point() +
+    facet_grid( ~ Species)
+
+team_theme <- function() {
+    # Make all your edits here for the theme.
+    # The code below is an example, change them when creating your theme
+    theme(axis.line = element_line(color = "red"),
+          text = element_text(size = 8),
+          legend.text = element_text(size = 12, family = "serif")) # this is an example
+}
+p + team_theme()
+```
+
+-   ggplot2 official documentation on all the possible theme items:
+    <http://ggplot2.tidyverse.org/reference/theme.html>
+-   ggplot2 official documentation on modifying theme items:
+    <http://ggplot2.tidyverse.org/reference/theme_get.html>
+-   Great online book with tutorial walking through how to create a new
+    theme:
+    <https://bookdown.org/rdpeng/RProgDA/building-a-new-theme.html#creating-a-new-theme>
+-   ggthemes (package with even more pre-created themes) documentation
+    on what possible themes look like (can use this as inspiration, and
+    even copy if you want! But don't copy the themes entirely... you
+    want the theme to be your own):
+    <https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html>
+
+3.  Once you've created the custom theme, decide on a team member that
+    will save this theme to their fork of your team's GitHub account.
+    Create a new file in the `R/` folder called `graph_theme.R`. Paste
+    the `team_theme` function code into this file. Commit this file and
+    submit a PR of this change to the main team repo. (0.5 marks)
+    
+    - URL of pull request:
