@@ -17,7 +17,7 @@ Your report should have at least these sections:
 - "Methods" (with "Data Description" and "Data Analysis" subsections)
 - "Results"
 - "Discussion"
-- "Final Conclusion"
+- "Conclusion"
 
 For the report, you are expected to:
 
