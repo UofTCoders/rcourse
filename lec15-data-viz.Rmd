@@ -172,6 +172,10 @@ You've already made a few basic plots in ggplot.
 
 We'll investigate the dataset we're going to use to make some graphs....
 
+```{r, echo=FALSE}
+iris <- datasets::iris
+```
+
 ```{r}
 str(iris)
 ```
