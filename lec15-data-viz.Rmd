@@ -1,4 +1,430 @@
 ---
-title: "Data visualization in R"
+title: Data visualization in R
+author: Lindsay Coome
 ---
 
+## Lesson preamble
+
+> ### Learning Objectives
+>
+> - Making better plots for outreach and communication.
+> - Review how to produce scatter plots with trendlines using ggplot.
+> - Advanced faceting and segmenting data.
+> - Altering aesthetic features in ggplot.
+> - Make bar and other graphs using ggplot.
+> - Making interactive and quick graphs.
+> - Saving graphs.
+> 
+> ### Lesson outline
+>
+> - How to visualize data (20 min)
+> - ggplot basics (10 min)
+> - Basics and faceting (10 min)
+> - Aesthetics and plot types (25 min)
+> - Interactive and quick graphing (10 min)
+> - Saving graphs (5 min)
+>
+> ### Setup
+>
+> - Make sure to install `plotly` (`install.packages("plotly")`).
+
+-----
+
+## What makes a good graph?
+
+> #### Challenge
+>
+> What makes a bad graph? What makes an ugly graph to you?
+
+There are many considerations to take into account when creating a graph.
+
+Data types:
+
+* Nominal (labels without quantitative values)
+* Ordinal (the order of the values is what’s important, but the magnitude of difference between each value is not really known)
+* Interval (interval scales are numeric scales in which we know not only the order, but also the exact differences between the values)
+* Ratio (same properties as interval scales but with an absolute zero, e.g. height)
+
+And data features:
+
+* Scalar (simple magnitude or quantity)
+* Vector (magnitude and direction)
+* Tensor (vectors + other attributes)
+
+Ask: "what kind of data/information is it?"
+
+* What type?
+* Numerical?
+* Spatial?
+* How many dimensions?
+* Nominal/categorical?
+* Narrative?
+
+## Tufte's guidelines
+
+* Reduce non-data ink
+* Enhance the data ink
+
+Reduces the proportion of graphic’s ink devoted to the non-redundant display of data-information,
+
+Avoid "chartjunk" - extraneous visual elements that detract from message.
+
+Visual Attribute    | Non-Data | Data
+--------------------|----------|-------
+Line Thickness      | Thin     | Thick
+Size                | Small    | Big
+Brightness Contrast | Decrease | Increase
+Colour Saturation   | Decrease | Increase
+
+[More on Edward Tufte](https://www.edwardtufte.com/tufte/)
+
+## Colour rules
+
+* Large background colours should be quiet, muted to let brighter colors stand out
+* To highlight some element of a figure, using a bright colour can be effective
+* However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
+* Here is a reference sheet with all the [colours and colour names in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+## Summary
+
+* Determine what type of data you have and how your data will be used
+* Determine how many variable types are in your data
+* Decide on a visual treatment for each of the variables 
+* Focus on the data in your visual representation
+
+## More general resources on plotting
+
+* [Ten Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
+* [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
+* [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
+* [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [Examples of bad graphs](https://www.biostat.wisc.edu/~kbroman/topten_worstgraphs/)
+- [More examples of bad graphs and how to improve them](https://www.stat.auckland.ac.nz/~ihaka/120/Lectures/lecture03.pdf)
+- [Wikipedia has a great article on misleading graphs](https://en.wikipedia.org/wiki/Misleading_graph)
+
+## What is ggplot?
+
+ggplot2 is inspired by the principles from the [Grammar of Graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html) and also named thereafter. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
+
+## Components of a ggplot plot
+
+Plots convey information through various aspects of their aesthetics. Some aesthetics that plots use are:
+
+* x position
+* y position
+* size of elements
+* shape of elements
+* color of elements
+
+The elements in a plot are geometric shapes, like
+
+* points
+* lines
+* line segments
+* bars
+* text
+
+Some of these geometries have their own particular aesthetics. For instance:
+
+**points**
+
+* point shape
+* point size
+
+**lines**
+
+* line type
+* line weight
+
+**bars**
+
+* y minimum
+* y maximum
+* fill color
+* outline color
+
+**text**
+
+* label value
+
+## Setting up
+
+Load or install the required packages:
+
+```{r}
+library(ggplot2)
+```
+
+```{r, eval=FALSE}
+install.packages("plotly")
+```
+
+
+## Let's get started!
+
+Here is an example of the base plotting functions in R:
+```{r cars}
+plot(cars)
+hist(cars$speed)
+```
+
+You've already made a few basic plots in ggplot.
+
+We'll investigate the dataset we're going to use to make some graphs....
+
+```{r, echo=FALSE}
+iris <- datasets::iris
+```
+
+```{r}
+str(iris)
+```
+
+Recall:
+
+* geom_point() for scatter plots, dot plots, etc.
+* geom_line() for trend lines, time-series, etc.
+* geom_histogram() for histograms
+
+Once we've defined the structure of our graph, we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point()
+```
+
+You can also save the structure of the graph to a variable and then add layers and other attributes to it. Let's do that:
+
+```{r}
+g <- ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) 
+g + geom_point()
+```
+
+We can add other "layers" of graphs to our first graph. Let's add a trend line to our scatterplot:
+
+```{r}
+g + geom_point() + 
+  geom_smooth() 
+```
+
+We can also "facet" our graphs, which means dividing a plot into subplots based on the values of one or more discrete variables.
+
+```{r}
+g + geom_point() + 
+    geom_smooth() + 
+    facet_grid(. ~ Species)
+```
+
+There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+
+Let's say we don't want to facet, but we want to colour the dots depending on the species:
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + 
+    geom_point()
+```
+
+We can change other aesthetic features of the graph. Let's get rid of the colour aspect of our structure and change the colour and size of the points:
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+    geom_point(color = "steelblue", size = 4)
+```
+
+Going back to our graph coloured by species, what if we want to change other aspects, like the theme, or centre the title?
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+What about changing the font? Let's get rid of our preconfigured theme for a moment, which changes many aspects of the aesthetics at once. Let's spend some time building our own theme...
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme(
+        plot.title = element_text(hjust = 0.5),
+        text = element_text(size = 8, family = 'Times'),
+        legend.title = element_blank()
+        )
+```
+
+You can add your own alterations to themes. For example, here is an APA theme built on top of the base theme_bw(). Themes can be saved into variables so they don't need to be typed out every time you use a graph.
+
+```{r}
+apatheme <- function() {
+    theme_bw() +
+        theme(
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            axis.line = element_line(),
+            text = element_text(family = 'Times'),
+            legend.title = element_blank()
+        )
+}
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    apatheme()
+```
+
+This is a [resource](http://ggplot2.tidyverse.org/reference/theme.html) on which
+parts of the plot are controlled by different theme parameters when and if you
+create your own theme.
+
+## Bar graphs
+
+What if we want a bar graph of Sepal Length by Species?
+
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+    geom_bar(stat = "identity") +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+## Violin plots
+
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+    geom_violin() +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+## Box plots
+
+We can use boxplots to visualize the distribution Sepal Length within each species:
+
+```{r boxplot}
+ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+ geom_boxplot()
+```
+
+> #### Challenge
+>
+> Out of the barplot, boxplot and violinplot, which one do you think is the most
+> informative and why? Which is the most true to the underlying data and how
+> would you know this?
+
+We will deepen the discussion around some of these ideas, in the context of the
+following plot:
+
+![Dynamite bar plot](./image/dynamite-bars.png)
+
+Similar to the ideas of Tufte, it is generally advisable to avoid "decorative"
+plot elements that do not convey extra information about the data, *especially*
+when such elements hide the real data. For example, in the rectangles that make
+up these bars, the only relevant information is given by the where the
+rectangles ends on the y-axis, the rest of it is unnecessary and you could just
+have used a marker (circle, square, etc) to indicate the height on the y-axis
+instead. Note that the body of the rectangle is not representative for where the
+data lies, there are probably no data points close to 0, and several above the
+rectangle.
+
+Barplots are especially misleading when used as data summaries, as in the
+example above. In a summary plot, only two distribution parameters (a measure of
+central tendency, e.g. the mean, and error, e.g. the standard deviation or a
+confidence interval) are displayed, instead of showing all the individual data
+points. This can be highly misleading, since different underlying distributions
+can give rise to the same summary plot just as when we previously discussed that
+the different distributions from the datasaurus R-package can give rise to [the
+same linear regression coefficients](
+https://uoftcoders.github.io/rcourse/lec11-modelling.html#challenge17).
+We also have no idea of how many observations there are in each group. These
+shortcomings become evident when comparing the barplot to the underlying
+distributions that were used to create them:
+
+![Dynamite vs distributions](./image/dynamite-vs-dists.png)
+
+Immediately, you can see that conclusions drawn from the barplot, such that A
+and B have the same outcome, are factually incorrect. The distribution in D is
+bimodal, so representing that with a mean would be like observing black and
+white birds and conclude that the average bird color is grey, it's nonsensical.
+If we would have planned our follow up experiments based on the barplot alone,
+we would have been setting ourselves up for failure! Always be sceptical when
+you see a barplot in a published paper, and think of how the underlying
+distribution might look (note that barplots are more acceptable when used to
+represents counts, proportion or percentages, where there is only one data point
+per group in the data set).
+
+Boxplots and violin plots are more meaningful data summaries as they represent
+more than just two distribution parameters. However, these can still be
+misleading and it is often the most appropriate to show each individual
+observation with a dot/hive/swarm plot, possibly combined with with a
+superimposed summary plot or a marker for the mean or median *if* you think this
+conveys additional information. One exception, when it is not advisable to show
+all data points, is when your data set is gigantic and plotting each individual
+observation would oversaturate the chart. Here, you are forced to show summary
+plots or a 2D histogram.
+
+Here is an example of how you can plot a boxplot, together with the individual
+observations:
+
+```{r boxplot-with-points}
+ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+    geom_boxplot(alpha = 0) +
+    geom_jitter(alpha = 0.3, color = "tomato")
+```
+
+Notice how the boxplot layer is behind the jitter layer? What do you need to
+change in the code to put the boxplot in front of the points such that it's not
+hidden?
+
+> #### Challenge
+>
+> So far, we've looked at the distribution of sepal length within species.  Try making a
+> new plot to explore the distribution of another variable within each species.
+
+What about making interactive graphs in R?
+There is a package called plotly that lets us make our ggplot2 graphs interactive:
+
+```{r}
+library(plotly)
+g <- ggplot(iris, aes(Species)) + 
+    geom_bar()
+p <- ggplotly(g)
+p
+```
+
+> #### Challenge
+>
+> Create another type of interactive graph (i.e. not a bar graph) using these data. What kinds of graphs
+> might interactivity add or improve the communication and clarity of your message to?
+
+Finally, saving graphs. When using ggsave, R by default saves the last graph you plotted. You can also use the GUI to export and save as an image or PDF.
+
+```{r, eval=FALSE}
+ggsave("filename.jpg")
+ggsave("filename.jpg", width = 20, height = 20, units = "cm")
+```
+
+## More resources on ggplot2
+
+* [ggplot2 documentation](http://had.co.nz/ggplot2/)
+* [Book by Hadley Wickham](https://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
+* [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+* [r graph gallery for inspiration (not just limited to ggplot2 graphs)](https://www.r-graph-gallery.com/all-graphs/)
+
+*Parts of this lesson material were taken and modified from [Software
+Carpentry](https://software-carpentry.org) under their CC-BY copyright license. See
+their [lesson page](http://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the original source.*
