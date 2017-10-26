@@ -349,7 +349,12 @@ species:
 
 ```{r boxplot}
 ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
- geom_boxplot()
+    geom_boxplot() +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Length by Species") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 > #### Challenge
