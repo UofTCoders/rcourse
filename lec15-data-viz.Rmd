@@ -77,6 +77,8 @@ Size                | Small    | Big
 Brightness Contrast | Decrease | Increase
 Colour Saturation   | Decrease | Increase
 
+[More on Edward Tufte](https://www.edwardtufte.com/tufte/)
+
 ## Colour rules
 
 * Large background colours should be quiet, muted to let brighter colors stand out
@@ -101,8 +103,7 @@ Colour Saturation   | Decrease | Increase
 
 ## What is ggplot?
 
-ggplot2 is meant to be an implementation of the Grammar of Graphics, hence gg-plot. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
-Here is the [ggplot book](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html).
+ggplot2 is inspired by the principles from the [Grammar of Graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html) and also named thereafter. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
 
 ## Components of a ggplot plot
 
@@ -153,6 +154,11 @@ Load or install the required packages:
 library(ggplot2)
 ```
 
+```{r, eval=FALSE}
+install.packages("plotly")
+```
+
+
 ## Let's get started!
 
 Here is an example of the base plotting functions in R:
@@ -175,7 +181,7 @@ Recall:
 * geom_line() for trend lines, time-series, etc.
 * geom_histogram() for histograms
 
-Once we've defined the structure of our graph,  we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
+Once we've defined the structure of our graph, we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
@@ -214,7 +220,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
     geom_point()
 ```
 
-We can change other aesthetic features of the graph. Let's get rid of the color aspect of our structure and change the colour and size of the points:
+We can change other aesthetic features of the graph. Let's get rid of the colour aspect of our structure and change the colour and size of the points:
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
@@ -246,7 +252,6 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
         text = element_text(size = 8, family = 'Times'),
         legend.title = element_blank()
         )
-    
 ```
 
 
