@@ -23,6 +23,10 @@ author: Lindsay Coome
 > - Aesthetics and plot types (25 min)
 > - Interactive and quick graphing (10 min)
 > - Saving graphs (5 min)
+>
+> ### Setup
+> 
+> - Make sure to install `plotly` (`install.packages("plotly")`).
 
 -----
 
@@ -58,6 +62,7 @@ Ask: "what kind of data/information is it?"
 * Narrative?
 
 ## Tufte's guidelines
+
 * Reduce non-data ink
 * Enhance the data ink
 
@@ -75,6 +80,7 @@ Colour Saturation   | Decrease | Increase
 [More on Edward Tufte](https://www.edwardtufte.com/tufte/)
 
 ## Colour rules
+
 * Large background colours should be quiet, muted to let brighter colors stand out
 * To highlight some element of a figure, using a bright colour can be effective
 * However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
@@ -82,22 +88,25 @@ Colour Saturation   | Decrease | Increase
 
 
 ## Summary
+
 * Determine what type of data you have and how your data will be used
 * Determine how many variable types are in your data
 * Decide on a visual treatment for each of the variables 
 * Focus on the data in your visual representation
 
 ## More general resources on plotting
+
 * [Ten Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
 ## What is ggplot?
+
 ggplot2 is inspired by the principles from the [Grammar of Graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html) and also named thereafter. The basic notion is that there is a grammar to the composition of graphical components in statistical graphics, and by directly controlling that grammar, you can generate a large set of carefully constructed graphics tailored to your particular needs. Each component is added to the plot as a layer.
 
-
 ## Components of a ggplot plot
+
 Plots convey information through various aspects of their aesthetics. Some aesthetics that plots use are:
 
 * x position
@@ -138,12 +147,14 @@ Some of these geometries have their own particular aesthetics. For instance:
 * label value
 
 ## Setting up
+
 Load or install the required packages:
+
 ```{r}
 library(ggplot2)
 ```
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 install.packages("plotly")
 ```
 
@@ -159,119 +170,142 @@ hist(cars$speed)
 You've already made a few basic plots in ggplot.
 
 We'll investigate the dataset we're going to use to make some graphs....
+
 ```{r}
-library(ggplot2)
 str(iris)
 ```
 
 Recall:
+
 * geom_point() for scatter plots, dot plots, etc.
 * geom_line() for trend lines, time-series, etc.
 * geom_histogram() for histograms
 
 Once we've defined the structure of our graph, we need to add a "layer" to it in order to define what type of graph it is. Let's make a scatterplot:
+
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()
 ```
 
 You can also save the structure of the graph to a variable and then add layers and other attributes to it. Let's do that:
+
 ```{r}
 g <- ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) 
 g + geom_point()
 ```
 
 We can add other "layers" of graphs to our first graph. Let's add a trend line to our scatterplot:
+
 ```{r}
 g + geom_point() + 
   geom_smooth() 
 ```
 
 We can also "facet" our graphs, which means dividing a plot into subplots based on the values of one or more discrete variables.
+
 ```{r}
-g + geom_point() + geom_smooth() + facet_grid(.~Species)
+g + geom_point() + 
+    geom_smooth() + 
+    facet_grid(. ~ Species)
 ```
 
 There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheetsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
 
 
 Let's say we don't want to facet, but we want to colour the dots depending on the species:
+
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point()
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + 
+    geom_point()
 ```
 
 We can change other aesthetic features of the graph. Let's get rid of the colour aspect of our structure and change the colour and size of the points:
+
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_point(color="steelblue", size=4)
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+    geom_point(color = "steelblue", size = 4)
 ```
 
 Going back to our graph coloured by species, what if we want to change other aspects, like the theme, or centre the title?
 
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point() +
-  ylab("Sepal Length") +
-  xlab("Sepal Width") +
-  ggtitle("Sepal Width by Sepal Length") +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5))
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
+
 What about changing the font? Let's get rid of our preconfigured theme for a moment, which changes many aspects of the aesthetics at once. Let's spend some time building our own theme...
 
 ```{r}
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point() +
-  ylab("Sepal Length") +
-  xlab ("Sepal Width") +
-  ggtitle("Sepal Width by Sepal Length") +
-  theme(plot.title = element_text(hjust = 0.5), 
-        text = element_text(size = 8, family='Times'),
-        legend.title = element_blank())
-  
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme(
+        plot.title = element_text(hjust = 0.5),
+        text = element_text(size = 8, family = 'Times'),
+        legend.title = element_blank()
+        )
 ```
 
 
 You can add your own alterations to themes. For example, here is an APA theme built on top of the base theme_bw(). Themes can be saved into variables so they don't need to be typed out every time you use a graph.
 
-
 ```{r}
-apatheme <- theme_bw()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        axis.line = element_line(),
-        text = element_text(family = 'Times'),
-        legend.title = element_blank())
+apatheme <- function() {
+    theme_bw() +
+        theme(
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            axis.line = element_line(),
+            text = element_text(family = 'Times'),
+            legend.title = element_blank()
+        )
+}
 
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + geom_point() +
-  ylab("Sepal Length") +
-  xlab ("Sepal Width") +
-  ggtitle("Sepal Width by Sepal Length") +
-  apatheme()
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+    geom_point() +
+    ylab("Sepal Length") +
+    xlab("Sepal Width") +
+    ggtitle("Sepal Width by Sepal Length") +
+    apatheme()
 ```
 
-[http://ggplot2.tidyverse.org/reference/theme.html](This is a resource on which parts of the plot are controlled by different theme parameters when and if you create your own theme.)
-
+This is a [resource](http://ggplot2.tidyverse.org/reference/theme.html) on which
+parts of the plot are controlled by different theme parameters when and if you
+create your own theme.
 
 ## Bar graphs
 
 What if we want a bar graph of Sepal Length by Species?
+
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_bar(stat="identity") +
-  ylab("Sepal Length") +
-  xlab("Species") +
-ggtitle("Sepal Width by Sepal Length") +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5))
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+    geom_bar(stat = "identity") +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Violin plots
 
 ```{r}
-ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_violin() +
-  ylab("Sepal Length") +
-  xlab("Species") +
-ggtitle("Sepal Width by Sepal Length") +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5))
+ggplot(iris, aes(x = Species, y = Sepal.Length)) + 
+    geom_violin() +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Width by Sepal Length") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Box plots
@@ -311,9 +345,11 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
 
 What about making interactive graphs in R?
 There is a package called plotly that lets us make our ggplot2 graphs interactive:
+
 ```{r}
 library(plotly)
-g <- ggplot(iris, aes(Species)) + geom_bar()
+g <- ggplot(iris, aes(Species)) + 
+    geom_bar()
 p <- ggplotly(g)
 p
 ```
@@ -322,16 +358,17 @@ p
 >
 > Create another type of interactive graph (i.e. not a bar graph) using these data. What kinds of graphs
 > might interactivity add or improve the communication and clarity of your message to?
->
 
 Finally, saving graphs. When using ggsave, R by default saves the last graph you plotted. You can also use the GUI to export and save as an image or PDF.
-```{r}
+
+```{r, eval=FALSE}
 ggsave("filename.jpg")
 ggsave("filename.jpg", width = 20, height = 20, units = "cm")
 ```
 
 
 ## More resources on ggplot2
+
 * [ggplot2 documentation](http://had.co.nz/ggplot2/)
 * [Book by Hadley Wickham](https://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
 * [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)

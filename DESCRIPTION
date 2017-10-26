@@ -24,4 +24,5 @@ Imports: rmarkdown,
     broom,
     deSolve,
     phaseR,
-    lattice
+    lattice,
+    plotly
