@@ -320,7 +320,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
     geom_bar(stat = "identity") +
     ylab("Sepal Length") +
     xlab("Species") +
-    ggtitle("Sepal Width by Sepal Length") +
+    ggtitle("Sepal Length by Species") +
     theme_bw() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -332,7 +332,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
     geom_violin() +
     ylab("Sepal Length") +
     xlab("Species") +
-    ggtitle("Sepal Width by Sepal Length") +
+    ggtitle("Sepal Length by Species") +
     theme_bw() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
