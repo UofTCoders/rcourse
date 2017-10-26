@@ -10,7 +10,7 @@ author: Lindsay Coome
 > - Making better plots for outreach and communication.
 > - Review how to produce scatter plots with trendlines using ggplot.
 > - Advanced faceting and segmenting data.
-> - Altering asthetic features in ggplot.
+> - Altering aesthetic features in ggplot.
 > - Make bar and other graphs using ggplot.
 > - Making interactive and quick graphs.
 > - Saving graphs.
@@ -25,17 +25,16 @@ author: Lindsay Coome
 > - Saving graphs (5 min)
 >
 > ### Setup
-> 
+>
 > - Make sure to install `plotly` (`install.packages("plotly")`).
 
 -----
 
 ## What makes a good graph?
+
 > #### Challenge
 >
 > What makes a bad graph? What makes an ugly graph to you?
->
-
 
 There are many considerations to take into account when creating a graph.
 
@@ -86,7 +85,6 @@ Colour Saturation   | Decrease | Increase
 * However, if brightly colouring this aspect of your figure serves no purpose, leave it greyscale/plain
 * Here is a reference sheet with all the [colours and colour names in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
-
 ## Summary
 
 * Determine what type of data you have and how your data will be used
@@ -100,6 +98,9 @@ Colour Saturation   | Decrease | Increase
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [Examples of bad graphs](https://www.biostat.wisc.edu/~kbroman/topten_worstgraphs/)
+- [More examples of bad graphs and how to improve them](https://www.stat.auckland.ac.nz/~ihaka/120/Lectures/lecture03.pdf)
+- [Wikipedia has a great article on misleading graphs](https://en.wikipedia.org/wiki/Misleading_graph)
 
 ## What is ggplot?
 
@@ -210,8 +211,7 @@ g + geom_point() +
     facet_grid(. ~ Species)
 ```
 
-There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheetsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
-
+There are lots of ways to organize your facet. See "faceting" at the bottom of [ggplot cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
 
 Let's say we don't want to facet, but we want to colour the dots depending on the species:
 
@@ -253,7 +253,6 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
         legend.title = element_blank()
         )
 ```
-
 
 You can add your own alterations to themes. For example, here is an APA theme built on top of the base theme_bw(). Themes can be saved into variables so they don't need to be typed out every time you use a graph.
 
@@ -310,8 +309,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 ## Box plots
 
-
- We can use boxplots to visualize the distribution Sepal Length within each species:
+We can use boxplots to visualize the distribution Sepal Length within each species:
 
 ```{r boxplot}
 ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
@@ -320,28 +318,78 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
 
 > #### Challenge
 >
-> Would you say this is more or less informative than the violin plot we just made?
->
+> Out of the barplot, boxplot and violinplot, which one do you think is the most
+> informative and why? Which is the most true to the underlying data and how
+> would you know this?
 
-By adding points to boxplot, we can have a better idea of the number of
-measurements and of their distribution:
+We will deepen the discussion around some of these ideas, in the context of the
+following plot:
+
+![Dynamite bar plot](./image/dynamite-bars.png)
+
+Similar to the ideas of Tufte, it is generally advisable to avoid "decorative"
+plot elements that do not convey extra information about the data, *especially*
+when such elements hide the real data. For example, in the rectangles that make
+up these bars, the only relevant information is given by the where the
+rectangles ends on the y-axis, the rest of it is unnecessary and you could just
+have used a marker (circle, square, etc) to indicate the height on the y-axis
+instead. Note that the body of the rectangle is not representative for where the
+data lies, there are probably no data points close to 0, and several above the
+rectangle.
+
+Barplots are especially misleading when used as data summaries, as in the
+example above. In a summary plot, only two distribution parameters (a measure of
+central tendency, e.g. the mean, and error, e.g. the standard deviation or a
+confidence interval) are displayed, instead of showing all the individual data
+points. This can be highly misleading, since different underlying distributions
+can give rise to the same summary plot just as when we previously discussed that
+the different distributions from the datasaurus R-package can give rise to [the
+same linear regression coefficients](
+https://uoftcoders.github.io/rcourse/lec11-modelling.html#challenge17).
+We also have no idea of how many observations there are in each group. These
+shortcomings become evident when comparing the barplot to the underlying
+distributions that were used to create them:
+
+![Dynamite vs distributions](./image/dynamite-vs-dists.png)
+
+Immediately, you can see that conclusions drawn from the barplot, such that A
+and B have the same outcome, are factually incorrect. The distribution in D is
+bimodal, so representing that with a mean would be like observing black and
+white birds and conclude that the average bird color is grey, it's nonsensical.
+If we would have planned our follow up experiments based on the barplot alone,
+we would have been setting ourselves up for failure! Always be sceptical when
+you see a barplot in a published paper, and think of how the underlying
+distribution might look (note that barplots are more acceptable when used to
+represents counts, proportion or percentages, where there is only one data point
+per group in the data set).
+
+Boxplots and violin plots are more meaningful data summaries as they represent
+more than just two distribution parameters. However, these can still be
+misleading and it is often the most appropriate to show each individual
+observation with a dot/hive/swarm plot, possibly combined with with a
+superimposed summary plot or a marker for the mean or median *if* you think this
+conveys additional information. One exception, when it is not advisable to show
+all data points, is when your data set is gigantic and plotting each individual
+observation would oversaturate the chart. Here, you are forced to show summary
+plots or a 2D histogram.
+
+Here is an example of how you can plot a boxplot, together with the individual
+observations:
 
 ```{r boxplot-with-points}
 ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
     geom_boxplot(alpha = 0) +
     geom_jitter(alpha = 0.3, color = "tomato")
 ```
- 
- Notice how the boxplot layer is behind the jitter layer? What do you need to
- change in the code to put the boxplot in front of the points such that it's not
- hidden?
- 
+
+Notice how the boxplot layer is behind the jitter layer? What do you need to
+change in the code to put the boxplot in front of the points such that it's not
+hidden?
+
 > #### Challenge
 >
 > So far, we've looked at the distribution of sepal length within species.  Try making a
 > new plot to explore the distribution of another variable within each species.
->
-
 
 What about making interactive graphs in R?
 There is a package called plotly that lets us make our ggplot2 graphs interactive:
@@ -365,7 +413,6 @@ Finally, saving graphs. When using ggsave, R by default saves the last graph you
 ggsave("filename.jpg")
 ggsave("filename.jpg", width = 20, height = 20, units = "cm")
 ```
-
 
 ## More resources on ggplot2
 
