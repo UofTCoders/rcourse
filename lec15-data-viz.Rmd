@@ -356,7 +356,7 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
 We will deepen the discussion around some of these ideas, in the context of the
 following plot:
 
-![Reproduced with permission from [Dr. Koyama](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-bars.png)
+![*Reproduced with permission from [Dr. Koyama's poster*](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-bars.png)
 
 Similar to the ideas of Tufte, it is generally advisable to avoid "decorative"
 plot elements that do not convey extra information about the data, *especially*
@@ -381,8 +381,8 @@ We also have no idea of how many observations there are in each group. These
 shortcomings become evident when comparing the barplot to the underlying
 distributions that were used to create them:
 
-![Reproduced with permission from [Dr.
-Koyama's poster](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-vs-dists.png)
+![*Reproduced with permission from [Dr.
+Koyama's poster*](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-vs-dists.png)
 
 Immediately, you can see that conclusions drawn from the barplot, such that A
 and B have the same outcome, are factually incorrect. The distribution in D is
