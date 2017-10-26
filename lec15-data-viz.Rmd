@@ -25,12 +25,13 @@ author: Lindsay Coome
 > - Saving graphs (5 min)
 >
 > ### Setup
-> 
+>
 > - Make sure to install `plotly` (`install.packages("plotly")`).
 
 -----
 
 ## What makes a good graph?
+
 > #### Challenge
 >
 > What makes a bad graph? What makes an ugly graph to you?
@@ -97,6 +98,9 @@ Colour Saturation   | Decrease | Increase
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [Examples of bad graphs](https://www.biostat.wisc.edu/~kbroman/topten_worstgraphs/)
+- [More examples of bad graphs and how to improve them](https://www.stat.auckland.ac.nz/~ihaka/120/Lectures/lecture03.pdf)
+- [Wikipedia has a great article on misleading graphs](https://en.wikipedia.org/wiki/Misleading_graph)
 
 ## What is ggplot?
 
