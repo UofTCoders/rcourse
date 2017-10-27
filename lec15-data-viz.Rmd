@@ -317,13 +317,18 @@ What if we want a bar graph of Sepal Length by Species?
 
 ```{r}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat='summary', fun.y='mean') +
     ylab("Sepal Length") +
     xlab("Species") +
-    ggtitle("Sepal Width by Sepal Length") +
+    ggtitle("Sepal Length by Species") +
     theme_bw() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
+
+As you can see, it is a bit cumbersome to create barplots of means with ggplot
+(you need to add `stat='summary', fun.y='mean'`). The default behavior of
+`geom_bar` is to count observations instead of summarize them, which actually is
+a more appropriate use of a barplot for reasons that we will cover below.
 
 ## Violin plots
 
@@ -332,7 +337,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
     geom_violin() +
     ylab("Sepal Length") +
     xlab("Species") +
-    ggtitle("Sepal Width by Sepal Length") +
+    ggtitle("Sepal Length by Species") +
     theme_bw() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -344,7 +349,12 @@ species:
 
 ```{r boxplot}
 ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
- geom_boxplot()
+    geom_boxplot() +
+    ylab("Sepal Length") +
+    xlab("Species") +
+    ggtitle("Sepal Length by Species") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 > #### Challenge
@@ -356,7 +366,7 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
 We will deepen the discussion around some of these ideas, in the context of the
 following plot:
 
-![Reproduced with permission from [Dr. Koyama](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-bars.png)
+![*Reproduced with permission from [Dr. Koyama's poster*](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-bars.png)
 
 Similar to the ideas of Tufte, it is generally advisable to avoid "decorative"
 plot elements that do not convey extra information about the data, *especially*
@@ -381,8 +391,8 @@ We also have no idea of how many observations there are in each group. These
 shortcomings become evident when comparing the barplot to the underlying
 distributions that were used to create them:
 
-![Reproduced with permission from [Dr.
-Koyama's poster](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-vs-dists.png)
+![*Reproduced with permission from [Dr.
+Koyama's poster*](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf)](./image/dynamite-vs-dists.png)
 
 Immediately, you can see that conclusions drawn from the barplot, such that A
 and B have the same outcome, are factually incorrect. The distribution in D is
@@ -429,8 +439,9 @@ lets us make our ggplot2 graphs interactive:
 
 ```{r}
 library(plotly)
-g <- ggplot(iris, aes(Species)) + 
-    geom_bar()
+
+g <- ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+    geom_bar(stat='summary', fun.y='mean')
 p <- ggplotly(g)
 p
 ```
