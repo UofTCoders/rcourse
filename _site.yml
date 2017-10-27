@@ -24,7 +24,7 @@ navbar:
           href: lec06-pop-models.html
         - text: "Sept. 28: Modelling in R"
           href: lec07-pop-models.html
-        - text: "Oct. 03: Population models in 2 dimensions"
+        - text: "Oct. 03: Population models in two dimensions"
           href: lec08-stability.html
         - text: "Oct. 05: Fixed points, null clines, and stability"
           href: lec09-modeling-r.html
@@ -38,7 +38,7 @@ navbar:
           href: lec13-projects-r.html
         - text: "Oct. 24: Scientific collaboration, Git and GitHub"
           href: lec14-git.html
-        - text: "Oct. 26: Data visualization (Part 2) and project work"
+        - text: "Oct. 26: Data visualization and project work"
           href: lec15-data-viz.html
         - text: "Oct. 31: Project work, data visualizations"
           href: lec16-data-viz.html
