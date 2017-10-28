@@ -192,7 +192,7 @@ summary(iris)
 You can already see how it will save you time to use R instead of typing these
 calculations separately in Excel.
  
-### RStudio
+### RStudio and the R Notebook
 
 Before we continue, we are going to switch from using the R console, to using
 an interface called RStudio. RStudio includes the R console, but also many
