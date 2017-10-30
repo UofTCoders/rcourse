@@ -100,3 +100,21 @@ created the issue for this task, we go about it as follows.
       `'close #<issue_number>'` to the commit message (in this case `close #1`).
 
 Done!
+
+One additional note to save you some potential headaches (also called merge
+conflicts...). If you are not working from a Git repository that you just
+cloned, you should make sure that the master branch of your local fork of the
+repository, is up to date with the latest commit on the master branch of the
+main repository, before you create a new branch. Put another way: if someone
+else has made changes to the main repository, you want those in your fork before
+you start working on new features.
+
+If you type `git remote -v` inside your repository, you will see that it
+currently only has one remote (online storage location) specified, which is your
+fork with the alias `origin`. To add the main repository, go to its GitHub page
+and click the green button `Clone or download`, copy the URL, and pasted into
+this command `git remote add upstream <pasted_url>`. The name `upstream` is a
+convention, and it will be the alias to this URL. Now you can sync your local
+master branch with the upstream master branch: `git pull upstream/master
+master`. These changes (and any other changes you add) will be uploaded to your
+fork's GitHub location next time you push.
