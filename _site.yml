@@ -42,10 +42,9 @@ navbar:
           href: lec15-data-viz.html
         - text: "Oct. 31: Project work, data visualizations"
           href: lec16-data-viz.html
-        - text: "Nov. 02: Reproducible workflow, R Markdown"
+        - text: "Nov. 02: Reproducible workflow, Metadata, and R Markdown"
           href: lec17-rmarkdown.html
-        - text: "Nov. 14: Metadata and project work"
-          href: lec18-metadata.html
+        - text: "Nov. 14: Project work (no lesson)"
         - text: "Nov. 16: Project work (no lesson)"
         - text: "Nov. 21: Preparing a scientific item for academic publishing"
           href: lec19-publishing.html

@@ -1,4 +1,0 @@
----
-title: "Introduction to metadata (plus project work)"
----
-
