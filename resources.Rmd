@@ -4,7 +4,7 @@ title: "Resources and Additional Information"
 
 ## R Coding Style Guide
 
-*All code submitted for grading* will need to conform to the coding style
+*All code submitted for grading* for the final assignment will need to conform to the coding style
 guidelines as outline on [this Style Guide](http://style.tidyverse.org/index.html).
 We will be discussing and highlighting how to automatically (or at least
 consistently) use this style as we go through the lectures and labs. For the
