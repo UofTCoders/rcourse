@@ -149,7 +149,7 @@ Another approach is to use both colours and symbols.
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + 
-  geom_point(aes(shape = factor(Species)), , size = 3)
+  geom_point(aes(shape = factor(Species)), size = 3)
 ```
 
 > #### Challenge
