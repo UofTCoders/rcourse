@@ -1,5 +1,5 @@
 ---
-title: "More on data visualizations (plus project work)"
+title: Data visualization in R
 author: Lindsay Coome
 ---
 
@@ -114,7 +114,7 @@ We've now added additional information to our graph and solved the saturation pr
 ```{r}
 g <- ggplot(diamonds, aes(x = carat, y = price))
 g + 
-  geom_hex(bins = 10)
+  geom_hex(bins = 90)
 ```
 
 [Here](http://ggplot2.tidyverse.org/reference/geom_hex.html) are more resources on hexagonal 2D heatmaps. 
@@ -131,19 +131,17 @@ g +
 
 ## Making your graphs accessible
 
-Colour blindness is common in the population, and red-green colour blindness in particular affects 8% of men and 0.5% of women.
+Colour blindness is common in the population, and red-green colour blindness in particular affects 8% of men and 0.5% of women. Guidelines for making your visualizations more accessible to people affected by colour blindness, will in many cases also improve the interpretability of your graphs for people who have standard color vision. Here are a couple of examples:
 
-Here are some guidelines for making your visualizations more accessible to people affected by colour blindness:
+Don't use jet rainbow-coloured heatmaps. Jet colourmaps are often the default heatmap used in many visualization packages (you've probably seen them before). 
 
-Don't use jet heatmaps. Jet colourmaps are often the default heatmap used in many visualization packages (you've probably seen them before). 
-
-![A Jet Heatmap](./image/heatmap.png)
+![](./image/heatmap.png)
 
 Colour blind viewers are going to have a difficult time distinguishing the meaning of this heat map if some of the colours blend together.
 
-![Colour Blind](./image/colourblind.png)
+![](./image/colourblind.png)
 
-[PS - jet heatmaps aren't so great for other reasons, too!](https://jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap/)
+The jet colormap should be avoided for other reasons, including that the sharp transitions between colors gives introduces visual threshold levels that do not represent the underlying continuous data, more details about jet can be found in [this blog post](https://jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap/) and [this series of posts](https://mycarta.wordpress.com/2012/05/12/the-rainbow-is-dead-long-live-the-rainbow-part-1/). In general, when presenting continuous data, a perceptually uniform colormap is often the most suitable choice. This type of colormap ensures that equal steps in data are perceived as equal steps in color space. The human brain perceives changes in lightness as changes in the data much better than, for example, changes in hue. Therefore, colormaps which have monotonically increasing lightness through the colormap will be better interpreted by the viewer. More details and examples of such colormaps are available in the [matplotlib documentation](http://matplotlib.org/users/colormaps.html), and many of the core design principles are outlined in [this entertaining talk](https://www.youtube.com/watch?v=xAoljeRJ3lU). Most of these colormaps are [available in R](http://r4ds.had.co.nz/graphics-for-communication.html#fig:brewer). 
 
 Another approach is to use both colours and symbols. 
 
@@ -170,6 +168,5 @@ For more resources, [here](http://blog.usabilla.com/how-to-design-for-color-blin
 * [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 * [r graph gallery for inspiration (not just limited to ggplot2 graphs)](https://www.r-graph-gallery.com/all-graphs/)
 
-*Parts of this lesson material were taken and modified from [Software
-Carpentry](https://software-carpentry.org) under their CC-BY copyright license. See
-their [lesson page](http://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the original source.*
+
+
