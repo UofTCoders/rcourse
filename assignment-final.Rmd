@@ -12,6 +12,7 @@ peer-reviewed journal.
 
 Your report should have at least these sections: 
 
+- "Abstract"
 - "Background and Rationale"
 - "Research Objectives and Hypotheses" 
 - "Methods" (with "Data Description" and "Data Analysis" subsections)
@@ -48,6 +49,10 @@ As a *guideline*, aim for at least 2500 words and about 6-8 figures/tables.
 *This is **not** a hard criteria*. We are flexible in these *guidelines*, since
 we want you to learn to work as a team and create a scientific product. You'll
 be surprised how quickly the words, figures, and tables start adding up.
+
+Your code should follow the coding style found [on our resources page](resources.html). 
+We will comment on your code as you work toward the final assignment, so you
+should be aware of the coding style by the due date.
 
 ## Grading rubric
 
