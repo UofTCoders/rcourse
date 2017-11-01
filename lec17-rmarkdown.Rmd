@@ -191,7 +191,8 @@ If you want to state a value in your data in your text, it is best to reference
 to the actual variable or code containing that value rather than manually writing
 it out. Here is an example:
 
-There are `r ''``r nrow(df)` samples in this experiment.
+
+``` There are `r '\x60r nrow(df)\x60'` samples in this experiment. ```
 
 
 ### Images and Figures
