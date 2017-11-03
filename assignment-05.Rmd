@@ -1,5 +1,8 @@
 ---
 title: 'Assignment 5: Population models in two dimensions (8 marks)'
+output:
+    html_document:
+        toc: false
 ---
 
 *To submit this assignment, upload the full document on blackboard,
