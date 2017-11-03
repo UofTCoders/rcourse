@@ -6,7 +6,9 @@ html_document:
         collapsed: false
         smooth_scroll: false
     include:
-        in_header: _includes/style.html
+        in_header:
+            - _includes/header.html
+            - _includes/style.html
         after_body: _includes/footer.html
     theme: lumen # lumen or simplex or sandstone or paper (I prefer either lumen or paper)
     highlight: haddock
