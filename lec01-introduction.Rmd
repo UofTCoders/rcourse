@@ -147,8 +147,16 @@ when you read it in. This sample data set that we are using for this class
 describes the length and width of sepals and petals for three species of iris
 flowers.
 
-```{r}
+```{r, eval=FALSE}
 read_csv('./iris.csv') # need to dry run this with windows path names...
+```
+
+```{r, echo=FALSE}
+iris <- read_csv('data/iris.csv')
+```
+
+```{r, echo=FALSE}
+iris
 ```
 
 If we want to calculate something in Excel, we would highlight the column and
@@ -158,7 +166,7 @@ it is stored, so instead of printing out to console, these values are stored in
 this R session and we can access it by this name `iris`, (technically we say
 that we have assigned it to variable `iris`).
 
-```{r}
+```{r, eval=FALSE}
 iris <- read_csv('./iris.csv')
 ```
 
@@ -184,7 +192,7 @@ summary(iris)
 You can already see how it will save you time to use R instead of typing these
 calculations separately in Excel.
  
-### RStudio
+### RStudio and the R Notebook
 
 Before we continue, we are going to switch from using the R console, to using
 an interface called RStudio. RStudio includes the R console, but also many

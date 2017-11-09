@@ -6,8 +6,10 @@ html_document:
         collapsed: false
         smooth_scroll: false
     include:
-        in_header: _includes/style.html
+        in_header:
+            - _includes/header.html
+            - _includes/style.html
         after_body: _includes/footer.html
-    theme: lumen # lumen or simplex or sandstone
-    # highlight: pygments # or textmate or tango or default?
+    theme: lumen # lumen or simplex or sandstone or paper (I prefer either lumen or paper)
+    highlight: haddock
     mathjax: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"

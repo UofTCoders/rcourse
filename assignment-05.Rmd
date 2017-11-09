@@ -1,8 +1,5 @@
 ---
 title: 'Assignment 5: Population models in two dimensions (8 marks)'
-output:
-    html_document:
-        toc: false
 ---
 
 *To submit this assignment, upload the full document on blackboard,
@@ -122,15 +119,13 @@ scan of it in the markdown document or hand in the hard copy.*
     not (1 marks).
 
 (e) Simplify the fixed points of the system on paper in the case when
-    $\alpha_1 = \alpha_2 = \alpha$. Create a plot in R showing $x^*$ vs.
-    $\alpha$, $y^*$ vs $\alpha$, and $x ^ * + y ^ *$ vs. $\alpha$ for \$
-    -1 &lt; \alpha &lt; 1.5\$. Label $K_1$, $K_2$, and $K_1 + K_2$ on
-    the y-axis. Use a solid line to represent stable fixed points and a
-    dashed line for unstable fixed points (2.5 marks total)
-
-    -   Are there any bifurcations (qualitative changes in the number or
-        stability of fixed points) as a function of $\alpha$? If so,
-        describe them.
+    $\alpha_1 = \alpha_2 = \alpha$, $r_1 = r_2 = r$, and $K_1 \neq K_2$.
+    Create a plot in R showing $x^*$ vs. $\alpha$, $y^*$ vs $\alpha$,
+    and $x ^ * + y ^ *$ vs. $\alpha$ for \$ -1 &lt; \alpha &lt; 1.5\$
+    for the *non-trivial* fixed point where both $x^*$ and $y^*$ are
+    not zero. Note that $\alpha = -1$ and $\alpha = 1$ will give
+    infinity, so skip those two points when plotting. Label $K_1$,
+    $K_2$, and $K_1 + K_2$ on the y-axis. (2.5 marks total)
 
     -   Thinking of $\alpha$ as the parameter that controls "overlap"
         between the two competing species, what is the biological

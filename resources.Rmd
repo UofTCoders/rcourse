@@ -4,7 +4,7 @@ title: "Resources and Additional Information"
 
 ## R Coding Style Guide
 
-*All code submitted for grading* will need to conform to the coding style
+*All code submitted for grading* for the final assignment will need to conform to the coding style
 guidelines as outline on [this Style Guide](http://style.tidyverse.org/index.html).
 We will be discussing and highlighting how to automatically (or at least
 consistently) use this style as we go through the lectures and labs. For the
@@ -12,3 +12,8 @@ first few assignments, you will not be required to follow these guidelines,
 however we will make a note in your assignment for you to fix it next time. In 
 later assignments, part of the grade will come from adhering to the coding 
 styles.
+
+## R Markdown Workflow
+
+- [Predictive Ecology - Rmarkdown in a scientific workflow](http://predictiveecology.org/2016/10/21/Rmarkdown-science-workflow.html)
+- [R for Data Science - R Markdown workflow](http://r4ds.had.co.nz/r-markdown-workflow.html)

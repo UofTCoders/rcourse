@@ -17,10 +17,12 @@ Imports: rmarkdown,
     dplyr,
     tidyr,
     ggplot2,
+    DiagrammeR,
     tidyverse,
     GGally,
     datasauRus,
     broom,
     deSolve,
     phaseR,
-    lattice
+    lattice,
+    plotly

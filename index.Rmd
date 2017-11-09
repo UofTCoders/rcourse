@@ -81,7 +81,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 9    | Nov 02 | Reproducible workflow, metadata, R Markdown         | Lina           |
 | -    | Nov 07 | Fall break                                          | -              |
 | -    | Nov 09 | Fall break                                          | -              |
-| 10   | Nov 14 | Project work, metadata                              | 1 TA/group     |
+| 10   | Nov 14 | Project work                                        | 1 TA/group     |
 | 10   | Nov 16 | Project work                                        | 1 TA/group     |
 | 11   | Nov 21 | Preparing a scientific item for academic publishing | Lina           |
 | 11   | Nov 23 | Project work                                        | 1 TA/group     |
@@ -99,7 +99,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Modelling in R            | Individual          | Oct 17     | 8     |
 | Fitting models to data    | Individual          | Oct 24     | 8     |
 | Setup GitHub and projects | Project, Individual | Oct 31     | 8     |
-| Data visualization        | Project, Individual | Nov 07     | 8     |
+| Data visualization        | Project, Individual | Nov 14     | 8     |
 | Final project work        | Project, Group      | Dec 06     | 32    |
 | Participation             | Individual          | -          | 8     |
 
