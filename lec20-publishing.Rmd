@@ -1,5 +1,6 @@
 ---
 title: "Preparing a scientific item for academic publishing"
+author: Lina Tran
 ---
 ## Lesson preamble
 
@@ -13,22 +14,19 @@ title: "Preparing a scientific item for academic publishing"
 >
 > - Authorship (25 min)
 >     - Different types of contributors (10 min)
->     - How to credit data and software creators? 10 min)
+>     - How to credit data and software creators? (10 min)
 >     - ORCID for keeping track of a scientist's contributions (5 min)
 > - Academic Publishing (40 min)
->     - An overview of the peer review system (10 min)
+>     - An overview of the peer review system (5 min)
+>     - The scientific life cycle (5 min)
 >     - How do you decide where to publish? (10 min)
 >     - Moving away from impact factors (10 min)
 >     - Video: Open Access Explained! (10 min)
 > - Submitting a Scientific Publication (35 min)
 >     - General format (10 min)
->     - Journal specifications (10 min)
 >     - I've submitted, now what? (5 min)
->     - General writing tips (10 min)
+>     - General writing tips (15 min)
 ----
-
-*The following has been adapted from [Lecture 3 of the original RQM
-course](https://cbahlai.github.io/rqm-template/lessons/week3/)*
 
 ## Authorship
 
@@ -46,16 +44,17 @@ Here are some common types of contributions:
 - Editing
 - Manuscript submission and revision handling
 
+Typically, authorship requires having taken part in two of these, plus having read the manuscript and approving its content. This will vary from field to field. Consider the following:
 
-This will vary from field to field. Consider the following:
-
-- Is doing only one of these enough to merit authorship?
+- Do you think doing only one of these enough to merit authorship?
 - If not, then what in your opinion is the relative weight of each of these?
 
-**Tip:** Have discussions about authorship early! If you're concerned
-about how your contributions will be recognized, it is always best to have
-talked about these issues with all those involved early on, rather than when
-everything is done and it's about time to submit.
+Many people in the biomedical field follow [these guidelines](http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html) for authorship.
+
+**Important Note**: Have discussions about authorship early! This is crucial to
+avoiding potential conflicts around authorship. Talking about any issues
+with all involved early on is much better than waiting until when everything is
+done and it's about time to submit.
 
 #### Further Reading
 
@@ -66,12 +65,12 @@ everything is done and it's about time to submit.
 
 ### How to Credit Data and Software Creators?
 
-As researchers in all sorts of fields begin to fruther embrace scripting and
+As researchers in all sorts of fields begin to further embrace scripting and
 releasing their analyses and code, there are some challenges faced with authorship
 and citation. Let's discuss some interesting questions:
 
 - Why is there a discrepancy between the way credit is offered to data
-and software creators compared to ?
+and software creators compared to typical avenues of academic authorship?
 - Are data and software research products?
     - Who 'owns' the data that is produced, and what does this ownership entail?
 - What is the best way to credit data and software creators?
@@ -97,9 +96,9 @@ manuscript/grant submission and citation listings.
     - What about publishing the names of reviewers along with publications?
 - What criteria do you think a new or improved system for reviewing science would need?
 
-#### The Scientific Life Cycle
+### The Scientific Life Cycle
 
-Broadly speaking, the life cycle of scientific publications entailst the following:
+Broadly speaking, the life cycle of scientific publications entails the following:
 
 1. Research (new findings are interpreted and reported upon)
 2. Peer Review (these reports are reviewed by a number of field 'experts')
@@ -109,7 +108,7 @@ Broadly speaking, the life cycle of scientific publications entailst the followi
     research, or the information becomes part of general knowledge as time passes)
 6. Return to #1 (the cycle goes on...)
 
-(Adapted from [Berkeley Library Publishing Lifecycle](http://www.lib.berkeley.edu/scholarly-communication/publishing/publishing-lifecycle))
+(Adapted from [Berkeley Library Publishing Life Cycle](http://www.lib.berkeley.edu/scholarly-communication/publishing/publishing-lifecycle))
 
 ### How Do You Decide Where to Publish?
 
@@ -143,7 +142,8 @@ scientific publishing.
 #### Preprint Servers
 
 While the definition may vary, for our purposes, we will define a preprint as
-a research article, review or body of scientific work that has yet to be published in a journal.
+a research article, review, or body of scientific work that has yet to be
+published in a journal.
 
 - Do you have any hesitations about submitting to a preprint server?
 
@@ -188,7 +188,7 @@ Objectives and Hypotheses" are usually combined into one "Introduction" section,
 but this varies from journal to journal. Also, the order may vary with some
 placing the detailed methods in the supplementary. Journals may also require
 a short "Significance Statement" as to why the finding is interesting. This may
-be more common in basic science that has clinical/translational implications.
+be more common in basic science that has potential clinical/translational implications.
 Also, many journals also require a written abstract for their work as well.
 
 ### Journal Specifications
@@ -241,7 +241,7 @@ you can follow.
 These are some tips on the writing process and style:
 
 - Be clear and concise, especially when stating your objectives/hypotheses
-- Define your terms: don't use acronyms without first defining them,
+- Define your terms: don't use acronyms without first defining them
 - Jargon should be minimized, and explained if they must be used
 - Typically, do not state a fact without citing work that supports this fact.
 While you may think something is obvious, not everyone reading your work will.
@@ -259,3 +259,6 @@ In terms of content, these are some questions you can ask yourself:
 accepted views, or existing literature?
 - Do you address other experiments and interesting questions that result from
 your findings?
+
+*This lesson has been adapted from [Lecture 3 of the original RQM
+course](https://cbahlai.github.io/rqm-template/lessons/week3/)*
