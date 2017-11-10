@@ -1,6 +1,8 @@
 ---
 title: "Reproducible workflow, Metadata, and R Markdown"
+author: "Lina Tran"
 ---
+
 ## Lesson preamble
 
 > ### Lesson objectives:
@@ -114,7 +116,6 @@ Let's go over a few of these questions:
 2. When you were choosing your dataset, did you encounter problems understanding the data?
 3. If so, what would have helped you to understand?
 
-
 ### What Are Best Practices in Generating Metadata?
 
 Take some time to read over the first page of the [Center for Government
@@ -144,22 +145,26 @@ http://commonmark.org/help/tutorial/
 #### Lists
 
 **Unordered Lists (i.e. bullets)**
+
 ```
 - Unordered list item
     - Unordered list sub-item
 - Unordered list item
 ```
+
 - Unordered list item
     - Unordered list sub-item
 - Unordered list item
 
 **Ordered Lists (i.e. numbers)**
+
 ```
 1. Ordered list item
     1. Ordered list sub-item
     2. Ordered list sub-item
 2. Ordered list item
 ```
+
 1. Ordered list item
     1. Ordered list sub-item
     2. Ordered list sub-item
@@ -200,15 +205,17 @@ to the actual variable or code containing that value rather than manually writin
 it out. Here is an example:
 
 
-``` There are `r '\x60r nrow(df)\x60'` samples in this experiment. ```
+<code> There are &#96;r nrow(df)&#96; samples in this experiment. </code>
 
 
 ### Images and Figures
 
 To include an image, use the following syntax:
+
 ```
 [caption for my image](path/to/image.png)
 ```
+
 If you would like the caption you wrote to be included underneath your image,
 put the following in your YAML metadata:
 
@@ -405,12 +412,9 @@ kable(head(iris))
 5. Now Knit the file to html and compare with your neighbour to see if you got
 the same output and work together to fix any issues.
 
-Click [here](https://github.com/UofTCoders/rcourse/blob/master/lec17-exercise.Rmd) for an example of how this file could look. Or see the code chunk below.
+See the code chunk below for the **solution**.
 
-**Solution:**
-
-<pre class="markdown"><code>&#96;&#96;&#96;
-
+<pre class="markdown"><code>
 ---
 title: "Lecture 17 Exercise"
 author: "Lina Tran"
@@ -447,10 +451,9 @@ qplot(time, temp, data=beaver1)
 library(knitr)
 kable(head(iris))
 &#96;&#96;&#96;
-
 </code></pre>
 
-### Resources
+## Resources
 
 - The [R Markdown documentation](http://rmarkdown.rstudio.com/lesson-1.html)
 from RStudio can be a very helpful guide.
