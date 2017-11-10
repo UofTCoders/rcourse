@@ -1,6 +1,8 @@
 ---
 title: "Reproducible workflow, Metadata, and R Markdown"
+author: "Lina Tran"
 ---
+
 ## Lesson preamble
 
 > ### Lesson objectives:
@@ -26,7 +28,8 @@ title: "Reproducible workflow, Metadata, and R Markdown"
 >     - Footnotes (5 min)
 >     - Output Formatting Options (5 min)
 
-----
+-----
+
 ## Reproducible Science
 
 What does reproducibility mean to you? Let's discuss what each of these may entail:
@@ -113,7 +116,6 @@ Let's go over a few of these questions:
 2. When you were choosing your dataset, did you encounter problems understanding the data?
 3. If so, what would have helped you to understand?
 
-
 ### What Are Best Practices in Generating Metadata?
 
 Take some time to read over the first page of the [Center for Government
@@ -143,22 +145,26 @@ http://commonmark.org/help/tutorial/
 #### Lists
 
 **Unordered Lists (i.e. bullets)**
+
 ```
 - Unordered list item
     - Unordered list sub-item
 - Unordered list item
 ```
+
 - Unordered list item
     - Unordered list sub-item
 - Unordered list item
 
 **Ordered Lists (i.e. numbers)**
+
 ```
 1. Ordered list item
     1. Ordered list sub-item
     2. Ordered list sub-item
 2. Ordered list item
 ```
+
 1. Ordered list item
     1. Ordered list sub-item
     2. Ordered list sub-item
@@ -169,7 +175,13 @@ http://commonmark.org/help/tutorial/
 The `knitr` package has a function called `kable` that helps to display tables
 from an `r` code chunk nicely. It is best to use `echo=FALSE` and `results='asis'`.
 
-`r ''````{r, echo=FALSE, results='asis'}
+<pre class="markdown"><code>&#96;&#96;&#96;{r, echo=FALSE, results='asis'}
+library(knitr)
+kable(head(mtcars))
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, echo=FALSE, results='asis'}
 library(knitr)
 kable(head(mtcars))
 ```
@@ -193,15 +205,17 @@ to the actual variable or code containing that value rather than manually writin
 it out. Here is an example:
 
 
-``` There are `r '\x60r nrow(df)\x60'` samples in this experiment. ```
+<code> There are &#96;r nrow(df)&#96; samples in this experiment. </code>
 
 
 ### Images and Figures
 
 To include an image, use the following syntax:
+
 ```
 [caption for my image](path/to/image.png)
 ```
+
 If you would like the caption you wrote to be included underneath your image,
 put the following in your YAML metadata:
 
@@ -211,25 +225,38 @@ title: Document
 output:
     html_document:
         fig_caption: yes
-
+---
 ```
+
 As you've learned in doing your assignments, both the code and output of your
 `r` code chunk such as figures will show up in your output document. However,
 using code chunk options `echo` and `eval`, you can suppress output of the code
 underlying a graph, and only show the resulting plot from your code or vice versa.
 In this case, you probably want the former, and it would look like this:
 
-```{r, eval=TRUE, echo=FALSE}`r ''`
+<pre class="markdown"><code>&#96;&#96;&#96;{r, eval=TRUE, echo=FALSE}
 library(ggplot2)
 qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data = mtcars)
 ```
 
 You can also set the figure height and width too using the `fig.height` and
 `fig.width` options.
 
-```{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}`r ''`
+<pre class="markdown"><code>&#96;&#96;&#96;{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
 library(ggplot2)  
 qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
+library(ggplot2)  
+qplot(mpg, wt, data = mtcars)
 ```
 
 ### In-Line Citations & Bibliography
@@ -376,6 +403,7 @@ is shown.
 [^3]: Often confused for a vegetable
 
 - First 6 rows of Iris Dataset
+
 ```{r, asis=TRUE, echo=FALSE}
 library(knitr)
 kable(head(iris))
@@ -384,9 +412,48 @@ kable(head(iris))
 5. Now Knit the file to html and compare with your neighbour to see if you got
 the same output and work together to fix any issues.
 
-Click [here](https://github.com/UofTCoders/rcourse/blob/master/lec17-exercise.Rmd) for an example of how this file could look.
+See the code chunk below for the **solution**.
 
-### Resources
+<pre class="markdown"><code>
+---
+title: "Lecture 17 Exercise"
+author: "Lina Tran"
+output: 
+  html_document:
+    fig_width: 10
+    fig_height: 10
+    toc: TRUE
+---
+
+# Beavers Plot
+
+&#96;&#96;&#96;{r eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(time, temp, data=beaver1)
+&#96;&#96;&#96;
+
+# R Markdown
+
+- Fruits
+    1. Apple
+    2. **Orange**
+    3. Banana
+    4. Tomato[^3]
+- Vegetables
+    1. *Brussel Sprouts*
+    2. Carrots
+
+[^3]: Often confused for a vegetable
+
+- First 6 rows of Iris Dataset
+
+&#96;&#96;&#96;{r, asis=TRUE, echo=FALSE}
+library(knitr)
+kable(head(iris))
+&#96;&#96;&#96;
+</code></pre>
+
+## Resources
 
 - The [R Markdown documentation](http://rmarkdown.rstudio.com/lesson-1.html)
 from RStudio can be a very helpful guide.
