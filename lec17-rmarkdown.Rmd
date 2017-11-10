@@ -63,7 +63,7 @@ for years. This includes the following:
     - code is version-controlled (e.g. Git/GitHub)
     - code is well tested
     - for a take on "Continuous Analysis", read this [article from ELife](https://elifesciences.org/labs/e623676c/reproducibility-automated)
-    or [this article](https://www.biorxiv.org/content/early/2016/08/11/056473) in 
+    or [this article](https://www.biorxiv.org/content/early/2016/08/11/056473) in
     Nature Biotechnology with everything also [on GitHub!](https://github.com/greenelab/continuous_analysis)
 - For more recommendations on reproducible research, especially as it pertains
 to coding practices, read more [here](http://bioconnector.org/workshops/r-rmarkdown.html#some_recommendations_for_reproducible_research)
@@ -383,6 +383,8 @@ kable(head(iris))
 
 5. Now Knit the file to html and compare with your neighbour to see if you got
 the same output and work together to fix any issues.
+
+Click [here](https://github.com/UofTCoders/rcourse/blob/master/lec17-exercise.Rmd) for an example of how this file could look.
 
 ### Resources
 
