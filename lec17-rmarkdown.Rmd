@@ -384,7 +384,7 @@ kable(head(iris))
 5. Now Knit the file to html and compare with your neighbour to see if you got
 the same output and work together to fix any issues.
 
-Click [here](lec17-exercise.Rmd) for an example of how this file could look.
+Click [here](https://github.com/UofTCoders/rcourse/blob/master/lec17-exercise.Rmd) for an example of how this file could look.
 
 ### Resources
 
