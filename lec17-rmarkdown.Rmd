@@ -169,7 +169,13 @@ http://commonmark.org/help/tutorial/
 The `knitr` package has a function called `kable` that helps to display tables
 from an `r` code chunk nicely. It is best to use `echo=FALSE` and `results='asis'`.
 
-`r ''````{r, echo=FALSE, results='asis'}
+<pre class="markdown"><code>&#96;&#96;&#96;{r, echo=FALSE, results='asis'}
+library(knitr)
+kable(head(mtcars))
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, echo=FALSE, results='asis'}
 library(knitr)
 kable(head(mtcars))
 ```
@@ -211,25 +217,38 @@ title: Document
 output:
     html_document:
         fig_caption: yes
-
+---
 ```
+
 As you've learned in doing your assignments, both the code and output of your
 `r` code chunk such as figures will show up in your output document. However,
 using code chunk options `echo` and `eval`, you can suppress output of the code
 underlying a graph, and only show the resulting plot from your code or vice versa.
 In this case, you probably want the former, and it would look like this:
 
-```{r, eval=TRUE, echo=FALSE}`r ''`
+<pre class="markdown"><code>&#96;&#96;&#96;{r, eval=TRUE, echo=FALSE}`r ''`
 library(ggplot2)
 qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data = mtcars)
 ```
 
 You can also set the figure height and width too using the `fig.height` and
 `fig.width` options.
 
-```{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}`r ''`
+<pre class="markdown"><code>&#96;&#96;&#96;{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}`r ''`
 library(ggplot2)  
 qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
+library(ggplot2)  
+qplot(mpg, wt, data = mtcars)
 ```
 
 ### In-Line Citations & Bibliography
@@ -385,6 +404,47 @@ kable(head(iris))
 the same output and work together to fix any issues.
 
 Click [here](https://github.com/UofTCoders/rcourse/blob/master/lec17-exercise.Rmd) for an example of how this file could look.
+
+**Solution:**
+
+<pre class="markdown"><code>&#96;&#96;&#96;
+---
+title: "Lecture 17 Exercise"
+author: "Lina Tran"
+output: 
+  html_document:
+    fig_width: 10
+    fig_height: 10
+    toc: TRUE
+---
+
+# Beavers Plot
+
+&#96;&#96;&#96;{r eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(time, temp, data=beaver1)
+&#96;&#96;&#96;
+
+# R Markdown
+
+- Fruits
+    1. Apple
+    2. **Orange**
+    3. Banana
+    4. Tomato[^3]
+- Vegetables
+    1. *Brussel Sprouts*
+    2. Carrots
+
+[^3]: Often confused for a vegetable
+
+- First 6 rows of Iris Dataset
+
+&#96;&#96;&#96;{r, asis=TRUE, echo=FALSE}
+library(knitr)
+kable(head(iris))
+&#96;&#96;&#96;
+</code></pre>
 
 ### Resources
 
