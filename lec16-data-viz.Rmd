@@ -30,7 +30,9 @@ author: Lindsay Coome & Joel Ostblom
 
 ---
 
-## Tufte's guidelines
+## Creating good graphics, continued
+
+### Tufte's guidelines
 
 * Reduce non-data ink
 * Enhance the data ink
@@ -40,7 +42,7 @@ data-information,
 
 Avoid "chartjunk" - extraneous visual elements that detract from message.
 
-## Colour rules
+### Colour rules
 
 * Large background colours should be quiet, muted to let brighter colors stand
   out
@@ -50,15 +52,16 @@ Avoid "chartjunk" - extraneous visual elements that detract from message.
 * Here is a reference sheet with all the [colours and colour names in
   R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
-## Summary
+### Summary
 
 * Determine what type of data you have and how your data will be used
 * Determine how many variable types are in your data
 * Decide on a visual treatment for each of the variables 
 * Focus on the data in your visual representation
 
+## More with ggplot2
 
-## Setting up
+### Setting up
 
 Load or install the required packages:
 
@@ -66,9 +69,7 @@ Load or install the required packages:
 library(ggplot2)
 ```
 
-## Let's get started!
-
-## Saving graphs
+### Saving graphs
 
 When using ggsave, R by default saves the last graph you plotted. You can also
 use the GUI to export and save as an image or PDF.
@@ -88,7 +89,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
     geom_point()
 ```
 
-## Oversaturated graphs and plot choice
+### Oversaturated graphs and plot choice
 
 Last week we talked about how summary plots (especially bar plots) can sometimes
 be misleading, and it is often most appropriate/ideal to show every individual
@@ -160,6 +161,8 @@ counts](http://ggplot2.tidyverse.org/reference/geom_bin2d.html)
 
 ## Making your graphs accessible
 
+### Choice of colors
+
 Colour blindness is common in the population, and red-green colour blindness in
 particular affects 8% of men and 0.5% of women. Guidelines for making your
 visualizations more accessible to people affected by colour blindness, will in
@@ -209,18 +212,18 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
   geom_point(aes(shape = factor(Species)), size = 3)
 ```
 
-> #### Challenge
->
-> Create any coloured figure you want and go to 
-> [this](http://www.color-blindness.com/coblis-color-blindness-simulator/) 
-> website to upload it to see how it 
-> looks to a colour blind person 
+#### Challenge
+
+Create any coloured figure you want and go to 
+[this](http://www.color-blindness.com/coblis-color-blindness-simulator/) 
+website to upload it to see how it 
+looks to a colour blind person 
 
 For more resources,
 [here](http://blog.usabilla.com/how-to-design-for-color-blindness/) is a great
 usability article for designing for people with colour blindness.
 
-## More resources on ggplot2
+### More resources on ggplot2
 
 * [ggplot2 documentation](http://had.co.nz/ggplot2/)
 * [Book by Hadley
@@ -250,7 +253,7 @@ create issues in the main repository, not in your own fork of the repository.
 Let's create a new issue based on our discussion, assign the person we think
 should work on it, and then review the workflow for addressing the issue.
 
-## Sample workflow for addressing an issue
+### Sample workflow for addressing an issue
 
 Let's say we want to create and upload a new file to GitHub. After we have
 created the issue for this task, we go about it as follows.

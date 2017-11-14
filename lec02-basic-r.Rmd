@@ -127,13 +127,13 @@ joel <- 3
 joel + 5
 ```
 
-> #### Challenge
->
-> So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
-> 
-> ```{r}
-> joel + x
-> ```
+#### Challenge
+
+So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
+
+```{r}
+joel + x
+```
 
 Objects can be given any name such as `x`, `current_temperature`, or
 `subject_id`. You want your object names to be explicit and not too long. They
@@ -197,13 +197,13 @@ and then change `weight_kg` to 100.
 weight_kg <- 100
 ```
 
-> #### Challenge
->
-> What do you think is the current content of the object `weight_lb`? 126.5 or 220?
-> 
-> ```{r}
-> weight_lb
-> ```
+#### Challenge
+
+What do you think is the current content of the object `weight_lb`? 126.5 or 220?
+
+```{r}
+weight_lb
+```
 
 
 ### Comments
@@ -228,17 +228,17 @@ to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 ```
 
-> #### Challenge
->
-> What are the values after each statement in the following?
-> 
-> ```{r}
-> mass <- 47.5            
-> age  <- 122            
-> mass <- mass * 2.0      # mass?
-> age  <- age - 20        # age?
-> mass_index <- mass/age  # mass_index?
-> ```
+#### Challenge
+
+What are the values after each statement in the following?
+
+```{r}
+mass <- 47.5            
+age  <- 122            
+mass <- mass * 2.0      # mass?
+age  <- age - 20        # age?
+mass_index <- mass/age  # mass_index?
+```
 
 
 ### Functions and their arguments
@@ -476,38 +476,43 @@ ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`),
 factors (`factor`) and arrays (`array`). In this class, we will focus on data
 frames, which is most commonly used one for data analyses.
 
-> #### Challenge
->
-> * We’ve seen that atomic vectors can be of type character, numeric (or
-double), integer, and logical. But what happens if we try to mix these types in 
->   a single vector? Find out by using `class` to test these examples.
-> 
-> ```{r}
-> num_char <- c(1, 2, 3, 'a')
-> num_logical <- c(1, 2, 3, TRUE)
-> char_logical <- c('a', 'b', 'c', TRUE)
-> tricky <- c(1, 2, 3, '4')
-> ```
-> 
-> <!-- * _Answer_: R implicitly converts them to all be the same type -->
->
-> 
-> - This happens because vectors can be of only one data type. Instead of
->  throwing an error and saying that you are trying to mix different types in
->  the same vector, R tries to convert (coerce) the content of this vector to
->  find a "common denominator". A logical can be turn into 1 or 0, and a number
->  can be turned into a string/character representation. It would be difficult
->  to do it the other way around: would 5 be TRUE or FALSE? What number would
->  't' be?
-> 
-> - In R, we
->   call converting objects from one class into another class
->   _coercion_. These conversions happen according to a hierarchy,
->   whereby some types get preferentially coerced into other
->   types. Can you draw a diagram that represents the hierarchy of how
->   these data types are coerced?
-> <!-- * _Answer_: `logical -> numeric -> character <-- logical` -->
+#### Challenge
 
+* We’ve seen that atomic vectors can be of type character, numeric (or double),
+integer, and logical. But what happens if we try to mix these types in a single
+vector? Find out by using `class` to test these examples.
+
+```{r}
+num_char <- c(1, 2, 3, 'a')
+num_logical <- c(1, 2, 3, TRUE)
+char_logical <- c('a', 'b', 'c', TRUE)
+tricky <- c(1, 2, 3, '4')
+```
+
+```{r}
+# Answer
+class(num_char)
+class(num_logical)
+class(char_logical)
+class(tricky)
+```
+
+- This happens because vectors can be of only one data type. Instead of throwing
+an error and saying that you are trying to mix different types in the same
+vector, R tries to convert (coerce) the content of this vector to find a "common
+denominator". A logical can be turn into 1 or 0, and a number can be turned into
+a string/character representation. It would be difficult to do it the other way
+around: would 5 be TRUE or FALSE? What number would 't' be?
+
+- In R, we call converting objects from one class into another class _coercion_.
+These conversions happen according to a hierarchy, whereby some types get
+preferentially coerced into other types. Can you draw a diagram that represents
+the hierarchy of how these data types are coerced?
+
+```{r}
+# Answer:
+# logical -> numeric -> characher <- logical
+```
 
 ## Subsetting vectors
 
@@ -581,16 +586,15 @@ animals %in% c("rat", "cat", "dog", "duck", "goat")
 animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 ```
 
-> #### Challenge
->
-> * Can you figure out why `"four" > "five"` returns `TRUE`?
+#### Challenge
 
-```{r, echo=FALSE, eval=FALSE}
-## Answers
-## * When using ">" or "<" on strings, R compares their alphabetical order. Here
-##   "four" comes after "five", and therefore is "greater than" it.
+* Can you figure out why `"four" > "five"` returns `TRUE`?
+
+```{r}
+# Answers
+# * When using ">" or "<" on strings, R compares their alphabetical order. Here
+#   "four" comes after "five", and therefore is "greater than" it.
 ```
-
 
 ## Missing data
 
@@ -628,17 +632,26 @@ heights[complete.cases(heights)]
 ```
 Recall that you can use the `class()` function to find the type of your atomic vector.
 
-> #### Challenge
->
-> 1. Using this vector of length measurements, create a new vector with the NAs
-> removed.
->
-> ```{r}
-> lengths <- c(10,24,NA,18,NA,20)
-> ```
->
-> 2. Use the function `median()` to calculate the median of the `lengths` vector.
+#### Challenge
 
+1. Using this vector of length measurements, create a new vector with the NAs
+removed.
+
+```{r}
+lengths <- c(10,24,NA,18,NA,20)
+```
+
+```{r}
+# Answer
+na.omit(lengths)
+```
+
+2. Use the function `median()` to calculate the median of the `lengths` vector.
+
+```{r}
+# Answer
+median(lengths, na.rm = TRUE)
+```
 
 ## Writing functions
 
@@ -667,18 +680,18 @@ add_two_numbers <- function(num1, num2) {
 add_two_numbers(4, 5)
 ```
 
-> #### Challenge
->
-> Can you write a function that calculates the mean of 3 numbers?
-> 
-> ```{r}
-> mean_of_three_numbers <- function(num1, num2, num3) {
->    my_sum <- num1 + num2 + num3
->    my_mean <- my_sum / 3
->    return(my_mean)
-> }
-> mean_of_three_numbers(2, 4, 6)
-> ```
+#### Challenge
+
+Can you write a function that calculates the mean of 3 numbers?
+
+```{r}
+mean_of_three_numbers <- function(num1, num2, num3) {
+   my_sum <- num1 + num2 + num3
+   my_mean <- my_sum / 3
+   return(my_mean)
+}
+mean_of_three_numbers(2, 4, 6)
+```
 
 
 ## Loops and vectorization

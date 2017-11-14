@@ -132,13 +132,13 @@ filtered_surveys %>%
               min_weight = min(weight))
 ```
 
-> #### Challenge
->
-> 1. Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
-> length for each species.
->
-> 2. What was the heaviest animal measured in each year? Return the columns `year`,
-> `genus`, `species`, and `weight`.
+#### Challenge
+
+1. Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
+length for each species.
+
+2. What was the heaviest animal measured in each year? Return the columns `year`,
+`genus`, `species`, and `weight`.
 
 ```{r}
 ## Answer 1
@@ -230,14 +230,14 @@ surveys %>%
 Be careful not to include anything that would split the group into subgroups,
 such as `sex`, `year` etc.
 
-> #### Challenge
->
-> 1. How many individuals were caught in each `plot_type` surveyed?
->
-> 2. You saw above how to count the number of individuals of each `sex` using a
-> combination of `group_by()` and `tally()`. How could you get the same result
-> using `group_by()` and `summarize()`? Hint: see `?n`.
->
+#### Challenge
+
+1. How many individuals were caught in each `plot_type` surveyed?
+
+2. You saw above how to count the number of individuals of each `sex` using a
+combination of `group_by()` and `tally()`. How could you get the same result
+using `group_by()` and `summarize()`? Hint: see `?n`.
+
 
 ```{r}
 ## Answer 1
@@ -489,10 +489,10 @@ ggplot(surveys_abun_species, aes(x = weight, y = hindfoot_length, color = specie
 ```
 
 
-> #### Challenge
->
-> Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
-> Is there any problem with this plot? *Hint: think about how many observations there are*
+#### Challenge
+
+Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
+Is there any problem with this plot? *Hint: think about how many observations there are*
 
 ```{r}
 ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_length)) +
@@ -665,15 +665,15 @@ surveys_abun_species %>%
 ```
 
 
-> #### Challenge
->
-> Use the filtered data frame for all of these questions.
+#### Challenge
 
-> 1. Remember the histogram colored according to each species? Starting from that
+Use the filtered data frame for all of these questions.
+
+1. Remember the histogram colored according to each species? Starting from that
 code, how could we separate each species into its own subplot?
-> 2.
->    a. Which year was the average weight of the animals the highest?
->    b. Is the yearly trend the same for all species?
+2.
+a. Which year was the average weight of the animals the highest?
+b. Is the yearly trend the same for all species?
 
 
 
