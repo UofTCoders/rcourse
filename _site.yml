@@ -1,92 +1,112 @@
-name: "EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods in R"
-output_dir: "_site"
-exclude: ["DESCRIPTION", "LICENSE"]
+name: EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods in R
+output_dir: _site
+exclude:
+- DESCRIPTION
+- LICENSE
 navbar:
-  title: "EEB430H1"
+  title: EEB430H1
   left:
-    - text: "Syllabus"
-      icon: fa-map-o
-      href: index.html
-    - text: "Lectures"
-      icon: fa-book
-      menu:
-        - text: "Sept. 7: Intro to course, programming, RStudio, and R Markdown"
-          href: lec01-introduction.html
-        - text: "Sept. 12: Variable assignment, vectors, functions"
-          href: lec02-basic-r.html
-        - text: "Sept. 14: Data frames, intro to dplyr"
-          href: lec03-basic-r.html
-        - text: "Sept. 19: Data wrangling in dplyr, tidy data"
-          href: lec04-dplyr.html
-        - text: "Sept. 21: More dplyr and tidy data, ggplot intro"
-          href: lec05-dplyr.html
-        - text: "Sept. 26: Qualitative review of population models"
-          href: lec06-pop-models.html
-        - text: "Sept. 28: Modelling in R"
-          href: lec07-pop-models.html
-        - text: "Oct. 03: Population models in two dimensions"
-          href: lec08-stability.html
-        - text: "Oct. 05: Fixed points, null clines, and stability"
-          href: lec09-modeling-r.html
-        - text: "Oct. 10: Fitting models to data"
-          href: lec10-modelling.html
-        - text: "Oct. 12: Statistical and probabilistic modelling in R"
-          href: lec11-modelling.html
-        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
-          href: lec12-datasets.html
-        - text: "Oct. 19: Project and Git in RStudio, and project work"
-          href: lec13-projects-r.html
-        - text: "Oct. 24: Scientific collaboration, Git and GitHub"
-          href: lec14-git.html
-        - text: "Oct. 26: Data visualization and project work"
-          href: lec15-data-viz.html
-        - text: "Oct. 31: Project work, data visualizations"
-          href: lec16-data-viz.html
-        - text: "Nov. 02: Reproducible workflow, R Markdown"
-          href: lec17-rmarkdown.html
-        - text: "Nov. 14: Metadata and project work"
-          href: lec18-metadata.html
-        - text: "Nov. 16: Project work (no lesson)"
-        - text: "Nov. 21: Preparing a scientific item for academic publishing"
-          href: lec19-publishing.html
-    - text: "Assignments"
-      icon: fa-book
-      menu:
-        - text: "Assignment 1"
-          href: assignment-01.html
-        - text: "Assignment 2"
-          href: assignment-02.html
-        - text: "Assignment 3"
-          href: assignment-03.html
-        - text: "Assignment 4"
-          href: assignment-04.html
-        - text: "Assignment 5"
-          href: assignment-05.html
-        - text: "Assignment 6"
-          href: assignment-06.html
-        - text: "Assignment 7"
-          href: assignment-07.html
-        - text: "Assignment 8"
-          href: assignment-08.html
-        - text: "Final assignment"
-          href: assignment-final.html
-    - text: "Slides"
-      icon: fa-caret-square-o-right
-      menu:
-        - text: "Oct. 17: Scientific method, team dynamics, and project datasets"
-          href: slides/lec12-datasets.html
-    - text: "Resources and FAQ"
-      icon: fa-question
-      href: resources.html
-    - text: "About"
-      icon: fa-info
-      href: about.html
+  - text: Syllabus
+    icon: fa-map-o
+    href: index.html
+  - text: Lectures
+    icon: fa-book
+    menu:
+    - text: 'Sept. 7: Intro to course, programming, RStudio, and R Markdown'
+      href: lec01-introduction.html
+    - text: 'Sept. 12: Variable assignment, vectors, functions'
+      href: lec02-basic-r.html
+    - text: 'Sept. 14: Data frames, intro to dplyr'
+      href: lec03-basic-r.html
+    - text: 'Sept. 19: Data wrangling in dplyr, tidy data'
+      href: lec04-dplyr.html
+    - text: 'Sept. 21: More dplyr and tidy data, ggplot intro'
+      href: lec05-dplyr.html
+    - text: 'Sept. 26: Qualitative review of population models'
+      href: lec06-pop-models.html
+    - text: 'Sept. 28: Modelling in R'
+      href: lec07-pop-models.html
+    - text: 'Oct. 03: Population models in two dimensions'
+      href: lec08-stability.html
+    - text: 'Oct. 05: Fixed points, null clines, and stability'
+      href: lec09-modeling-r.html
+    - text: 'Oct. 10: Fitting models to data'
+      href: lec10-modelling.html
+    - text: 'Oct. 12: Statistical and probabilistic modelling in R'
+      href: lec11-modelling.html
+    - text: 'Oct. 17: Scientific method, team dynamics, and project datasets'
+      href: lec12-datasets.html
+    - text: 'Oct. 19: Project and Git in RStudio, and project work'
+      href: lec13-projects-r.html
+    - text: 'Oct. 24: Scientific collaboration, Git and GitHub'
+      href: lec14-git.html
+    - text: 'Oct. 26: Data visualization and project work'
+      href: lec15-data-viz.html
+    - text: 'Oct. 31: Project work, data visualizations'
+      href: lec16-data-viz.html
+    - text: 'Nov. 02: Reproducible workflow, Metadata, and R Markdown'
+      href: lec17-rmarkdown.html
+    - text: 'Nov. 14: Project work (no lesson)'
+    - text: 'Nov. 16: Project work (no lesson)'
+    - text: 'Nov. 21: Preparing a scientific item for academic publishing'
+      href: lec19-publishing.html
+  - text: Assignments
+    icon: fa-book
+    menu:
+    - text: Assignment 1
+      href: assignment-01.html
+    - text: Assignment 2
+      href: assignment-02.html
+    - text: Assignment 3
+      href: assignment-03.html
+    - text: Assignment 4
+      href: assignment-04.html
+    - text: Assignment 5
+      href: assignment-05.html
+    - text: Assignment 6
+      href: assignment-06.html
+    - text: Assignment 7
+      href: assignment-07.html
+    - text: Assignment 8
+      href: assignment-08.html
+    - text: Final assignment
+      href: assignment-final.html
+  - text: Slides
+    icon: fa-caret-square-o-right
+    menu:
+    - text: 'Oct. 17: Scientific method, team dynamics, and project datasets'
+      href: slides/lec12-datasets.html
+  - text: Resources and FAQ
+    icon: fa-question
+    href: resources.html
+  - text: About
+    icon: fa-info
+    href: about.html
   right:
-    - icon: fa-bars
-      menu:
-        - text: "Contact"
-          icon: fa-envelope
-          href: "mailto:joel.ostblom@mail.utoronto.ca"
-        - text: "GitHub"
-          icon: fa-github
-          href: https://github.com/uoftcoders/rcourse
+  - icon: fa-bars
+    menu:
+    - text: Contact
+      icon: fa-envelope
+      href: mailto:joel.ostblom@mail.utoronto.ca
+    - text: GitHub
+      icon: fa-github
+      href: https://github.com/uoftcoders/rcourse
+
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    include:
+      in_header:
+      - _includes/header.html
+      - _includes/style.html
+      after_body: _includes/footer.html
+    theme: lumen
+    highlight: haddock
+    mathjax: https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+    lib_dir: site_libs
+    self_contained: no
+

@@ -1,4 +1,459 @@
 ---
-title: "Reproducible workflow, metadata, R Markdown"
+title: "Reproducible workflow, Metadata, and R Markdown"
+author: "Lina Tran"
 ---
 
+## Lesson preamble
+
+> ### Lesson objectives:
+>
+> - Learn why reproducibility in science is important
+> - Discuss how we can improve reproducibility of our research
+> - RMarkdown formatting: including images, citations, footnotes, and output formats.
+>
+> ### Lesson outline:
+>
+> - Reproducible Science (50 min)
+>     - Introduction to the problem and discussion (20 min)
+>     - How we can improve reproducibility (15 min)
+>     - What are the barriers to reproducibility? (15 min)
+> - Metadata (20 min)
+>     - What is metadata and why do we need it? (10 min)
+>     - What are best practices in generating metadata? (10 min)
+> - Intermediate topics in R Markdown (40 min)
+>     - Online Tutorial (10 min)
+>     - Lists, Tables (5 min)
+>     - Images, Figures (5 min)
+>     - In-Line Citations & Bibliography (10 min)
+>     - Footnotes (5 min)
+>     - Output Formatting Options (5 min)
+
+-----
+
+## Reproducible Science
+
+What does reproducibility mean to you? Let's discuss what each of these may entail:
+
+- Computational reproducibility
+- Scientific reproducibility
+- Statistical reproducibility
+
+### Why do we care about reproducibility?
+
+Take 5-10 minutes to read over the following blog post section on [reproducibility
+in science](http://bioconnector.org/workshops/r-rmarkdown.html#who_cares_about_reproducible_research)
+and [what's in it for you](http://bioconnector.org/workshops/r-rmarkdown.html#what’s_in_it_for_you).
+
+Now, let's discuss the following questions:
+1. Why does reproducibility matter in science?
+2. What do you think about when you hear the term "open science"?
+3. How does open science translate back to the issue of reproducibility
+    - How does it affect collaboration, and the progress of science?
+
+Events of interest supporting Open Science:
+
+1. [Open Access Week](http://www.openaccessweek.org/)
+2. [OpenCon 2017](http://www.opencon2017.org/) sponsored by eLife this year
+    - [Authorea Blog Competition for OpenCon 2017](https://www.authorea.com/users/111970/articles/206557-announcing-opencon2017-london-blog-competition)
+
+### What are ways we can make research more reproducible?
+
+- Learning from software engineers who have used continuous integration to keep
+track of their projects in an automated fashion (helping to prevent from human error)
+for years. This includes the following:
+    - analyses/models are run as scripts that can be replicated on other machines
+    and environments
+    - code is version-controlled (e.g. Git/GitHub)
+    - code is well tested
+    - for a take on "Continuous Analysis", read this [article from ELife](https://elifesciences.org/labs/e623676c/reproducibility-automated)
+    or [this article](https://www.biorxiv.org/content/early/2016/08/11/056473) in
+    Nature Biotechnology with everything also [on GitHub!](https://github.com/greenelab/continuous_analysis)
+- For more recommendations on reproducible research, especially as it pertains
+to coding practices, read more [here](http://bioconnector.org/workshops/r-rmarkdown.html#some_recommendations_for_reproducible_research)
+
+### What are the barriers to reproducibility?
+
+- Brainstorm reasons why scientists are not readily embracing reproducible science.
+
+```{r, echo=FALSE}
+#Some ideas:
+#    - workflows are hard to document at every step
+#    - we already have systems in place that work, and would be hard/time consuming to upend them
+#    - people and skills, currently low adoption and hard to force collaborators to change
+#    - PIs not willing adopt new practices and say they do not have time to relearn
+#    - Many students doing this might in a lab where the PI is not computational and does not fully
+#    appreciate the benefits. It is also hard to take the first steps as a student not knowing what
+#    the state of the art is.
+#    - Few, if any, courses in this at the university, especially outside of computer science.
+```
+
+### Further Reading
+
+- This book called [Practice Reproducible Research](https://www.practicereproducibleresearch.org/)
+has many high level examples of how reproducible research looks in practice and further reading on the topic
+- Nature has a series of articles, editorials and research on the [challenges in  reproducible research](https://www.nature.com/news/reproducibility-1.17552)
+
+## Metadata
+
+### Why is Metadata Important?
+
+From the [Mozilla Science WOW Data Reuse Template](https://github.com/mozillascience/working-open-workshop/blob/gh-pages/handouts/data_reuse_plan_template.md):
+
+> Standard Metadata: Increasingly, scientific fields are moving towards standard
+> metadata formats (data.json, data.xml, etc) to pull all the information in the
+> Data Reuse plan together in a machine readable format. Machine readable metadata
+> enables cataloging of datasets on sites like Data.gov and allows others to ask
+> questions and access your datasets using code. For example, open US government
+> data online is required to expose a data.json in the landing page html to be
+> listed on Data.gov, thereby facilitating data discovery. Because not all
+> researchers are mandated to actually include data.json files, Data.gov is
+> incomplete, and simple questions like "what is the total volume of data
+> generated by US federally funded scientists?" are unanswerable.
+
+Let's go over a few of these questions:
+
+1. What do you think metadata is?
+2. When you were choosing your dataset, did you encounter problems understanding the data?
+3. If so, what would have helped you to understand?
+
+### What Are Best Practices in Generating Metadata?
+
+Take some time to read over the first page of the [Center for Government
+Excellence's](https://govex.jhu.edu/) ["Open Data Metadata Guide"](https://www.gitbook.com/book/centerforgov/open-data-metadata-guide/details)
+to get a better idea.
+
+Now let's browse through the sections for more specific best practices.
+
+To review, metadata includes information about how the data was collected,
+succinct descriptions of the data as well as information about when it was last
+updated are very important to let people know if this is the right dataset for them.
+Once people decide to use your dataset, things like licensing and column
+metadata become very important. Column metadata are sometimes called data dictionaries.
+Here is an example: <https://liberalarts.utexas.edu/redcap/_files/data_dictionary_example.jpg>
+
+## R Markdown & Knitr
+
+R Markdown makes use of Pandoc's markdown formatting. We've seen a lot of the
+basic components to format our text so far, but to see the complete list,
+please visit the [official documentation](https://pandoc.org/MANUAL.html#pandocs-markdown).
+
+Before we start, everybody can do this 10 minute tutorial on markdown:
+http://commonmark.org/help/tutorial/
+
+### Lists, Tables, In-Line Code
+
+#### Lists
+
+**Unordered Lists (i.e. bullets)**
+
+```
+- Unordered list item
+    - Unordered list sub-item
+- Unordered list item
+```
+
+- Unordered list item
+    - Unordered list sub-item
+- Unordered list item
+
+**Ordered Lists (i.e. numbers)**
+
+```
+1. Ordered list item
+    1. Ordered list sub-item
+    2. Ordered list sub-item
+2. Ordered list item
+```
+
+1. Ordered list item
+    1. Ordered list sub-item
+    2. Ordered list sub-item
+2. Ordered list item
+
+#### Tables
+
+The `knitr` package has a function called `kable` that helps to display tables
+from an `r` code chunk nicely. It is best to use `echo=FALSE` and `results='asis'`.
+
+<pre class="markdown"><code>&#96;&#96;&#96;{r, echo=FALSE, results='asis'}
+library(knitr)
+kable(head(mtcars))
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+kable(head(mtcars))
+```
+
+You can also set the default data frame printing via the `df_print` option in
+your YAML metadata under `output` to do this automatically.
+
+```
+---
+title: Document
+output:
+    html_document:
+        df_print:kable
+---
+```
+
+#### In-line Code
+
+If you want to state a value in your data in your text, it is best to reference
+to the actual variable or code containing that value rather than manually writing
+it out. Here is an example:
+
+
+<code> There are &#96;r nrow(df)&#96; samples in this experiment. </code>
+
+
+### Images and Figures
+
+To include an image, use the following syntax:
+
+```
+[caption for my image](path/to/image.png)
+```
+
+If you would like the caption you wrote to be included underneath your image,
+put the following in your YAML metadata:
+
+```
+---
+title: Document
+output:
+    html_document:
+        fig_caption: yes
+---
+```
+
+As you've learned in doing your assignments, both the code and output of your
+`r` code chunk such as figures will show up in your output document. However,
+using code chunk options `echo` and `eval`, you can suppress output of the code
+underlying a graph, and only show the resulting plot from your code or vice versa.
+In this case, you probably want the former, and it would look like this:
+
+<pre class="markdown"><code>&#96;&#96;&#96;{r, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(mpg, wt, data = mtcars)
+```
+
+You can also set the figure height and width too using the `fig.height` and
+`fig.width` options.
+
+<pre class="markdown"><code>&#96;&#96;&#96;{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
+library(ggplot2)  
+qplot(mpg, wt, data=mtcars)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r, fig.width=7, fig.height=7, eval=TRUE, echo=FALSE}
+library(ggplot2)  
+qplot(mpg, wt, data = mtcars)
+```
+
+### In-Line Citations & Bibliography
+
+Pandoc can automatically generate citations and a bibliography in a number of
+styles. In order to use this feature, you will need to specify a bibliography
+file using the bibliography metadata field in a YAML metadata section.
+For example:
+
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib
+---
+```
+
+Many bibliography formats are accepted (see the [R Markdown guides](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)),
+such as a .bib file which many citation managers can generate for you and will
+hold all the references you need for your document.
+
+These are some great open source reference managers you can take advantage of
+for managing your references, all of which make it pretty easy to export as BibTeX:
+
+- [Zotero](https://www.zotero.org/)
+- [Jabref](https://www.jabref.org/)
+- [Docear](https://www.docear.org/)
+
+Every entry in your bibliography file should have a shorthand key id which
+when preceded by '@' allows you to reference the citation in-line. They usually
+go within square brackets and are separated by semicolons.
+
+```
+One Citation:
+Some fact [@Smith2014]
+
+Multiple Citations:
+Statement [@Smith2014; @Logan1997].
+```
+
+To make a bibliography, you may also want to specify a citation style guide to
+format your bibliography (in the form of a .csl file). The official repository
+for recognized citation styles is available [here](https://github.com/citation-style-language/styles). Because of the permissive
+licensing, you can actually customize or make your own styles too! [This visual
+editor](http://editor.citationstyles.org/visualEditor/) is a great tool to modify
+styles to your liking.
+
+
+
+#### Exercise
+
+Take some time to find the style guide for your field and to download that file.
+
+Once you have the correct .csl file, you can specify it in your YAML metadata:
+
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib
+csl: nature.csl
+---
+```
+
+### Footnotes
+
+```
+This is what a footnote looks like.[^1] Here is another.[^2]
+
+[^1]: My first footnote.
+[^2]: My second footnote.
+
+This will produce the following:
+```
+This is what a footnote looks like.[^1] Here is another.[^2]
+
+[^1]: My first footnote.
+[^2]: My second footnote.
+
+These are great because you can reference your footnotes by name and don't have to
+re-number them if things get reordered. The numbers in the rendered document will
+be reordered for you, by order of occurrence! From the [Pandoc documentation](https://pandoc.org/MANUAL.html#footnotes):
+
+> The identifiers in footnote references may not contain spaces, tabs, or newlines.
+> These identifiers are used only to correlate the footnote reference with the
+> note itself; in the output, footnotes will be numbered sequentially.
+
+### Output Formatting Options
+
+#### Changing the output file format
+
+To change the output format of your .Rmd file, try changing the `output`
+metadata in the YAML header from "html_document" to "word_document"
+
+#### Table of Contents
+
+To add a table of contents generated from the headers of your document, use
+the `toc` option as `true` and specify the depth of headers to list via
+`toc_depth` where the default is 3. These sections can also be numbered by
+using the `number_sections` option.
+
+```
+---
+title: "Making TOCs"
+output:
+    pdf_document:
+        toc: true
+        toc_depth: 2
+        number_sections: true
+---
+```
+
+#### Figure Options
+
+Some figure options can be set in the YAML header.
+
+- `fig_width` and `fig_height` can be used to control the default figure width
+and height (7x5 is used by default)
+- `fig_caption` controls whether figures are rendered with captions
+
+### Exercise
+
+1. Open up RStudio and make a new R Markdown file.
+2. Set up the YAML metadata:
+    - title is "Lecture 17 Exercise"
+    - author (you)
+    - output to html
+    - make a table of contents
+    - figure height and width should be set to 10
+3. Make a header called "Beavers Plot" and below create any simple plot using
+the `beavers` dataset in an R chunk where the code is suppressed, but the plot
+is shown.
+4. Make a header called "R Markdown" and below it, recreate the following:
+
+- Fruits
+    1. Apple
+    2. **Orange**
+    3. Banana
+    4. Tomato[^3]
+- Vegetables
+    1. *Brussel Sprouts*
+    2. Carrots
+
+[^3]: Often confused for a vegetable
+
+- First 6 rows of Iris Dataset
+
+```{r, asis=TRUE, echo=FALSE}
+library(knitr)
+kable(head(iris))
+```
+
+5. Now Knit the file to html and compare with your neighbour to see if you got
+the same output and work together to fix any issues.
+
+See the code chunk below for the **solution**.
+
+<pre class="markdown"><code>
+---
+title: "Lecture 17 Exercise"
+author: "Lina Tran"
+output: 
+  html_document:
+    fig_width: 10
+    fig_height: 10
+    toc: TRUE
+---
+
+# Beavers Plot
+
+&#96;&#96;&#96;{r eval=TRUE, echo=FALSE}
+library(ggplot2)
+qplot(time, temp, data=beaver1)
+&#96;&#96;&#96;
+
+# R Markdown
+
+- Fruits
+    1. Apple
+    2. **Orange**
+    3. Banana
+    4. Tomato[^3]
+- Vegetables
+    1. *Brussel Sprouts*
+    2. Carrots
+
+[^3]: Often confused for a vegetable
+
+- First 6 rows of Iris Dataset
+
+&#96;&#96;&#96;{r, asis=TRUE, echo=FALSE}
+library(knitr)
+kable(head(iris))
+&#96;&#96;&#96;
+</code></pre>
+
+## Resources
+
+- The [R Markdown documentation](http://rmarkdown.rstudio.com/lesson-1.html)
+from RStudio can be a very helpful guide.
