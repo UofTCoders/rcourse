@@ -30,11 +30,15 @@ author: Lindsay Coome
 
 -----
 
-## What makes a good graph?
+## Making good graphs
 
-> #### Challenge
->
-> What makes a bad graph? What makes an ugly graph to you?
+### What makes a good graph?
+
+#### Challenge
+
+What makes a bad graph? What makes an ugly graph to you?
+
+### Components of a graph: The data
 
 There are many considerations to take into account when creating a graph.
 
@@ -63,7 +67,7 @@ Ask: "what kind of data/information is it?"
 * Nominal/categorical?
 * Narrative?
 
-## Tufte's guidelines
+### Tufte's guidelines
 
 * Reduce non-data ink
 * Enhance the data ink
@@ -82,7 +86,7 @@ Colour Saturation   | Decrease | Increase
 
 [More on Edward Tufte](https://www.edwardtufte.com/tufte/)
 
-## Colour rules
+### Colour rules
 
 * Large background colours should be quiet, muted to let brighter colors stand out
 * To highlight some element of a figure, using a bright colour can be effective
@@ -91,14 +95,14 @@ Colour Saturation   | Decrease | Increase
 * Here is a reference sheet with all the [colours and colour names in
   R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
-## Summary
+### Summary
 
 * Determine what type of data you have and how your data will be used
 * Determine how many variable types are in your data
 * Decide on a visual treatment for each of the variables 
 * Focus on the data in your visual representation
 
-## More general resources on plotting
+### More general resources on plotting
 
 * [Ten Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
@@ -118,7 +122,7 @@ controlling that grammar, you can generate a large set of carefully constructed
 graphics tailored to your particular needs. Each component is added to the plot
 as a layer.
 
-## Components of a ggplot plot
+### Components of a ggplot plot
 
 Plots convey information through various aspects of their aesthetics. Some
 aesthetics that plots use are:
@@ -160,7 +164,7 @@ Some of these geometries have their own particular aesthetics. For instance:
 
 * label value
 
-## Setting up
+### Setting up
 
 Load or install the required packages:
 
@@ -173,9 +177,10 @@ install.packages("plotly")
 ```
 
 
-## Let's get started!
+### Let's get started!
 
 Here is an example of the base plotting functions in R:
+
 ```{r cars}
 plot(cars)
 hist(cars$speed)
@@ -219,15 +224,17 @@ We can add other "layers" of graphs to our first graph. Let's add a trend line
 to our scatterplot:
 
 ```{r}
-g + geom_point() + 
-  geom_smooth() 
+g +
+    geom_point() +
+    geom_smooth() 
 ```
 
 We can also "facet" our graphs, which means dividing a plot into subplots based
 on the values of one or more discrete variables.
 
 ```{r}
-g + geom_point() + 
+g + 
+    geom_point() + 
     geom_smooth() + 
     facet_grid(. ~ Species)
 ```
@@ -311,7 +318,7 @@ This is a [resource](http://ggplot2.tidyverse.org/reference/theme.html) on which
 parts of the plot are controlled by different theme parameters when and if you
 create your own theme.
 
-## Bar graphs
+### Bar graphs
 
 What if we want a bar graph of Sepal Length by Species?
 
@@ -330,7 +337,7 @@ As you can see, it is a bit cumbersome to create barplots of means with ggplot
 `geom_bar` is to count observations instead of summarize them, which actually is
 a more appropriate use of a barplot for reasons that we will cover below.
 
-## Violin plots
+### Violin plots
 
 ```{r}
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
@@ -342,7 +349,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-## Box plots
+### Box plots
 
 We can use boxplots to visualize the distribution Sepal Length within each
 species:
@@ -357,11 +364,13 @@ ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-> #### Challenge
->
-> Out of the barplot, boxplot and violinplot, which one do you think is the most
-> informative and why? Which is the most true to the underlying data and how
-> would you know this?
+#### Challenge
+
+Out of the barplot, boxplot and violinplot, which one do you think is the most
+informative and why? Which is the most true to the underlying data and how
+would you know this?
+
+### Pros and cons of different graph types
 
 We will deepen the discussion around some of these ideas, in the context of the
 following plot:
@@ -428,11 +437,11 @@ Notice how the boxplot layer is behind the jitter layer? What do you need to
 change in the code to put the boxplot in front of the points such that it's not
 hidden?
 
-> #### Challenge
->
-> So far, we've looked at the distribution of sepal length within species.  Try
-> making a new plot to explore the distribution of another variable within each
-> species.
+#### Challenge
+
+So far, we've looked at the distribution of sepal length within species.  Try
+making a new plot to explore the distribution of another variable within each
+species.
 
 What about making interactive graphs in R? There is a package called plotly that
 lets us make our ggplot2 graphs interactive:
@@ -446,21 +455,13 @@ p <- ggplotly(g)
 p
 ```
 
-> #### Challenge
->
-> Create another type of interactive graph (i.e. not a bar graph) using these
-> data. What kinds of graphs might interactivity add or improve the
-> communication and clarity of your message to?
+#### Challenge
 
-Finally, saving graphs. When using ggsave, R by default saves the last graph you
-plotted. You can also use the GUI to export and save as an image or PDF.
+Create another type of interactive graph (i.e. not a bar graph) using these
+data. What kinds of graphs might interactivity add or improve the
+communication and clarity of your message to?
 
-```{r, eval=FALSE}
-ggsave("filename.jpg")
-ggsave("filename.jpg", width = 20, height = 20, units = "cm")
-```
-
-## More resources on ggplot2
+### More resources on ggplot2
 
 * [ggplot2 documentation](http://had.co.nz/ggplot2/)
 * [Book by Hadley Wickham](https://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
