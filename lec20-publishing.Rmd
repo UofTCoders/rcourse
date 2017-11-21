@@ -26,6 +26,7 @@ author: Lina Tran
 >     - General format (10 min)
 >     - I've submitted, now what? (5 min)
 >     - General writing tips (15 min)
+
 ----
 
 ## Authorship
