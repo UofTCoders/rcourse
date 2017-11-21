@@ -49,7 +49,7 @@ navbar:
     - text: 'Nov. 14: Project work (no lesson)'
     - text: 'Nov. 16: Project work (no lesson)'
     - text: 'Nov. 21: Preparing a scientific item for academic publishing'
-      href: lec19-publishing.html
+      href: lec20-publishing.html
   - text: Assignments
     icon: fa-book
     menu:
