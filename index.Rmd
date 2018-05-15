@@ -1,11 +1,11 @@
 ---
-title: "Syllabus: EEB430H1 Theoretical Ecology and Reproducible Quantitative Methods in R [24L, 12P]"
+title: "Syllabus: EB313 Quantitative methods for ecology in R [24L, 12P]"
 ---
 
-This course focuses on theoretical ecology concepts and reproducible quantitative methods in R. Theoretical ecology uses models to explain biological phenomena such as the maintenance of biodiversity, population growth, competition, eco-evolutionary dynamics, epidemiology, spatial ecology, and species extinction. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
+This course covers statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
 
-Prerequisites: MAT 136, BIO220H1, EEB225H1, and two of EEB319H1, EEB321H1,
-EEB322H1, EEB323H1
+*Prerequisites: MAT 136, BIO220H1, EEB225H1, and two of EEB319H1, EEB321H1,
+EEB322H1, EEB323H1*
 
 ## Time
 Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
@@ -90,16 +90,16 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 ## Assessment schedule
 | Assignment                | Type                | Due date   | Marks |
 |---------------------------|---------------------|------------|-------|
-| Getting set up            | Individual          | Sep 19     | 4     |
-| Basic R and dplyr         | Individual          | Sep 26     | 8     |
-| dplyr and tidy data       | Individual          | Oct 03     | 8     |
-| Population models         | Individual          | Oct 10     | 8     |
-| Modelling in R            | Individual          | Oct 17     | 8     |
-| Fitting models to data    | Individual          | Oct 24     | 8     |
-| Setup GitHub and projects | Project, Individual | Oct 31     | 8     |
-| Data visualization        | Project, Individual | Nov 14     | 8     |
-| Final project work        | Project, Group      | Dec 06     | 32    |
-| Participation             | Individual          | -          | 8     |
+| Getting set up            | Individual          | Sep 18     | 4     |
+| Basic R and dplyr         | Individual          | Sep 25     | 8     |
+| dplyr and tidy data       | Individual          | Oct 02     | 8     |
+| Statistical modelling     | Individual          | Oct 09     | 8     |
+| Bootstrapping & multivariate stats            | Individual          | Oct 16     | 8     |
+| Model selection and time series analysis    | Individual          | Oct 23     | 8     |
+| Project setup             | Project, Individual | Oct 30     | 8     |
+| Data visualization        | Project, Individual | Nov 13     | 8     |
+| Final project work        | Project, Group      | Dec 05     | 32    |
+| Weekly project updates    | Individual          | -          | 8     |
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
