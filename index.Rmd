@@ -23,13 +23,11 @@ Both lecture halls have access to individual computers for the students. To use 
 ## Contact info
 Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to joel.ostblom@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB430". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
 
-### Teaching assistants
-- Joel Ostblom (course coordinator), joel.ostblom@mail.utoronto.ca  
-- Madeleine Bonsma-Fisher, m.bonsma@mail.utoronto.ca  
-- Luke Johnston, luke.johnston@mail.utoronto.ca  
-- Lina Tran, lina.tran@mail.utoronto.ca  
-- Elliott Sales de Andrade, esalesde@physics.utoronto.ca  
+### Course Instructors
+- James Santangelo, james.santangelo@mail.utoronto.ca
 - Lindsay Coome, lindsay.coome@mail.utoronto.ca  
+- Madeleine Bonsma-Fisher, m.bonsma@mail.utoronto.ca  
+- Ahmed Hasan, ahmed.hasan@mail.utoronto.ca
 
 ### Supervising professor
 Prof. Martin Krkosek, martin.krkosek@utoronto.ca, 416-978-3839, RW402
@@ -62,32 +60,32 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 ## Lecture schedule
 | Week | Date   | Topic                                      | Instructor                |
 |------|--------|--------------------------------------------|---------------------------|
-| 1    | Sep 07 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
-| 2    | Sep 12 | Assignment, vectors, functions                      | Joel           |
-| 2    | Sep 14 | Data frames, intro to dplyr                         | Joel           |
-| 3    | Sep 19 | Data wrangling in dplyr, ggplot, tidy data          | Joel           |
-| 3    | Sep 21 | More dplyr and ggplot                               | Joel           |
-| 4    | Sep 26 | Qualitative review of population models             | Madeleine      |
-| 4    | Sep 28 | Modelling in R                                      | Madeleine      |
-| 5    | Oct 03 | Population models in two dimensions                 | Madeleine      |
-| 5    | Oct 05 | Fixed points, null clines, and stability            | Madeleine      |
-| 6    | Oct 10 | Fitting models to data                              | Madeleine      |
-| 6    | Oct 12 | Statistical/probabilistic modelling                 | Luke           |
-| 7    | Oct 17 | Introduce data sets, hypotheses, start projects     | Luke           |
-| 7    | Oct 19 | Project and Git setup in RStudio                    | Luke           |
-| 8    | Oct 24 | Scientific collaboration, Git and GitHub            | Elliott        |
-| 8    | Oct 26 | Data visualization in R                             | Lindsay        |
-| 9    | Oct 31 | Project work, data visualizations                   | Lindsay        |
-| 9    | Nov 02 | Reproducible workflow, metadata, R Markdown         | Lina           |
-| -    | Nov 07 | Fall break                                          | -              |
-| -    | Nov 09 | Fall break                                          | -              |
-| 10   | Nov 14 | Project work                                        | 1 TA/group     |
-| 10   | Nov 16 | Project work                                        | 1 TA/group     |
-| 11   | Nov 21 | Preparing a scientific item for academic publishing | Lina           |
-| 11   | Nov 23 | Project work                                        | 1 TA/group     |
-| 12   | Nov 28 | Project work                                        | 1 TA/group     |
-| 12   | Nov 30 | Project work                                        | Everyone       |
-| 13   | Dec 05 | Project work                                        | Everyone       |
+| 1    | Sep 06 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
+| 2    | Sep 11 | Assignment, vectors, functions                      | Ahmed          |
+| 2    | Sep 13 | Data frames, intro to dplyr                         | Ahmed          |
+| 3    | Sep 18 | Data wrangling in dplyr, ggplot, tidy data          | Ahmed          |
+| 3    | Sep 20 | More dplyr and ggplot                               | Ahmed          |
+| 4    | Sep 25 | Exploratory data analysis                           | Lindsay        |
+| 4    | Sep 27 | Linear models and statistical modelling             | Lindsay        |
+| 5    | Oct 02 | Mixed effects models                                | James          |
+| 5    | Oct 04 | Simulating data                                     | James          |
+| 6    | Oct 09 | Multivariate stats                                  | Lindsay        |
+| 6    | Oct 11 | Model selection                                     | James          |
+| 7    | Oct 16 | Numerically solving population models               | Madeleine      |
+| 7    | Oct 18 | Time series analysis                                | Madeleine      |
+| 8    | Oct 23 | Datasets, hypothesis, begin projects                | Everyone       |
+| 8    | Oct 25 | Reproducible science                                | Lina or Sara   |
+| 9    | Oct 30 | Reproducible science                                | Lina or Sara   |
+| 9    | Nov 01 | Project work                                        | 1 TA/group     |
+| -    | Nov 06 | Fall break                                          | -              |
+| -    | Nov 08 | Fall break                                          | -              |
+| 10   | Nov 13 | Project work                                        | 1 TA/group     |
+| 10   | Nov 15 | Project work                                        | 1 TA/group     |
+| 11   | Nov 20 | Project work                                        | 1 TA/group     |
+| 11   | Nov 22 | Project work                                        | 1 TA/group     |
+| 12   | Nov 27 | Project work                                        | 1 TA/group     |
+| 12   | Nov 29 | Project work                                        | Everyone       |
+| 13   | Dec 04 | Project work                                        | Everyone       |
 
 ## Assessment schedule
 | Assignment                | Type                | Due date   | Marks |
