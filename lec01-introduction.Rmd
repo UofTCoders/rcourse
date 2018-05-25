@@ -1,7 +1,6 @@
 ---
 title: "Introduction to course"
 author: "Joel Östblom & Ahmed Hasan"
-output: pdf_document
 ---
 
 ```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}

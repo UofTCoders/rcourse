@@ -1,7 +1,6 @@
 ---
 title: 'Introduction to R: Vectors, functions, data frames'
 author: "Joel Östblom & Ahmed Hasan"
-output: pdf_document
 ---
 
 **Copyright (c) Data Carpentry**
