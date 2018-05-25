@@ -107,19 +107,6 @@ value of this sequence.
 mean(seq(0, 30))
 ```
 
-<!-- skipping this in lecture since it's covered in lec 2 anyways...
-If you think it sounds complicated to remember all of these functions by
-heart, don't worry: there are several places to get help. The one I use the most
-is called tab-complete: often I remember the beginning of the function I want
-to use, but I don't remember exactly what it was called. For example, if I want
-to compute the median of a set of numbers, and I don't remember if the function
-for this was just `med` or `median`, I can just type the first three letters,
-hit tab <!-- Technically twice by default in the console, but since it is once
-in Rstudio, lets skip that distinction -- > and all functions starting with
-those letters. Here I can see that it is probably `median` I want to use, and
-to be sure I can type `?median` and read what it does. I will show you a way to
-read these help pages with some nicer formatting later in this lecture. -->
-
 In my experience, learning programming really is similar to learning a foreign
 language - you will often learn the most from just trying to do something and
 receiving feedback (from the computer or another person)! When there is
