@@ -1,11 +1,10 @@
 ---
-title: "Syllabus: EB313 Quantitative methods for ecology in R [24L, 12P]"
+title: "Syllabus: EB313 Quantitative Methods in R for Biology [24L, 12P]"
 ---
 
 This course covers statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
 
-*Prerequisites: MAT 136, BIO220H1, EEB225H1, and two of EEB319H1, EEB321H1,
-EEB322H1, EEB323H1*
+Prerequisites: BIO220H1 and one of EEB225H1, STA288H1, or STA220H1
 
 ## Time
 Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
@@ -21,7 +20,7 @@ Office hours are in RW 107, right next to RW 109.
 Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
-Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to joel.ostblom@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB430". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
+Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB430". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
 
 ### Course Instructors
 - James Santangelo, james.santangelo@mail.utoronto.ca
@@ -44,10 +43,10 @@ All course information is accessible [on its own website](https://uoftcoders.git
     - An inspiration for our lectures.
 
 ## Course learning outcomes
-1. Integrate and apply concepts and theoretical models learnt in class.
-2. Learn how to use basic statistics to analyze and interpret data.
-3. Use R to apply theoretical models and perform data analysis.
-4. Realize that data do not always fit theoretical models, but that it is important to interpret data with a larger theoretical framework in mind.
+1. Develop proficiency in the programming language R.
+2. Use R to apply statistics to analyze and interpret data.
+3. Choose appropriate analysis techniques for a variety of data types and formats.
+4. Learn and use techniques and best practices for reproducible, high-quality science.
 5. Learn how to work as part of a research team to produce a scientific product.
 6. Learn what is required to generate a scientific item ready for publishing.
 
