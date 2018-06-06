@@ -1,5 +1,5 @@
 ---
-title: "Syllabus: EB313 Quantitative Methods in R for Biology [24L, 12P]"
+title: "Syllabus: EEB313 Quantitative Methods in R for Biology [24L, 12P]"
 ---
 
 This course covers statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
@@ -20,7 +20,7 @@ Office hours are in RW 107, right next to RW 109.
 Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
-Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB430". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
+Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
 
 ### Course Instructors
 - James Santangelo, james.santangelo@mail.utoronto.ca
