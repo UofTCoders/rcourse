@@ -32,7 +32,7 @@ Quercus is the preferred communication channel. If you need to use email instead
 Prof. Martin Krkosek, martin.krkosek@utoronto.ca, 416-978-3839, RW402
 
 ## Course Website and Quercus
-All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Quercus](https://portal.utoronto.ca/), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
+All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Quercus](https://q.utoronto.ca), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
 
 ## Recommended resources
 - [R for Data science](http://r4ds.had.co.nz/), H Wickham, G Grolemund, 2017
