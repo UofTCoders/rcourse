@@ -485,7 +485,7 @@ Let's plot a vector field and some trajectories for the predator-prey model.
 
 ```{r}
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0, 10), y.lim = c(0, 10),
+pp_flowField <- flowField(predator_prey, xlim = c(0, 10), ylim = c(0, 10),
                           parameters = c(a = 5, b = 1, c = 1, d = 0.2), # same parameters as before,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -496,7 +496,7 @@ pp_trajectory <- trajectory(predator_prey,
                             # y0 is a matrix where each row is pairs of (X, Y) 
                             y0 = matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
                                    byrow = TRUE), 
-                            t.end = 20, # how far in time to calculate the trajectories
+                            tlim = c(0,20), # how far in time to calculate the trajectories
                             parameters = c(a = 5, b = 1, c = 1, d = 0.2), system = "two.dim")
 ```
 
