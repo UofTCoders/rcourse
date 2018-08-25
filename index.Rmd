@@ -13,26 +13,26 @@ Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 | Day | Room         | Location       | Details      |
 |-----|--------------|----------------|--------------|
 | Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Harbord and St George | 1st floor, enter from St George street. |
-| Thu | [Carr Hall](http://map.utoronto.ca/utsg/building/426) (SMC 325) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
+| Thu | [[Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
 
 Office hours are in RW 107, right next to RW 109.
 
 Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
-Blackboard is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
+Quercus is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
 
 ### Course Instructors
 - James Santangelo, james.santangelo@mail.utoronto.ca
-- Lindsay Coome, lindsay.coome@mail.utoronto.ca  
-- Madeleine Bonsma-Fisher, m.bonsma@mail.utoronto.ca  
+- Lindsay Coome, lindsay.coome@mail.utoronto.ca
+- Madeleine Bonsma-Fisher, m.bonsma@mail.utoronto.ca
 - Ahmed Hasan, ahmed.hasan@mail.utoronto.ca
 
 ### Supervising professor
 Prof. Martin Krkosek, martin.krkosek@utoronto.ca, 416-978-3839, RW402
 
-## Course Website and Blackboard
-All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Blackboard](https://portal.utoronto.ca/), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
+## Course Website and Quercus
+All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Quercus](https://q.utoronto.ca), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
 
 ## Recommended resources
 - [R for Data science](http://r4ds.had.co.nz/), H Wickham, G Grolemund, 2017
@@ -54,7 +54,7 @@ All course information is accessible [on its own website](https://uoftcoders.git
 Effective communication is crucial in science. The [University of Toronto provides services](http://writing.utoronto.ca/) to help you improve your writing, from general advices on effective writing to writing centers and writing courses. The Faculty of Arts & Science also offers an English Language Learning (ELL) program, which provides free individualized instruction in English skills. Take advantage of these!
 
 ## Academic integrity
-You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor. Please make sure that what you submit for the final project does not overlap with what you submit for other classes, such as the 4th year research project. We will not enforce this, but the department will. 
+You should be aware of the University of Toronto Code of Behaviour on Academic Matters. Also see [How Not to Plagiarize](http://advice.writing.utoronto.ca/using-sources/how-not-to-plagiarize/). Note that it is NOT appropriate to use large sections from internet sources, and inserting a few words here and there does not make it an original piece of writing. Be careful in using internet sources – there is no review of most online material and there are many errors out there. Use only academic or government internet sources when absolutely necessary. Make sure you read material from many sources (published, peer-reviewed, trusted internet sources) and that you write an original text using this information. Always cite your sources. In case of doubt about plagiarism, talk to your instructor. Please make sure that what you submit for the final project does not overlap with what you submit for other classes, such as the 4th year research project. We will not enforce this, but the department will.
 
 ## Lecture schedule
 | Week | Date   | Topic                                      | Instructor                |
@@ -104,7 +104,7 @@ There are 100 marks in total. Your final course mark will be the sum of your ass
 
 Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
-Assignments will be distributed and submitted in the R Markdown format via Blackboard or GitHub. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assignments will be distributed and submitted in the R Markdown format via Quercus or GitHub. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
 
 
 ### Final project grading rubric
