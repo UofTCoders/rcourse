@@ -147,7 +147,7 @@ linear_system <- function(t, y, parameters) {
 }
 
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(linear_system, x.lim = c(-5, 5), y.lim = c(-5, 5),
+pp_flowField <- flowField(linear_system, xlim = c(-5, 5), ylim = c(-5, 5),
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
                           add = FALSE)
@@ -161,7 +161,7 @@ pp_trajectory <- trajectory(linear_system,
                                           3, 5),
                                         ncol = 2,
                                         byrow = TRUE), 
-                            t.end = 30, # how far in time to calculate the trajectories
+                            tlim = c(0,30), # how far in time to calculate the trajectories
                             system = "two.dim")
 
 # eigenvector for eigenvalue lambda = -2

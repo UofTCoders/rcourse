@@ -170,7 +170,7 @@ initial_conditions <-  matrix(c(1, 1,
                               byrow = TRUE)
 
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+pp_flowField <- flowField(predator_prey, xlim = c(0,10), ylim = c(0,10),
                           parameters = params,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -180,7 +180,7 @@ pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
 pp_trajectory <- trajectory(predator_prey, 
                             # y0 is a matrix where each row is pairs of (X, Y) 
                             y0 = initial_conditions, 
-                            t.end = 30, # how far in time to calculate the trajectories
+                            tlim = c(0,30), # how far in time to calculate the trajectories
                             parameters = params, system = "two.dim")
 
 # plot fixed points (using the base plotting system, which is not as good as ggplot)
@@ -291,7 +291,7 @@ The `phaseR` package also includes a `nullclines` function to draw nullclines fo
 
 ```{r}
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+pp_flowField <- flowField(predator_prey, xlim = c(0,10), ylim = c(0,10),
                           parameters = params,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -301,12 +301,12 @@ pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
 pp_trajectory <- trajectory(predator_prey, 
                             # y0 is a matrix where each row is pairs of (X, Y) 
                             y0 = initial_conditions, 
-                            t.end = 30, # how far in time to calculate the trajectories
+                            tlim = c(0,30), # how far in time to calculate the trajectories
                             parameters = params, system = "two.dim")
 
 pp_nullclines <- nullclines(predator_prey, 
-           x.lim = c(0, 10), # axis limits
-           y.lim = c(0, 10),
+           xlim = c(0, 10), # axis limits
+           ylim = c(0, 10),
            # y0 is a matrix where each row is pairs of (X, Y) 
            y0 = initial_conditions, 
            t.end = 30, # how far in time to calculate the trajectories 
@@ -695,7 +695,7 @@ When $\lambda$ is complex, this means the system will oscillate.
 par(pty='s')
 
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0,10), y.lim = c(0,10),
+pp_flowField <- flowField(predator_prey, xlim = c(0,10), ylim = c(0,10),
                           parameters = params,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -708,12 +708,12 @@ pp_trajectory <- trajectory(predator_prey,
                                           1, 1),
                                         ncol = 2,
                                         byrow = TRUE), 
-                            t.end = 30, # how far in time to calculate the trajectories
+                            tlim = c(0,30), # how far in time to calculate the trajectories
                             parameters = params, system = "two.dim")
 
 pp_nullclines <- nullclines(predator_prey, 
-           x.lim = c(0, 10), # axis limits
-           y.lim = c(0, 10),
+           xlim = c(0, 10), # axis limits
+           ylim = c(0, 10),
            # y0 is a matrix where each row is pairs of (X, Y) 
            y0 = initial_conditions, 
            t.end = 30, # how far in time to calculate the trajectories 
