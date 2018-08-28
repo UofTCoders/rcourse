@@ -4,7 +4,7 @@ exclude:
 - DESCRIPTION
 - LICENSE
 navbar:
-  title: EEB430H1
+  title: EEB313H1
   left:
   - text: Syllabus
     icon: fa-map-o
