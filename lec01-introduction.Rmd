@@ -290,21 +290,6 @@ ggplot(iris, aes(x = petal_length, fill = species)) +
     facet_wrap(~ species, dir = 'v')
 ```
 
-Finally, if you don't have a clear idea of what you are looking for in
-a data set -- such as if you are exploring publicly available data that you have not
-generated yourself -- then it can be useful to visualize the relationships
-between all the variables to get an overview of the data.
-
-```{r}
-ggpairs(iris, aes(color = species))
-```
-
-This plot is a bit overwhelming, and the purpose here is not to produce
-a publication ready figure. You can see that many of the labels are overlapping
-and not everything fits in the plotting window. We can tweak these properties,
-which we will get into later in the course. But even in its slightly rough
-form, this is a powerful data set overview for your own analyses.
-
 Hopefully, these examples have giving you an idea of how simple and powerful it
 is to use R for your exploratory data analyses. In a few lines of code, we have
 made some really nice plots, some of which are not even imaginable to create in
