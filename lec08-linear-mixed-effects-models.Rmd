@@ -1,7 +1,10 @@
 ---
 title: "Linear mixed-effects models"
 author: "James S. Santangelo"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ## Lesson preamble
@@ -52,7 +55,7 @@ Typically, small amounts of non-normality and variance heterogeneity is alright 
 
 Throughout the first part of this lecture, we will be making use of the RIKZ dataset, described in Zuur *et al.* (2007) and Zuur *et al.* (2009). For each of 9 intertidal areas (denoted 'Beaches'), the researchers sampled five sites (denoted 'Sites') and at each site they measured abiotic variables and the diversity of macro-fauna (e.g. aquatic invertebrates). Here, species richness refers to the total number of species found at a given site while NAP (i.e. Normal Amsterdams Peil) refers to the height of the sampling location relative to the mean sea level and represents a measure of the amount of food available for birds, etc. For our purpose, the main question is: 
 
-* **What is the influence of NAP on species richness?** 
+1. **What is the influence of NAP on species richness?** 
 
 A diagramatic representation of the dataset can be seen below (Modified from Zuur *et al.* (2009), Chapter 5).
 
@@ -104,8 +107,8 @@ plot(basic.lm)
 
 The first and third panels suggest that the homogeneity assumption is violated (increasing variance in the residuals with increasing fitted values). Similarly, panel 2 suggests non-normality (points falling off of the dotted line). A third-root transformation of the response variable (i.e. Richness) seems to alleviate both of these problems. 
 
-    * **Pro tip:** Right skewed response variables can be normalized using root transformations (e.g. square root, log, third-root, etc.), with greater roots required for increasingly right-skewed data. Left skewed response variables can be normalized with power transformations (e.g. squared, 3rd power, etd.)
-    
+- **Tip: **Right skewed response variables can be normalized using root transformations (e.g. square root, log, third-root, etc.), with greater roots required for increasingly right-skewed data. Left skewed response variables can be normalized with power transformations (e.g. squared, 3rd power, etd.)
+ 
 Nonethless, for the analyses in this section, we will ignore violations of these assumtions for the purpose of better illustrating mixed-effects modelling strategies on untransformed data. In fact, these data violate another, potentially more problematic assumption, namely, the observations are not independent. 
 
 ## Non-independence of observations
@@ -175,7 +178,7 @@ That's a lot of terms! Note what's happening here. The model is estimating a sep
 
 We do not want to pay the steep price of 8 degrees of freedom to include a Beach term in our model but still want to estimate the variance among beaches and must account for the non-independence of sites within beaches. We can do this by including it as a **random effect**, while NAP remains a **fixed effect**. As such, we model a separate y-intercept (i.e. Richness at NAP = 0) for each beach and estimate the variance around this intercept. A small variance means that variances per beach are small whereas a large variance means the opposite (this will become clearer shortly). We can run mixed-effects models using the `lmer` function from the `lme4` R package and obtain parameter estimates using the `lmerTest` package. The question we are now asking is: 
 
-    * **What is the influence of NAP on species richness, after accounting for variation within beaches?**
+1. **What is the influence of NAP on species richness, after accounting for variation within beaches?**
 
 ```{r Random intercept model, message=FALSE}
 library(lme4)
