@@ -10,10 +10,10 @@ Prerequisites: BIO220H1 and one of EEB225H1, STA288H1, or STA220H1
 Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 ## Class locations
-| Day | Room         | Location       | Details      |
-|-----|--------------|----------------|--------------|
-| Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Harbord and St George | 1st floor, enter from St George street. |
-| Thu | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) | Queen's Park East and St. Joseph Street | 3rd floor, St. Michael's College. |
+| Day | Room         |
+|-----|--------------|
+| Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) |
+| Thu | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) |
 
 Office hours are in RW 107, right next to RW 109.
 
