@@ -9,7 +9,7 @@ Authors@R: c(
     person("Elliott", "Sales de Andrade", email = "esalesde@physics.utoronto.ca", role = c("aut")),
     person("Lina", "Tran", email = "lina.mntran@gmail.com", role = c("aut"),
     person("James", "Santangelo", email = "james.santangelo37@gmail.com", role = c("ctb"),
-    person("Ahmed", "Hasam", email = "ahmed.hasan@mail.utoronto.ca", role = c("ctb"))
+    person("Ahmed", "Hasan", email = "ahmed.hasan@mail.utoronto.ca", role = c("ctb"))
     )
 Depends: R (>= 3.4.0)
 License: CC-BY
