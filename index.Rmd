@@ -17,7 +17,7 @@ Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 Office hours are in RW 107, right next to RW 109.
 
-Both lecture halls have access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
+The lecture hall has access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
 Quercus is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
@@ -29,7 +29,7 @@ Quercus is the preferred communication channel. If you need to use email instead
 - Ahmed Hasan, ahmed.hasan@mail.utoronto.ca
 
 ### Supervising professor
-Prof. Martin Krkosek, martin.krkosek@utoronto.ca, 416-978-3839, RW402
+Prof. Asher Cutter, asher.cutter@utoronto.ca, 416-978-4602, ESC2052
 
 ## Course Website and Quercus
 All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Quercus](https://q.utoronto.ca), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
@@ -104,7 +104,7 @@ There are 100 marks in total. Your final course mark will be the sum of your ass
 
 Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
 
-Assignments will be distributed and submitted in the R Markdown format via Quercus or GitHub. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
 
 
 ### Final project grading rubric
