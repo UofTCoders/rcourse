@@ -1,10 +1,6 @@
 ---
 title: "Linear mixed-effects models"
 author: "James S. Santangelo"
-output:
-  pdf_document: default
-  html_document:
-    df_print: paged
 ---
 
 ## Lesson preamble
