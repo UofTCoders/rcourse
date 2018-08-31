@@ -1,10 +1,6 @@
 ---
 title: "Linear mixed-effects models"
 author: "James S. Santangelo"
-output:
-  pdf_document: default
-  html_document:
-    df_print: paged
 ---
 
 ## Lesson preamble
@@ -115,7 +111,7 @@ Nonethless, for the analyses in this section, we will ignore violations of these
 
 Remember, the species richness data come from multiple sites within multiple beaches. While each beach may be independent, sites within a beach are likely to have similar species richness due simply to their proximity within the same beach. In other words, obervations among sites within a beach are **not independent**. Another way of saying this is that the data are **nested**. Nesting in this sense is a product of the experimental design (i.e. we chose to sample 5 sites within each beach) and not necessarily of the data itself. Other types of nested data include: sampling the same individual pre- and post-treatment or sampling them multiple times (i.e. repeated measures) or sampling multiple tissues from the same individuals. We can visualize the non-independence of observation within the same beach by producing a figure similar to the one above but clustered by beach (each beach is a different colour).
 
-```{r Richness against NAP, clustered by beach}
+```{r Richness against NAP, message=FALSE}
 
 library(plyr)
 
@@ -189,7 +185,7 @@ mixed_model_IntOnly <- lmer(Richness ~ NAP + (1|Beach), data = rikz_data, REML =
 summary(mixed_model_IntOnly)
 ```
 
-The `(1|Beach)` is the random effect term, where the `1` denotes this is a random-intercept model and the term on the right of the `|` is a nominal variable (or factor) to be used as the random effect. Note that it's considered best practice that random effects have at least 5 levels, otherwise it should be used as a fixed effect (we have 9 so we're good!). From top to bottom, the output is telling us that the model was fit using maximum likelihood with parameters estimated using the Satterthwaite approximation. It then gives  us the AIC, BIC and log-likelihood values for this particular model. I'm sure most of this sounds like jargon. Don't worry! These will become clearer later and AIC will be especially useful for our lecture on Model Selection (Lecture 11). The next part is important: It gives us the estimated variance for the random effects in the model. Here, it's telling us that the variance associated with the effect of beach is `7.507`. In other words, difference between beaches account for  `(7.507 / 9.111) * 100 = 82`% of the residual variance after accounting for the fixed effects in the model. Finally, we have the fixed effect portions of the model, with a separate intercept, slope and P-value for the effect of NAP. Let's visualize the fitted values for this model. 
+The `(1|Beach)` is the random effect term, where the `1` denotes this is a random-intercept model and the term on the right of the `|` is a nominal variable (or factor) to be used as the random effect. Note that it's considered best practice that random effects have at least 5 levels, otherwise it should be used as a fixed effect (we have 9 so we're good!). From top to bottom, the output is telling us that the model was fit using maximum likelihood with parameters estimated using the Satterthwaite approximation. It then gives  us the AIC, BIC and log-likelihood values for this particular model. I'm sure most of this sounds like jargon. Don't worry! These will become clearer later and AIC will be especially useful for our lecture on Model Selection (Lecture 11). The next part is important: It gives us the estimated variance for the random effects in the model. Here, it's telling us that the variance associated with the effect of beach is `7.507`. In other words, difference between beaches account for  `(7.507 / 9.111) * 100 = 82%` of the residual variance after accounting for the fixed effects in the model. Finally, we have the fixed effect portions of the model, with a separate intercept, slope and P-value for the effect of NAP. Let's visualize the fitted values for this model. 
 
 ```{r Random intercept fitted values}
 # Let's predict values based on our model and add these to our dataframe

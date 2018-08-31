@@ -1,5 +1,8 @@
 ---
-title: "Syllabus: EEB313 Quantitative Methods in R for Biology [24L, 12P]"
+title: 'Syllabus: EEB313 Quantitative Methods in R for Biology [24L, 12P]'
+output:
+  pdf_document: default
+  word_document: default
 ---
 
 This course covers statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.
@@ -10,6 +13,7 @@ Prerequisites: BIO220H1 and one of EEB225H1, STA288H1, or STA220H1
 Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 
 ## Class locations
+
 | Day | Room         |
 |-----|--------------|
 | Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) |

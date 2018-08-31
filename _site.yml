@@ -26,7 +26,7 @@ navbar:
       #href: lec06-pop-models.html
     - text: 'Sept. 27: Linear models and statistical modelling'
       #href: lec07-pop-models.html
-    - text: 'Oct. 02: Mixed effects modelss'
+    - text: 'Oct. 02: Mixed effects models'
       href: lec08-linear-mixed-effects-models.html
     - text: 'Oct. 04: Simulating data: Randomization tests'
       #href: lec09-simulating-data-randomization-tests.html
