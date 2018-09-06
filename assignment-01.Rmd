@@ -63,6 +63,6 @@ your `.Rmd` source file and a knitted `.html` version of the same file.*
     exploratory data analyses? (1 mark)
 
 4.  Fill out the [pre-course
-    survey](https://docs.google.com/forms/d/e/1FAIpQLSeQ5a1LPQGdtlXSjX_zPknmpTHH8hCFMgjmTrnBLD_eHRGUhA/viewform?usp=sf_link).
+    survey](https://goo.gl/forms/v2psrg0gGnqbxr6F3).
     Type your student number below to confirm that you are done. (0.5
     marks)
