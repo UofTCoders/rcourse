@@ -416,8 +416,8 @@ online](http://rmarkdown.rstudio.com/authoring_basics.html).
 ## Background experience survey
 Hopefully, this has given you an idea of how powerful and time-saving R can be
 for your data analysis, and how we will work with it in this class using the
-R Notebook. The first assignment will be available on blackboard today, and it
-is includes a few questions about RStudio and R Markdown. 1 / 4 marks on this
+R Notebook. The first assignment will be available on Quercus today, and it
+includes a few questions about RStudio and R Markdown. 1 / 4 marks on this
 assignment is to fill in a survey about your background knowledge. This is so
 that we can adjust the pace and content of the lectures and to divide you into
 groups accordingly for the class project later this fall. Please take 10 min to
