@@ -58,21 +58,21 @@ navbar:
     - text: Assignment 1
       href: assignment-01.html
     - text: Assignment 2
-      href: assignment-02.html
+      #href: assignment-02.html
     - text: Assignment 3
-      href: assignment-03.html
+      #href: assignment-03.html
     - text: Assignment 4
-      href: assignment-04.html
+      #href: assignment-04.html
     - text: Assignment 5
-      href: assignment-05.html
+      #href: assignment-05.html
     - text: Assignment 6
-      href: assignment-06.html
+      #href: assignment-06.html
     - text: Assignment 7
-      href: assignment-07.html
+      #href: assignment-07.html
     - text: Assignment 8
-      href: assignment-08.html
+      #href: assignment-08.html
     - text: Final assignment
-      href: assignment-final.html
+      #href: assignment-final.html
   #- text: Slides
   #  icon: fa-caret-square-o-right
   #  menu:
