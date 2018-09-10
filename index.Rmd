@@ -106,7 +106,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
-Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
+Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions_.
 
 
 ### Final project grading rubric
