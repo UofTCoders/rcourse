@@ -106,8 +106,6 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
-Students can be absent from two lectures (*including* project work days) without losing any participation marks. After that, students will lose 1 mark per missed lecture.
-
 Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions._
 
 
