@@ -6,8 +6,8 @@ output:
 ---
 
 *To submit this assignment, upload the full document on blackboard,
-including the original questions, your code, and the output. Submit both
-your `.Rmd` source file and a knitted `.html` version of the same file.*
+including the original questions, your code, and the output. Submit
+you assignment as a knitted `.pdf` (prefered) or `.html` file.*
 
 1.  Get setup at home (or on a lab computer after hours). (1.5 marks)
     -   Install [R](https://cran.rstudio.com/) and
