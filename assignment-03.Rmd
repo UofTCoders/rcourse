@@ -5,6 +5,10 @@ output:
         toc: false
 ---
 
+*To submit this assignment, upload the full document on blackboard,
+including the original questions, your code, and the output. Submit
+you assignment as a knitted `.pdf` (prefered) or `.html` file.*
+
 1.  Plotting (1 mark)
 
     Run the block below to create a categorical variable of the `activ`
