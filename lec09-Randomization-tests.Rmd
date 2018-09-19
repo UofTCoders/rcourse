@@ -355,13 +355,11 @@ Randomization tests are additionally used numerous fields in ecology and evoluti
 
 ## Additional reading
 
-Diamond, J.M. 1975. Assembly of species communities. p. 342-444 in: Ecology and Evolution of Communities. M.L. Cody and J.M. Diamond (eds.). Harvard University Press, Cambridge.
-
-Connor, E.F. and D. Simberloff. 1979. The assembly of species communities: chance or competition? Ecology 60: 1132-1140.
-
-Connor, E.F., M.D. Collins, and D. Simberloff. 2013. The checkered history of checkerboard distributions. Ecology 94: 2403-2414
-
-Stone. L. and A. Roberts. 1990. The checkerboard score and species distributions. Oecologia 85: 74-79.
+1. Diamond, J.M. 1975. Assembly of species communities. p. 342-444 in: Ecology and Evolution of Communities. M.L. Cody and J.M. Diamond (eds.). Harvard University Press, Cambridge.
+2. Connor, E.F. and D. Simberloff. 1979. The assembly of species communities: chance or competition? Ecology 60: 1132-1140.
+3. Connor, E.F., M.D. Collins, and D. Simberloff. 2013. The checkered history of checkerboard distributions. Ecology 94: 2403-2414
+4. Stone. L. and A. Roberts. 1990. The checkerboard score and species distributions. Oecologia 85: 74-79.
+5. Manly, B. 2007. Randomization, bootstrap and Monte Carlo methods in biology. B. Carlin, C. Chatfield M. Tanner andJ. Zidek, eds. 3rd edition. Chapman and Hall/CRC.
 
 
 
