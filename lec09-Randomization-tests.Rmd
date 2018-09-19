@@ -200,9 +200,10 @@ ggplot(reshuffled, aes(x = width)) +
     theme_classic()
 
 # Let get the mean difference of this single simulation
-means_sim1 <- group_by(reshuffled, sex) %>% summarize(mean = mean(width))
-mean_diff_sim1 <- means_sim1[means_sim1$sex == "Male", "mean"] - means_sim1[means_sim1$sex == "Female", "mean"]
-cat("The mean difference from a single reshuffling of the data is", mean_diff_sim1$mean)
+mean_males_sim1 <- mean(reshuffled[reshuffled$sex == "Male", "width"])
+mean_females_sim1 <- mean(reshuffled[reshuffled$sex == "Female", "width"])
+mean_diff_sim1 <- mean_males_sim1 - mean_females_sim1
+cat("The mean difference from a single reshuffling of the data is", mean_diff_sim1)
 ```
 
 We can see that the mean difference from the simulated data is considerably different from the observed mean difference. This makes sense since the body width values were randomly assigned to males and females. Let's now do this 5,000 times, each time calculating the mean difference in body width.
