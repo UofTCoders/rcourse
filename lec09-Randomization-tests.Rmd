@@ -294,8 +294,8 @@ Clearly this data is not in the form that we need it to be. As I'm sure you know
 
 ```{r message=FALSE, warning=FALSE}
 neon_data_filtered <- neon_data %>%
-    filter(divDataType == "plantSpecies") %>% # We only want rows with plant species and not 'otherVariables'
-    select(plotID, taxonID) # To create a presence-absence matrix, we only need the taxonID (i.e. species) and the plotID (i.e. Site)
+    dplyr::filter(divDataType == "plantSpecies") %>% # We only want rows with plant species and not 'otherVariables'
+    dplyr::select(plotID, taxonID) # To create a presence-absence matrix, we only need the taxonID (i.e. species) and the plotID (i.e. Site)
 
 library(reshape2)
 
