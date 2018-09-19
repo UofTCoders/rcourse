@@ -1,7 +1,6 @@
 ---
 title: "Data simulation and randomization tests"
 author: "James S. Santangelo"
-output: pdf_document
 ---
 
 ## Lesson preamble
