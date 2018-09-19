@@ -225,14 +225,15 @@ for(i in 1:nreps){
     # Permute the width column with the 'sample()' function. 
     reshuffled$width <- sample(reshuffled$width, size = nrow(reshuffled), replace = FALSE)
     
-    # Use dplyr to calculate the means for each sex
-    means <- group_by(reshuffled, sex) %>% summarize(mean = mean(width))
+    # Calculate the means for each sex
+    mean_males_sim <- mean(reshuffled[reshuffled$sex == "Male", "width"])
+    mean_females_sim <- mean(reshuffled[reshuffled$sex == "Female", "width"])
     
     # Calculate to difference between simulated male and female body width means
-    mean_calc <- means[means$sex == "Male", "mean"] - means[means$sex == "Female", "mean"]
+    mean_diff_sim <- mean_males_sim - mean_females_sim
     
     # Append simulated mean difference to list
-    simulated_means[i] <- mean_calc
+    simulated_means[i] <- mean_diff_sim
 }    
 
 # Unlist simulated means list into numeric vector
