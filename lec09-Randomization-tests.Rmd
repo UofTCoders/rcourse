@@ -45,12 +45,12 @@ R allows us to genetate fake data (i.e. simulate data) rather easily. This is us
 We'll start by taking random samples from a normal distribution with mean equal to 1 and standard deviation equal to 0. 
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Let's install all the packages we'll need
 library(ggplot2)
 library(reshape2)
-library(EcoSimR)
 library(dplyr)
+library(EcoSimR)
 ```
 
 ```{r}
