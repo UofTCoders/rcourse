@@ -44,10 +44,16 @@ R allows us to genetate fake data (i.e. simulate data) rather easily. This is us
 
 We'll start by taking random samples from a normal distribution with mean equal to 1 and standard deviation equal to 0. 
 
-```{r}
-# Load in ggplot2
-library(ggplot2)
 
+```{r}
+# Let's install all the packages we'll need
+library(ggplot2)
+library(reshape2)
+library(EcoSimR)
+library(dplyr)
+```
+
+```{r}
 set.seed(42) # Ensure reproducibility of random results.
 mean <- 0
 sd <- 1
@@ -168,9 +174,6 @@ t.test(df_males$width, df_females$width, alternative = "two.sided")
 From the t-test above, we see that our t-statistic has a value of 2.49 and that males and females differ significantly in body width (_P_ < 0.05). From the means reported in the t-test, it looks like males have larger body widths than females (17.36 vs. 15.03). Let's now perform a randomization test. To get a better sense of what we're doing, let's first perform a single reshuffling of the data and look at the resulting distribution of the data. 
 
 ```{r message=FALSE, warning=FALSE}
-# Load in dplyr
-library(dplyr)
-
 # Set seed for reproducible results
 set.seed(47)
 
@@ -296,8 +299,6 @@ neon_data_filtered <- neon_data %>%
     dplyr::filter(divDataType == "plantSpecies") %>% # We only want rows with plant species and not 'otherVariables'
     dplyr::select(plotID, taxonID) # To create a presence-absence matrix, we only need the taxonID (i.e. species) and the plotID (i.e. Site)
 
-library(reshape2)
-
 # Create Presence-Absence matrix
 neon_data_filtered <- unique(neon_data_filtered) # Keep only unique rows so that cells represent presence-absence and not abundances
 PA_matrix <- dcast(neon_data_filtered, formula = taxonID ~ plotID, fun.aggregate = length)
@@ -311,8 +312,6 @@ For our purpose, we will preserve species rarity but will assume that each site 
 For our index, we will use the **C-score** (Stone and Roberts 1990). I will not go into the calculation of this score here but suffice it to say that the higher the C-score, the less co-occurence (on average) between all pairs of species in the matrix (i.e. a more seggregated matrix). Smaller C-scores indicate an aggregated matrix (i.e. more co-occurence among species pairs). Thankfully for us, there is an R package that implements the randomization algorithm for us. Let's go ahead and conduct the analysis.
 
 ```{r message=FALSE, warning=FALSE}
-library(EcoSimR)
-
 set.seed(50)
 
 # Perform co-occurence analysis
