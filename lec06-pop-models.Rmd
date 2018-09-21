@@ -9,7 +9,7 @@ In developing this series of lectures I have referred heavily to the notes from 
 [PHY1460](https://www.physics.utoronto.ca/students/graduate-courses/current/phy1460s), 
 which I would encourage anyone who is interested in getting more in depth on the quantitative analysis 
 of dynamical systems to take or audit. I also refer to "Nonlinear Dynamics and Chaos" by Steven Strogatz, 
-a very good textbook which you might find helpful. You can find the pdf online, it's available as an e-book
+a very good textbook which you might find helpful. You can find the PDF online, it's available as an e-book
 from the UofT library, and it's available in the Physics library as a hard copy course reserve.
 
 > ### Learning objectives

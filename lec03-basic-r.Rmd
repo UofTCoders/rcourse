@@ -257,8 +257,8 @@ the returned object is actually a vector. We will not go into detail about this,
 but since it is such common usage, it is good to be aware of this.
 
 ```{r}
-# We use `head()` since the output from vectors are not autmatically cut off and
-# we don't want to clutter the screen with all the `species_id` values
+# We use `head()` since the output from vectors are not automatically cut off
+# and we don't want to clutter the screen with all the `species_id` values
 head(surveys$species_id)          # Result is a vector
 ```
 

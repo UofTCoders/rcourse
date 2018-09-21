@@ -1,6 +1,6 @@
 ---
 title: "More on data visualizations and the Git workflow (plus project work)"
-author: Lindsay Coome & Joel Ostblom
+author: Lindsay Coome & Joel Östblom
 ---
 
 ## Lesson preamble

@@ -36,7 +36,7 @@ part of these open source projects.
 ## Lesson Preamble
 
 > ### Learning Objectives
-> 
+>
 > - Define the following terms as they relate to R: call, function, arguments, options.
 > - Use comments within code blocks.
 > - Do simple arithmetic operations in R using values and objects.
@@ -47,9 +47,9 @@ part of these open source projects.
 > - Describe what a data frame is.
 > - Load external data from a .csv file into a data frame in R.
 > - Summarize the contents of a data frame in R.
-> 
+>
 > ### Lecture outline
-> 
+>
 > - Setting up the R Notebook (5 min)
 > - Creating objects/variables in R (10 min)
 > - Using and writing functions (20 min)
@@ -95,7 +95,7 @@ the console:
 12 / 7
 ```
 
-However, to do useful and interesting things, we need to assign _values_ to _objects_. 
+However, to do useful and interesting things, we need to assign _values_ to _objects_.
 
 ```{r}
 x <- 3
@@ -125,12 +125,12 @@ used because they are they are reserved for fundamental functions in R
 (`?Reserved` lists these words). In general, even if it's allowed, it's best to
 not use other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`).
 If in doubt, check the help or use tab completion to see if the name is already
-in use. 
+in use.
 
 It's also best to avoid dots (`.`) within a variable name as in
 `my.dataset`. Historically, there are many functions in R with dots in their
 name, but since dots have a [special meaning](http://adv-r.had.co.nz/S3.html) in
-R, it's better to not use them and instead use underscores (`_`). 
+R, it's better to not use them and instead use underscores (`_`).
 
 It is also recommended to use nouns for variable names, and verbs for function names. It's
 important to be consistent in the styling of your code (where you put spaces,
@@ -205,8 +205,8 @@ script will be ignored by R.
 RStudio makes it easy to comment or uncomment a paragraph: after selecting the
 lines you want to comment, press at the same time on your keyboard
 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment
-out one line, you can put the cursor at any location of that line (i.e. no need 
-to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + 
+out one line, you can put the cursor at any location of that line (i.e. no need
+to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 <kbd>C</kbd>.
 
 ```{r}
@@ -218,7 +218,7 @@ weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 What are the values after each statement in the following?
 
 ```{r}
-mass <- 47.5            
+mass <- 47.5
 age  <- 122
 mass <- mass * 2.0      # mass?
 age  <- age - 20        # age?
@@ -606,7 +606,7 @@ species abundance in the Chihuahuan desert ecosystem near Portal, Arizona, USA.
 This study includes observations of plants, ants, and rodents from 1977 - 2002,
 and has been used in over 100 publications. More information is available in
 [the abstract of this paper from 2009](
-http://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full). 
+http://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full).
 
 We will be working with this dataset over the next few lectures.
 There are several datasets available related to this study, and we will be working with datasets
@@ -681,8 +681,8 @@ surveys <- readr::read_csv('portal_data.csv')
 surveys <- readr::read_csv('data/portal_data.csv')
 ```
 
-This statement produces some output regarding which data type it found in each 
-column. If we want to check this in more detail, we can print the variable's 
+This statement produces some output regarding which data type it found in each
+column. If we want to check this in more detail, we can print the variable's
 value: `surveys`.
 
 ```{r}
@@ -840,8 +840,8 @@ the returned object is actually a vector. We will not go into detail about this,
 but since it is such common usage, it is good to be aware of this.
 
 ```{r}
-# We use `head()` since the output from vectors are not autmatically cut off and
-# we don't want to clutter the screen with all the `species_id` values
+# We use `head()` since the output from vectors are not automatically cut off
+# and we don't want to clutter the screen with all the `species_id` values
 head(surveys$species_id)          # Result is a vector
 ```
 
@@ -861,7 +861,7 @@ head(surveys$species_id)          # Result is a vector
 3. Use `nrow()` to extract the row that is in the middle of the data
    frame. Store the content of this row in an object named `surveys_middle`.
 
-4. Combine `nrow()` with the `-` notation above to reproduce the behavior of
+4. Combine `nrow()` with the `-` notation above to reproduce the behaviour of
    `head(surveys)` keeping just the first through 6th rows of the surveys
    dataset.
 
@@ -874,7 +874,7 @@ surveys_head <- surveys[-c(7:nrow(surveys)),]
 ```
 
 
-In our next lecture, we will dive into wrangling our `surveys` dataset using `dplyr`. 
+In our next lecture, we will dive into wrangling our `surveys` dataset using `dplyr`.
 
 
 
