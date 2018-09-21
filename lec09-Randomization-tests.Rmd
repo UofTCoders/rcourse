@@ -359,4 +359,10 @@ Randomization tests are additionally used numerous fields in ecology and evoluti
 4. Stone. L. and A. Roberts. 1990. The checkerboard score and species distributions. Oecologia 85: 74-79.
 5. Manly, B. 2007. Randomization, bootstrap and Monte Carlo methods in biology. B. Carlin, C. Chatfield M. Tanner and J. Zidek, eds. 3rd edition. Chapman and Hall/CRC.
 
+```{r}
+unloadNamespace("lmerTest")
+unloadNamespace("lme4")
+unloadNamespace("EcoSimR")
+unloadNamespace("MASS")
+```
 
