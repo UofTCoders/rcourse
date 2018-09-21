@@ -61,8 +61,8 @@ done and it's about time to submit.
 
 - A great overview of authorship with a focus on ecology:
     - [Determining authorship for a peer-reviewed scientific publication](https://arthropodecology.com/2012/08/31/determining-authorship-for-a-peer-reviewed-scientific-publication/) by Chris Buddle.
-- An article in Science Magazine about [authoship conventions](http://www.sciencemag.org/careers/2010/04/conventions-scientific-authorship)
-- A paper about [gender disparity in authorship](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0066212)
+- An article in Science Magazine about [authoship conventions](https://www.sciencemag.org/careers/2010/04/conventions-scientific-authorship)
+- A paper about [gender disparity in authorship](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0066212)
 
 ### How to Credit Data and Software Creators?
 
@@ -136,7 +136,7 @@ Questions:
 - And if not, what is the right way to value science and in turn, scientists
 behind the research?
 
-You can read [this article](http://www.nature.com/news/beat-it-impact-factor-publishing-elite-turns-against-controversial-metric-1.20224)
+You can read [this article](https://www.nature.com/news/beat-it-impact-factor-publishing-elite-turns-against-controversial-metric-1.20224)
 in Nature about pushback against impact factors from influential players in
 scientific publishing.
 
@@ -156,7 +156,7 @@ Fake or non-existent impact factors.
 ### The ethics and risks in sharing data
 
 ‘Scooping’ is often cited as a concern when discussing sharing data. However,
-getting scooped from a published data source has been [empirically demonstrated](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002432)
+getting scooped from a published data source has been [empirically demonstrated](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002432)
 to be a rare phenomenon, but even some open advocates have had trouble supporting
 [blanket open data policies](https://emckiernan.wordpress.com/2014/02/26/my-concerns-about-ploss-new-open-data-policy/).
 

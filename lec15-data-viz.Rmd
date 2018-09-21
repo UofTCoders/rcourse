@@ -104,7 +104,7 @@ Colour Saturation   | Decrease | Increase
 
 ### More general resources on plotting
 
-* [Ten Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
+* [Ten Simple Rules for Better Figures](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
@@ -314,7 +314,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
     apatheme()
 ```
 
-This is a [resource](http://ggplot2.tidyverse.org/reference/theme.html) on which
+This is a [resource](https://ggplot2.tidyverse.org/reference/theme.html) on which
 parts of the plot are controlled by different theme parameters when and if you
 create your own theme.
 
@@ -471,5 +471,5 @@ communication and clarity of your message to?
 *Parts of this lesson material were taken and modified from [Software
 Carpentry](https://software-carpentry.org) under their CC-BY copyright license.
 See their [lesson
-page](http://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the
+page](https://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the
 original source.*

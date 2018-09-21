@@ -116,7 +116,7 @@ our huge diamonds dataset.
 
 (It might seem like we're skipping ahead in terms of graph complexity. To learn
 how to make a super simple histogram with simple count data, see
-[here](http://ggplot2.tidyverse.org/reference/geom_histogram.html))
+[here](https://ggplot2.tidyverse.org/reference/geom_histogram.html))
 
 ```{r}
 g <- ggplot(diamonds, aes(x = carat, y = price))
@@ -144,7 +144,7 @@ g +
   geom_hex(bins = 90)
 ```
 
-[Here](http://ggplot2.tidyverse.org/reference/geom_hex.html) are more resources
+[Here](https://ggplot2.tidyverse.org/reference/geom_hex.html) are more resources
 on hexagonal 2D heatmaps. 
 
 If we want our heat map to be square, rather than hexagonal, we can use the
@@ -157,7 +157,7 @@ g +
 ```
 
 [Documentation for square/rectangular heat maps of 2D bin
-counts](http://ggplot2.tidyverse.org/reference/geom_bin2d.html)
+counts](https://ggplot2.tidyverse.org/reference/geom_bin2d.html)
 
 ## Making your graphs accessible
 
@@ -199,7 +199,7 @@ changes in lightness as changes in the data much better than, for example,
 changes in hue. Therefore, colormaps which have monotonically increasing
 lightness through the colormap will be better interpreted by the viewer. More
 details and examples of such colormaps are available in the [matplotlib
-documentation](http://matplotlib.org/users/colormaps.html), and many of the core
+documentation](https://matplotlib.org/users/colormaps.html), and many of the core
 design principles are outlined in [this entertaining
 talk](https://www.youtube.com/watch?v=xAoljeRJ3lU). Most of these colormaps are
 [available in
@@ -215,12 +215,12 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
 #### Challenge
 
 Create any coloured figure you want and go to 
-[this](http://www.color-blindness.com/coblis-color-blindness-simulator/) 
+[this](https://www.color-blindness.com/coblis-color-blindness-simulator/)
 website to upload it to see how it 
 looks to a colour blind person 
 
 For more resources,
-[here](http://blog.usabilla.com/how-to-design-for-color-blindness/) is a great
+[here](https://blog.usabilla.com/how-to-design-for-color-blindness/) is a great
 usability article for designing for people with colour blindness.
 
 ### More resources on ggplot2
@@ -236,7 +236,7 @@ usability article for designing for people with colour blindness.
 ## Git and GitHub workflow review
 
 First, let's create a chat room for your repository. We will use gitter, since
-it has good integrations with GitHub. Got to http://gitter.im/, login with your
+it has good integrations with GitHub. Go to https://gitter.im/, login with your
 GitHub account and click the plus sign to create a new chat room. Browse to
 your repository, and add the members of your team. Since your repository is
 public, this chatroom will also be public (so you might not want to share

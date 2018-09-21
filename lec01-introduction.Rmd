@@ -173,7 +173,7 @@ Now we can simply ask R to calculate the mean of the data frame `iris`, column `
 
 [^equal_vs_arrow]: For historical reasons, you can also use `=` for assignments,
 but not in every context. Because of the
-[slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
+[slight](https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
 [differences](https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html)
 in syntax, it is good practice to always use `<-` for assignments.
 Note that in RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write ` <- ` in a single keystroke.
@@ -411,7 +411,7 @@ output:
 
 If you want to learn more about R Markdown, you can read the cheat sheets in
 RStudio and [RStudio Markdown reference
-online](http://rmarkdown.rstudio.com/authoring_basics.html).
+online](https://rmarkdown.rstudio.com/authoring_basics.html).
 
 ## Background experience survey
 Hopefully, this has given you an idea of how powerful and time-saving R can be

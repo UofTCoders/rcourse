@@ -59,9 +59,9 @@ p + team_theme()
 ```
 
 -   ggplot2 official documentation on all the possible theme items:
-    <http://ggplot2.tidyverse.org/reference/theme.html>
+    <https://ggplot2.tidyverse.org/reference/theme.html>
 -   ggplot2 official documentation on modifying theme items:
-    <http://ggplot2.tidyverse.org/reference/theme_get.html>
+    <https://ggplot2.tidyverse.org/reference/theme_get.html>
 -   Great online book with tutorial walking through how to create a new
     theme:
     <https://bookdown.org/rdpeng/RProgDA/building-a-new-theme.html#creating-a-new-theme>

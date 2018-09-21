@@ -41,8 +41,8 @@ What does reproducibility mean to you? Let's discuss what each of these may enta
 ### Why do we care about reproducibility?
 
 Take 5-10 minutes to read over the following blog post section on [reproducibility
-in science](http://bioconnector.org/workshops/r-rmarkdown.html#who_cares_about_reproducible_research)
-and [what's in it for you](http://bioconnector.org/workshops/r-rmarkdown.html#what’s_in_it_for_you).
+in science](https://bioconnector.org/r-rmarkdown.html#who_cares_about_reproducible_research)
+and [what's in it for you](https://bioconnector.org/r-rmarkdown.html#what’s_in_it_for_you).
 
 Now, let's discuss the following questions:
 1. Why does reproducibility matter in science?
@@ -53,7 +53,7 @@ Now, let's discuss the following questions:
 Events of interest supporting Open Science:
 
 1. [Open Access Week](http://www.openaccessweek.org/)
-2. [OpenCon 2017](http://www.opencon2017.org/) sponsored by eLife this year
+2. [OpenCon 2017](https://www.opencon2017.org/) sponsored by eLife this year
     - [Authorea Blog Competition for OpenCon 2017](https://www.authorea.com/users/111970/articles/206557-announcing-opencon2017-london-blog-competition)
 
 ### What are ways we can make research more reproducible?
@@ -69,7 +69,7 @@ for years. This includes the following:
     or [this article](https://www.biorxiv.org/content/early/2016/08/11/056473) in
     Nature Biotechnology with everything also [on GitHub!](https://github.com/greenelab/continuous_analysis)
 - For more recommendations on reproducible research, especially as it pertains
-to coding practices, read more [here](http://bioconnector.org/workshops/r-rmarkdown.html#some_recommendations_for_reproducible_research)
+to coding practices, read more [here](https://bioconnector.org/r-rmarkdown.html#some_recommendations_for_reproducible_research)
 
 ### What are the barriers to reproducibility?
 
@@ -138,7 +138,7 @@ basic components to format our text so far, but to see the complete list,
 please visit the [official documentation](https://pandoc.org/MANUAL.html#pandocs-markdown).
 
 Before we start, everybody can do this 10 minute tutorial on markdown:
-http://commonmark.org/help/tutorial/
+https://commonmark.org/help/tutorial/
 
 ### Lists, Tables, In-Line Code
 
@@ -274,7 +274,7 @@ bibliography: bibliography.bib
 ---
 ```
 
-Many bibliography formats are accepted (see the [R Markdown guides](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)),
+Many bibliography formats are accepted (see the [R Markdown guides](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)),
 such as a .bib file which many citation managers can generate for you and will
 hold all the references you need for your document.
 
@@ -301,7 +301,7 @@ To make a bibliography, you may also want to specify a citation style guide to
 format your bibliography (in the form of a .csl file). The official repository
 for recognized citation styles is available [here](https://github.com/citation-style-language/styles). Because of the permissive
 licensing, you can actually customize or make your own styles too! [This visual
-editor](http://editor.citationstyles.org/visualEditor/) is a great tool to modify
+editor](https://editor.citationstyles.org/visualEditor/) is a great tool to modify
 styles to your liking.
 
 
@@ -455,5 +455,5 @@ kable(head(iris))
 
 ## Resources
 
-- The [R Markdown documentation](http://rmarkdown.rstudio.com/lesson-1.html)
+- The [R Markdown documentation](https://rmarkdown.rstudio.com/lesson-1.html)
 from RStudio can be a very helpful guide.
