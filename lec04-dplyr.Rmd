@@ -636,7 +636,6 @@ surveys_abun_species %>%
 It is possible to specify exactly which colors to use, to avoid those that are
 hard to distinguish. We can also change the thickness of the lines, and adjust
 the x labels so that they don't overlap. 
-data visualization lecture.
 
 ```{r}
 color_names <- c('black', 'orange')
