@@ -29,4 +29,6 @@ Imports: rmarkdown,
     lattice,
     plotly,
     lme4,
-    lmerTest
+    lmerTest,
+    reshape2,
+    EcoSimR
