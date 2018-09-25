@@ -23,7 +23,7 @@ navbar:
     - text: 'Sept. 20: More dplyr and ggplot'
       href: lec05-dplyr.html
     - text: 'Sept. 25: Exploratory data analysis'
-      #href: lec06-pop-models.html
+      href: lec06-exploratory-data-analysis.html
     - text: 'Sept. 27: Linear models and statistical modelling'
       #href: lec07-pop-models.html
     - text: 'Oct. 02: Mixed effects models'
