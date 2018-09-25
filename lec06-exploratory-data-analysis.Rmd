@@ -54,7 +54,7 @@ How you visualise the distribution of a variable will depend on whether the vari
 ggplot(data = diamonds, aes(x = cut)) +
   geom_bar()
 ```
-The height of the bars displays how many observations occurred with each x value. You can compute these values manually with dplyr's ```count()```:
+The height of the bars displays how many observations occurred with each x value. You can compute these values manually with dplyr's `count()`:
 
 ```{r}
 diamonds %>% 
@@ -67,7 +67,7 @@ ggplot(data = diamonds, aes(x = carat)) +
   geom_histogram(binwidth = 0.5) #graphing the distribution of diamonds by carat
 ```
 
-You can compute this by hand by combining dplyr's ```count()``` and ggplot2's ```cut_width()```:
+You can compute this by hand by combining dplyr's `count()` and ggplot2's `cut_width()`:
 ```{r}
 diamonds %>% 
   count(cut_width(carat, 0.5)) # cut_width is a function that makes groups of a specified bin width
@@ -84,7 +84,7 @@ ggplot(data = smaller, aes(x = carat)) +
   geom_histogram(binwidth = 0.1) # Zoomed in dataset with smaller bin widths
 ```
 
-If you wish to overlay multiple histograms in the same plot, I recommend using ```geom_freqpoly()``` instead of ```geom_histogram()```. ```geom_freqpoly()``` performs the same calculation as ```geom_histogram()```, but instead of displaying the counts with bars, it uses lines instead. It’s much easier to understand overlapping lines than bars.
+If you wish to overlay multiple histograms in the same plot, I recommend using `geom_freqpoly()` instead of `geom_histogram()`. `geom_freqpoly()` performs the same calculation as `geom_histogram()`, but instead of displaying the counts with bars, it uses lines instead. It’s much easier to understand overlapping lines than bars.
 ```{r}
 ggplot(data = smaller, aes(x = carat, colour = cut)) +
   geom_freqpoly(binwidth = 0.1)
@@ -135,14 +135,14 @@ ggplot(diamonds, aes(x = y)) +
   geom_histogram(binwidth = 0.5)
 ```
 
-There are so many observations in the common bins that the rare bins are so short that you can’t see them. To make it easy to see the unusual values, we need to zoom to small values of the y-axis with ``coord_cartesian()``:
+There are so many observations in the common bins that the rare bins are so short that you can’t see them. To make it easy to see the unusual values, we need to zoom to small values of the y-axis with `coord_cartesian()`:
 ```{r}
 ggplot(diamonds, aes(x = y)) + 
   geom_histogram(binwidth = 0.5) +
   coord_cartesian(ylim = c(0, 50)) # Zoom in so the y-axis goes from 0 to 50
 ```
 
-``coord_cartesian() also has an ``xlim()`` argument for when you need to zoom into the x-axis. ggplot2 also has ``xlim()`` and ``ylim()`` functions that work slightly differently: they change the values displayed on your graph's axes, throwing away the data outside the limits.
+`coord_cartesian()` also has an `xlim()` argument for when you need to zoom into the x-axis. ggplot2 also has `xlim()` and `ylim()` functions that work slightly differently: they change the values displayed on your graph's axes, throwing away the data outside the limits.
 
 This allows us to see that there are three unusual values: 0, ~30, and ~60. We pluck them out with dplyr:
 ```{r}
@@ -172,13 +172,13 @@ diamonds2 <- diamonds %>%
 
 I don’t recommend this option because just because one measurement is invalid, doesn’t mean all the measurements are. Additionally, if you have low quality data, by time that you’ve applied this approach to every variable you might find that you don’t have any data left!
 
-Instead, I recommend replacing the unusual values with missing values. The easiest way to do this is to use mutate() to replace the variable with a modified copy. You can use the ``ifelse()`` function to replace unusual values with NA:
+Instead, I recommend replacing the unusual values with missing values. The easiest way to do this is to use mutate() to replace the variable with a modified copy. You can use the `ifelse()` function to replace unusual values with NA:
 ```{r}
 diamonds2 <- diamonds %>% 
   mutate(y = ifelse(y < 3 | y > 20, NA, y))
 ```
   
-``ifelse()`` has three arguments. The first argument test should be a logical vector. The result will contain the value of the second argument, yes, when test is TRUE, and the value of the third argument, no, when it is false. Alternatively to ifelse, use dplyr's ``case_when()``. ``case_when()`` is particularly useful inside mutate when you want to create a new variable that relies on a complex combination of existing variables.
+`ifelse()` has three arguments. The first argument test should be a logical vector. The result will contain the value of the second argument, yes, when test is TRUE, and the value of the third argument, no, when it is false. Alternatively to ifelse, use dplyr's `case_when()`. `case_when()` is particularly useful inside mutate when you want to create a new variable that relies on a complex combination of existing variables.
 
 #Outliers
 We just learned a bit about checking for unusual values in your dataset, but there are several ways of dealing with outliers beyond replacing them with missing values. What are our other options and under what circumstances should we use them?
@@ -210,7 +210,7 @@ ggplot(data = diamonds2, aes(x = x, y = y)) +
   geom_point()
 ```
 
-To suppress that warning, set ``na.rm = TRUE``:
+To suppress that warning, set `na.rm = TRUE`:
 
 ##Exercises
 1. What happens to missing values in a histogram? What happens to missing values in a bar chart? Why is there a difference?
@@ -261,14 +261,14 @@ If you want to skip a variable from imputation itself use the code below. This v
 # meth[c("year", "day", "month", "plot_id", "species_id", "plot_type", "genus", "species", "taxa")]=""
 ```
 
-Now let specify the methods for imputing the missing values. There are specific methods for continuous, binary and ordinal variables. We will now set different methods for each variable. You can add more than one variable in each method. The default for continuous data is pmm. pmm stands for predictive mean matching, the default method of ``mice()`` for imputation of continous incomplete variables; for each missing value, pmm *finds a set of observed values with the closest predicted mean as the missing one and imputes the missing values by a random draw from that set*. Therefore, pmm is restricted to the observed values, and might do fine even for categorical data (though not recommended). 
+Now let specify the methods for imputing the missing values. There are specific methods for continuous, binary and ordinal variables. We will now set different methods for each variable. You can add more than one variable in each method. The default for continuous data is pmm. pmm stands for predictive mean matching, the default method of `mice()` for imputation of continous incomplete variables; for each missing value, pmm *finds a set of observed values with the closest predicted mean as the missing one and imputes the missing values by a random draw from that set*. Therefore, pmm is restricted to the observed values, and might do fine even for categorical data (though not recommended).
 
-``mice()`` automatically decides on the imputation model for each incomplete variable which method will be used for your data as default. The way to check how ``mice()`` actually decided to impute values is as follows: 
+`mice()` automatically decides on the imputation model for each incomplete variable which method will be used for your data as default. The way to check how `mice()` actually decided to impute values is as follows:
 ```{r}
 # init$meth
 ```
 
-The variables ``hindfoot_length`` and ``weight`` are already set to ppm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
+The variables `hindfoot_length` and `weight` are already set to ppm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
 ```{r}
 # meth[c("hindfoot_length")]="ppm"
 ```
@@ -296,7 +296,7 @@ Now let's double check for missing values:
 #   map(~sum(is.na(.))) #taken from tidyverse library purr; note requirement to include . in the function
 ```
 
-OK, we've successfully imputed values for ``hindfoot_length`` and ``weight`` using multiple imputation! How can we check the accuracy of our imputation? One way is to compare our imputed means to our actual means (i.e. with missing data included). If the variables are meaningfully correlated to one another, the averages of the imputed variables should be close to the averages of our original variables.
+OK, we've successfully imputed values for `hindfoot_length` and `weight` using multiple imputation! How can we check the accuracy of our imputation? One way is to compare our imputed means to our actual means (i.e. with missing data included). If the variables are meaningfully correlated to one another, the averages of the imputed variables should be close to the averages of our original variables.
 ```{r}
 # actual <- survey$hindfoot_length
 # predicted <- imputed$hindfoot_length
