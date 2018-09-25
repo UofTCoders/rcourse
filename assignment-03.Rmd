@@ -28,7 +28,8 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
         temperatures for the active and inactive conditions. Create a
         histogram with the temperature on the x-axis and color the bins
         corresponding to the activity variable. *Hint: You need to use
-        the `fill` parameter rather than `color`.* (0.25 marks)
+        the `fill` parameter rather than `color`; and make sure you are
+        using the correct `activ` column!* (0.25 marks)
 
     b.  We already know that the beaver's body temperature is correlated
         with whether it is outside the retreat or not. However, we did
@@ -50,16 +51,16 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     your data wrangling skills on the yearly change in biomass of plants
     in the [beautiful Abisko national park in northern
     Sweden](https://en.wikipedia.org/wiki/Abisko_National_Park). We have
-    preprocessed this data and made [it available as a csv-file via this
+    preprocessed this data and made [it available as a csv file via this
     link](https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv).
     You can find the original data and a short readme on
     [figshare](https://figshare.com/articles/Time_Series_of_plant_biomass_during_1998-2013/4149648)
     and [dryad](https://datadryad.org/resource/doi:10.5061/dryad.38s21).
-    The original study[^1] is available un an open access license.
+    The original study[^1] is available with an open access license.
     Reading through the readme on figshare, and the study abstract will
     increase your understanding for working with the data.
 
-    a.  Read the data directly from the provided URL, into a variable
+    a.  Read the data directly from the provided URL into a variable
         called `plant_biomass` and display the first six rows. (0.25
         mark)
 
@@ -67,24 +68,25 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
         lingonberry, bilberry, bog bilberry, dwarf birch, crowberry, and
         wavy hair grass. After this, display all column names. *Hint:
         Search online to find out which Latin and English names pair up.
-        Check the [tidyverse style
-        guide](http://style.tidyverse.org/syntax.html#object-names) if
-        you don't remember which characters need to be replaced in
-        column/variable names.* (0.5 marks)
+        There is a function in the `dplyr` cheat sheet that might help you
+        rename these columns. Finally, check the [tidyverse style
+        guide](http://style.tidyverse.org/syntax.html#object-names) to make
+        sure your new column names are formatted correctly.* (0.5 marks)
 
     c.  This is a wide data frame (species make up the column names). A
         long format is easier to analyze, so gather the species names
         into one column (`species`) and the measurement values into
         another column (`biomass`). Assign it to the variable
-        `plant_biomass` to overwrite the previous data frame. *Hint:
-        Make sure the output is correct before overwriting the old
-        variable.* (0.75 marks)
+        `plant_biomass` to overwrite the previous data frame. Make
+        sure you don't lose any columns in the reshaping process!
+        *Hint: Make sure the output is correct before overwriting the
+        old variable.* (0.75 marks)
 
 3.  Data exploration (4.5 marks)
 
     Now that our data is in a tidy format, we can start exploring it!
 
-    a.  What is the average biomass in g/m^2^ for all observations in
+    a.  What is the average biomass in g/m^2 for all observations in
         the study? (0.25 marks)
 
     b.  How does the average biomass compare between the grazed control
@@ -108,24 +110,27 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     g.  Check whether there is an equal number of observations per
         species. (0.25 marks)
 
-    h.  Compare the yearly change in biomass for each species in a
+    h.  Compare the yearly change in mean biomass for each species in a
         lineplot. (0.5 marks)
 
     i.  From the previous two questions, we found that the biomass is
         higher in the sites with rodent exclosures (especially in recent
         years), and that the crowberry is the dominant species. Notice
-        how the lines for `rodentexclosure` and `crowberry` are of
-        similar shape. Coincidence? Let's find out! Use a facetted line
-        plot to explore whether all plant species are impacted equally
-        by grazing. (0.75 mark)
+        how the lines for `rodentexclosure` (refer back to 3.d above) 
+        and `crowberry` are of similar shape. Coincidence? Let's find out! 
+        Use a facetted line plot to explore whether all plant species are 
+        impacted equally by grazing. (0.75 mark)
 
     j.  The habitat could also be affecting the biomass of different
-        species. Explore graphically if this is the case. (0.5 marks)
+        species. Explore graphically if this is the case. *Hint: Think
+        about how to change your dataset groupings to make this plot* 
+        (0.5 marks)
 
     k.  It looks like both habitat and treatment have an effect on most
         of the species! Let's dissect the data further by visualizing
-        the effect on each species of both the habitat and treatment by
-        facetting the plot accordingly. (0.5 marks)
+        the effect on each species of _both_ the habitat and treatment by
+        facetting the plot accordingly. *Hint: This is a hard one! You may want 
+        to explore R's documentation for ggplot's `facet_grid`* (0.5 marks)
 
 4.  Create a new column that represents the square of the biomass.
     Display the three largest `squared_biomass` observations in
@@ -133,7 +138,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     and `species` and only observations between the years 2003 and 2008
     from the forest habitat. *Hint: Break this down into single criteria
     and add one at a time. You will be able to obtain the desired result
-    with five operations* (1 mark)
+    with five operations.* (1 mark)
 
 [^1]: Olofsson J, te Beest M, Ericson L (2013) Complex biotic
     interactions drive long-term vegetation dynamics in a subarctic
