@@ -16,7 +16,7 @@ Total lesson time: 2 hours
 - Dealing with unusual values ({{20-30}} min)
 - Dealing with missing values and multiple imputation ({{40-50}} min)
 
-#Introduction
+# Introduction
 Exploratory data analysis is the process of visualizing and transforming your data in a systematic way. It's goals are:
 
 1. Generate questions about your data.
@@ -27,7 +27,7 @@ Exploratory data analysis is the process of visualizing and transforming your da
 
 Even in cases where data analysis may seem straightforward, exploratory data analysis is important as it allows you to investigate the quality of your data. Data that doesn't meet expectations may need to be subjected to "data cleaning", using all the tools of exploratory data analysis - visualisation, transformation, and modelling. 
 
-#Setup
+# Setup
 Today we’ll combine what you’ve learned about dplyr and ggplot2 to interactively ask questions and answer them with data.
 ```{r}
 #install.packages("mice")  #please install this package!
@@ -40,14 +40,14 @@ download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") #i
 survey <- read_csv("survey.csv")
 ```
 
-#Questions
+# Questions
 Your goal during exploratory data analysis is to develop an understanding of your data. The easiest way to do this is to use questions as tools to guide your investigation. A common questions might be:
 
 1. What type of variation occurs within my variables?
 
 Variation is the tendency of the values of a variable to change from measurement to measurement. Every variable has its own pattern of variation, which can reveal interesting information. The best way to understand that pattern is to visualise the distribution of the variable’s values.
 
-#Visualizing Distributions
+# Visualizing Distributions
 How you visualise the distribution of a variable will depend on whether the variable is categorical or continuous. A variable is categorical if it can only take one of a small set of values. In R, categorical variables are usually saved as factors or character vectors. To examine the distribution of a categorical variable, use a bar chart:
 ```{r}
 # Note: diamonds is a dataset that comes along with loading the ggplot2 and/or tidyverse packages
@@ -92,7 +92,7 @@ ggplot(data = smaller, aes(x = carat, colour = cut)) +
 
 Now that you can visualise variation, what should you look for in your plots? And what type of follow-up questions should you ask?
 
-#Typical Values
+# Typical Values
 In both bar charts and histograms, tall bars show the common values of a variable, and shorter bars show less-common values. Places that do not have bars reveal values that were not seen in your data. To turn this information into useful questions, look for anything unexpected:
 
 1. Which values are the most common? Why?
@@ -128,7 +128,7 @@ ggplot(data = faithful, aes(x = eruptions)) +
   geom_histogram(binwidth = 0.25)
 ```
 
-#Unusual Values
+# Unusual Values
 Outliers are observations that are unusual; data points that don’t seem to fit the pattern. Sometimes outliers are data entry errors; other times outliers suggest important new science. When you have a lot of data, outliers are sometimes difficult to see in a histogram. For example, take the distribution of the y variable from the diamonds dataset. The only evidence of outliers is the unusually wide limits on the x-axis.
 ```{r}
 ggplot(diamonds, aes(x = y)) + 
@@ -157,11 +157,11 @@ The y variable measures one of the three dimensions of these diamonds, in mm. We
 
 It’s good practice to repeat your analysis with and without the unusual values. If they have minimal effect on the results, and you can’t figure out why they’re there, it’s reasonable to replace them with missing values, and move on. However, if they have a substantial effect on your results, you shouldn’t drop them without justification. You’ll need to figure out what caused them (e.g. a data entry error) and disclose that you removed them in your write-up.
 
-##Exercises
+## Exercises
 1. Explore the distribution of price. Do you discover anything unusual or surprising? (Hint: Carefully think about the binwidth and make sure you try a wide range of values.)
 2. Compare and contrast coord_cartesian() vs xlim() or ylim() when zooming in on a histogram. What happens if you leave binwidth unset? What happens if you try and zoom so only half a bar shows?
 
-#Unusual Values Continued
+# Unusual Values Continued
 If you’ve encountered unusual values in your dataset, and simply want to move on to the rest of your analysis, you have two options.
 
 Drop the entire row with the strange values:
@@ -180,7 +180,7 @@ diamonds2 <- diamonds %>%
   
 `ifelse()` has three arguments. The first argument test should be a logical vector. The result will contain the value of the second argument, yes, when test is TRUE, and the value of the third argument, no, when it is false. Alternatively to ifelse, use dplyr's `case_when()`. `case_when()` is particularly useful inside mutate when you want to create a new variable that relies on a complex combination of existing variables.
 
-#Outliers
+# Outliers
 We just learned a bit about checking for unusual values in your dataset, but there are several ways of dealing with outliers beyond replacing them with missing values. What are our other options and under what circumstances should we use them?
 
 1. Transform the data:
@@ -201,7 +201,7 @@ diamonds2 <- diamonds2 %>%
 #  View()
 ```
 
-#Missing Values
+# Missing Values
 Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. Missing data can occur for a variety of reasons. However, just because we have missed out on some data for a participant doesn’t mean that we have to ignore the data we do have (although it sometimes creates statistical difficulties). Nevertheless, we do need to tell R that a value is missing for a particular case.
 
 Like R, ggplot2 subscribes to the philosophy that missing values should never silently go missing. It’s not obvious where you should plot missing values, so ggplot2 doesn’t include them in the plot, but it does warn that they’ve been removed:
@@ -212,13 +212,13 @@ ggplot(data = diamonds2, aes(x = x, y = y)) +
 
 To suppress that warning, set `na.rm = TRUE`:
 
-##Exercises
+## Exercises
 1. What happens to missing values in a histogram? What happens to missing values in a bar chart? Why is there a difference?
 
 2. What does na.rm = TRUE do in mean() and sum()?
 
-##Methods for Handling Missing Data
-###In the past:
+## Methods for Handling Missing Data
+### In the past:
 * Listwise deletion (usually the default)
 * Mean imputaton
 
@@ -226,7 +226,7 @@ The choice of method to impute missing values largely influences the model’s p
 
 While some quick fixes such as mean-substitution may be fine in some cases, such simple approaches usually introduce bias into the data, for instance, applying mean substitution leaves the mean unchanged (which is desirable) but decreases variance, which may be undesirable.
 
-###Two cutting edge alternatives:
+### Two cutting edge alternatives:
 * Maxiumum likelihood
 * Multiple imputation
 
@@ -234,7 +234,7 @@ Both of these techniques rely on the assumption that your data are missing at ra
 
 In essence, multiple imputation uses information from other variables in your data to come up with plausible values.
 
-#Multiple Imputation
+# Multiple Imputation
 MICE (Multivariate Imputation via Chained Equations) is one of the most commonly used packages by R users. The MICE package in R helps you by imputing missing values with plausible data values. These plausible values are drawn from a distribution specifically designed for each missing datapoint.
 
 By default, linear regression is used to predict continuous missing values. Logistic regression is used for categorical missing values. Then, missing values will be replaced with predicted values.
@@ -309,7 +309,7 @@ OK, we've successfully imputed values for `hindfoot_length` and `weight` using m
 # mean(predicted)
 ```
 
-##Challenge
+## Challenge
 Let's add some NA's to the iris (native to R) dataset (copy the code below). Then use the MICE package to run multiple imputation on our new dataset. 
 ```{r}
 # iris2 <- iris
