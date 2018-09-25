@@ -268,9 +268,9 @@ Now let specify the methods for imputing the missing values. There are specific 
 init$meth
 ```
 
-The variables `hindfoot_length` and `weight` are already set to ppm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
+The variables `hindfoot_length` and `weight` are already set to pmm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
 ```{r}
-meth[c("hindfoot_length")]="ppm"
+meth[c("hindfoot_length")]="pmm"
 ```
 
 Now it is time to run the multiple (m=5; this is generally standard) imputation.
