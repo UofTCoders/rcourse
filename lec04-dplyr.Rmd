@@ -461,22 +461,12 @@ There is a big drop from 838 to 159, let's include only those with more than 800
 observations.
 
 ```{r}
-abundant_species <- surveys %>%
+surveys_abun_species <- surveys %>%
     filter(!is.na(hindfoot_length) & !is.na(weight)) %>%
     group_by(species) %>%
-    tally() %>%
-    arrange(desc(n)) %>%
-    filter(n > 800) %>% #
-    select(species)
-
-abundant_species
-```
-
-```{r}
-surveys_abun_species <- surveys %>%
-    filter(!is.na(hindfoot_length) &
-        !is.na(weight) &
-        species %in% abundant_species$species)
+    mutate(n = n()) %>% # add count value to each row
+    filter(n > 800) %>%
+    select(-n)
 
 surveys_abun_species
 ```
@@ -645,8 +635,7 @@ surveys_abun_species %>%
 
 It is possible to specify exactly which colors to use, to avoid those that are
 hard to distinguish. We can also change the thickness of the lines, and adjust
-the x labels so that they don't overlap. This will be discussed in detail in the
-data visualization lecture.
+the x labels so that they don't overlap. 
 
 ```{r}
 color_names <- c('black', 'orange')
