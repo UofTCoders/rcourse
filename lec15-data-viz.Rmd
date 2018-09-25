@@ -88,7 +88,7 @@ Colour Saturation   | Decrease | Increase
 
 ### Colour rules
 
-* Large background colours should be quiet, muted to let brighter colors stand out
+* Large background colours should be quiet, muted to let brighter colours stand out
 * To highlight some element of a figure, using a bright colour can be effective
 * However, if brightly colouring this aspect of your figure serves no purpose,
   leave it greyscale/plain
@@ -104,7 +104,7 @@ Colour Saturation   | Decrease | Increase
 
 ### More general resources on plotting
 
-* [Ten Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
+* [Ten Simple Rules for Better Figures](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
 * [Finding the Right Color Palettes for Data Visualizations](https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283)
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/)
 * [ggplot cheatsheet - very useful!](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
@@ -131,7 +131,7 @@ aesthetics that plots use are:
 * y position
 * size of elements
 * shape of elements
-* color of elements
+* colour of elements
 
 The elements in a plot are geometric shapes, like
 
@@ -157,8 +157,8 @@ Some of these geometries have their own particular aesthetics. For instance:
 
 * y minimum
 * y maximum
-* fill color
-* outline color
+* fill colour
+* outline colour
 
 **text**
 
@@ -314,7 +314,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
     apatheme()
 ```
 
-This is a [resource](http://ggplot2.tidyverse.org/reference/theme.html) on which
+This is a [resource](https://ggplot2.tidyverse.org/reference/theme.html) on which
 parts of the plot are controlled by different theme parameters when and if you
 create your own theme.
 
@@ -333,7 +333,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 ```
 
 As you can see, it is a bit cumbersome to create barplots of means with ggplot
-(you need to add `stat='summary', fun.y='mean'`). The default behavior of
+(you need to add `stat='summary', fun.y='mean'`). The default behaviour of
 `geom_bar` is to count observations instead of summarize them, which actually is
 a more appropriate use of a barplot for reasons that we will cover below.
 
@@ -393,8 +393,8 @@ central tendency, e.g. the mean, and error, e.g. the standard deviation or a
 confidence interval) are displayed, instead of showing all the individual data
 points. This can be highly misleading, since different underlying distributions
 can give rise to the same summary plot just as when we previously discussed that
-the different distributions from the datasaurus R-package can give rise to [the
-same linear regression coefficients](
+the different distributions from the `datasaurus` R-package can give rise to
+[the same linear regression coefficients](
 https://uoftcoders.github.io/rcourse/lec11-modelling.html#challenge17).
 We also have no idea of how many observations there are in each group. These
 shortcomings become evident when comparing the barplot to the underlying
@@ -406,7 +406,7 @@ Koyama's poster*](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/P
 Immediately, you can see that conclusions drawn from the barplot, such that A
 and B have the same outcome, are factually incorrect. The distribution in D is
 bimodal, so representing that with a mean would be like observing black and
-white birds and conclude that the average bird color is grey, it's nonsensical.
+white birds and conclude that the average bird colour is grey, it's nonsensical.
 If we would have planned our follow up experiments based on the barplot alone,
 we would have been setting ourselves up for failure! Always be sceptical when
 you see a barplot in a published paper, and think of how the underlying
@@ -466,10 +466,10 @@ communication and clarity of your message to?
 * [ggplot2 documentation](http://had.co.nz/ggplot2/)
 * [Book by Hadley Wickham](https://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
 * [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
-* [r graph gallery for inspiration (not just limited to ggplot2 graphs)](https://www.r-graph-gallery.com/all-graphs/)
+* [R graph gallery for inspiration (not just limited to ggplot2 graphs)](https://www.r-graph-gallery.com/all-graphs/)
 
 *Parts of this lesson material were taken and modified from [Software
 Carpentry](https://software-carpentry.org) under their CC-BY copyright license.
 See their [lesson
-page](http://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the
+page](https://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/) for the
 original source.*

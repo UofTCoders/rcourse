@@ -43,7 +43,7 @@ All course information is accessible [on its own website](https://uoftcoders.git
     - Excellent open access resource for R.
 - [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/), RStudio, 2017
     - As good as it sounds, great quick reference.
-- [R for ecological data science](http://www.datacarpentry.org/R-ecology-lesson/index.html)
+- [R for ecological data science](https://datacarpentry.org/R-ecology-lesson/index.html)
     - An inspiration for our lectures.
 
 ## Course learning outcomes

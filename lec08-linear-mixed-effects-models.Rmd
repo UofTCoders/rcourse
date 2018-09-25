@@ -53,9 +53,9 @@ Throughout the first part of this lecture, we will be making use of the RIKZ dat
 
 1. **What is the influence of NAP on species richness?** 
 
-A diagramatic representation of the dataset can be seen below (Modified from Zuur *et al.* (2009), Chapter 5).
+A diagrammatic representation of the dataset can be seen below (Modified from Zuur *et al.* (2009), Chapter 5).
 
-![**Figure 1**: Digramatic representation of the RIKZ dataset](image/RIKZ_data.png)
+![**Figure 1**: Diagrammatic representation of the RIKZ dataset](image/RIKZ_data.png)
 
 Let's start by loading and examining the data. 
 
@@ -71,7 +71,7 @@ str(rikz_data)
 head(rikz_data)
 ```
 
-We can see that the data contains 45 rows (observations). As expected, these observations were taken across 9 beaches, each with 5 sites. We have encoded 'Beach' as a factor, which will facilitate plotting and its use as a random effect downstream. Let's go ahead and perform a linear regresion to examine the relationship between species richness and NAP, pooling data across all beaches
+We can see that the data contains 45 rows (observations). As expected, these observations were taken across 9 beaches, each with 5 sites. We have encoded 'Beach' as a factor, which will facilitate plotting and its use as a random effect downstream. Let's go ahead and perform a linear regression to examine the relationship between species richness and NAP, pooling data across all beaches
 
 ## Standard linear regression
 
@@ -84,7 +84,7 @@ summary(basic.lm)
 From the model output above, it looks like NAP is significantly, negatively (Estimate < 0) associated with species richness. Let's plot this relationship to see what it looks like.
 
 ```{r Plot Richness against NAP, message=FALSE}
-# Plot relationsip from above model
+# Plot relationship from above model
 library(ggplot2)
 ggplot(rikz_data, aes(x = NAP, y = Richness)) +
     geom_point() +
@@ -92,7 +92,7 @@ ggplot(rikz_data, aes(x = NAP, y = Richness)) +
     theme_classic()
 ```
 
-However, before we trust this result, we should confirm that the assumptions of the linear regression are met. We can plot the residuals against the fitted values (homogenetity and independence) and a QQ-plot (normality). Thankfully, R's base plotting function does all of this work for us. 
+However, before we trust this result, we should confirm that the assumptions of the linear regression are met. We can plot the residuals against the fitted values (homogeneity and independence) and a QQ-plot (normality). Thankfully, R's base plotting function does all of this work for us. 
 
 ```{r Check assumptions}
 # Check assumptions.
@@ -103,13 +103,13 @@ plot(basic.lm)
 
 The first and third panels suggest that the homogeneity assumption is violated (increasing variance in the residuals with increasing fitted values). Similarly, panel 2 suggests non-normality (points falling off of the dotted line). A third-root transformation of the response variable (i.e. Richness) seems to alleviate both of these problems. 
 
-- **Tip: **Right skewed response variables can be normalized using root transformations (e.g. square root, log, third-root, etc.), with greater roots required for increasingly right-skewed data. Left skewed response variables can be normalized with power transformations (e.g. squared, 3rd power, etd.)
+- **Tip: **Right skewed response variables can be normalized using root transformations (e.g. square root, log, third-root, etc.), with greater roots required for increasingly right-skewed data. Left skewed response variables can be normalized with power transformations (e.g. squared, 3rd power, etc.)
  
-Nonethless, for the analyses in this section, we will ignore violations of these assumtions for the purpose of better illustrating mixed-effects modelling strategies on untransformed data. In fact, these data violate another, potentially more problematic assumption, namely, the observations are not independent. 
+Nonetheless, for the analyses in this section, we will ignore violations of these assumptions for the purpose of better illustrating mixed-effects modelling strategies on untransformed data. In fact, these data violate another, potentially more problematic assumption, namely, the observations are not independent. 
 
 ## Non-independence of observations
 
-Remember, the species richness data come from multiple sites within multiple beaches. While each beach may be independent, sites within a beach are likely to have similar species richness due simply to their proximity within the same beach. In other words, obervations among sites within a beach are **not independent**. Another way of saying this is that the data are **nested**. Nesting in this sense is a product of the experimental design (i.e. we chose to sample 5 sites within each beach) and not necessarily of the data itself. Other types of nested data include: sampling the same individual pre- and post-treatment or sampling them multiple times (i.e. repeated measures) or sampling multiple tissues from the same individuals. We can visualize the non-independence of observation within the same beach by producing a figure similar to the one above but clustered by beach (each beach is a different colour).
+Remember, the species richness data come from multiple sites within multiple beaches. While each beach may be independent, sites within a beach are likely to have similar species richness due simply to their proximity within the same beach. In other words, observations among sites within a beach are **not independent**. Another way of saying this is that the data are **nested**. Nesting in this sense is a product of the experimental design (i.e. we chose to sample 5 sites within each beach) and not necessarily of the data itself. Other types of nested data include: sampling the same individual pre- and post-treatment or sampling them multiple times (i.e. repeated measures) or sampling multiple tissues from the same individuals. We can visualize the non-independence of observation within the same beach by producing a figure similar to the one above but clustered by beach (each beach is a different colour).
 
 ```{r Richness against NAP, message=FALSE}
 
@@ -118,7 +118,7 @@ library(plyr)
 # Function to find polygons
 find_hull <- function(df) df[chull(df$Richness, df$NAP), ] 
 
-# Itentify polygons in data
+# Identify polygons in data
 hulls <- ddply(rikz_data, "Beach", find_hull) 
 
 # Plot
@@ -206,7 +206,7 @@ ggplot(rikz_data, aes(x = NAP, y = Richness, colour = Beach)) +
     scale_colour_brewer(palette="Set1")
 ```
 
-The thick black line corresponds to the fitted values associated with the fixed-effect component of the model (i.e. `6.58 x -2.58(x)`). The thin coloured lines correspond to the fitted values estimated for each beach. As you can see, they all have separate intercepts, as expected. As the estiamted variance of the random effect increases, these lines would become more spread around the thick black line. If the variance was 0, all the coloured lines would coincide with the thick black line. 
+The thick black line corresponds to the fitted values associated with the fixed-effect component of the model (i.e. `6.58 x -2.58(x)`). The thin coloured lines correspond to the fitted values estimated for each beach. As you can see, they all have separate intercepts, as expected. As the estimated variance of the random effect increases, these lines would become more spread around the thick black line. If the variance was 0, all the coloured lines would coincide with the thick black line. 
 
 ### Random intercept-slope model
 
@@ -218,7 +218,7 @@ mixed_model_IntSlope <- lmer(Richness ~ NAP + (1 + NAP|Beach), data = rikz_data,
 summary(mixed_model_IntSlope)
 ```
 
-The above model now allows both the intecept and slope of the relationship between Richness and NAP to vary across beaches. The only difference here is the additional variance component in the random effects, which estimates the variance in slopes across beaches. It also includes a `Cor` term, which estimates the correlation between the intercept and slope variances. At -1, this implies that beaches with larger intercepts also have more steeply negative slopes, as can be seen in the figure below. 
+The above model now allows both the intercept and slope of the relationship between Richness and NAP to vary across beaches. The only difference here is the additional variance component in the random effects, which estimates the variance in slopes across beaches. It also includes a `Cor` term, which estimates the correlation between the intercept and slope variances. At -1, this implies that beaches with larger intercepts also have more steeply negative slopes, as can be seen in the figure below. 
 
 ```{r Random intercept-slope fitted values}
 rikz_data$fit_IntSlope <- predict(mixed_model_IntSlope)
@@ -242,19 +242,19 @@ mixed_model_NoFix <- lmer(Richness ~ 1 + (1|Beach), data = rikz_data, REML = TRU
 summary(mixed_model_NoFix)
 ```
 
-Now that we have specified these three different models, how do we know which to choose? Afterall, they all provide slightly different estimates for the effects of NAP (if NAP is even included) and P-values. We will come back to this question in Lecture 11 when discussing model selection. 
+Now that we have specified these three different models, how do we know which to choose? After all, they all provide slightly different estimates for the effects of NAP (if NAP is even included) and P-values. We will come back to this question in Lecture 11 when discussing model selection. 
 
 ## Deeply nested and crossed effects
 
-Have a look back at the original diagram showing the layout of the RIKZ data and the dataset itself. Ever site within each beach is associated with only one observation for each of the variables (e.g. Species richness). As such, we used mixed-effects modelling to acount for the variance among these 5 observations within each of the five beaches. But what about if each of those sites additionally included multiple samples (e.g. measurements of morphological traits of multiple individuals of a species), as in the diagram below?. We would the need to account for the variance both within sites and within beaches.
+Have a look back at the original diagram showing the layout of the RIKZ data and the dataset itself. Ever site within each beach is associated with only one observation for each of the variables (e.g. Species richness). As such, we used mixed-effects modelling to account for the variance among these 5 observations within each of the five beaches. But what about if each of those sites additionally included multiple samples (e.g. measurements of morphological traits of multiple individuals of a species), as in the diagram below?. We would the need to account for the variance both within sites and within beaches.
 
-![**Figure 2:** Diagramatic representation of what the RIKZ data would look like if it were more deeply nested (i.e. if each site had multiple samples taken.)](image/RIKZ_data_DeepNest.png)
+![**Figure 2:** Diagrammatic representation of what the RIKZ data would look like if it were more deeply nested (i.e. if each site had multiple samples taken.)](image/RIKZ_data_DeepNest.png)
 
-Thankfully, `lmer` allows us to do this quite easily. To account for variation within sites **and** within beaches, we would need to modify our existing random effect term. We would write this as `(1|Beach/Site)`, which means "Site nested within beach". This expands to — and can also be written as — `(1|Beach) + (1|Beach:Site)`. Thus, we are modelling a separate intercept for every beach and for every site within beach. I should pause for a moment here and say that the 'Site 1' from 'Beach 1' is **not** the same as 'Site 1' from 'Beach 2' and this was true of the original data as well. These sites are distinct; despite carrying the same label, they are occuring on distinct beaches and are thus not the same site. This is what makes the data nested.
+Thankfully, `lmer` allows us to do this quite easily. To account for variation within sites **and** within beaches, we would need to modify our existing random effect term. We would write this as `(1|Beach/Site)`, which means "Site nested within beach". This expands to — and can also be written as — `(1|Beach) + (1|Beach:Site)`. Thus, we are modelling a separate intercept for every beach and for every site within beach. I should pause for a moment here and say that the 'Site 1' from 'Beach 1' is **not** the same as 'Site 1' from 'Beach 2' and this was true of the original data as well. These sites are distinct; despite carrying the same label, they are occurring on distinct beaches and are thus not the same site. This is what makes the data nested.
  
 An alternative design to this would be **crossed effects**, in which any site could be observed on any beach. If all sites were observed on all beaches, this would be a **fully crossed effect** whereas if some sites were observed on only some beaches, this would be a **partially crossed effect**. Crossed effects are shown in the diagram below. This may sound confusing. The easiest way to think about it is that if the data are not nested, they are crossed. 
 
-![**Figure 3:** Diagramatic representation of what the RIKZ dataset would look like if it were fully crossed (i.e. if every site occured on every beach)](image/RIKZ_data_Crossed.png)
+![**Figure 3:** Diagrammatic representation of what the RIKZ dataset would look like if it were fully crossed (i.e. if every site occurred on every beach)](image/RIKZ_data_Crossed.png)
 
 I will illustrate both deeply nested and crossed random effects in a single model using data from Fitzpatrick *et al.* (In review). The authors were interested in understanding whether soil microbes can help plants cope with stress imposed by drought and how this can influence plant evolution. To do this, Fitzpatrick *et al.* grew 5 plants from each of 44 *Arabidopsis thaliana* accessions in each combination of the following treatments: 
 
@@ -263,7 +263,7 @@ I will illustrate both deeply nested and crossed random effects in a single mode
 3. Drought and live soil
 4. Drought and sterile soil
 
-The experiment took place inside of growth chambers at the University of Toronto, where plants were randomly assigned into trays, which were then randomly assigned onto racks in the growth chamber. Thus, plants only occurs within one tray and each tray only occurs within one rack (tray is nested within rack). Given that plants within a tray could be more similar to one another than plants from another tray (i.e. tray effect) and the same is true for racks, this non-independence needs to be accounted for. However, every accession occured on every rack (i.e. crossed effect) and individual plants from an accession are likely to be more similar to other plants from that accession than to plants from another accession. Again, this non-independence needs to be accounted for. The authors tracked flowering date and counted the number of fruit produced by each plant (n = 879) at the end of the experiment. The code below provides a useful way of examining the data to assess whether terms are nested or crossed and then fits a mixed-effects model to the Fitzpatrick *et al.* data. The question we are interested in here is: **Do soil microbes, drought, or their interaction influence the number of fruit produced by _A. thaliana_ plants?**
+The experiment took place inside of growth chambers at the University of Toronto, where plants were randomly assigned into trays, which were then randomly assigned onto racks in the growth chamber. Thus, plants only occurs within one tray and each tray only occurs within one rack (tray is nested within rack). Given that plants within a tray could be more similar to one another than plants from another tray (i.e. tray effect) and the same is true for racks, this non-independence needs to be accounted for. However, every accession occurred on every rack (i.e. crossed effect) and individual plants from an accession are likely to be more similar to other plants from that accession than to plants from another accession. Again, this non-independence needs to be accounted for. The authors tracked flowering date and counted the number of fruit produced by each plant (n = 879) at the end of the experiment. The code below provides a useful way of examining the data to assess whether terms are nested or crossed and then fits a mixed-effects model to the Fitzpatrick *et al.* data. The question we are interested in here is: **Do soil microbes, drought, or their interaction influence the number of fruit produced by _A. thaliana_ plants?**
 
 ```{r Fitzpatrick 2018 data}
 # Load in and examine data
@@ -299,22 +299,22 @@ Fitz_mod <- lmer(fruit ~ water + microbe + water:microbe + (1|rack/tray) + (1|ra
 summary(Fitz_mod)
 ```
 
-Notice we are now estimating 3 random-effect variance components. First, we are estimating the variance among accessions, which explains the most residual variance among the random effects (`(72.510 / 116.808) * 100 = 62%`). We then estimate the variance between trays, followed bay the variance between racks (which has only a minor effect). From the fixed effects, we see that the watering treatment had a significant effect on the number of fruit produced (main effect of waterW), although its effect depended on the presence of microbes (waterW:microbeS interaction). While we will not go into the details of these results here, this example serves to illustrate how nested and crossed random effects are encoded in linear-mixed effects models. 
+Notice we are now estimating 3 random-effect variance components. First, we are estimating the variance among accessions, which explains the most residual variance among the random effects (`(72.510 / 116.808) * 100 = 62%`). We then estimate the variance between trays, followed by the variance between racks (which has only a minor effect). From the fixed effects, we see that the watering treatment had a significant effect on the number of fruit produced (main effect of `water`), although its effect depended on the presence of microbes (`water:microbe` interaction). While we will not go into the details of these results here, this example serves to illustrate how nested and crossed random effects are encoded in linear-mixed effects models. 
 
 ## Additional considerations
 
 **Fixed vs. random effects**
 
-* Fixed effects are the things you care about and want to estimate. You likely chose the factor levels for a speciic reason or measured the variable because you are interested in the relationship it has to your response variable. 
-* Random effects can  be variables that were opportunistically measured whose variation needs to be accoundted for but that you are not necessarily interested in (e.g. spatial block in a large experiment). The levels of the random effect are likely a random subset of all possible levels (although there should be at least 5). However, if the experimental design includes nesting or non-independence of any kind, this needs to be accounted for to avoid pseudoreplication.
+* Fixed effects are the things you care about and want to estimate. You likely chose the factor levels for a specific reason or measured the variable because you are interested in the relationship it has to your response variable. 
+* Random effects can  be variables that were opportunistically measured whose variation needs to be accounted for but that you are not necessarily interested in (e.g. spatial block in a large experiment). The levels of the random effect are likely a random subset of all possible levels (although there should be at least 5). However, if the experimental design includes nesting or non-independence of any kind, this needs to be accounted for to avoid pseudoreplication.
     
 **REML or ML**
 
-The math behind maximum likelihood (ML) and restricted maximum likelihood (REML) is beyond this course. Suffice it to say that if your interested in accurately estimating the random effects, you should fit the model with REML whereas if you're interested in estimating the fixed effects, you should fit the model with ML. Given that we are often most interested in the fixed effects, ML is usually the most approriate (but see Lecture 11: model selection). The difference in the estimates obtained by ML and REML increases as the number of parameters in the model increases. 
+The math behind maximum likelihood (ML) and restricted maximum likelihood (REML) is beyond this course. Suffice it to say that if your interested in accurately estimating the random effects, you should fit the model with REML whereas if you're interested in estimating the fixed effects, you should fit the model with ML. Given that we are often most interested in the fixed effects, ML is usually the most appropriate (but see Lecture 11: model selection). The difference in the estimates obtained by ML and REML increases as the number of parameters in the model increases. 
 
 **Other models**
 
-Mixed-effects models are very powerfuly when correctly applied. For example, they allow modelling of non-linear relationsips (e.g. GAM models), modelling separate variances across factor levels to account for heterogeneity of variance, fitting alternative error structures to accound for temporal and spatial non-independence, etc. This lecture covered the type of mixed-effects model that is most often encountered by ecologists and evolutionary biologists (at least in my experience). Nonetheless, if you find yourself needing something more, I'll refer you to the reading list below. 
+Mixed-effects models are very powerfully when correctly applied. For example, they allow modelling of non-linear relationships (e.g. GAM models), modelling separate variances across factor levels to account for heterogeneity of variance, fitting alternative error structures to account for temporal and spatial non-independence, etc. This lecture covered the type of mixed-effects model that is most often encountered by ecologists and evolutionary biologists (at least in my experience). Nonetheless, if you find yourself needing something more, I'll refer you to the reading list below. 
 
 ## Additional reading
 
@@ -323,11 +323,3 @@ Mixed-effects models are very powerfuly when correctly applied. For example, the
 3. [Crossed vs. Nested random effects](https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified)
 4. [Fixed vs. Random effects](https://stats.stackexchange.com/questions/4700/what-is-the-difference-between-fixed-effect-random-effect-and-mixed-effect-mode)
 5. [ML vs. REML](https://stats.stackexchange.com/questions/41123/reml-vs-ml-stepaic)
-
-
-
-
-
-
-
-

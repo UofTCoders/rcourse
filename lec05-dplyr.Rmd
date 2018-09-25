@@ -515,5 +515,6 @@ plant_biomass %>%
 
 
 *Parts of this lesson material were taken and modified from [Data
-Carpentry](http://datacarpentry.org) under their CC-BY copyright license. See
-their [lesson page](http://www.datacarpentry.org/R-ecology-lesson/03-dplyr.html) for the original source.*
+Carpentry](https://datacarpentry.org) under their CC-BY copyright license. See
+their [lesson page](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html)
+for the original source.*

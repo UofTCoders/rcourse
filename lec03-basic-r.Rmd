@@ -30,12 +30,12 @@ species abundance in the Chihuahuan desert ecosystem near Portal, Arizona, USA.
 This study includes observations of plants, ants, and rodents from 1977 - 2002,
 and has been used in over 100 publications. More information is available in
 [the abstract of this paper from 2009](
-http://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full). There are several
+https://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full). There are several
 datasets available related to this study, and we will be working with datasets
 that have been preprocessed by the [Data
 Carpentry](https://www.datacarpentry.org) to facilitate teaching. These are made
 available online as _The Portal Project Teaching Database_, both at the [Data
-Carpentry website](http://www.datacarpentry.org/ecology-workshop/data/), and on
+Carpentry website](https://datacarpentry.org/ecology-workshop/data/), and on
 [Figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459/6).
 Figshare is a great place to publish data, code, figures, and more openly to
 make them available for other researchers and to communicate findings that are
@@ -66,7 +66,7 @@ holds information for a single animal, and the columns represent:
 
 To read the data into R, we are going to use a function called `read_csv`. This
 function is contained in an R-package called
-[`readr`](http://readr.tidyverse.org/). R-packages are a bit like browser
+[`readr`](https://readr.tidyverse.org/). R-packages are a bit like browser
 extensions, they are not essential, but can provide nifty functionality. We will
 go through R-packages in general and which ones are good for data analyses in
 detail later in this lecture. Now, let's install `readr`:
@@ -257,8 +257,8 @@ the returned object is actually a vector. We will not go into detail about this,
 but since it is such common usage, it is good to be aware of this.
 
 ```{r}
-# We use `head()` since the output from vectors are not autmatically cut off and
-# we don't want to clutter the screen with all the `species_id` values
+# We use `head()` since the output from vectors are not automatically cut off
+# and we don't want to clutter the screen with all the `species_id` values
 head(surveys$species_id)          # Result is a vector
 ```
 
@@ -357,7 +357,7 @@ is great because you are able to work with much bigger datasets (100s of GB)
 than your computer could normally handle. We will not talk in detail about this
 in class, but there are great resources online to learn more (e.g. [this lecture
 from Data
-Carpentry](http://www.datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)).
+Carpentry](https://datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)).
 
 
 ### Selecting columns and filtering rows
