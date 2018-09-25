@@ -250,7 +250,7 @@ To impute the missing values, MICE package uses an algorithm in a such a way tha
 
 The code below will remove a variable as a predictor in imputing missing values, but will not stop MICE from imputing values for that variable itself.
 ```{r}
-predM[, c("record_id")]=0
+predM[, c("record_id")] <- 0
 ```
 
 By default mice() includes all the variables in the data; it is suggested that we use as many variables as possible. Do not exclude a variable as predictor from the imputation model if that variable is going be included in your final analysis model.
@@ -258,7 +258,7 @@ By default mice() includes all the variables in the data; it is suggested that w
 
 If you want to skip a variable from imputation itself use the code below. This variable will still be used for prediction. Let's exclude all the variables where we aren't missing data or where imputation isn't of interest:
 ```{r}
-meth[c("year", "day", "month", "plot_id", "species_id", "plot_type", "genus", "species", "taxa")]=""
+meth[c("year", "day", "month", "plot_id", "species_id", "plot_type", "genus", "species", "taxa")] <- ""
 ```
 
 Now let specify the methods for imputing the missing values. There are specific methods for continuous, binary and ordinal variables. We will now set different methods for each variable. You can add more than one variable in each method. The default for continuous data is pmm. pmm stands for predictive mean matching, the default method of `mice()` for imputation of continous incomplete variables; for each missing value, pmm *finds a set of observed values with the closest predicted mean as the missing one and imputes the missing values by a random draw from that set*. Therefore, pmm is restricted to the observed values, and might do fine even for categorical data (though not recommended).
@@ -270,13 +270,13 @@ init$meth
 
 The variables `hindfoot_length` and `weight` are already set to pmm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
 ```{r}
-meth[c("hindfoot_length")]="pmm"
+meth[c("hindfoot_length")] <- "pmm"
 ```
 
 Now it is time to run the multiple (m=5; this is generally standard) imputation.
 ```{r}
 set.seed(103)
-imputed = mice(survey, method=meth, predictorMatrix=predM, m=5)
+imputed <- mice(survey, method=meth, predictorMatrix=predM, m=5)
 ```
 
 Reminder:
