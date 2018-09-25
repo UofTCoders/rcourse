@@ -317,9 +317,3 @@ set.seed(10)
 iris2[sample(1:nrow(iris2), 20), "Sepal.Length"] <- NA
 iris2[sample(1:nrow(iris2), 20), "Petal.Length"] <- NA
 ```
-
-```{r, show=FALSE}
-unloadNamespace("mice")
-unloadNamespace("mitml")
-unloadNamespace("jomo")
-```
