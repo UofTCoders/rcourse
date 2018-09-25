@@ -14,7 +14,8 @@ Authors@R: c(
 Depends: R (>= 3.4.0)
 License: CC-BY
 Encoding: UTF-8
-Imports: rmarkdown,
+Imports: 
+    rmarkdown (>= 1.10.13),
     knitr,
     dplyr,
     tidyr,
@@ -33,3 +34,5 @@ Imports: rmarkdown,
     reshape2,
     EcoSimR,
     mice
+Remotes:  
+    rstudio/rmarkdown

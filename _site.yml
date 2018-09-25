@@ -3,6 +3,7 @@ output_dir: _site
 exclude:
 - DESCRIPTION
 - LICENSE
+new_session: true
 navbar:
   title: EEB313H1
   left:
