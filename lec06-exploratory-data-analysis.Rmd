@@ -29,7 +29,7 @@ Even in cases where data analysis may seem straightforward, exploratory data ana
 
 # Setup
 Today we’ll combine what you’ve learned about dplyr and ggplot2 to interactively ask questions and answer them with data.
-```{r}
+```{r message=FALSE, warning=FALSE}
 #install.packages("mice")  #please install this package!
 library(tidyverse)
 library(mice)
