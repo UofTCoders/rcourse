@@ -31,4 +31,5 @@ Imports: rmarkdown,
     lme4,
     lmerTest,
     reshape2,
-    EcoSimR
+    EcoSimR,
+    mice
