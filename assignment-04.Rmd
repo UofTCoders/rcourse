@@ -57,6 +57,6 @@ Use logistic regression to see if weight significantly predicts sex. Make a conc
 survey$sex <- as.factor(survey$sex)
 ```
 
-Hint: you need to make sure there are only two levels to this variable: ``"F"`` and ``"M"``. (0.5 marks)
+Hint: you need to make sure there are only two levels to this variable: `"F"` and `"M"`. (0.5 marks)
 
 
