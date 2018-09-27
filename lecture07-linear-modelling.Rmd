@@ -1,0 +1,180 @@
+---
+title: "Linear models and statistical modelling"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+## Lesson preamble
+
+> ### Lesson objectives
+> 
+> - Learn how to apply and interpret linear regression for a variety of data
+> - Understand probability and the importance of presenting confidence intervals
+> - Learn the importance of visualizing your data when doing any analyses or
+> statistics
+> 
+> ### Lesson outline
+> 
+> - Basic descriptive and inferential statistics (20 min)
+> - Generalized linear models (50-60 min)
+>     - Linear regression
+>     - ANOVA
+>     - Logistic regression
+>
+
+##Setup
+```{r}
+library(tidyverse)
+# Have the following packages installed and loaded:
+# install.packages("car")
+# install.packages("psych")
+# install.packages("multcomp")
+library(car)
+library(psych)
+library(multcomp)
+
+# If you need to re-download the survey:
+download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
+survey <- read_csv("survey.csv")
+survey %>% mutate_if(is.character, as.factor) -> survey #uses dplyr function to change all character vectors to factors
+```
+
+## Statistics and probability
+Theoretical models are powerful tools for explaining and understanding the world.
+However, they are limited in that the real-world often doesn't perfectly fit
+these models. The real world is messy and noisy. We can't always blindly trust our data
+as there are inherent biases and errors in it. Measuring it, collecting it,
+recording it, and inputting it are some of the possible sources of error and
+bias.  We use statistics and probability to determine whether the way we
+understand and conceptualize the world (as models) matches reality (even with
+the error and bias).
+
+A reason we use statistical methods in R compared to writing up the formulas and
+equations ourselves is that we can focus on answering questions without worrying
+about whether we are doing the math or computation wrong. This is of course
+dependent on the type of research questions you may be interested in (e.g. for
+more theoretical questions, doing the math and computation yourself is probably
+a goal!) and on the type of data you are using/collecting. There is a lot of
+complexity that has already been taken care of in the available R packages and
+functions. For example, the function `lm` that we will use in this lesson uses the ordinary least squares (OLS) method, which is a common method for determining fit for linear models. That way, you can answer your research questions and not worry too much about the exact math involved and instead worry about the specifics of your field (e.g. Are you measuring the right thing? Are you collecting the right data? Are you asking the right questions? Is there an ecological or biological aspect you are missing in your analysis?)
+
+## Descriptive statistics
+### Frequencies with ``table()``:
+The ``table()`` function displays counts of identical observations for either a single data vector or a dataframe.
+```{r}
+#table
+table(survey$genus)
+#cross tabulate
+#note: first variable is set as the rows
+table(survey$genus, survey$taxa)
+```
+
+### ``describe()`` from the ``psych`` package:
+``describe()`` provides item name, item number, nvalid, mean, sd, median, mad (median absolute deviation from the median), min, max, skew, kurtosis, se.
+```{r}
+describe(survey$hindfoot_length)
+```
+
+### ``describeBy()`` from the ``psych`` package:
+``describeBy()`` is simple way of generating summary statistics by grouping variable.
+
+```{r}
+describeBy(survey$hindfoot_length, survey$sex) #summary variable is the first argument, grouping variable is the second argument
+```
+
+## Inferential statistics
+### One-sample t-test:
+Compare single set of scores (sample) to a population score.
+```{r}
+t.test(survey$weight, mu=40)
+```
+
+### Two sample t-test:
+Compare two independent sets of scores to each other.
+```{r}
+#one way to compare groups:
+#t.test(object1, object1)
+#or use sex as the grouping variable:
+t.test(survey$weight~survey$sex) #note (data~grouping variable) format
+```
+
+### Paired samples t-test:
+Compare two matched sets (e.g., pre- and post-) of scores to each other.
+```{r}
+#t.test(object1, object1, paired=TRUE)
+```
+
+### Correlations:
+Bivariate correlation (``r``) gives us the strength and direction of relationship between two variables (linear). Say we find that the correlation ($r$) between hindfoot length and weight is $r$ = .609. This means that .6092 = .371 of the variance in $y$ (hindfoot length) is common to the variance in $x$ (weight). Alternatively, we can say that these two variables share 37.1% of the variance in common. In the case of the Pearson correlation, this will be true whether we consider weight or hindfoot length to be the dependent variable. 
+```{r}
+cor.test(survey$weight, survey$hindfoot_length)
+```
+
+### General linear model (i.e., with a normally-distributed dependent variable):
+A version of GLM that uses continuous $y$ values is called linear regression, which I'm going to focus on. The formula for linear regression (or GLM in general) is:
+
+$$ Y = \alpha + X\beta + \varepsilon $$
+
+Or, a simplified, alphabetized version is:
+
+$$ y = a + Xb + e $$
+
+Where $a$ is the intercept (where the line crosses the vertical, i.e. y, axis of the graph), $X$ is the predictor variable, $b$ is the slope/coefficient, and $e$ is the error term.
+
+We construct these regression models for several reasons. Sometimes we want to infer how some variables ($x$) cause or influence another variable ($y$). Or maybe we know that $y$ has a lot of error in the measurement or is difficult to measure, so we want to derive a formula in order to predict $y$ based on more accurately measured variables. In R we can run linear regression either
+using `lm` or using `glm()`. `lm()` assumes a Gaussian (normal) distribution of your data. On the other hand, when you use ``glm()`` in R, you can specifiy the data's distribution with the parameter ``model =``. This allows you to construct a linear model when your data don't follow a Gaussian distribution.
+
+Regression requires a predictor (independent) variable and a predicted (dependent) variable. Changing which variable is the predictor/predicted gives you a different regression line with a different regression equation. The function we are going to use today, ``lm``, uses the OLS method by default, as mentioned above. The least squares line is the line chosen by ``lm`` to fit your data. The goal of OLS is to choose a line that minimizes prediction error. With any other line, errors of prediction would be greater. Note, the best fitting model given your data (i.e. OLS) does 
+*not* equal the best model period. We must pay attention to fit statistics like R2, the amount (%) of variance in the outcome explained by our predictor (i.e., model), to determine how well our model is doing.
+
+So how do we use these functions? In R, dependent variables are predicted by a tilde $~$.
+The formula to regress $y$ on $x$ is ``y ~ x``:
+```{r}
+result <- lm(weight~sex, data=survey)
+summary(result)
+```
+
+```{r}
+#multiple predictors with interaction terms
+result <- lm(weight~sex*hindfoot_length, data=survey)
+summary(result)
+```
+
+```{r}
+#use + for main effect of predictor only
+result <- lm(weight~sex + hindfoot_length, data=survey)
+summary(result)
+```
+
+### Analysis of Variance:
+ANOVA is simply a different way of evaluating explained variance in linear modelling. Anova is a special case of linear modelling You must always wrap the ``anova()`` function around a ``lm()`` function.
+```{r}
+anova(lm(weight~sex*genus, data=survey))
+```
+
+However, R uses type II sums of squares by default. ``Anova()`` from the ``car`` package can give you “Type III Sums of Squares”. This matters when you have more than one predictor (e.g. taxa x sex). Asking for type III sums of squares will match what you get from SPSS or SAS.
+```{r}
+result <- lm(weight~sex*genus, data=survey)
+Anova(result, type=3)
+```
+
+### Post hoc tests:
+R comes with a default pairwise t-test (``pairwise.t.test()``). However, ``multcomp`` offers more posthoc options than base R:
+```{r}
+result <- lm(weight~genus, data=survey)
+postHocs<-glht(result, linfct = mcp(genus = "Tukey"))
+#summary function gives results of multiple comparisons
+summary(postHocs)
+```
+
+### Logistic regression:
+Normally-distributed dependent variable assumption is violated in logistic regression, where we want to predict a binary outcome. So, you must use the ``glm()`` function rather than ``lm()``. We only have one binary variable in our dataset: sex.
+```{r}
+summary(glm(survey$sex ~ survey$weight*survey$hindfoot_length, family=binomial))
+```
+
+
+
+
+
