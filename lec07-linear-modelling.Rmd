@@ -20,8 +20,8 @@ author: 'Lindsay Coome'
 >     - Logistic regression
 >
 
-##Setup
-```{r}
+## Setup
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 # Have the following packages installed and loaded:
 # install.packages("car")
@@ -34,7 +34,10 @@ library(multcomp)
 # If you need to re-download the survey:
 download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
 survey <- read_csv("survey.csv")
-survey %>% mutate_if(is.character, as.factor) -> survey #uses dplyr function to change all character vectors to factors
+
+# uses dplyr function to change all character vectors to factors
+survey <- survey %>% 
+    mutate_if(is.character, as.factor) 
 ```
 
 ## Statistics and probability
