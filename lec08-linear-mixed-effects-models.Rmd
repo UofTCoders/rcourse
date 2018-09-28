@@ -61,7 +61,11 @@ Let's start by loading and examining the data.
 
 ```{r Load and examine data}
 # Load data
-rikz_data <- read.table("./data/rikz_data.txt",
+rikz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo/",
+                    "rcourse/master/data/rikz_data.txt")
+download.file(rikz_data, "rikz_data.txt")
+
+rikz_data <- read.table("rikz_data.txt",
                         head = TRUE,
                         sep = "\t")
 rikz_data$Beach <- as.factor(rikz_data$Beach)
@@ -272,7 +276,11 @@ The experiment took place inside of growth chambers at the University of Toronto
 
 ```{r Fitzpatrick 2018 data}
 # Load in and examine data
-Fitz_data <- read.csv("data/Fitzpatrick_2018.csv", header = TRUE)
+Fitz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo",
+                    "/rcourse/master/data/Fitzpatrick_2018.csv")
+download.file(Fitz_data, "Fitzpatrick_2018.csv")
+
+Fitz_data <- read.csv("Fitzpatrick_2018.csv", header = TRUE)
 
 # Let's change some columns to factors and remove rows with no fruit data
 Fitz_data <- Fitz_data %>%

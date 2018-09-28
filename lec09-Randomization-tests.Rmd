@@ -300,7 +300,11 @@ First, let's look at the type of data we need for this analysis.
 
 ```{r}
 # Load in example dataset
-comMatrix_example <- read.csv("data/lec09_CommunityMatrix_Example.csv")
+comMatrix_example <-paste0("https://raw.githubusercontent.com/",                                         "James-S-Santangelo/rcourse/master/data/",
+                           "lec09_CommunityMatrix_Example.csv")
+download.file(comMatrix_example, "lec09_CommunityMatrix_Example.csv")
+
+comMatrix_example <- read.csv("lec09_CommunityMatrix_Example.csv")
 head(comMatrix_example)
 
 # Sliced to return a numeric Matrix, which is required for 
@@ -315,7 +319,11 @@ Let's read in some real data before proceeding. The data are from the [National 
 
 ```{r}
 # Load in NEON data
-neon_data <- read.csv("data/NEON_PlantPA_HARV_201707.csv")
+neon_data <- paste0("https://raw.githubusercontent.com/",
+                    "James-S-Santangelo/rcourse/master/data/",
+                    "NEON_PlantPA_HARV_201707.csv")
+download.file(neon_data, "NEON_PlantPA_HARV_201707.csv")
+neon_data <- read.csv("NEON_PlantPA_HARV_201707.csv")
 str(neon_data)
 ```
 
