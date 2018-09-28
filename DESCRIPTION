@@ -33,6 +33,9 @@ Imports:
     lmerTest,
     reshape2,
     EcoSimR,
-    mice
-Remotes:  
+    mice,
+    car,
+    psych,
+    multcomp
+Remotes: 
     rstudio/rmarkdown
