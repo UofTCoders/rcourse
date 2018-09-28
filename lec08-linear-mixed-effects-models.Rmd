@@ -61,7 +61,11 @@ Let's start by loading and examining the data.
 
 ```{r Load and examine data}
 # Load data
-rikz_data <- read.table("./data/rikz_data.txt",
+rikz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo/",
+                    "rcourse/master/data/rikz_data.txt")
+download.file(rikz_data, "rikz_data.txt")
+
+rikz_data <- read.table("rikz_data.txt",
                         head = TRUE,
                         sep = "\t")
 rikz_data$Beach <- as.factor(rikz_data$Beach)
@@ -138,7 +142,8 @@ As you can see, observations from the same beach tend to cluster together. If th
 One approach to account for this non-independence would be to run a separate analysis for each beach, as shown in the figure and table below. 
 
 ```{r Plot beaches separately}
-# We could account for non-independence by running a separate analysis for each beach
+# We could account for non-independence by running a separate analysis 
+# for each beach
 ggplot(rikz_data, aes(x = NAP, y = Richness)) +
     geom_point() +
     geom_smooth(method = "lm") +
@@ -180,8 +185,10 @@ We do not want to pay the steep price of 8 degrees of freedom to include a Beach
 library(lme4)
 library(lmerTest)
 
-# Random intercept model with NAP as fixed effect and Beach as random effect
-mixed_model_IntOnly <- lmer(Richness ~ NAP + (1|Beach), data = rikz_data, REML = FALSE)
+# Random intercept model with NAP as fixed effect and Beach 
+# as random effect
+mixed_model_IntOnly <- lmer(Richness ~ NAP + (1|Beach), 
+                            data = rikz_data, REML = FALSE)
 summary(mixed_model_IntOnly)
 ```
 
@@ -214,7 +221,8 @@ The model above allows the intercept for each beach to vary around the populatio
 
 ```{r Random intercept-slope model}
 # Random intercept and slope model
-mixed_model_IntSlope <- lmer(Richness ~ NAP + (1 + NAP|Beach), data = rikz_data, REML = FALSE)
+mixed_model_IntSlope <- lmer(Richness ~ NAP + (1 + NAP|Beach), 
+                             data = rikz_data, REML = FALSE)
 summary(mixed_model_IntSlope)
 ```
 
@@ -238,7 +246,8 @@ ggplot(rikz_data, aes(x = NAP, y = Richness, colour = Beach)) +
 Note that it is not always necessary to specify fixed effects, in the same way that it is not always necessary to specify random effects. For example, we could run the following model.
 
 ```{r Random effects only model}
-mixed_model_NoFix <- lmer(Richness ~ 1 + (1|Beach), data = rikz_data, REML = TRUE)
+mixed_model_NoFix <- lmer(Richness ~ 1 + (1|Beach), 
+                          data = rikz_data, REML = TRUE)
 summary(mixed_model_NoFix)
 ```
 
@@ -267,7 +276,11 @@ The experiment took place inside of growth chambers at the University of Toronto
 
 ```{r Fitzpatrick 2018 data}
 # Load in and examine data
-Fitz_data <- read.csv("data/Fitzpatrick_2018.csv", header = TRUE)
+Fitz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo",
+                    "/rcourse/master/data/Fitzpatrick_2018.csv")
+download.file(Fitz_data, "Fitzpatrick_2018.csv")
+
+Fitz_data <- read.csv("Fitzpatrick_2018.csv", header = TRUE)
 
 # Let's change some columns to factors and remove rows with no fruit data
 Fitz_data <- Fitz_data %>%
@@ -295,7 +308,9 @@ In this case, we see that every accession occurs on every rack. In other words, 
 
 ```{r Fitzpatrick 2018 model}
 # Fit mixed-effects model
-Fitz_mod <- lmer(fruit ~ water + microbe + water:microbe + (1|rack/tray) + (1|rack:accession), data = Fitz_data)
+Fitz_mod <- lmer(fruit ~ water + microbe + water:microbe + 
+                     (1|rack/tray) + (1|rack:accession), 
+                 data = Fitz_data)
 summary(Fitz_mod)
 ```
 
