@@ -53,7 +53,7 @@ library(dplyr)
 library(EcoSimR)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 set.seed(42) # Ensure reproducibility of random results.
 mean <- 0
 sd <- 1
@@ -76,7 +76,7 @@ mean(x)
 
 Note how the mean from the above distribution (0.0325) is not exactly the same as the mean we specified (0). This should not be too surprising since we took *random* samples from a normal distribution and there is likely going to be variance within these samples. However, if we were to repeat this sampling many times (e.g. 10,000), each time plotting the mean of the distribution, we would expect the mean of this new distribution (i.e. the mean of the 10,000 means) to be much closer to what we specified. Let's try this. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 set.seed(43)
 mean <- 0
 sd <- 1
@@ -128,7 +128,7 @@ Now that we know how to simulate data, let's use this to demonstrate the logic u
 
 We will perform the above approach on some simulated data. Imagine we had ventured to South America and collected 10 male and 10 female Hercules beetles. We brought the beetles back to the lab and measure the width of their bodies at the largest point. The question we are interested in is: **Do male and female Hercules beetles differ in body width?** We will assume that body width is normally distributed (i.e. we will draw from a normal distribution). 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 set.seed(46)
 
 # Male data
@@ -143,41 +143,36 @@ df_females <- data.frame(
     sex = "Female"
 )
 
+# Let's combine the datasets
+df_body_widths <- rbind(df_males, df_females)
+
 # Let's look at the male and female data
-ggplot() +
+ggplot(df_body_widths, aes(x = width, fill = sex)) +
     ylab("Count") + xlab("Body width") +
-    geom_histogram(data = df_males, aes(x = width), 
-                   bins = 30, fill = "red", alpha = 0.4, 
-                   colour = "black") +
-    geom_histogram(data = df_females, aes(x = width), 
-                   bins = 30, fill = "blue", alpha = 0.4, 
-                   colour = "black") +
-    geom_vline(data = df_males, aes(xintercept = mean(width)), 
+    geom_histogram(bins = 30, colour = "black") +
+    geom_vline(data = filter(df_body_widths, sex == "Male"), aes(xintercept = mean(width)),
                size = 1, linetype = "dashed", colour = "red") +
-    geom_vline(data = df_females, aes(xintercept = mean(width)), 
+    geom_vline(data = filter(df_body_widths, sex == "Female"), aes(xintercept = mean(width)),
                size = 1, linetype = "dashed", colour = "blue") +
     theme_classic() 
-
-# Means for males and females
-cat("Males have a mean body width of", mean(df_males$width), "\n")
-cat("Females have a mean body width of", mean(df_females$width))
 ```
+
+Males have a mean body width of `r mean(df_males$width)` while females have a mean body width of `r mean(df_females$width)`
 
 We will use a randomization test to test if males and females differ in body width. If they do **not** differ, then each body width measurement in our dataframe should be equally likely to belong to a male or to a female. In other words, body width should independent of beetle sex. We can simulate this by randomly rearranging the body width values, effectively removing the effect of sex on body width, and then calculating a test statistic (e.g. _t_ statistic, difference in means). We can do this many times (e.g. 5,000) and ask how many times our observed test statistic falls outside the randomly generated distribution of test statistics. We will use the difference in mean body width as our test statistic so let's go ahead and calculate the _observed_ difference in body width between male and female beetles.
 
 ```{r}
 mean_males <- mean(df_males$width)
 mean_females <- mean(df_females$width)
-
 diff_means_obs <- mean_males - mean_females
-cat("The observed difference in mean body width between 
-    male and female Hercules beetles is", diff_means_obs)
 ```
+
+The observed difference in mean body width between male and female Hercules beetles is `r diff_means_obs`
 
 Traditionally, if we wanted to determine if there is a significant difference in means between two groups, we could use a **t-test**. Let's perform a t-test on these data so we could compare it to the results of the randomization test that we will perform. Note the `alternative = two.sided` argument passed to `t.test()`. Since we are interested in whether males and females differ in mean body length without reference to whether one sex is _specifically_ larger or smaller than the other, we are performing a two-sided hypothesis test. Realistically, males could either have larger or smaller body widths so a two-tailed test is appropriate here.
 
 ```{r}
-t.test(df_males$width, df_females$width, alternative = "two.sided")
+t.test(width ~ sex, data = df_body_widths, alternative = "two.sided")
 ```
 
 From the t-test above, we see that our t-statistic has a value of 2.49 and that males and females differ significantly in body width (_P_ < 0.05). From the means reported in the t-test, it looks like males have larger body widths than females (17.36 vs. 15.03). Let's now perform a randomization test. To get a better sense of what we're doing, let's first perform a single reshuffling of the data and look at the resulting distribution of the data. 
@@ -186,46 +181,36 @@ From the t-test above, we see that our t-statistic has a value of 2.49 and that 
 # Set seed for reproducible results
 set.seed(47)
 
-# Let's combine the male and female dataframes together
-data_combined <- full_join(df_males, df_females)
-
 # Randomly reshuffle the width column
-reshuffled <- data_combined
+reshuffled <- df_body_widths
 reshuffled$width <- sample(reshuffled$width, 
                            size = nrow(reshuffled), replace = FALSE)
 
 # View data to confirm that values have been reshuffle
-head(data_combined)
+head(df_body_widths)
 head(reshuffled)
 ```
 
 Note the differences in body width values between the original and reshuffled dataframes above.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Plot histograms of reshuffled data
-ggplot(reshuffled, aes(x = width)) +
+ggplot(reshuffled, aes(x = width, fill = sex)) +
     ylab("Count") + xlab("Body width") +
-    geom_histogram(data = reshuffled[reshuffled$sex == "Male",], 
-                   aes(x = width), bins = 30, fill = "red", 
-                   alpha = 0.4, colour = "black") +
-    geom_histogram(data = reshuffled[reshuffled$sex == "Female",], 
-                   aes(x = width), bins = 30, fill = "blue", 
-                   alpha = 0.4, colour = "black") +
-    geom_vline(data = reshuffled[reshuffled$sex == "Male",], 
-               aes(xintercept = mean(width)), size = 1, 
-               linetype = "dashed", colour = "red") +
-    geom_vline(data = reshuffled[reshuffled$sex == "Female",], 
-               aes(xintercept = mean(width)), size = 1, 
-               linetype = "dashed", colour = "blue") +
+    geom_histogram(bins = 30, colour = "black") +
+    geom_vline(data = filter(reshuffled, sex == "Male"), aes(xintercept = mean(width)), 
+               size = 1, linetype = "dashed", colour = "red") +
+    geom_vline(data = filter(reshuffled, sex == "Female"),aes(xintercept = mean(width)), 
+               size = 1, linetype = "dashed", colour = "blue") +
     theme_classic()
 
 # Let get the mean difference of this single simulation
 mean_males_sim1 <- mean(reshuffled[reshuffled$sex == "Male", "width"])
 mean_females_sim1 <- mean(reshuffled[reshuffled$sex == "Female", "width"])
 mean_diff_sim1 <- mean_males_sim1 - mean_females_sim1
-cat("The mean difference from a single reshuffling of the data is", 
-    mean_diff_sim1)
 ```
+
+The mean difference from a single reshuffling of the data is `r mean_diff_sim1`
 
 We can see that the mean difference from the simulated data is considerably different from the observed mean difference. This makes sense since the body width values were randomly assigned to males and females. Let's now do this 5,000 times, each time calculating the mean difference in body width.
 
@@ -241,7 +226,7 @@ nreps = 5000 # 5000 iterations
 for(i in 1:nreps){
     
     # Create temporary dataframe to permute so we don't modify the original
-    reshuffled <- data_combined 
+    reshuffled <- df_body_widths 
     
     # Permute the width column with the 'sample()' function. 
     reshuffled$width <- sample(reshuffled$width, size = nrow(reshuffled), 
@@ -287,8 +272,9 @@ abs_diff_means_obs <- abs(diff_means_obs)
 exceed_count <- length(abs_simulated_means[abs_simulated_means >= 
                                                abs_diff_means_obs])
 p_val <- exceed_count / nreps
-cat("The P-value from the randomization test is", p_val)
 ```
+
+The P-value from the randomization test is `r p_val`
 
 As we can see, the randomization test provides results that are largely consistent with the t-test. This is not surprising since we specifically sampled independent data from normal distributions with similar variances. In other words, our sampled data do not violate any of the assumptions of the t-test and in such a case the difference in means is by definition analogous to the _t_ statistic used in the t-test. There are some cases where randomization tests provide more accurate (or _exact_) P-values than parametric tests (e.g. small samples from skewed distributions) but even more diverse applications of randomization tests are found in ecology and evolutionary biology.
 
@@ -300,7 +286,8 @@ First, let's look at the type of data we need for this analysis.
 
 ```{r}
 # Load in example dataset
-comMatrix_example <-paste0("https://raw.githubusercontent.com/",                                         "James-S-Santangelo/rcourse/master/data/",
+comMatrix_example <-paste0("https://raw.githubusercontent.com/",
+                           "James-S-Santangelo/rcourse/master/data/",
                            "lec09_CommunityMatrix_Example.csv")
 download.file(comMatrix_example, "lec09_CommunityMatrix_Example.csv")
 
