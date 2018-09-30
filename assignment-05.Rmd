@@ -1,145 +1,269 @@
 ---
-title: 'Assignment 5: Population models in two dimensions (8 marks)'
+title: 'Assignment 5: Linear mixed-effects models and randomization tests (8 marks)'
 output:
     html_document:
         toc: false
 ---
 
 *To submit this assignment, upload the full document on blackboard,
-including the original questions, your code, and the output. Submit both
-your `.Rmd` source file and a knitted `.html` version of the same file.*
+including the original questions, your code, and the output. Submit
+you assignment as a knitted `.pdf` (prefered) or `.html` file.*
 
-*For questions that ask you to plot something by hand, indicate which
-assignment and question the plot is for and either include a photo or
-scan of it in the markdown document or hand in the hard copy.*
+**1.  Linear mixed-effects models (4 marks).**
 
-1.  Quantitatively analyzing a one-dimensional model (2 marks).
+Santangelo _et al._ (In press) were interested in understanding how plant defenses, herbivores,
+and pollinators influence the expression of plant floral traits (e.g. flower size). Their experiment
+had 3 treatments, each with 2 levels: Plant defense (2 levels: defended vs. undefended), herbivory
+(2 levels: reduced vs. ambient) and pollination (2 levels: open vs. supplemental). These treatments
+were fully crossed for a total of 8 treatment combinations. In each treatment combination, they grew 
+4 individuals from each of 25 plant genotypes for a total of 800 plants (8 treatment combinations x 
+25 genotypes x 4 individuals per genotype). Plants were grown in a common garden at the Koffler 
+Scientific Reserve (UofTs field research station) and 6 floral traits were measured on all plants 
+throughout the summer. We will analyze how the treatments influenced one of these traits in this 
+exercise. Run the code chunk below to download the data, which includes only a subset of the columns 
+from the full dataset:
+    
+```{r}
+plant_data <- read.csv("data/Santangelo_JEB_2018.csv", header = TRUE)
+str(plant_data)
+head(plant_data)
+```
 
-    Consider the differential equation $\frac{dx}{dt} = x(1-x)$ from
-    last week's assignment.
+You can see that the data contain 792 observations (i.e. plants, 8 died during the experiment). There are 50 
+genotypes across 3 treatments: Herbivory, Pollination, and HCN (i.e. hydrogen cyanide, a plant defense). There
+are 6 plant floral traits: Number of days to first flower, banner petal length, banner petal width, plant biomass, 
+number of flowers, and number of inflorescences. Finally, since plants that are closer in space in the common
+garden may have similar trait expression due to more similar environments, the authors included 6 spatial "blocks" to 
+account for this environmental variation (i.e. Plant from block A "share" an environment and those from block B
+"share" an environment, etc.). Also keep in mind that each treatment combination contains 4 individuals of each
+genotype, which are likely to have similar trait expression due simply to shared genetics.
+    
+(a) Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model examining how herbivores (`Herbivory`), 
+plant defenses (`HCN`) _and their interaction_ influences the total number of inflorescences (`Total.Inf`) produced by
+plants while accounting for variation due to spatial block and plant genotype (1 mark: 0.5 for correct fixed effects specification and 0.5 for correct random effects structure). You only need to specify the model for this part of the question.
 
-<!-- -->
+```{r include=FALSE}
+library(lme4)
+library(lmerTest)
+model <- lmer(Total.Inf ~ HCN*Herbivory + (1|Genotype) + (1|Block), data = plant_data)
+```
 
-(a) Find the fixed points (equilibrium values) of the system
-    (analytically, on paper) (0.5 marks).
+(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on the number of inflorescences? If so, which one? Based on your examination of the model output, how can you tell which level of the significant treatment resulted in higher of lower mean inflorescnece production? (1 mark).
+    
+```{r include=FALSE}
+summary(model)
+```
 
-(b) Use R to simulate this equation and plot $x$ vs. $t$ for
-    $0 \le t \le 10$. Plot trajectories for several different starting
-    values of $x$ (initial conditions) using `ggplot` and the `do`
-    function we used in class. Based on the long-time behaviour of the
-    system, which fixed point(s) are stable and which are unstable?
-    (1 mark)
+(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this king of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have inluded the formula to calculate the standard error of the mean below. (1 mark).
 
-(c) Analyze the stability of the fixed points on paper. Since this
-    system is one-dimensional, we only need a single derivative:
-    $\frac{\partial f(x)}{\partial x}$, where $f(x) = x(1-x)$. Calculate
-    this derivative, evaluate it at each of the fixed points, and use
-    the result to classify each point as stable or unstable (0.5 marks).
+$$ SE = \frac{sd}{\sqrt{n}}  $$
 
-<!-- -->
+```{r include=FALSE}
+library(ggplot2)
+library(dplyr)
 
-2.  The Lotka-Volterra competition model (6 marks).
+plant_data %>%
+    group_by(Herbivory) %>%
+    summarize(mean = mean(Total.Inf, na.rm = TRUE), 
+              sd = sd(Total.Inf, na.rm = TRUE), 
+              n = sum(!is.na(Total.Inf)), 
+              se = sd / sqrt(n)) %>%
+    ggplot(., aes(x = Herbivory, y = mean, shape = Herbivory)) +
+    geom_point(size = 3) +
+    geom_errorbar(aes(ymax = mean + se, ymin = mean - se), width = 0.2) +
+    ylab("Mean number of inflorescences") +
+    theme_classic()
+```
 
-    Consider the Lotka-Volterra competition model. Unlike the
-    predator-prey model considered last week, in this model the growth
-    rate of each species ($x$ and $y$) depends on the per-capita effect
-    the competing species have on each other, which can be thought of as
-    the amount of overlap in resource use. The amount of overlap for
-    each species is given by $\alpha_1$ and $\alpha_2$, respectively.
-    $\alpha_1$ and $\alpha_2$ don't need to be equal.
 
-    $$\frac{dx}{dt} = r_1 x \left(1-\frac{x+\alpha_1 y}{K_1}\right)$$
+(d) After accounting for the fixed effects, how much of the variation in total inflorescence production was explained by each of the random effects in the model? Show your work (0.5 marks). 
 
-    $$\frac{dy}{dt} = r_2 y \left(1-\frac{y+\alpha_2 x}{K_2}\right)$$
+```{r include=FALSE}
+# Students do not have to assign the variance components to objects
+# Inserting the raw values from the summary output into equations is fine.
+genotype_rand <- as.data.frame(VarCorr(model))[1, "vcov"]
+block_rand <- as.data.frame(VarCorr(model))[2, "vcov"] 
+resid_rand <- as.data.frame(VarCorr(model))[3, "vcov"] 
 
-    $r$ and $K$ are growth rates and carrying capacities, respectively.
+genotype_effect <- (genotype_rand / resid_rand) * 100
+block_effect <- (block_rand / resid_rand) * 100
 
-<!-- -->
+cat("Genotype explains", genotype_effect, "% of the variation in inflorescence production\n")
+cat("Spatial block explains", block_effect, "% of the variation in inflorescence production")
+```
 
-(a) Find the fixed points and nullclines of the system (analytically, on
-    paper). The fixed points can be found by setting $\frac{dx}{dt} = 0$
-    and $\frac{dy}{dt} = 0$ simultaneously, and the nullclines can be
-    found by setting each derivative to zero individually and solving
-    for $y$ as a function of $x$ in each case so that they can be
-    plotted on a $y$ vs. $x$ phase portrait (0.75 marks).
+(e) Suggest one ecological reason for the pattern observed in this exercise. (0.5 marks)
 
-(b) Use R to simulate these equations and plot $x$ and $y$ vs. $t$. Use
-    the symmetric case: $\alpha_1 = \alpha_2 = \alpha$, $K_1 = K_2 = K$,
-    and $r_1 = r_2 = r$. Choose $\alpha = 0.2, K = 50$, and $r = 1$.
-    Choose a starting value where $x$ is different from $y$
-    (0.75 marks).
+**2. Simulating data (2 marks)**
 
-(c) Create a phase portrait for this system in R using `phaseR`. Plot
-    the following:
-    -   all the fixed points.
-    -   the nullclines found in (a). Plot all the nullclines yourself
-        instead of using `nullcline` from `phaseR` --- `nullcline`
-        doesn't always plot all the nullclines correctly.
-    -   three to four trajectories (1 marks).
+(a) Generate a gamma distribution by randomly sampling 100 points from a distribution with shape parameter equal to 3.5 and rate parameter equal to 0.5. Plot this distribution. (0.5 mark) [**Hint:** `rgamma()`]. 
 
-(d) Analyze the stability of each fixed point using the same assumptions
-    and parameter values as in part (b). Calculate the four partial
-    derivatives needed for the Jacobian:
-    $\frac{\partial f(x,y)}{\partial x}$,
-    $\frac{\partial f(x,y)}{\partial y}$,
-    $\frac{\partial g(x,y)}{\partial x}$,
-    $\frac{\partial g(x,y)}{\partial y}$, where
-    $f(x) = r_1 x \left(1-\frac{x+\alpha_1 y}{K_1}\right)$ and
-    $f(y) = r_2 y \left(1-\frac{y+\alpha_2 x}{K_2}\right)$.
+```{r, include = FALSE}
+set.seed(42)
 
-    For example, for the fixed point $x^* = 0$, $y^* = K$ ($x^*$
-    notation indicates fixed point):
+shape <- 1.25
+rate <- 3.5
+n <- 100
+x <- rgamma(n, shape, rate)
 
-    ``` {.r}
-    # Fixed point
-    x_star <- 0;
-    y_star <- K;
-    ```
+hist(x)
+```
 
-    And we can use our solutions for the partial derivatives above,
-    plugging in the equilibrium values. For example, the partial
-    derivative of $f(x)$ with respect to x evaluated at the fixed point
-    above is:
+(b) Plot the distribution of sample means obtained by generating 1000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 1000 means, each from a different simulated gamma distribution. What do you notice about this distribution when conpared to the original distribution in (a)? Why would we expect this? (0.5 marks)
 
-    ``` {.r}
-    # Partial derivatives / elements of the Jacobian
-    df_dx <- r * (1 - (x_star + alpha * y_star) / K) - (1 / K) * r * x_star
-    ```
+```{r include = FALSE}
+set.seed(43)
 
-    Now create the Jacobian matrix and then calculate the eigenvalues:
+shape <- 1.25
+rate <- 3.5
+n <- 100
+x <- replicate(1000, mean(rgamma(n, shape, rate)))
 
-    ``` {.r}
-    J <- matrix(c(df_dx, df_dy, 
-                  dg_dx, dg_dy), 
-                ncol = 2, nrow = 2, 
-                byrow = TRUE)
+hist(x)
+```
 
-    e_vals <- eigen(J)$values
-    ```
+(c) In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. (1 mark).
 
-    For each point, give the eigenvalues and explain whether the fixed
-    point is stable or unstable. Will it oscillate? Explain why or why
-    not (1 marks).
+1. `x1` is an explanatory variable with _sequence_ from 21 to 40 with 1 unit intervals between each value (i.e. 20 values total).
+2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 50 and standard deviation equal to 4.3.
+3. the `y_intercept` is 17
+4. The beta associated with `x1` is 0.5.
+5. The beta associated with `x2` is 0.097`
+6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.4.
+7. `y` is a linear combination of `x1` and `x2`. There is no interaction between `x1` and `x2` in this model. Don't forget about the error. 
 
-(e) Simplify the fixed points of the system on paper in the case when
-    $\alpha_1 = \alpha_2 = \alpha$, $r_1 = r_2 = r$, and $K_1 \neq K_2$.
-    Create a plot in R showing $x^*$ vs. $\alpha$, $y^*$ vs $\alpha$,
-    and $x ^ * + y ^ *$ vs. $\alpha$ for \$ -1 &lt; \alpha &lt; 1.5\$
-    for the *non-trivial* fixed point where both $x^*$ and $y^*$ are
-    not zero. Note that $\alpha = -1$ and $\alpha = 1$ will give
-    infinity, so skip those two points when plotting. Label $K_1$,
-    $K_2$, and $K_1 + K_2$ on the y-axis. (2.5 marks total)
 
-    -   Thinking of $\alpha$ as the parameter that controls "overlap"
-        between the two competing species, what is the biological
-        meaning of $\alpha = 0$? (Hint: compare this fixed point to the
-        non-trivial fixed point from the logistic model: $N^* = K$.)
+```{r include = FALSE}
+set.seed(44)
 
-    -   What is the biological meaning of $0 < \alpha < 1$? What is the
-        biological meaning of $\alpha = 1$, and of $\alpha > 1$? (Hint:
-        what is the sum of the non-trivial fixed points $x^*$ and $y^*$
-        in each of these cases in terms of $K_1$ and $K_2$?)
+x1 <- seq(from = 21, to = 40, by = 1)
+x2 <- rnorm(n = 20, mean = 50, sd = 4.3)
 
-    -   What would happen to the system if $\alpha$ was negative? (Hint:
-        is "competition" still an appropriate name for the model if
-        $\alpha < 0$?)
+y_intercept <- 17
+b1 <- 0.5
+b2 <- 0.097
+
+error <- rnorm(x1, mean = 0, sd = 1.4)
+y <- y_intercept + b1*x1 + b2*x2 + error
+
+model <- lm(y ~ x1 + x2)
+summary(model)
+```
+
+**3. Randomization test (2 marks)**
+
+Run the code chunk below to load the data that will be used in this exercise.
+
+```{r}
+df <- read.csv("data/Assign05_Question3.csv")
+str(df)
+```
+
+(a) Generate a histogram showing the null distribution of the **difference in medians** between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed difference in medians as a dashed vertical line [**hint:** `median()`]
+
+```{r include = FALSE}
+set.seed(46)
+simulated_medians <- list()
+
+nreps = 5000 # 5000 iterations
+
+for(i in 1:nreps){
+    
+    # Create temporary dataframe to permute so we don't modify the original
+    reshuffled <- df 
+    
+    # Permute the width column with the 'sample()' function. 
+    reshuffled$x <- sample(reshuffled$x, size = nrow(reshuffled), 
+                           replace = FALSE)
+    
+    # Calculate the means for each sex
+    median_grp1 <- median(reshuffled[reshuffled$group == "One", "x"])
+    median_grp2 <- median(reshuffled[reshuffled$group == "Two", "x"])
+    
+    # Calculate to difference between simulated male and female body width 
+    # means
+    median_dif <- median_grp1 - median_grp2
+    
+    # Append simulated mean difference to list
+    simulated_medians[i] <- median_dif
+}    
+
+# Unlist simulated means list into numeric vector
+simulated_medians <- unlist(simulated_medians)
+
+median_1 <- median(x1)
+median_2 <- median(x2)
+diff_median_obs <- median_1 - median_2
+
+library(ggplot2)
+ggplot() +
+    ylab("Count") + xlab("Simulated median difference") +
+    geom_histogram(aes(x = simulated_medians), bins = 30, 
+                   fill = "grey", alpha = 0.4, colour = "black") +
+    geom_vline(xintercept = diff_median_obs, size = 1, 
+               linetype = "dashed", colour = "black") + 
+    theme_classic()
+```
+
+(b) Perform a permutation test testing whether the observed difference in medians between groups one and two is different than what would be expected by chance. Include a statement about the difference in medians between the two groups and be sure to include the P-value. (1 mark)
+
+
+```{r include = FALSE}
+abs_simulated_medians <- abs(simulated_medians)
+abs_diff_medians_obs <- abs(diff_median_obs)
+exceed_count <- length(abs_simulated_medians[abs_simulated_medians >= 
+                                               abs_diff_medians_obs])
+p_val <- exceed_count / nreps
+p_val
+```
+
+**4. Bonus: Bootsrapping (2 marks)** In lecture, I mentioned that randomization tests are frequently used to estimate the amount of variance surrounding a population parameter. This is often done using **bootstrapping**, in which samples are repeatedly sampled **with replacement** from the observed data to estimate the distribution of the population statitic, from which the variance (or other measure of spread) can be estimated. In this _bonus_ exercise, I ask you to estimate the 95% confidence intervals around the _beta coefficient_ for the effect of variable `x2` on `y` in the simulated regression from question 2.
+
+(a) Generate a histogram showing the distribution of beta coefficients estimated by re-running the linear model in question 2 with different values for variable `x2` obtained by resampling the original `x2` distribution with replacement. You should perform 5,000 simulations of the linear model, each time saving the beta coefficient for the effect of the variable `x2` on `y`. The `y_intercept`, variable `x1` and the `error` should remain unchanged during each iteration. A single iteration should look like the following: (1) Resample 20 values of variable `x2` with replacement. (2) Run linear model with `y` as a linear function of `x1` and the newly resampled `x2` as in question 2. (3) Extract beta coefficient for effect of `x2` on `y` from the linear model and add to list. Repeat 5,000 times. Plot the distribution of betas. [**hint:** You can get the coefficients from a linear model using `coef(summary(model))`. You'll have to figure out how to extract the relavent beta using this command] (1 mark)
+
+```{r include = FALSE}
+set.seed(47)
+betas <- list()
+
+nreps <- 5000
+
+for (i in 1:nreps){
+
+    x_sim <- sample(x2, size = length(x2), replace = TRUE)
+
+    y_intercept <- 17
+    b1 <- 0.5
+    b2 <- 0.097
+
+    error <- rnorm(x1, mean = 0, sd = 1.4)
+    y <- y_intercept + b1*x1 + b2*x_sim + error
+
+    model_sim <- lm(y ~ x1 + x_sim)
+    summary(model_sim)
+    betas[i] <- coef(summary(model_sim))[3,"Estimate"]
+}
+
+betas <- unlist(betas)
+hist(betas)
+```
+
+(b) Calculate the lower and upper counds of the 95% confidence intervals around the beta coefficient from the simulated regression in question 2. I have included the formula for the 95% confidence intervals below. (1 mark)
+
+
+$$ Lower \ 95\% \ CI \ bound = Observed\_beta - 1.96 \times SE  $$
+
+$$ Upper \ 95\% \ CI \ bound = Observed\_beta + 1.96 \times SE  $$
+
+The observed beta is the one from the multiple regression simulated in question 2. The standard error should be estimated from the distribution of possible betas obtained in question 4a. What is your interpretation of the 95% confidence interval. [**Hint:** [This page](http://www.stat.wisc.edu/~larget/stat302/chap3.pdf) may be helpful].
+
+```{r include = FALSE}
+observed_beta <- coef(summary(model))[3, "Estimate"]
+mean_betas <- mean(betas)
+se <- sd(betas) / sqrt(length(betas))
+ci_lower <- observed_beta - 1.96*se
+ci_upper <- observed_beta + 1.96*se
+
+ci_lower
+ci_upper
+```
+
