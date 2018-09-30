@@ -24,7 +24,7 @@ exercise. Run the code chunk below to download the data, which includes only a s
 from the full dataset:
     
 ```{r}
-plant_data <- read.csv("data/Santangelo_JEB_2018.csv", header = TRUE)
+plant_data <- readr::read_csv("data/Santangelo_JEB_2018.csv", header = TRUE)
 str(plant_data)
 head(plant_data)
 ```
@@ -54,7 +54,7 @@ model <- lmer(Total.Inf ~ HCN*Herbivory + (1|Genotype) + (1|Block), data = plant
 summary(model)
 ```
 
-(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this king of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have inluded the formula to calculate the standard error of the mean below. (1 mark).
+(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this kind of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have inluded the formula to calculate the standard error of the mean below. (1 mark).
 
 $$ SE = \frac{sd}{\sqrt{n}}  $$
 
@@ -155,7 +155,7 @@ summary(model)
 Run the code chunk below to load the data that will be used in this exercise.
 
 ```{r}
-df <- read.csv("data/Assign05_Question3.csv")
+df <- readr::read_csv("data/Assign05_Question3.csv")
 str(df)
 ```
 
@@ -217,9 +217,9 @@ p_val <- exceed_count / nreps
 p_val
 ```
 
-**4. Bonus: Bootsrapping (2 marks)** In lecture, I mentioned that randomization tests are frequently used to estimate the amount of variance surrounding a population parameter. This is often done using **bootstrapping**, in which samples are repeatedly sampled **with replacement** from the observed data to estimate the distribution of the population statitic, from which the variance (or other measure of spread) can be estimated. In this _bonus_ exercise, I ask you to estimate the 95% confidence intervals around the _beta coefficient_ for the effect of variable `x2` on `y` in the simulated regression from question 2.
+**4. Bonus: Bootsrapping (2 marks)** In lecture, I mentioned that randomization tests are frequently used to estimate the amount of variance surrounding a population parameter. This is often done using **bootstrapping**, in which samples are repeatedly sampled **with replacement** from the observed data to estimate the distribution of the population statistic, from which the variance (or other measure of spread) can be estimated. In this _bonus_ exercise, I ask you to estimate the 95% confidence intervals around the _beta coefficient_ for the effect of variable `x2` on `y` in the simulated regression from question 2.
 
-(a) Generate a histogram showing the distribution of beta coefficients estimated by re-running the linear model in question 2 with different values for variable `x2` obtained by resampling the original `x2` distribution with replacement. You should perform 5,000 simulations of the linear model, each time saving the beta coefficient for the effect of the variable `x2` on `y`. The `y_intercept`, variable `x1` and the `error` should remain unchanged during each iteration. A single iteration should look like the following: (1) Resample 20 values of variable `x2` with replacement. (2) Run linear model with `y` as a linear function of `x1` and the newly resampled `x2` as in question 2. (3) Extract beta coefficient for effect of `x2` on `y` from the linear model and add to list. Repeat 5,000 times. Plot the distribution of betas. [**hint:** You can get the coefficients from a linear model using `coef(summary(model))`. You'll have to figure out how to extract the relavent beta using this command] (1 mark)
+(a) Generate a histogram showing the distribution of beta coefficients estimated by re-running the linear model in question 2 with different values for variable `x2` obtained by resampling the original `x2` distribution with replacement. You should perform 5,000 simulations of the linear model, each time saving the beta coefficient for the effect of the variable `x2` on `y`. The `y_intercept`, variable `x1` and the `error` should remain unchanged during each iteration. A single iteration should look like the following: (1) Resample 20 values of variable `x2` with replacement. (2) Run linear model with `y` as a linear function of `x1` and the newly resampled `x2` as in question 2. (3) Extract beta coefficient for effect of `x2` on `y` from the linear model and add to list. Repeat 5,000 times. Plot the distribution of betas. [**hint:** You can get the coefficients from a linear model using `coef(summary(model))`. You'll have to figure out how to extract the relevant beta using this command] (1 mark)
 
 ```{r include = FALSE}
 set.seed(47)
