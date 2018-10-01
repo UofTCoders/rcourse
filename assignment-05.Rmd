@@ -7,7 +7,7 @@ output:
 
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
-you assignment as a knitted `.pdf` (prefered) or `.html` file.*
+your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
 **1.  Linear mixed-effects models (4 marks).**
 
@@ -24,7 +24,8 @@ exercise. Run the code chunk below to download the data, which includes only a s
 from the full dataset:
     
 ```{r}
-plant_data <- readr::read_csv("data/Santangelo_JEB_2018.csv", header = TRUE)
+plant_data <- readr::read_csv("data/Santangelo_JEB_2018.csv", 
+                              col_names = TRUE)
 str(plant_data)
 head(plant_data)
 ```
@@ -48,13 +49,13 @@ library(lmerTest)
 model <- lmer(Total.Inf ~ HCN*Herbivory + (1|Genotype) + (1|Block), data = plant_data)
 ```
 
-(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on the number of inflorescences? If so, which one? Based on your examination of the model output, how can you tell which level of the significant treatment resulted in higher of lower mean inflorescnece production? (1 mark).
+(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on the number of inflorescences? If so, which one? Based on your examination of the model output, how can you tell which level of the significant treatment resulted in higher of lower mean inflorescence production? (1 mark).
     
 ```{r include=FALSE}
 summary(model)
 ```
 
-(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this kind of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have inluded the formula to calculate the standard error of the mean below. (1 mark).
+(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this kind of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have included the formula to calculate the standard error of the mean below. (1 mark).
 
 $$ SE = \frac{sd}{\sqrt{n}}  $$
 
@@ -109,7 +110,7 @@ x <- rgamma(n, shape, rate)
 hist(x)
 ```
 
-(b) Plot the distribution of sample means obtained by generating 1000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 1000 means, each from a different simulated gamma distribution. What do you notice about this distribution when conpared to the original distribution in (a)? Why would we expect this? (0.5 marks)
+(b) Plot the distribution of sample means obtained by generating 1000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 1000 means, each from a different simulated gamma distribution. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
 
 ```{r include = FALSE}
 set.seed(43)
