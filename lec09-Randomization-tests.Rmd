@@ -47,9 +47,8 @@ We'll start by taking random samples from a normal distribution with mean equal 
 
 ```{r message=FALSE, warning=FALSE}
 # Let's install all the packages we'll need
-library(ggplot2)
+library(tidyverse)
 library(reshape2)
-library(dplyr)
 library(EcoSimR)
 ```
 
@@ -233,8 +232,10 @@ for(i in 1:nreps){
                                replace = FALSE)
     
     # Calculate the means for each sex
-    mean_males_sim <- mean(reshuffled[reshuffled$sex == "Male", "width"])
-    mean_females_sim <- mean(reshuffled[reshuffled$sex == "Female", "width"])
+    mean_males_sim <- mean(reshuffled %>% filter(sex == "Male") 
+                           %>% pull(width))
+    mean_females_sim <- mean(reshuffled %>% filter(sex == "Female") 
+                             %>% pull(width))
     
     # Calculate to difference between simulated male and female body width 
     # means
@@ -284,14 +285,14 @@ Randomization tests are applied in all corners of ecological and evolutionary re
 
 First, let's look at the type of data we need for this analysis.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load in example dataset
 comMatrix_example <-paste0("https://raw.githubusercontent.com/",
                            "James-S-Santangelo/rcourse/master/data/",
                            "lec09_CommunityMatrix_Example.csv")
 download.file(comMatrix_example, "lec09_CommunityMatrix_Example.csv")
 
-comMatrix_example <- read.csv("lec09_CommunityMatrix_Example.csv")
+comMatrix_example <- read_csv("lec09_CommunityMatrix_Example.csv")
 head(comMatrix_example)
 
 # Sliced to return a numeric Matrix, which is required for 
@@ -304,14 +305,14 @@ As you can see, the data is a matrix with sites (e.g. islands, quadrats, etc.) a
 
 Let's read in some real data before proceeding. The data are from the [National Ecological Observatory Network](https://www.neonscience.org/) and represent the presence and absence of plant species in eight square meter plots during the month of July, 2017, at a single site around Harvard, Boston, MA. Note this is only a subset of the very large dataset provided by NEON, which dates back to 2013 and includes about 46 different sites. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load in NEON data
 neon_data <- paste0("https://raw.githubusercontent.com/",
                     "James-S-Santangelo/rcourse/master/data/",
                     "NEON_PlantPA_HARV_201707.csv")
 download.file(neon_data, "NEON_PlantPA_HARV_201707.csv")
-neon_data <- read.csv("NEON_PlantPA_HARV_201707.csv")
-str(neon_data)
+neon_data <- read_csv("NEON_PlantPA_HARV_201707.csv")
+glimpse(neon_data)
 ```
 
 Clearly this data is not in the form that we need it to be. As I'm sure you know by now, R has many useful libraries and functions that should allow us to change this relatively easily. We'll rely on the `reshape2` package to transform our dataset into a presence-absence matrix.

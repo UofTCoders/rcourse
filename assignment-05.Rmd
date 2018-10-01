@@ -23,10 +23,11 @@ throughout the summer. We will analyze how the treatments influenced one of thes
 exercise. Run the code chunk below to download the data, which includes only a subset of the columns 
 from the full dataset:
     
-```{r}
-plant_data <- readr::read_csv("data/Santangelo_JEB_2018.csv", 
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+plant_data <- read_csv("data/Santangelo_JEB_2018.csv", 
                               col_names = TRUE)
-str(plant_data)
+glimpse(plant_data)
 head(plant_data)
 ```
 
@@ -60,9 +61,6 @@ summary(model)
 $$ SE = \frac{sd}{\sqrt{n}}  $$
 
 ```{r include=FALSE}
-library(ggplot2)
-library(dplyr)
-
 plant_data %>%
     group_by(Herbivory) %>%
     summarize(mean = mean(Total.Inf, na.rm = TRUE), 
@@ -156,8 +154,8 @@ summary(model)
 Run the code chunk below to load the data that will be used in this exercise.
 
 ```{r message=FALSE, warning=FALSE}
-df <- readr::read_csv("data/Assign05_Question3.csv")
-str(df)
+df <- read_csv("data/Assign05_Question3.csv")
+glimpse(df)
 ```
 
 (a) Generate a histogram showing the null distribution of the **difference in medians** between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed difference in medians as a dashed vertical line [**hint:** `median()`]
@@ -178,8 +176,8 @@ for(i in 1:nreps){
                            replace = FALSE)
 
     # Calculate the means for each sex
-    median_grp1 <- median(df %>% filter(group == "One") %>% pull(x))
-    median_grp2 <- median(df %>% filter(group == "Two") %>% pull(x))
+    median_grp1 <- median(reshuffled %>% filter(group == "One") %>% pull(x))
+    median_grp2 <- median(reshuffled %>% filter(group == "Two") %>% pull(x))
     
     # Calculate to difference between simulated male and female body width 
     # means
@@ -196,7 +194,6 @@ median_1 <- median(x1)
 median_2 <- median(x2)
 diff_median_obs <- median_1 - median_2
 
-library(ggplot2)
 ggplot() +
     ylab("Count") + xlab("Simulated median difference") +
     geom_histogram(aes(x = simulated_medians), bins = 30, 
