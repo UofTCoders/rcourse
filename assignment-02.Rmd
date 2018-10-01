@@ -17,12 +17,12 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     b.  Assign the result of `10/3` to the variable `b`. Display `b`.
         (0.25 marks)
 
-    c.  Assign the product of `a` and `b` to `c`. Display `c`. (0.25
+    c.  Assign the product of `a` and `b` to `product`. Display `product`. (0.25
         marks)
 
     d.  Write a function that adds two numbers and returns their sum.
-        Use it to assign the sum of `a` and `b` to `c`. Display `c`. (In
-        practice, there is already a more sophisticated built-in
+        Use it to assign the sum of `a` and `b` to `product`. Display `product`.
+        (In practice, there is already a more sophisticated built-in
         function for this: `c <- sum(a, b)`) (0.25 marks)
 
 2.  Vectors (1 mark)
@@ -63,7 +63,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     b.  How can you view the first 5 rows of this data frame? How can
         you view the last 5 rows? (0.5 marks)
 
-    c.  What is the min, mean, and max body temperatue in this data set?
+    c.  What is the min, mean, and max body temperature in this data set?
         *Hint: Remember that each column in a data frame is a vector, so
         you can use the same functions as in the previous question on
         vectors.* (0.5 marks)
@@ -98,8 +98,8 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
         active outside the retreat? (0.25 marks)
 
     g.  Was the body temperature higher when the beaver was active or
-        inactive? Is this what you would expect? (0.25 marks)
+        inactive? Is this what you would expect? (0.5 marks)
 
     h.  Grouping by activity level *and* the day of the observation.
         Which variable seems to be more related to high body
-        temperature: activity level or day of measurment? (0.25 marks)
+        temperature: activity level or day of measurement? (0.5 marks)
