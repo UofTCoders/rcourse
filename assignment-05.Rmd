@@ -155,7 +155,7 @@ summary(model)
 
 Run the code chunk below to load the data that will be used in this exercise.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 df <- readr::read_csv("data/Assign05_Question3.csv")
 str(df)
 ```
@@ -171,15 +171,15 @@ nreps = 5000 # 5000 iterations
 for(i in 1:nreps){
     
     # Create temporary dataframe to permute so we don't modify the original
-    reshuffled <- df 
+    reshuffled <- df
     
     # Permute the width column with the 'sample()' function. 
     reshuffled$x <- sample(reshuffled$x, size = nrow(reshuffled), 
                            replace = FALSE)
-    
+
     # Calculate the means for each sex
-    median_grp1 <- median(reshuffled[reshuffled$group == "One", "x"])
-    median_grp2 <- median(reshuffled[reshuffled$group == "Two", "x"])
+    median_grp1 <- median(df %>% filter(group == "One") %>% pull(x))
+    median_grp2 <- median(df %>% filter(group == "Two") %>% pull(x))
     
     # Calculate to difference between simulated male and female body width 
     # means
