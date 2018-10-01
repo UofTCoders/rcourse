@@ -7,7 +7,7 @@ output:
 
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
-you assignment as a knitted `.pdf` (prefered) or `.html` file.*
+you assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
 1.  Variable assignment (1 mark)
 
