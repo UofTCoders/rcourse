@@ -21,7 +21,7 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
         marks)
 
     d.  Write a function that adds two numbers and returns their sum.
-        Use it to assign the sum of `a` and `b` to `product`. Display `product`.
+        Use it to assign the sum of `a` and `b` to `result`. Display `result`.
         (In practice, there is already a more sophisticated built-in
         function for this: `c <- sum(a, b)`) (0.25 marks)
 
