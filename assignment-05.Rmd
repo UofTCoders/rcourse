@@ -31,7 +31,7 @@ plant_data <- paste0("https://raw.githubusercontent.com/",
                     "master/data/Santangelo_JEB_2018.csv")
 download.file(plant_data, "Santangelo_JEB_2018.csv")
 plant_data <- read_csv("Santangelo_JEB_2018.csv", 
-                              col_names = TRUE)
+                       col_names = TRUE)
 glimpse(plant_data)
 head(plant_data)
 ```
