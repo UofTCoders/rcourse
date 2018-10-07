@@ -59,19 +59,21 @@ A diagrammatic representation of the dataset can be seen below (Modified from Zu
 
 Let's start by loading and examining the data. 
 
-```{r Load and examine data}
+```{r Load and examine data, message=FALSE, warning=FALSE}
+library(tidyverse)
+
 # Load data
 rikz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo/",
                     "rcourse/master/data/rikz_data.txt")
 download.file(rikz_data, "rikz_data.txt")
 
-rikz_data <- read.table("rikz_data.txt",
-                        head = TRUE,
-                        sep = "\t")
+rikz_data <- read_delim("rikz_data.txt",
+                         col_names = TRUE,
+                         delim = "\t")
 rikz_data$Beach <- as.factor(rikz_data$Beach)
 
 # Examine structure of the dataframe and view first 5 columns
-str(rikz_data)
+glimpse(rikz_data)
 head(rikz_data)
 ```
 
@@ -89,7 +91,6 @@ From the model output above, it looks like NAP is significantly, negatively (Est
 
 ```{r Plot Richness against NAP, message=FALSE}
 # Plot relationship from above model
-library(ggplot2)
 ggplot(rikz_data, aes(x = NAP, y = Richness)) +
     geom_point() +
     geom_smooth(method = "lm") +
@@ -153,7 +154,6 @@ ggplot(rikz_data, aes(x = NAP, y = Richness)) +
 ```
 ```{r Analysis separate beaches, message=FALSE}
 # Run linear model of Richness against NAP for each beach
-library(dplyr)
 beach_models <-  rikz_data %>%
     group_by(Beach) %>%
     do(mod = lm(Richness ~ NAP, data = .))
@@ -161,7 +161,7 @@ beach_models <-  rikz_data %>%
 # Get the coefficients by group in a tidy data_frame
 library(broom)
 dfBeachModels = tidy(beach_models, mod)
-dfBeachModels %>% filter(term == "NAP") %>% select(estimate, p.value)
+dfBeachModels %>% filter(term == "NAP") %>% dplyr::select(estimate, p.value)
 ```
 
 However, the issue with this approach is that each analysis only has 5 points (a really low sample size!) and we have to run multiple tests. As such, we run the risk of obtaining spuriously significant results purely by chance. This is not the best approach. Perhaps instead we can simply include a term for beach in our model, thereby estimating its effects. This is done in the model below. 
@@ -274,13 +274,13 @@ I will illustrate both deeply nested and crossed random effects in a single mode
 
 The experiment took place inside of growth chambers at the University of Toronto, where plants were randomly assigned into trays, which were then randomly assigned onto racks in the growth chamber. Thus, plants only occurs within one tray and each tray only occurs within one rack (tray is nested within rack). Given that plants within a tray could be more similar to one another than plants from another tray (i.e. tray effect) and the same is true for racks, this non-independence needs to be accounted for. However, every accession occurred on every rack (i.e. crossed effect) and individual plants from an accession are likely to be more similar to other plants from that accession than to plants from another accession. Again, this non-independence needs to be accounted for. The authors tracked flowering date and counted the number of fruit produced by each plant (n = 879) at the end of the experiment. The code below provides a useful way of examining the data to assess whether terms are nested or crossed and then fits a mixed-effects model to the Fitzpatrick *et al.* data. The question we are interested in here is: **Do soil microbes, drought, or their interaction influence the number of fruit produced by _A. thaliana_ plants?**
 
-```{r Fitzpatrick 2018 data}
+```{r Fitzpatrick 2018 data, message=FALSE, warning=FALSE}
 # Load in and examine data
 Fitz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo",
                     "/rcourse/master/data/Fitzpatrick_2018.csv")
 download.file(Fitz_data, "Fitzpatrick_2018.csv")
 
-Fitz_data <- read.csv("Fitzpatrick_2018.csv", header = TRUE)
+Fitz_data <- read_csv("Fitzpatrick_2018.csv", col_names = TRUE)
 
 # Let's change some columns to factors and remove rows with no fruit data
 Fitz_data <- Fitz_data %>%
@@ -290,7 +290,7 @@ Fitz_data <- Fitz_data %>%
                  filter(!is.na(fruit))
 
 
-str(Fitz_data)
+glimpse(Fitz_data)
 head(Fitz_data)
 
 #Let's look at how trays breakdown across the levels of rack
