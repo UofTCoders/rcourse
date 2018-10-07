@@ -178,7 +178,7 @@ Let's start by loading in the data.
 # Load in Thompson and Johnson (2016) data
 Thompson_data <- paste0("https://raw.githubusercontent.com/",
                         "James-S-Santangelo/rcourse/",
-                        "master/data/Thompson-Johnson_2016_Evol.csv")
+                        "adding-lec11/data/Thompson-Johnson_2016_Evol.csv")
 download.file(Thompson_data, "Thompson-Johnson_2016_Evol.csv")
 Thompson_data <- read_csv("Thompson-Johnson_2016_Evol.csv", 
                           col_names = TRUE)
