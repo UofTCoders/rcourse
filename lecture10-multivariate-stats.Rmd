@@ -23,7 +23,6 @@ library(car)
 library(psych)
 library(multcomp)
 library(tidyverse)
-install.packages("qgraph")
 
 #download.file("http://www.lindsaycoome.com/jellfish.csv", "jellyfish.csv")
 jellyfish <- read_csv("jellfish.csv")
