@@ -17,7 +17,7 @@ author: "Lindsay Coome"
 > - Principal Components Analysis (50-60 min)
 > - MANOVA (50 min)
 
-##Setup
+## Setup
 ```{r}
 library(car)
 library(psych)
