@@ -46,21 +46,21 @@ A caveat: it is not a good idea to lump all of your dependent variables together
 head(jellyfish)
 ```
 
-#Practical issues and assumptions of MANOVA
+# Practical issues and assumptions of MANOVA
 - Independence: Observations should be statistically independent.
 - Random sampling: Data should be randomly sampled from the population of interest and measured at an interval level.
 - Multivariate normality: In ANOVA, we assume that our dependent variable is normally distributed within each group. In the case of MANOVA, we assume that the dependent variables (collectively) have multivariate normality within groups.
 - Homogeneity of covariance matrices: In ANOVA, it is assumed that the variances in each group are roughly equal (homogeneity of variance). In MANOVA we must assume that this is true for each dependent variable, but also that the correlation between any two dependent variables is the same in all groups. This assumption is examined by testing whether the population variance–covariance matrices of the different groups in the analysis are equal.
 - One final issue pertinent to test power is that of sample size and the number of dependent variables. Stevens (1980) recommends using fewer than 10 dependent variables unless sample sizes are large.
 
-#Exploring the data
+# Exploring the data
 ```{r}
 str(jellyfish$Location)
 describeBy(jellyfish$Width, jellyfish$Location)
 describeBy(jellyfish$Length, jellyfish$Location)
 ```
 
-#Running the MANOVA
+# Running the MANOVA
 To create a MANOVA model we use the manova() function, which is just the lm() function in disguise. The function takes exactly the same form as aov()and has the general form:
 ```{r}
 #newModel<-manova(outcome ~ predictor(s), data = dataFrameName, na.action = na.exclude))”
@@ -90,7 +90,7 @@ As with other times we have used the lm() function, or some variant of it, R wil
 Anova(newModel, type = "III")
 ```
 
-#Follow-up analysis
+# Follow-up analysis
 ```{r}
 summary.aov(newModel)
 ```
@@ -114,7 +114,7 @@ summary(postHocs)
 
 A significant MANOVA could be followed up using either univariate ANOVA and post hoc tests or discriminant analysis (sometimes called discriminant function analysis or DFA for short). In our example, the univariate ANOVAs were not a useful way of looking at what the multivariate test showed because the relationship between dependent variables is obviously having an effect. Discriminant analysis is a good way to analyze this. Discriminant analysis is often used alongside clustering techniques and principal components analysis. For today, we are going to move on to principcal components anlysis (PCA), a very powerful tool for finding hidden or latent groups within your data.
 
-##Principal components analysis
+## Principal components analysis
 Factor analysis is a method of determining whether a group of variables are related in such a way that they define a fewser number of subgroups or clusters. Variables within a cluster would all be highly intercorrelated (positively and negatively), whereas variables from different clusters would not be correlated.
 
 The clusters would then be evaluated to try to determine what the common factor underlying those variables is (e.g. a common cause, perhaps). Although the clustering of the variables is empirically determined by factor analysis, the determination of those factors underlying the clusters is mostly subjective, as we shall see. 
