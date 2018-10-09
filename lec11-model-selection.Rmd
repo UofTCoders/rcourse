@@ -170,7 +170,7 @@ In Assignment 5, you used data from Santangelo _et al._ (In Press) who were inte
 
 The motivation for that experiment actually came a few year prior, in 2016, when Thompson and Johnson (2016) published an experiment examining how plant defenses alter natural selection on plant floral traits. They found some interesting patterns but it was unclear whether these were being driven by the plant's interactions with herbivores, pollinators, or both. This was because they didn't directly manipulate these agents: pollination was not quantified in their experiment and herbivore damage was measured observationally and thus these results were correlative. However, their experimental data provides a prime use of model selection in ecology and evolution.
 
-The data consists of 140 observations (rows). Each row in the dataset corresponds to the mean trait value of one plant genotype (they had replicates for each genotype but took the average across these replicates) grown in a common garden. They measured 8 traits and quantified the total mass of seeds produced by plants as a measure of absolute fitness. Genotypes were either "cyanogenic" (i.e. containing plant defenses) or were "acyanogenic" (i.e. lacking plant defenses). In addition, they quantified the amoung of herbivore damage (i.e. percent leaf area lost) on each plant twice throughout the growing season. We are going to conduct a **genotypic selection analysis** to quantify natural selection acting on each trait (while controlling for other traits) and assess whether plant defenses and herbivore damage alters the strength or direction of natural selection imposed on these traits. While this may sound complicated, it turns out that a single multiple regression is all that's required to do this: relative fitness is the response variable and _standardized_ traits (i.e. mean of 0 and standard deviation of 1), treatments, and their interactions are the predictors. This multiple regression regression approach is a common way of measuring natural selection in nature (see Lande and Arnold 1983, Rausher 1992, Stinchcombe 2002).
+The data consists of 140 observations (rows). Each row in the dataset corresponds to the mean trait value of one plant genotype (they had replicates for each genotype but took the average across these replicates) grown in a common garden. They measured 8 traits and quantified the total mass of seeds produced by plants as a measure of absolute fitness. Genotypes were either "cyanogenic" (i.e. containing plant defenses) or were "acyanogenic" (i.e. lacking plant defenses). In addition, they quantified the amoung of herbivore damage (i.e. percent leaf area lost) on each plant twice throughout the growing season, although here we will only focus on the effects of plant defenses and avoid their herbivore damage measurements. We are going to conduct a **genotypic selection analysis** to quantify natural selection acting on each trait (while controlling for other traits) and assess whether plant defenses alter the strength or direction of natural selection imposed on these traits. While this may sound complicated, it turns out that a single multiple regression is all that's required to do this: relative fitness is the response variable and _standardized_ traits (i.e. mean of 0 and standard deviation of 1), treatments, and their interactions are the predictors. This multiple regression regression approach is a common way of measuring natural selection in nature (see Lande and Arnold 1983, Rausher 1992, Stinchcombe 2002).
 
 Let's start by loading in the data.
 
@@ -185,58 +185,23 @@ Thompson_data <- read_csv("Thompson-Johnson_2016_Evol.csv",
 glimpse(Thompson_data)
 ```
 
-We will now generate the global model. Remember, this should be a saturated model with all of the fixed effects and their interactions. There are no random effects in this model so we can go ahead and use `lm()`.
+We will now generate the global model. Remember, this should be a saturated model with all of the fixed effects and their interactions. We are including the presence of hidrogen cyanide (HCN, cyanide in model below), all standardized traits and the trait by HCN interactions as fixed effects in this model. There are no random effects in this model so we can go ahead and use `lm()`.
 
 ```{r}
 # Create saturated model
 GTSelnModel.HCN <- lm(RFSeed ~ VegGrowth.S*cyanide + BnrLgth.S*cyanide + 
                           BnrWdt.S*cyanide + FrstFlwr.S*cyanide + 
                           InflNum.S*cyanide + FlwrCt.S*cyanide + 
-                          InflWdt.S*cyanide + InflHt.S*cyanide + 
-                          VegGrowth.S*AvgDmg1.S + BnrLgth.S*AvgDmg1.S + 
-                          BnrWdt.S*AvgDmg1.S + FrstFlwr.S*AvgDmg1.S + 
-                          InflNum.S*AvgDmg1.S + FlwrCt.S*AvgDmg1.S + 
-                          InflWdt.S*AvgDmg1.S + InflHt.S*AvgDmg1.S + 
-                          VegGrowth.S*AvgDmg2.S + BnrLgth.S*AvgDmg2.S + 
-                          BnrWdt.S*AvgDmg2.S + FrstFlwr.S*AvgDmg2.S + 
-                          InflNum.S*AvgDmg2.S + FlwrCt.S*AvgDmg2.S + 
-                          InflWdt.S*AvgDmg2.S + InflHt.S*AvgDmg2.S, 
+                          InflWdt.S*cyanide + InflHt.S*cyanide,
                       data = Thompson_data)
 ```
 
-Next, we will reduced the number of predictors in this model using _backward_ variable selection. This is a stepwise procedure that starts with a saturated model and sequencially removes terms, each time calculating a new AIC value, and doing this until the AIC value shows no further decrease. We'll use AIC here instead of AIC~c~ for illustrative purposes and because there is currently no available package that integrates AIC~c~ with automated backward variable selection in R (although there is a solution [here](https://github.com/biometry/APES/blob/master/Data/Dormann2013/stepAICc.r). Let's go ahead and perform the backward model selection using the `stepAIC` function from the `MASS` package. Note that I have suppressed the output in the knitted document since it is rather lengthy. Here, the `step.GTSelnModel.HCN` object will contain the reduced model with the optimized fixed-effect structure.
-
-```{r results='hide'}
-# Backward model selection
-step.GTSelnModel.HCN <- MASS::stepAIC(GTSelnModel.HCN, direction = "backward", 
-                                k = 2, 
-                                steps = 10000)
-```
-
-We can check out the top model returned by the backward model selection procedure. 
-
-```{r}
-# Show top model
-step.GTSelnModel.HCN
-```
-
-Let's go ahead and summarize this model
-
-```{r}
-# Summarize model
-summary(step.GTSelnModel.HCN)
-```
-
-We may be satisfied with this. Afterall, look at all those significant effects! Clearly there's a ton of selection and both plant defenses (i.e. cyanide) and herbivore damage are influencing selection. We better be quick to write this up and submit to Nature!
-
-But how much evidence do we actually have that this is the **best** model? I mean, our dataset is pretty large and there are probably many other models that come pretty close. With this reduced model, we've eliminated all of the factors that are unlikely to be important predictors of plant fitness. We can use the `dredge()` function from the `MuMIn` package to further assess the suitability of this model. It turns out that `dredge()` only allows up to 30 predictors due to the computational resources it requires to run, so the preliminary backward variable selection was a necessity for what follows.
-
-`dredge()` offers a **ton** of flexibility in how model selection is done. You can customize the criterion used (i.e. AIC, BIC, etc.), how the output is reported, what's included in the output (e.g. do you want F-stats and R^2^ to be included?), whether some terms should be represented in all models and even only include some terms in models if other terms are included (aka Dependency Chain). For our purposes, we will perform an **all-subsets** model selection, comparing models with all combinations of predictors (but not those where main effects are absent despite the presence of an interaction!). I warned earlier that this approach has been criticized. However, in this case it's reasonable: we know from work in other systems that all of these traits could conceivably experience selection, and we know that that selection could vary due to plant defenses and herbivore damage. In addition, we've already eliminated terms which are likely to be unimportant. Let's go ahead and dredge.
+Next, we will perform our model selection based on AIC~c~ (due to low sample sizes). We automate this process using the `dredge()` function from the `MuMIn` package. `dredge()` offers a **ton** of flexibility in how model selection is done. You can customize the criterion used (i.e. AIC, BIC, etc.), how the output is reported, what's included in the output (e.g. do you want F-stats and R^2^ to be included?), whether some terms should be represented in all models and even only include some terms in models if other terms are included (aka Dependency Chain). For our purposes, we will perform an **all-subsets** model selection, comparing models with all combinations of predictors (but not those where main effects are absent despite the presence of an interaction!). I warned earlier that this approach has been criticized. However, in this case it's reasonable: we know from work in other systems that all of these traits could conceivably experience selection, and we know that that selection could vary due to plant defenses. In other words, all terms in this model represent biologically real hypotheses. Let's go ahead and dredge.
 
 ```{r}
 options(na.action = "na.fail") # Require for dredge to run
 
-GTmodel_dredge <- dredge(step.GTSelnModel.HCN, beta = F, evaluate = T, rank = AIC)
+GTmodel_dredge <- dredge(GTSelnModel.HCN, beta = F, evaluate = T, rank = AICc)
 
 options(na.action = "na.omit") # set back to default
 ```
@@ -248,7 +213,7 @@ head(GTmodel_dredge)
 nrow(GTmodel_dredge)
 ```
 
-The output tells us the original model and then provides a rather large table with many rows and columns. The rows in this case are different models with different combinations of predictors (n = 5,146 models). The columns are the different terms from our model, which `dredge()` has abbreviated. The numbers in the cells are the estimates (i.e. beta coefficients) for each term that is present in the model; blank cells mean that term was not included in the model. The last 5 columns are important: they give us the degrees of freedom for the model (a function of the number of terms in the model), the log-likelihood of the model, the AIC score, the delta AIC, and the AIC weights. The delta AIC is the difference between the AIC score of a model and the AIC score of the top model. The weight can be thought of as the probability that the model is the best model given the candidate set included in the model selection procedure. 
+The output tells us the original model and then provides a rather large table with many rows and columns. The rows in this case are different models with different combinations of predictors (n = 6,817 models). The columns are the different terms from our model, which `dredge()` has abbreviated. The numbers in the cells are the estimates (i.e. beta coefficients) for each term that is present in the model; blank cells mean that term was not included in the model. The last 5 columns are important: they give us the degrees of freedom for the model (a function of the number of terms in the model), the log-likelihood of the model, the AIC score, the delta AIC, and the AIC weights. The delta AIC is the difference between the AIC score of a model and the AIC score of the top model. The weight can be thought of as the probability that the model is the best model given the candidate set included in the model selection procedure. 
 
 Given this output, we may be interested in retrieving the top model and interpreting it. Let's go ahead and to this. We can retrieve the top model using the `get.models()` function and specifying that we want to top model using the `subset` argument. We need to further subset this output since it returns a list. 
 
@@ -264,7 +229,7 @@ This output above shows us the top model from our dredging. What if we want to i
 summary(top_model)
 ```
 
-Compare this model to the once returned by the backward variable selection. They're the same! This is unsurprising since both used AIC when assessing the model's fit to the data. However, remember we have little evidence that this is the **best** model. We have over 5,000 models so it's unlikely that only one model explains the data. From the `dredge` output we can see there is little difference in the AIC and weights of the first few models. Is there really much of a difference between two models who's AIC differ by only 0.46 points? How do we decide which model(s) to interpret? Statisticians have thought about this problem and it turns out that models with delta AIC (or other criterion) less than 2 are considered to be just as good as the top model and thus we shouldn't just discount them. Alternatively, we could use the weights: if a model has weight greater or equal to 95% then it is likely to be the top model. Otherwise we can generate a "credibility" set consisting of all models whose cumulative sum of AIC weights is 0.95. In any case, the point is that we have no good reason to exclude models other than the top one when the next models after it are likely to be just as good. To get around this, we can perform what's called **model averaging** (aka multi-model inference), which allows us to average the parameter estimates across multiple models and avoids the issue of model uncertainty. Let's do this below by averaging all models with a delta AIC <= 2.
+But how much evidence do we actually have that this is the **best** model? We have over 6,000 models so it's unlikely that only one model explains the data. From the `dredge` output we can see there is little difference in the AIC and weights of the first few models. Is there really much of a difference between two models who's AIC differ by only 0.14 points? How do we decide which model(s) to interpret? Statisticians have thought about this problem and it turns out that models with delta AIC (or other criterion) less than 2 are considered to be just as good as the top model and thus we shouldn't just discount them. Alternatively, we could use the weights: if a model has weight greater or equal to 95% then it is likely to be the top model. Otherwise we can generate a "credibility" set consisting of all models whose cumulative sum of AIC weights is 0.95. In any case, the point is that we have no good reason to exclude models other than the top one when the next models after it are likely to be just as good. To get around this, we can perform what's called **model averaging** (aka multi-model inference), which allows us to average the parameter estimates across multiple models and avoids the issue of model uncertainty. Let's do this below by averaging all models with a delta AIC <= 2.
 
 ```{r}
 summary(model.avg(GTmodel_dredge, subset = delta <= 2))
