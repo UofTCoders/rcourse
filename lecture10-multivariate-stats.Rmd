@@ -24,7 +24,7 @@ library(psych)
 library(multcomp)
 library(tidyverse)
 
-#download.file("http://www.lindsaycoome.com/jellfish.csv", "jellyfish.csv")
+#download.file("http://www.lindsaycoome.com/jellfish.csv", "jellfish.csv")
 jellyfish <- read_csv("jellfish.csv")
 jellyfish %>% mutate_if(is.character, as.factor) -> jellyfish #uses dplyr function to change all character vectors to factors
 ```
