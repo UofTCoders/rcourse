@@ -1,0 +1,177 @@
+---
+title: "Multivariate Statistics"
+author: "Lindsay Coome"
+---
+## Lesson preamble
+
+> ### Lesson objectives
+> 
+> - Learn how to apply and interpret multivariate statistics for a variety of data
+> - Understand the difference between MANOVA and univariate statistical techniques
+> - Learn how to use eigenvalues and scree plots to determine factors in principal components 
+>   analysis
+> - Understand how to interpret the results of PCA
+>
+> ### Lesson outline
+> 
+> - Principal Components Analysis (50-60 min)
+> - MANOVA (50 min)
+
+##Setup
+```{r}
+library(car)
+library(psych)
+library(multcomp)
+library(tidyverse)
+install.packages("qgraph")
+
+#download.file("http://www.lindsaycoome.com/jellfish.csv", "jellyfish.csv")
+jellyfish <- read_csv("jellfish.csv")
+jellyfish %>% mutate_if(is.character, as.factor) -> jellyfish #uses dplyr function to change all character vectors to factors
+```
+
+## Multivariate vs. univariate statistics
+Over the past few weeks, we have seen how the general linear model (GLM) can be used to detect group differences on a single dependent variable (e.g. t-tests, linear regression, ANOVAs, mixed-effects models). However, there may be circumstances in which we are interested in several dependent variables, and in these cases the simple ANOVA model is inadequate. Instead, we can use an extension of this technique known as multivariate analysis of variance (or MANOVA). MANOVA can be thought of as ANOVA for situations in which there are several dependent variables. The principles of ANOVA extend to MANOVA in that we can use MANOVA when there is only one independent variable or when there are several, we can look at interactions between independent variables, and we can even do contrasts to see which groups differ from each other. ANOVA can be used only in situations in which there is one dependent variable (or outcome) and so is known as a univariate test (univariate quite obviously means ‘one variable’); MANOVA is designed to look at several dependent variables (outcomes) simultaneously and so is a multivariate test (multivariate means ‘many variables’).
+
+If we have collected data about several dependent variables then we could simply conduct a separate ANOVA for each dependent variable (and if you read research articles you’ll find that it is not unusual for researchers to do this). The reason why MANOVA is used instead of multiple ANOVAs is this: the more tests we conduct on the same data, the more we inflate the familywise error rate. The more dependent variables we have measured, the more ANOVAs we would need to conduct and the greater the chance of making a Type I error.
+
+However, there are other reasons for preferring MANOVA to several ANOVAs. For one thing, there is important additional information that is gained from a MANOVA. If separate ANOVAs are conducted on each dependent variable, then any relationship between dependent variables is ignored. As such, we lose information about any correlations that might exist between the dependent variables. MANOVA, by including all dependent variables in the same analysis, takes account of the relationship between outcome variables. Related to this point, ANOVA can tell us only whether groups differ along a single dimension, whereas MANOVA has the power to detect whether groups differ along a combination of dimensions. For example, ANOVA tells us how scores on a single dependent variable distinguish groups of measurements (so, for example, we might be able to distinguish animals who are aquatic, semi-aquatic, terrestrial, etc).
+
+For the univariate F-test (e.g., ANOVA) we calculated the ratio of systematic variance to unsystematic variance for a single dependent variable. In MANOVA, the test statistic is derived by comparing the ratio of systematic to unsystematic variance for several dependent variables. 
+
+To sum up, the test statistic in both ANOVA and MANOVA represents the ratio of the effect of the systematic variance to the unsystematic variance; in ANOVA these variances are single values, but in MANOVA each is a matrix containing many variances and covariances.
+
+A caveat: it is not a good idea to lump all of your dependent variables together in a MANOVA unless you have a good theoretical or empirical basis for doing so. In our example, we will try to examine the outcome variables of Jellyfish width and length by the location the specimen was found.
+
+```{r}
+head(jellyfish)
+```
+
+#Practical issues and assumptions of MANOVA
+- Independence: Observations should be statistically independent.
+- Random sampling: Data should be randomly sampled from the population of interest and measured at an interval level.
+- Multivariate normality: In ANOVA, we assume that our dependent variable is normally distributed within each group. In the case of MANOVA, we assume that the dependent variables (collectively) have multivariate normality within groups.
+- Homogeneity of covariance matrices: In ANOVA, it is assumed that the variances in each group are roughly equal (homogeneity of variance). In MANOVA we must assume that this is true for each dependent variable, but also that the correlation between any two dependent variables is the same in all groups. This assumption is examined by testing whether the population variance–covariance matrices of the different groups in the analysis are equal.
+- One final issue pertinent to test power is that of sample size and the number of dependent variables. Stevens (1980) recommends using fewer than 10 dependent variables unless sample sizes are large.
+
+#Exploring the data
+```{r}
+str(jellyfish$Location)
+describeBy(jellyfish$Width, jellyfish$Location)
+describeBy(jellyfish$Length, jellyfish$Location)
+```
+
+#Running the MANOVA
+To create a MANOVA model we use the manova() function, which is just the lm() function in disguise. The function takes exactly the same form as aov()and has the general form:
+```{r}
+#newModel<-manova(outcome ~ predictor(s), data = dataFrameName, na.action = na.exclude))”
+```
+
+So, as with univariate regression/ANOVA, we specify a model in the function of the form ‘outcome ~ predictor(s)’. In the case of MANOVA there are several outcomes, so the model becomes ‘outcomes ~ predictor(s)’. To put multiple outcomes into the model, we have to bind the variables together into a single entity using the cbind() function. In the current example, we want to combine jellyfish length and width, so we can create a single outcome object by executing:
+```{r}
+outcome<-cbind(jellyfish$Width, jellyfish$Length)
+```
+
+This command creates an object called outcome, which contains the length and width variables of the jellyfish dataframe pasted together in columns. We use this new object as the outcome in our model, and specify any predictors as we have previously. Therefore, for this example, we could estimate the model by executing:
+```{r}
+newModel<-manova(outcome ~ Location, data = jellyfish)
+```
+
+To see the output of the model we use the summary command; by default, R produces Pillai’s trace (which is a sensible choice), but we can see the other test statistics by including the test = option. For example, to see the Wilks and Hotelling test statistics in addition we would need to execute:
+```{r}
+summary(newModel, intercept = TRUE)
+summary(newModel, intercept = TRUE, test = "Wilks")
+summary(newModel, intercept = TRUE, test = "Hotelling")
+```
+
+At any rate, it appears as though location does significantly predict our outcome variables.
+
+As with other times we have used the lm() function, or some variant of it, R will, by default, produce Type I sums of squares but it is usually preferable in (M)ANOVA to look at Type II or Type III sums of squares. When you have one predictor in the model, as we have in the current example, Type I, II and III sums of squares will give the same results so it doesn’t matter (this is also true for univariate models). However, with two or more predictors in the model you might prefer Type III sums of squares because it does not depend upon the order in which you enter variables into the model. In which case we can use the Anova() function from the car package, as we have in previous lectures, to obtain these sums of squares. In the current example, having created a model, newModel, we could display the Type III sums of squares by executing:
+```{r}
+Anova(newModel, type = "III")
+```
+
+#Follow-up analysis
+```{r}
+summary.aov(newModel)
+```
+
+The important parts of this table are the columns labelled F value and Pr(>F) in which the F-ratios for each univariate ANOVA and their significance values are listed. The values associated with the univariate ANOVAs conducted after the MANOVA are identical to those obtained if one-way ANOVA was conducted on each dependent variable. This fact illustrates that MANOVA offers only hypothetical protection of inflated Type I error rates: there is no real-life adjustment made to the values obtained.
+
+The multivariate test, on the other hand, takes account of the correlation between dependent variables, and so it has more power to detect group differences. With this knowledge in mind, the univariate tests are not particularly useful for interpretation, because the groups differ along a combination of the dependent variables. To see how the dependent variables interact we need to carry out a discriminant function analysis. However, we can start by looking at individual contrasts:
+```{r}
+widthModel<-lm(Width ~ Location, data = jellyfish)
+lengthModel<-lm(Length ~ Location, data = jellyfish)
+```
+
+The first command creates a model, widthModel, based on predicting the variable width from location (Width ~ Location) and the second command does much the same but predicting length. We can ask for contrasts comparing each group to each other using a Tukey correction with our `multcomp` package.
+```{r}
+postHocs<-glht(widthModel, linfct = mcp(Location = "Tukey"))
+summary(postHocs) #summary function gives results of multiple comparisons
+
+postHocs<-glht(lengthModel, linfct = mcp(Location = "Tukey"))
+summary(postHocs) 
+```
+
+A significant MANOVA could be followed up using either univariate ANOVA and post hoc tests or discriminant analysis (sometimes called discriminant function analysis or DFA for short). In our example, the univariate ANOVAs were not a useful way of looking at what the multivariate test showed because the relationship between dependent variables is obviously having an effect. Discriminant analysis is a good way to analyze this. Discriminant analysis is often used alongside clustering techniques and principal components analysis. For today, we are going to move on to principcal components anlysis (PCA), a very powerful tool for finding hidden or latent groups within your data.
+
+##Principal components analysis
+Factor analysis is a method of determining whether a group of variables are related in such a way that they define a fewser number of subgroups or clusters. Variables within a cluster would all be highly intercorrelated (positively and negatively), whereas variables from different clusters would not be correlated.
+
+The clusters would then be evaluated to try to determine what the common factor underlying those variables is (e.g. a common cause, perhaps). Although the clustering of the variables is empirically determined by factor analysis, the determination of those factors underlying the clusters is mostly subjective, as we shall see. 
+
+There are many different types of factor analysis, such as exploratory vs. confirmatory (discovering unknown factors versus testing for hypothesized factors). There are also many analytic techniques whithin each type. We will focus on something called the Principal Components analysis method. 
+
+Principal components analysis works in a very similar way to MANOVA. We begin with a matrix representing the relationships between variables. The linear components (also called variates, or factors) of that matrix are then calculated by determining the eigenvalues of the matrix. These eigenvalues are used to calculate eigenvectors, the elements of which provide the loading of a particular variable on a particular factor (i.e., they are the b-values in equation. The eigenvalue is also a measure of the substantive importance of the eigenvector with which it is associated.
+
+```{r}
+bfi_data <- bfi[,1:25]
+View(bfi_data)
+bfi_data=bfi_data[complete.cases(bfi_data),] #selects only complete cases for analysis
+bfi_cor <- cor(bfi_data) #creates a correlation matrix to be used in PCA
+```
+
+Next, we want to find the "determinant" of our correlation matrix. Don't worry too much about this conceptually - we want to see that our determinant is greater than the necessary value of 0.00001.
+```{r}
+det(bfi_cor)
+```
+
+Principal components analysis can be carried out using the `principal` function from the `psych` package. This command creates a principal components model, by specifying either a dataframe of raw data or a correlation matrix.
+
+Our starting point is to create a principal components model that has the same number of factors as there are variables in the data: by doing this we are just reducing the data set down to its underlying factors. By extracting as many factors as there are variables we can inspect their eigenvalues and make decisions about which factors to extract. A final thing to note is that we have set the rotation method to “none”, which means that we won’t carry out factor rotation because we don’t need to at this stage.
+
+The code below shows the results of the first principal components model. The first part of this is to create a factor loading matrix (using the unrotated loadings). Currently these standardized loadings are not interesting, but they represent the loading from each factor or component to each variable.
+```{r}
+pc1 <- principal(bfi_cor, nfactors =25, rotate = "none")
+pc1
+```
+
+The next thing to look at after the factor loading matrix are the eigenvalues. The eigenvalues associated with each factor represent the variance explained by that particular linear component. R calls these SS loadings (sums of squared loadings), because they are the sum of the squared loadings. (You can also find them in a variable associated with the model called values, so in our case we could access this variable using pc1$values). The eigenvalues show us that four components (or factors) have eigenvalues greater than 1, suggesting that we extract four components if we use something called Kaiser’s criterion. However, we can also plot our eigenvalues and evaluate a "scree" plot to help us determine how many factors to extract.
+
+Below, we will simply plot the eigenvalues (y) against the factor number (x). This is called a scree plot. Here, we want to look at the break in the curve. The number of factors we want to extract will be to the left of the break. 
+```{r}
+plot(pc1$values, type = "b")
+```
+
+
+The evidence from the scree plot and from the eigenvalues suggests a five-component solution may be the best.
+```{r}
+pc2 <- principal(bfi_cor, nfactors = 5, rotate = "none")
+pc2
+```
+
+This output shows the second principal components model. Again, the output contains the unrotated factor loadings, but only for the first four factors. Notice that these are unchanged from the previous factor loading matrix. To actually perform PCA, however, we need to rotate our factors. All rotation does is  maximize the loading of each variable on one of the extracted factors while minimizing the loading on all other factors. This process makes it much clearer which variables relate to which factors. There are several ways of rotating our factors, however we are going to use something called orthogonal, or "varimax", rotation, which R actually defaults to if no rotation method is specified. 
+```{r}
+pc3 <- principal(bfi_cor, nfactors = 5, rotate = "varimax")
+pc3
+```
+
+Interpreting the factor loading matrix is a little complex, and we can make it easier by using the print.psych() function. This does two things: first, it removes loadings that are below a certain value that we specify (by using the cut option); and second, it reorders the items to try to put them into their factors, which we request using the sort option. Generally you should be very careful with the cut-off value – if you think that a loading of .4 will be interesting, you should use a lower cut-off (say, .3), because you don’t want to miss a loading that was .39. Execute this command:
+```{r}
+print.psych(pc3, cut = 0.3, sort = TRUE)
+```
+
+The rotation of the factor structure has clarified things considerably: there are five factors and variables load very highly onto different factors. The suppression of loadings less than .3 and ordering variables by loading size also make interpretation considerably easier (because you don’t have to scan the matrix to identify substantive loadings).
+
+The next step is to look at the content of questions that load onto the same factor to try to identify common themes. If the mathematical factor produced by the analysis represents some real-world construct then common themes among highly loading questions can help us identify what the construct might be. As we can see, the structure of our dataset seems to fit into the five personality dimensions nicely. We already have names for our factors, but if we didn't, we would try to find out what our latent variables have in common and name them appropriately.
+
