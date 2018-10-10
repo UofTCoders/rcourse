@@ -25,7 +25,7 @@ library(multcomp)
 library(tidyverse)
 
 #download.file("http://www.lindsaycoome.com/jellfish.csv", "jellfish.csv")
-jellyfish <- read_csv("jellfish.csv")
+jellyfish <- read_csv("jellyfish.csv")
 jellyfish %>% mutate_if(is.character, as.factor) -> jellyfish #uses dplyr function to change all character vectors to factors
 ```
 
@@ -63,7 +63,7 @@ describeBy(jellyfish$Length, jellyfish$Location)
 # Running the MANOVA
 To create a MANOVA model we use the manova() function, which is just the lm() function in disguise. The function takes exactly the same form as aov()and has the general form:
 ```{r}
-#newModel<-manova(outcome ~ predictor(s), data = dataFrameName, na.action = na.exclude))”
+#newModel<-manova(outcome ~ predictor(s), data = dataFrameName, na.action = na.exclude))
 ```
 
 So, as with univariate regression/ANOVA, we specify a model in the function of the form ‘outcome ~ predictor(s)’. In the case of MANOVA there are several outcomes, so the model becomes ‘outcomes ~ predictor(s)’. To put multiple outcomes into the model, we have to bind the variables together into a single entity using the cbind() function. In the current example, we want to combine jellyfish length and width, so we can create a single outcome object by executing:
