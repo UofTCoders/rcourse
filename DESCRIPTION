@@ -36,6 +36,7 @@ Imports:
     mice,
     car,
     psych,
-    multcomp
+    multcomp,
+    qgraph
 Remotes: 
     rstudio/rmarkdown
