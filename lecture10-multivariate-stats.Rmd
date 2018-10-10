@@ -125,7 +125,7 @@ Principal components analysis works in a very similar way to MANOVA. We begin wi
 
 ```{r}
 bfi_data <- bfi[,1:25]
-View(bfi_data)
+# View(bfi_data)
 bfi_data=bfi_data[complete.cases(bfi_data),] #selects only complete cases for analysis
 bfi_cor <- cor(bfi_data) #creates a correlation matrix to be used in PCA
 ```
