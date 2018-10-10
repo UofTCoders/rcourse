@@ -34,7 +34,7 @@ navbar:
     - text: 'Oct. 09: Multivariate stats'
       #href: lec10-modelling.html
     - text: 'Oct. 11: Model selection'
-      #href: lec11-model-selection.html
+      href: lec11-model-selection.html
     - text: 'Oct. 16: Numerically solving population models'
       #href: lec12-datasets.html
     - text: 'Oct. 18: Time series analysis'
@@ -65,7 +65,7 @@ navbar:
     - text: Assignment 4
       href: assignment-04.html
     - text: Assignment 5
-      #href: assignment-05.html
+      href: assignment-05.html
     - text: Assignment 6
       #href: assignment-06.html
     - text: Assignment 7
