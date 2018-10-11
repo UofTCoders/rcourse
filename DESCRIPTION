@@ -37,6 +37,7 @@ Imports:
     car,
     psych,
     multcomp,
+    qgraph,
     MuMIn
 Remotes: 
     rstudio/rmarkdown
