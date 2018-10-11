@@ -20,17 +20,15 @@ from the UofT library, and it's available in the Physics library as a hard copy 
 >     - Find fixed points graphically in R
 >     - Analyze stability graphically in R
 > - Numerically solve differential equations in R using R's ODE solver
-> - Work with and plot time series data
-> - Fit models to time series data 
 >
 > ### Lesson outline
 > 
 > Total lesson time: 2 hours
 > 
-> - Introduction to modelling (20 min)
-> - Setting up a model (40 min)
-> - Analysis of one-dimensional models (60 min)
-> - Plotting time series data in R
+> - Introduction to modelling (10 min)
+> - Setting up a model (20 min)
+> - Analysis of one-dimensional models (40 min)
+> - Numerically solving differential equations (30 min)
 > 
 > ### Setup
 > 
