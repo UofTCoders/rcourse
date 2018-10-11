@@ -45,228 +45,52 @@ account for this environmental variation (i.e. Plant from block A "share" an env
 "share" an environment, etc.). Also keep in mind that each treatment combination contains 4 individuals of each
 genotype, which are likely to have similar trait expression due simply to shared genetics.
     
-(a) Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model examining how herbivores (`Herbivory`), 
-plant defenses (`HCN`) _and their interaction_ influences the total number of inflorescences (`Total.Inf`) produced by
-plants while accounting for variation due to spatial block and plant genotype (1 mark: 0.5 for correct fixed effects specification and 0.5 for correct random effects structure). You only need to specify the model for this part of the question.
+(a) Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model examining how herbivores (`Herbivory`), Pollinators (`Pollination`), 
+plant defenses (`HCN`) _and all interactions_ influences the length of banner petals (`Avg.Bnr.Ht`) produced by
+plants while accounting for variation due to spatial block and plant genotype. Also allow the intercept for `Genotype` to vary across the levels of the herbivory treatment. (1 mark: 0.5 for correct fixed effects specification and 0.5 for correct random effects structure). You only need to specify the model for this part of the question.
 
-```{r include=FALSE}
-library(lme4)
-library(lmerTest)
-model <- lmer(Total.Inf ~ HCN*Herbivory + (1|Genotype) + (1|Block), data = plant_data)
-```
+(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on banner petal length? If so, which ones? Based on your examination of the model output, how can you tell which level of the significant treatments resulted in longer or shorter mean banner petal lengths? Make a statement for each significant effect in the model (1 mark).
 
-(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on the number of inflorescences? If so, which one? Based on your examination of the model output, how can you tell which level of the significant treatment resulted in higher of lower mean inflorescence production? (1 mark).
-    
-```{r include=FALSE}
-summary(model)
-```
-
-(c) Using `dplyr` and `gglot2`, plot the mean inflorescence production plus or minus one standard error against the treatment that showed a significant effect in the model above. Feel free to use whatever kind of plot you would that is appropriate to this kind of data [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have included the formula to calculate the standard error of the mean below. (1 mark).
+(c) Using `dplyr` and `gglot2`, plot the mean banner length for one of the significant interactions in the model above (whichever you choose). The idea is to show how both treatments interact to influence the mean length of banner petals (**Hint** use different shapes, colours, linetypes, etc. in `ggplot()`). Feel free to use whatever kind of plot you would that is appropriate to this kind of data. Also include 1 standard error around the mean. [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have included the formula to calculate the standard error of the mean below. (1 mark).
 
 $$ SE = \frac{sd}{\sqrt{n}}  $$
 
-```{r include=FALSE}
-plant_data %>%
-    group_by(Herbivory) %>%
-    summarize(mean = mean(Total.Inf, na.rm = TRUE), 
-              sd = sd(Total.Inf, na.rm = TRUE), 
-              n = sum(!is.na(Total.Inf)), 
-              se = sd / sqrt(n)) %>%
-    ggplot(., aes(x = Herbivory, y = mean, shape = Herbivory)) +
-    geom_point(size = 3) +
-    geom_errorbar(aes(ymax = mean + se, ymin = mean - se), width = 0.2) +
-    ylab("Mean number of inflorescences") +
-    theme_classic()
-```
+(d) After accounting for the fixed effects, how much of the variation in banner petal length was explained by each of the random effects in the model? Show your work (0.5 marks). 
 
-
-(d) After accounting for the fixed effects, how much of the variation in total inflorescence production was explained by each of the random effects in the model? Show your work (0.5 marks). 
-
-```{r include=FALSE}
-# Students do not have to assign the variance components to objects
-# Inserting the raw values from the summary output into equations is fine.
-genotype_rand <- as.data.frame(VarCorr(model))[1, "vcov"]
-block_rand <- as.data.frame(VarCorr(model))[2, "vcov"] 
-resid_rand <- as.data.frame(VarCorr(model))[3, "vcov"] 
-
-genotype_effect <- (genotype_rand / resid_rand) * 100
-block_effect <- (block_rand / resid_rand) * 100
-
-cat("Genotype explains", genotype_effect, "% of the variation in inflorescence production\n")
-cat("Spatial block explains", block_effect, "% of the variation in inflorescence production")
-```
-
-(e) Suggest one ecological reason for the pattern observed in this exercise. (0.5 marks)
+(e) Descibe the pattern you see in the figure generated in part (c). Why do you think the interaction you plotted was significant in the model? Suggest one plausible ecological explanation for the observed pattern. (0.5 marks)
 
 **2. Simulating data (2 marks)**
 
-(a) Generate a gamma distribution by randomly sampling 100 points from a distribution with shape parameter equal to 3.5 and rate parameter equal to 0.5. Plot this distribution. (0.5 mark) [**Hint:** `rgamma()`]. 
+(a) Generate a gamma distribution by randomly sampling 30 points from a distribution with shape parameter equal to 1.25 and rate parameter equal to 0.5. Plot this distribution. Set a seed of 42. (0.5 mark).
 
-```{r, include = FALSE}
-set.seed(42)
+(b) Plot the distribution of sample means obtained by generating 5000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 5000 means, each from a different simulated gamma distribution. Set a seed of 43. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
 
-shape <- 1.25
-rate <- 3.5
-n <- 100
-x <- rgamma(n, shape, rate)
+(c) In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model, while holding the other variables constant. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. Set a seed of 44. (1 mark).
 
-hist(x)
-```
-
-(b) Plot the distribution of sample means obtained by generating 1000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 1000 means, each from a different simulated gamma distribution. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
-
-```{r include = FALSE}
-set.seed(43)
-
-shape <- 1.25
-rate <- 3.5
-n <- 100
-x <- replicate(1000, mean(rgamma(n, shape, rate)))
-
-hist(x)
-```
-
-(c) In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. (1 mark).
-
-1. `x1` is an explanatory variable with _sequence_ from 21 to 40 with 1 unit intervals between each value (i.e. 20 values total).
-2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 50 and standard deviation equal to 4.3.
-3. the `y_intercept` is 17
-4. The beta associated with `x1` is 0.5.
-5. The beta associated with `x2` is 0.097`
-6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.4.
-7. `y` is a linear combination of `x1` and `x2`. There is no interaction between `x1` and `x2` in this model. Don't forget about the error. 
-
-
-```{r include = FALSE}
-set.seed(44)
-
-x1 <- seq(from = 21, to = 40, by = 1)
-x2 <- rnorm(n = 20, mean = 50, sd = 4.3)
-
-y_intercept <- 17
-b1 <- 0.5
-b2 <- 0.097
-
-error <- rnorm(x1, mean = 0, sd = 1.4)
-y <- y_intercept + b1*x1 + b2*x2 + error
-
-model <- lm(y ~ x1 + x2)
-summary(model)
-```
+1. `x1` is an explanatory variable with _sequence_ from 41 to 60 with 1 unit intervals between each value (i.e. 20 values total).
+2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 62 and standard deviation equal to 2.7.
+2. `x3` is an explanatory variable of length 20 randomly drawn for a gamma distribution with shape equal to 5 and rate equal to 0.5.
+3. the `y_intercept` is 20
+4. The beta associated with `x1` is 0.62.
+5. The beta associated with `x2` is 0.047`
+6. The beta associated with `x3` is 0.175
+6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.65.
+7. `y` is a linear combination of `x1`, `x2` and `x3`. There are no interations. Don't forget about the error. 
 
 **3. Randomization test (2 marks)**
 
 Run the code chunk below to load the data that will be used in this exercise.
 
 ```{r message=FALSE, warning=FALSE}
-df <- read_csv("data/Assign05_Question3.csv")
+df <- paste0("https://raw.githubusercontent.com/",
+                    "James-S-Santangelo/rcourse/",
+                    "master/data/Assign05_Question3.csv")
+download.file(df, "Assign05_Question3.csv")
+df <- read_csv("Assign05_Question3.csv", 
+                       col_names = TRUE)
 glimpse(df)
 ```
 
-(a) Generate a histogram showing the null distribution of the **difference in medians** between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed difference in medians as a dashed vertical line [**hint:** `median()`]
+(a) Generate a histogram showing the null distribution of t-statistics between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed t-statistic as a dashed vertical line. Set a seed of 46. [**Hint:** You'll need to extract the t stat from a t-test saved as an object]
 
-```{r include = FALSE}
-set.seed(46)
-simulated_medians <- list()
-
-nreps = 5000 # 5000 iterations
-
-for(i in 1:nreps){
-    
-    # Create temporary dataframe to permute so we don't modify the original
-    reshuffled <- df
-    
-    # Permute the width column with the 'sample()' function. 
-    reshuffled$x <- sample(reshuffled$x, size = nrow(reshuffled), 
-                           replace = FALSE)
-
-    # Calculate the means for each sex
-    median_grp1 <- median(reshuffled %>% filter(group == "One") %>% pull(x))
-    median_grp2 <- median(reshuffled %>% filter(group == "Two") %>% pull(x))
-    
-    # Calculate to difference between simulated male and female body width 
-    # means
-    median_dif <- median_grp1 - median_grp2
-    
-    # Append simulated mean difference to list
-    simulated_medians[i] <- median_dif
-}    
-
-# Unlist simulated means list into numeric vector
-simulated_medians <- unlist(simulated_medians)
-
-median_1 <- median(x1)
-median_2 <- median(x2)
-diff_median_obs <- median_1 - median_2
-
-ggplot() +
-    ylab("Count") + xlab("Simulated median difference") +
-    geom_histogram(aes(x = simulated_medians), bins = 30, 
-                   fill = "grey", alpha = 0.4, colour = "black") +
-    geom_vline(xintercept = diff_median_obs, size = 1, 
-               linetype = "dashed", colour = "black") + 
-    theme_classic()
-```
-
-(b) Perform a permutation test testing whether the observed difference in medians between groups one and two is different than what would be expected by chance. Include a statement about the difference in medians between the two groups and be sure to include the P-value. (1 mark)
-
-
-```{r include = FALSE}
-abs_simulated_medians <- abs(simulated_medians)
-abs_diff_medians_obs <- abs(diff_median_obs)
-exceed_count <- length(abs_simulated_medians[abs_simulated_medians >= 
-                                               abs_diff_medians_obs])
-p_val <- exceed_count / nreps
-p_val
-```
-
-**4. Bonus: Bootsrapping (2 marks)** In lecture, I mentioned that randomization tests are frequently used to estimate the amount of variance surrounding a population parameter. This is often done using **bootstrapping**, in which samples are repeatedly sampled **with replacement** from the observed data to estimate the distribution of the population statistic, from which the variance (or other measure of spread) can be estimated. In this _bonus_ exercise, I ask you to estimate the 95% confidence intervals around the _beta coefficient_ for the effect of variable `x2` on `y` in the simulated regression from question 2.
-
-(a) Generate a histogram showing the distribution of beta coefficients estimated by re-running the linear model in question 2 with different values for variable `x2` obtained by resampling the original `x2` distribution with replacement. You should perform 5,000 simulations of the linear model, each time saving the beta coefficient for the effect of the variable `x2` on `y`. The `y_intercept`, variable `x1` and the `error` should remain unchanged during each iteration. A single iteration should look like the following: (1) Resample 20 values of variable `x2` with replacement. (2) Run linear model with `y` as a linear function of `x1` and the newly resampled `x2` as in question 2. (3) Extract beta coefficient for effect of `x2` on `y` from the linear model and add to list. Repeat 5,000 times. Plot the distribution of betas. [**hint:** You can get the coefficients from a linear model using `coef(summary(model))`. You'll have to figure out how to extract the relevant beta using this command] (1 mark)
-
-```{r include = FALSE}
-set.seed(47)
-betas <- list()
-
-nreps <- 5000
-
-for (i in 1:nreps){
-
-    x_sim <- sample(x2, size = length(x2), replace = TRUE)
-
-    y_intercept <- 17
-    b1 <- 0.5
-    b2 <- 0.097
-
-    error <- rnorm(x1, mean = 0, sd = 1.4)
-    y <- y_intercept + b1*x1 + b2*x_sim + error
-
-    model_sim <- lm(y ~ x1 + x_sim)
-    summary(model_sim)
-    betas[i] <- coef(summary(model_sim))[3,"Estimate"]
-}
-
-betas <- unlist(betas)
-hist(betas)
-```
-
-(b) Calculate the lower and upper counds of the 95% confidence intervals around the beta coefficient from the simulated regression in question 2. I have included the formula for the 95% confidence intervals below. (1 mark)
-
-
-$$ Lower \ 95\% \ CI \ bound = Observed\_beta - 1.96 \times SE  $$
-
-$$ Upper \ 95\% \ CI \ bound = Observed\_beta + 1.96 \times SE  $$
-
-The observed beta is the one from the multiple regression simulated in question 2. The standard error should be estimated from the distribution of possible betas obtained in question 4a. What is your interpretation of the 95% confidence interval. [**Hint:** [This page](http://www.stat.wisc.edu/~larget/stat302/chap3.pdf) may be helpful].
-
-```{r include = FALSE}
-observed_beta <- coef(summary(model))[3, "Estimate"]
-mean_betas <- mean(betas)
-se <- sd(betas) / sqrt(length(betas))
-ci_lower <- observed_beta - 1.96*se
-ci_upper <- observed_beta + 1.96*se
-
-ci_lower
-ci_upper
-```
-
+(b) Perform a permutation test testing whether the observed t statistic between groups one and two is different than what would be expected by chance. Include a statement about whether there is a significant difference between groups based on your permutation test and be sure to include the P-value. How does this P-value compare to one obtained from a simple t-test? Why? (1 mark)
