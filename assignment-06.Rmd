@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 6: Statistical modelling (8 marks)'
+title: 'Assignment 6: Multivariate stats and model selection'
 output:
     html_document:
         toc: false
@@ -7,148 +7,63 @@ output:
 
 <!-- keep this part -->
 *To submit this assignment, upload the full document on blackboard,
-including the original questions, your code, and the output. Submit both
-your `.Rmd` source file and a knitted `.html` version of the same file.*
+including the original questions, your code, and the output. Submit
+your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
-1.  Ricker model (4 marks).
+1. In this exercise, we will once again use the data of Santangelo _et al._ (In press) that you used in assignment 5. Let's go ahead and load in the data.
 
-    The Ricker model is a stochastic model for growth of a population.
-    Its two parameters are the death rate $b$ and growth rate $r$ of the
-    population. The carrying capacity of the system is $r/b$.
-
-    $N_{t+1} = N_t e^{r - bN_t + \xi_t}$
-
-<!-- -->
-
-(a) Use the following code to simulate a dataset of the number of fish
-    returning to spawn each year. Create a point and line plot with time
-    on x-axis and the y on the y-axis using `ggplot2`. Include a
-    horizontal line at the carrying capacity and name the axis labels
-    something more meaningful (0.5 marks).
-
-``` {.r}
-# Simulating data for the Ricker Model function
-simulate_data <- 
-    function(initial_condition = 1000,
-             growth_rate = 2.0,
-             carrying_capacity = 2000,
-             noise = 0.75,
-             timesteps = 100) {
-        
-        # So random number generator is consistent
-        set.seed(2100)
-        
-        death_rate <- growth_rate / carrying_capacity
-    
-        y <- numeric(timesteps + 1) # empty vector of population sizes
-        y[1] <- initial_condition # set first element to a initial condition
-        for (i in 2:(timesteps + 1)) {
-            y[i] <- y[i - 1] * exp(rnorm(n = 1, growth_rate - death_rate * y[i - 1], noise))
-        }
-
-        data <- data.frame(time = seq(1, length(y), by = 1), y = y)
-        return(data)
-}
-
-# Simulate data:
-ricker_df <- simulate_data()
-```
-
-(b) Use least squares to fit the simulated data to the model (*hint:*
-    check with lecture 10 material, fitting models with two parameters,
-    for similar code). Follow these steps. (1.5 marks)
-
-    1.  Make a vector of $N_t$ and $N_{t+1}$, so that $N_t$ is the
-        independent variable and $N_{t+1}$ is the data you are fitting
-    2.  Create a function `ricker_pred_fn` that: a) has these two
-        arguments, `r`, `b`, in that order; b) calculates $N_{t+1}$
-        given $N_t$, according to the Ricker model equation; c)
-        subtracts the $N_{t+1}$ from the predicted Ricker model to
-        create the residual; d) and returns the squared residual.
-    3.  Create two sequence of `rvals` (for $r$) ranging from 0.5 to 3
-        and `bvals` (for $b$) ranging from 0.0001 to 0.0015.
-    4.  Either use a `for` loop or use the `expand.grid` + `mapply`
-        combination (check lecture 10 material) to apply every
-        combination of `rvals` and `bvals` to the `ricker_pred_fn`
-        function.
-    5.  Plot the resulting matrix using `wireframe`.
-    6.  Use `which` to extract the best-fitting values of $r$ and $b$.
-
-(c) Rearrange the Ricker model formula so that it has the regression
-    form $y = a + Xb + e$, where $y = ln(N_{t+1}/N_t)$ (*hint:* taking
-    the logarithm cancels out the exponential $e$). Write down the
-    formula below. What are $a$, $b$, $X$, and $e$ equivalents in the
-    Ricker model equation? (0.5 mark).
-
-(d) Create a new data frame called `ricker_df2` with two columns $y$ and
-    $x$ based on the data from `ricker_df`, with the new variables in
-    the form of the equation in 1c) above (*hint:* reuse the variables
-    from 1b). Use `ricker_df2` to fit a linear regression model of the
-    rearranged Ricker equation using `glm`. Print out a tidy version of
-    the model results, keeping only the term, estimate, confidence
-    interval, and p-value. What are the estimates for $r$ and $b$? Are
-    they the same as the constants used from 1a)? (1 mark)
-
-(e) Is there a difference between the fit using `glm` and the fit using
-    least squares? Comment on why or why not there may be a difference.
-    Is there an advantage to using one method over the other? (0.5 mark)
-
-<!-- -->
-
-2.  Generalized Linear Models (GLM). Run the below code chunk. (4 marks)
-
-``` {.r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
-co2_df <- as_data_frame(as.matrix(CO2)) %>% 
-    mutate(conc = as.integer(conc),
-           uptake = as.numeric(uptake))
+library(lme4)
+library(lmerTest)
+
+Santangelo_data <- paste0("https://raw.githubusercontent.com/",
+                          "James-S-Santangelo/rcourse/",
+                          "master/data/Santangelo_JEB_2018.csv")
+download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
+Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
+                            col_names = TRUE)
+glimpse(Santangelo_data)
+head(Santangelo_data)
 ```
 
-a)  Look through the help documentation (`?CO2`) to understand what each
-    variable means. Which variable(s) do you think would be the $y$ in
-    the GLM model? Which variable(s) would be the $x$? Briefly defend
-    these choices. (0.25 marks)
+(a) Create a mixed-effects model with banner petal length (`Avg.Bnr.Ht`) as the response variable and HCN, Pollination, and their interaction as fixed-effect predictors. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Pollination` interactions by including these terms as random effects. This will be our saturated model. [**Hint:** Take a look at lecture 8 for a reminder on how to code random effects using `lmer()`, especially how interation (i.e. crossed) random-effects are coded]. (0.5 marks)
 
-b)  Create at most two plots that explore the data to eventually justify
-    the final variables you will use in the `glm` model. The order and
-    type of plots shown should highlight your thought process for your
-    choice of variables in the model. (1 mark)
+(b) We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
 
-c)  Write up the GLM equation, substituting in your final variables that
-    you will use. You can write it as a comment in a code chunk, as
-    plain text, or as a LaTeX equation (same as how we've shown it in
-    class). (0.25 mark)
+(c) Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. [**Hint:** Think carefully about which random effects should and should not be removed from the model. See lecture 11 for the logic behind this decision and assignment 5 for a description of the dataset that will help guide this decision]. (1 mark)
 
-d)  Run the `glm` model, tidy it up, and keep only the term, estimate,
-    confidence interval, and p-value. (optional: if you want to create a
-    table in the html output, use the `knitr::kable()` function) (1
-    mark)
+(d) Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to showw all the models and their AIC/AIC~c~ scores (1 mark)
 
-e)  Insert the numbers from the `glm` output into the GLM equation.
-    (0.25 mark)
+(e) Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction (i.e. larger or smaller banner petals in which treatment factor level?). Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
 
-f)  How much does `uptake` change if `conc` goes up by 10 mL/L? (*Note:*
-    it is intentional that there is no mention of the other variables in
-    the model.) Write out the interpretation as a simple statement of
-    this contribution of `conc` on `uptake`, when the other variables
-    are also in the model. (0.25 mark)
+(f) Use `dplyr` and `ggplot2` to plot the banner petal length of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). [**Hint:** `geom_errorbar()`]. (0.25 marks)
 
-g)  In regression modelling, there is a concept known as "interaction
-    terms". What this means is that the influence a variable has on the
-    dependent variable ($y$) changes when another variable also changes.
-    For example, in mammals, body temperature and air temperature are
-    not related to each other, while in reptiles, body temperature *is*
-    related to air temperature. So the regression equation would be:
+(g) Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
 
-    $$ BodyTemp = a + b_1 AirTemp + b_2 Reptile + b_3 (AirTemp \times Reptile) $$
+2. Install the`cluster` package so we can use the dataset "animals". Use the `?animals` to look at the documentation for the dataset, and load the packages below:
 
-    In `glm`, the formula would look like:
-    `BodyTemp ~ AirTemp + Reptile + AirTemp:Reptile`. Do you think there
-    is a potential interaction in the `co2_df` dataset? If so then:
-    write up the `glm` formula; run the model; tidy it up; and keep the
-    term, estimate, confidence interval, and p-value. Print this model
-    output. Now, insert in the numbers in the GLM formula and write out
-    the interpretations of the different conditions of the variables.
-    *Remember*, character data is converted into (in this dataset) 0 and
-    1 in the regression equation. If you don't think there are
-    interactions, justify why. (1 marks)
+```{r}
+#install.packages("cluster")
+library(cluster)
+library(psych)
+head(animals)
+```
+
+(a) First, clean the data so that there are no missing values (recall: the `principal()` function does not handle NA's well). Then, create a correlation matrix and create an inital principal components matrix without rotation and with the full number of possible factors. Create a scree plot. Based on the eigenvalues and scree plot, decide on an appropriate number of components for your model and justify your decision. (1 mark)
+
+(b) Run your principal components analysis using the number of factors/components you have selected. Interpret the output using the `psych` package we used in class. Assign each variable to a component. Do the components you've come up with make sense to you? What do they have in common, if anything (1 mark)?
+
+(c) Let's go back to our survey data. If you need to re-download it, use the code below:
+
+```{r}
+# If you need to re-download the survey:
+download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
+survey <- read_csv("survey.csv")
+survey %>% mutate_if(is.character, as.factor) -> survey #uses dplyr function to change all character vectors to factors
+head(survey)
+```
+
+Choose two appropriate variables to run MANOVA on. Choose two categorical predictor variables. Run the analysis (without follow-up analyses), interpret the results, and explain your choice of variables. (1 mark).
+
+(d) When would we prefer to use MANOVA over ANOVA? When is it not appropriate to use MANOVA? List one example each (1 mark).
