@@ -1,0 +1,940 @@
+---
+title: "Working with time series data"
+author: "Madeleine Bonsma-Fisher"
+---
+
+## Lesson preamble
+
+This lesson uses data from the National Ecological Observatory Network (NEON) [link](https://www.neonscience.org/). 
+This data is publicly available, along with lots of other cool ecological data.
+
+> ### Learning objectives
+> 
+> - Numerically solve differential equations with multiple initial conditions
+> - Work with and plot time series data
+> - Fit models to time series data (simulated and real)
+>
+> ### Lesson outline
+> 
+> Total lesson time: 2 hours
+> 
+> - Recap: drawing phase portraits and numerically solving differential equations (10 min)
+> - Numerical solutions with multiple initial conditions (10 min)
+> - Fitting models to data 
+>     - Fitting simulated data (20 minutes)
+> - Exploring and plotting time series data (30 min)
+>     - Fitting real data (40 minutes)
+> 
+> ### Setup
+> 
+> - `install.packages('tidyverse')` (done already)
+> - `install.packages('deSolve')` (done already)
+> - Download the data: 
+[https://github.com/UofTCoders/rcourse/raw/master/data/plant_phenology.csv](https://github.com/UofTCoders/rcourse/raw/master/data/Fitzpatrick_2018.csv)
+
+-----
+
+```{r math_shortcut, echo=FALSE}
+eq_dn_dt <- "$\\frac{dN}{dt}$"
+```
+
+
+## Recap 
+
+- Drawing **phase portraits** in one dimension:
+
+    - Fixed points: values of $N$ at which `r eq_dn_dt`, the rate of change of $N$,
+    is $0$. To find fixed points, plot `r eq_dn_dt` vs. $N$ and find the place(s)
+    where it crosses the $x$ axis ($y = 0$).
+    - Stability: if you start at some $N$ close to the fixed point but not exactly
+    on it, will you go towards (stable) or away (unstable) from the fixed point? The
+    sign of `r eq_dn_dt` on either side of a fixed point tells you whether $N$ will
+    increase or decrease in that area. Draw an arrow to the right if `r eq_dn_dt` is
+    positive, and draw an arrow to the left if `r eq_dn_dt` is negative.
+
+- Numerically solving differential equations in R: starting from an initial population size, 
+calculate a sequence of population sizes using the information contained in the differential 
+equation. The result is a **trajectory** of $N$ vs. time. 
+    - Using R's ODE-solver `ode`: define a function that calculates `r eq_dn_dt` for your model, 
+    making sure that it's in the correct format with arguments `t`, `state`, and `parameters`.
+    Call the function `ode` and give it the parameters `y = state, times = times, 
+    func = logistic_fn, parms = parameters`
+    
+## Finding numerical solutions with multiple initial conditions
+
+Let's make a pretty plot of numerical solutions for the logistic equation from a few 
+different starting points.
+
+```{r}
+# define function to be in the format that `ode` uses
+logistic_fn <- function(t, state, parameters) {
+  # Calculates dN/dt for the logistic equation
+  
+  # t: time point at which to evaluate derivative
+  # state: vector of variables (here it's just N)
+  # parameters: vector of model parameters c(r, K)
+  
+  N <- state 
+  
+  r <- parameters['r'] # get the element labelled 'r'
+  K <- parameters['K'] # get the element labelled 'K'
+
+  #rate of change
+  dN <- r * N * (1 - N / K)
+    
+  #return rate of change
+  return(list(c(dN)))
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(deSolve)
+```
+
+```{r}
+# Run ode
+
+# define parameters for the ode function
+parameters <- c(r = 0.5, K = 50)
+initial_conditions <- seq(10, 80, by = 10)
+times <- seq(0, 15, by = 0.01)
+
+# run ode inside a loop to calculate trajectories for several initial conditions
+results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>% # CTRL-shift-m to make pipe
+  # 'do' is a dplyr function that returns a dataframe after doing a series of computations.
+  # once the results are in a data frame, everything we've learned about ggplot and dplyr can be used!
+  do(data.frame( # 'data.frame' converts the output of 'ode' to a dataframe
+    ode(
+      y = initial_conditions, # each time the 'do' loop runs, a new initial condition will be used
+      times = times,
+      func = logistic_fn,
+      parms = parameters
+      )
+  ))
+
+# display the first few rows of the results
+head(results)  
+```
+
+This is exactly what we wanted. We have chosen a set of initial conditions 
+(`seq(10, 80, by = 10)`) and created a dataframe that has one column of times (`time`)
+and a column for each trajectory resulting from each initial condition (`X1`, `X2`, ...). 
+Now we can use `ggplot` to plot all the trajectories.
+
+```{r}
+# make a plot
+
+results %>%
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+```
+
+This plot very nicely summarizes the behaviour of the logistic equation: it shows the
+path that the population size $N$ will take in time from several initial conditions. 
+Importantly, the carrying capacity $K$ which we set to be $50$ is clearly a stable 
+fixed point: all the trajectories go towards $K$. 
+
+#### Challenge
+
+Modify the plotting code above so that the legend lists the initial conditions for each
+line instead of `X1`, `X2`, etc. 
+
+```{r, eval=FALSE, echo=FALSE}
+# Challenge solution
+
+results %>%
+    gather(Column, Value, -time) %>%
+    mutate(Column = gsub("X", "", Column) %>% # add this
+    gsub("$", "0", .)) %>% # and this
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+
+# or
+
+results %>%
+    rename(Condition10 = X1, Condition20 = X2) %>% # etc
+    gather(Column, Value, -time) %>%
+    ggplot(aes(x = time, y = Value, color = Column)) +
+    geom_line(aes(x = time, y = Value)) +
+    labs(y = "Population size")
+
+# or add this line before the plot
+
+names(results) <- c('time', data.matrix(results[1, -1])) # [1,-1] means first row and all columns except the first
+```
+
+## Fitting models to data
+
+Fitting data is a massive field, one we've already spent a lot of time on,
+and there are many different strategies for choosing 
+parameters for a model depending on the assumptions you make about your data and model.
+Today we will use **least squares** to fit a model to time series data.
+I will show you a method for doing 'brute force' least squares fitting so that you can fit any model you
+like using the same procedure, but there are certain cases in which it is possible to use
+`lm` to fit your data. 
+
+### Fitting simulated data with a single parameter
+
+Suppose we sample repeatedly from a bacterial population over time, and suppose we want 
+to fit our sampled data to an exponential growth model.
+
+Let's simulate some data from an exponential function to work with.
+
+```{r}
+times <- seq(0,10, by = 0.2) # sample times
+r <- 0.2 # growth rate
+N0 <- 10 # initial population
+
+# use the function 'rnorm' to add noise to the data
+Ndata <- N0*exp(r*times) + rnorm(n = length(times), mean = 0, sd = 0.75) 
+
+Ndata[1] <- N0 # fix the starting value to be N0 - this means we don't have to fit the intercept
+
+qplot(times,Ndata) # check with a plot
+```
+
+Now let's assume we don't know the growth rate $r$ and we want to extract it from the data
+--- we want to fit the data to an exponential growth model and find the value of $r$ that
+gives the best fit.
+
+To do this, we need a way to tell if a fit is good or bad. What criteria should we use
+to determine if a fit is good? One option is to just try several parameter values and try to
+manually adjust the parameter until the fit looks good. This is imprecise and not reproducible,
+but it's often a good place to start to get an idea of what parameter range to check. 
+
+The idea behind least squares fitting is that we want to minimize the difference between
+our model's prediction and the actual data, and we do that by minimizing the sum of the
+**squares** of the **residuals**. Residuals (or **errors**) are the difference between
+the model and the data for each data point. The purpose of taking the square of each 
+residual is to take out the influence of the sign of the residual. 
+
+The sum of the squares of the residuals is just a number, and now we have a criteria we can use
+to determine which of two fits is better: whichever fit minimizes that number is the better fit.
+
+In practice, there are many ways to find the particular parameter that gives the best fit. 
+One way is to start at some parameter value, then start adjusting it by small amounts and
+checking if the fit gets better or worse. If it gets worse, go in a different direction. 
+If it gets better, keep going in that direction until it either starts getting worse again
+or the amount by which it gets better is very small. This type of algorithm is called
+**gradient descent**. 
+
+Another option is to try a range of parameter values and choose the one that gives the best
+fit out of that list. This is simpler to implement than the previous algorithm, but it's
+also computationally more costly --- it can take a long time. 
+
+We will do some examples of the second method today, what we'll call 'brute-force least squares'.  
+
+```{r}
+# Make a range of r parameter values to try
+r_vals <- seq(0.01, 0.3, by = 0.01)
+
+# use the function 'sapply' to loop over r_vals list
+resids_sq <- sapply(r_vals, function(r) {
+    prediction <- Ndata[1] * exp(r * times) # we're not fitting N0, just assuming it's the first data point
+    residuals <- prediction - Ndata
+    sum(residuals^2)
+})
+```
+
+Let's plot the sum of residuals squared vs. $r$ to find which value of $r$ fits best:
+
+```{r}
+qplot(r_vals, resids_sq)
+```
+
+We can see visually that the minimum is around $r = 0.2$, but to extract that number 
+from the list we can use the function `which`:
+
+```{r}
+best_fit <- which(resids_sq == min(resids_sq))
+r_fit <- r_vals[best_fit] 
+r_fit
+```
+
+We got the 'correct' value of $r$, the one that we originally used to simulate the data.
+
+Finally, let's plot the fit against the original data:
+
+```{r}
+qplot(times,Ndata) +
+  geom_line(aes(x = times, y = Ndata[1] * exp(r_fit * times)))
+```
+
+Now let's do the same using the `lm` function. To use the `lm` function to fit an arbitrary function, 
+you need to be able to invert your function into the form $y = \alpha + \beta x$. This is not always possible; 
+for example, a function that is non-monotonic (goes up and down) can't be inverted unambiguously. 
+Here, our function is $N = N_0 \text{e}^{rt}$, and since we want to extract the fit parameters $r$ 
+and $N_0$, we should get $t$ out of the exponent. Taking the logarithm of both sides, we get
+
+$$\text{log}N=\text{log}N_0 + rt$$
+This is now in the form $y = \alpha + \beta x$, with $y = \text{log}N$, $\beta = r$, $\alpha = \text{log}N_0$, and $x = t$. 
+
+```{r}
+
+result <- lm(log(Ndata) ~ times)
+summary(result)
+
+N0 <- exp(coef(result)["(Intercept)"])
+r <- coef(result)["times"]
+
+qplot(times, Ndata) +
+  geom_line(aes(x = times, 
+                y = N0 * exp(r * times)))
+```
+
+Now that we've fit some simulated data, let's try it out on real data.
+
+## Plant phenology
+
+Today we'll be working with plant phenology data: *phenology* is the study of periodic or cyclic natural phenomena, 
+and this dataset contains observations of the seasonal cycles of plants at three NEON sites in the US:
+Blandy Experimental Farm ([BLAN](https://www.neonscience.org/field-sites/field-sites-map/BLAN)) 
+and the Smithsonian Conservation Biology Institute
+([SCBI](https://www.neonscience.org/field-sites/field-sites-map/scbi)) in Virginia, and the 
+Smithsonian Environmental Research Center
+([SERC](https://www.neonscience.org/field-sites/field-sites-map/serc)) in Maryland. 
+
+```{r, warning=FALSE}
+# Load the data
+plant_pheno <- read_csv("data/plant_phenology.csv")
+
+glimpse(plant_pheno)
+```
+
+```{r, eval=FALSE}
+View(plant_pheno) # if you want to browse in a spreadsheet-like viewer
+```
+
+Many of these columns aren't that relevant for us, but some that we're definitely interested in are `date`, `phenophaseIntensity`, and `scientificName`. Let's take a look at what kind of factors we have in the last two columns.
+
+```{r}
+plant_pheno %>% 
+  count(scientificName)
+
+plant_pheno %>% 
+  count(phenophaseIntensity)
+```
+
+These are 7 species of tree / shrub in this dataset. Feel free to look up what the common names are for each of these; for example, *Liriodendron tulipifera*, the tulip tree, can be found along the US east coast as well as in Southern Ontario.
+
+![Lipidoptera tulipifera, by Jean-Pol GRANDMONT - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=9873223](image/Liriodendron_tulipifera.png)
+
+Notice too that the `phenophaseIntensity` column is a character column, so if we want to use those values
+as numbers for plotting, we'll need to convert them to something numeric. I did this manually to create the
+column `phenophaseIntensityMean`, which takes the character value in the `phenophaseIntensity` column and
+converts it to a number which is the midpoint of that interval.
+
+```{r}
+str(plant_pheno$phenophaseIntensity)
+```
+
+I also subsetted the original dataset into just observations of leaf cover percentage for deciduous
+broadleaf plants. 
+
+Let's plot the phenophase intensity over time, grouped by the species.
+
+```{r, warning=FALSE}
+ggplot(plant_pheno, 
+       aes(x = date, y = phenophaseIntensityMean, color = scientificName)) +
+         geom_point() 
+```
+
+The pattern we would expect is already visible in this first plot - the leaves come out in the spring, 
+then disappear again in October. But there might be differences between species and between individuals 
+in a species. One way we could try to assess this is to fit the same model to subgroups of the data and
+then compare the fitted parameters to see if there are differences. 
+
+## Fit an oscillatory model to the data
+
+Let's try to fit a sine wave to the phenophase intensity. A generic sine wave has four parameters:
+
+$$y = A \text{sin}(kx - b) + c$$
+
+```{r}
+# plot a sine wave
+x <- seq(0, 3, 0.01)
+A <- 1
+k <- 2*pi
+b <- 0
+c <- 0
+
+qplot(x, A*sin(k*x-b)+c) +
+  geom_line()
+```
+
+Note that we're not solving a differential equation to get our model - we're just assuming some 
+shape for our function. In general you should choose models that make sense and that you have some 
+reason for choosing; this is an example that is probably not up to snuff with the true phenologists 
+but will roughly match the pattern in the data. A sine wave is the simplest expression for an oscillation.
+
+Let's calculate the mean phenophase intensity across individuals in the same species.
+
+```{r}
+plant_pheno_species_mean <- plant_pheno %>% 
+  filter(!is.na(phenophaseIntensityMean)) %>% 
+  group_by(scientificName, date) %>% 
+  summarise(phenophaseIntensityBySpecies = mean(phenophaseIntensityMean))
+
+head(plant_pheno_species_mean)
+```
+
+```{r}
+ggplot(plant_pheno_species_mean, aes(x=date, y=phenophaseIntensityBySpecies, colour = scientificName)) +
+  geom_point()
+```
+
+Now we have seven timeseries, one for each species. Let's check to see if there are any observations that are doubled for a given date --- we want single observations per species here.
+
+```{r}
+# check to see if there is ever more than one observation for a given date - want nothing returned here
+
+plant_pheno_species_mean %>% 
+  group_by(scientificName) %>% 
+  count(date) %>% 
+  filter(n > 1)
+```
+
+Now we will create a test function to get a rough idea for the parameters. I played around with these numbers ahead of time so that we could know roughly which parameter regime to search. 
+
+```{r}
+dates = plant_pheno_species_mean %>% 
+  arrange(date) %>% 
+  select(date)
+
+subtract_dates <- function(date1, date2) {
+  result <- date1 - date2
+}
+
+dates_numeric <- mapply(subtract_dates,
+                 dates$date, # first argument in subtract_dates function 
+                 dates$date[1]) # second argument in subtract_dates function - the first date
+
+# add the numeric dates to the dataframe
+plant_pheno_species_mean$date_numeric <- mapply(subtract_dates, 
+                                                plant_pheno_species_mean$date,
+                                                dates$date[1])
+
+# period = 365 days
+# wavenumber of sine function = 2 * pi/lambda 
+
+sine_model <- function(x, amplitude, wavelength, phase, offset) {
+  return(amplitude*sin(2*pi/wavelength*x + phase) + offset)
+}
+
+guess_curve <- sine_model(dates_numeric, 0.5, 365, 0.5, 0.5)
+```
+
+
+```{r}
+qplot(x = dates$date, y = guess_curve) +
+  geom_point(data = plant_pheno_species_mean, 
+       aes(x = date, y = phenophaseIntensityBySpecies, colour = scientificName))
+```
+
+We will only fit $b$, the horizontal shift, since we already know the other parameters: we know that the
+minimum and maximum must be 0 and 1 since the intensity goes from 0 to 100, and this sets both $c$ and $A$.
+We also know $k$, since we know that the oscillation should go around once in a year (365 days).
+If we were being more fancy, we might want to take into account things like temperature and leap years;
+there is a `pheno` package in R specifically for plotting and analyzing phenological data.
+
+```{r}
+
+# Make a range of b parameter values to try
+b_vals <- seq(0.2, 0.8, by = 0.01)
+
+tulip_tree <- plant_pheno_species_mean %>%
+  filter(scientificName == "Liriodendron tulipifera L.") 
+
+# use the function 'sapply' to loop over b_vals list
+resids_sq <- sapply(b_vals, function(b) {
+    prediction <- 0.5*sin(2*pi/365*tulip_tree$date_numeric + b) +0.5
+    residuals <- prediction - tulip_tree$phenophaseIntensityBySpecies
+    sum(residuals^2)
+    
+})
+```
+
+```{r}
+qplot(b_vals, resids_sq)
+```
+
+We can see visually that the minimum is around $b = 0.5$, but to extract that number 
+from the list we can use the function `which` as before:
+
+```{r}
+best_fit <- which(resids_sq == min(resids_sq))
+b_fit <- b_vals[best_fit] 
+b_fit
+```
+
+Finally, let's plot the fit against the original data:
+
+```{r}
+ggplot(data = tulip_tree, aes(x = date, y = phenophaseIntensityBySpecies)) +
+  geom_point() + 
+  geom_point(aes(x = date, y = 0.5*sin(2*pi/365*tulip_tree$date_numeric + b_fit) +0.5, colour = 'b'))
+```
+
+Not bad! To wrap up, let's compare the fits for the rest of the species.
+
+```{r}
+# Make a range of b parameter values to try
+b_vals <- seq(0.1, 0.8, by = 0.015)
+
+# create a function that does least squares for this model
+least_squares <- function(df, b_vals) {
+  resids_sq <- sapply(b_vals, function(b) {
+    prediction <- 0.5*sin(2*pi/365*df$date_numeric + b) +0.5
+    residuals <- prediction - df$phenophaseIntensityBySpecies
+    sum(residuals^2)
+    })
+  return(data.frame(b_vals, resids_sq))
+}
+
+# create a data frame that contains the residuals grouped by species
+resids_sq_all_species <- plant_pheno_species_mean %>%
+  group_by(scientificName) %>% 
+  do(data.frame(val=least_squares(., b_vals)))
+
+resids_sq_all_species
+```
+
+```{r}
+ggplot(resids_sq_all_species, aes(x=val.b_vals, y = val.resids_sq, colour = scientificName)) +
+  geom_point()
+```
+Get the best fit $b$ value for each species:
+
+```{r}
+b_df <- resids_sq_all_species %>% 
+  group_by(scientificName) %>% 
+  summarize(fit = b_vals[which(val.resids_sq== min(val.resids_sq))])
+
+b_df
+```
+
+```{r}
+
+calculate_fit_curve <- function(df) {
+  y <- 0.5*sin(2*pi/365*df$date_numeric + df$fit) +0.5
+  date <- df$date
+  return(data.frame(date, y))
+}
+
+# add fits to data frame
+plant_pheno_species_mean <- inner_join(plant_pheno_species_mean, b_df)
+
+plant_pheno_species_mean
+
+fit_curves <- plant_pheno_species_mean %>% 
+  group_by(scientificName) %>% 
+  do(data.frame(calculate_fit_curve(.)))
+
+fit_curves
+
+ggplot(data = plant_pheno_species_mean, aes(x = date, y = phenophaseIntensityBySpecies, 
+                                            colour = scientificName)) +
+  geom_point() + 
+  geom_point(data= fit_curves, aes(x = date, y = y, colour = scientificName))
+```
+
+## Extras
+
+## Qualitative analysis of 2D models
+
+Now we'll move on to look at how to analyze two-dimensional models. **Two-dimensional** 
+means that there are now two variables in the system (like $x$ and $y$, prey and predators) 
+instead of one (like $N$).
+
+Many of the concepts and tools from analyzing one-dimensional models will be used 
+here as well, but we will add some things that are specific to more than one dimension. 
+
+To motivate some of these new concepts and the idea of modelling in two dimensions, 
+let's analyze a model of two species interacting.
+
+$$\frac{dx}{dt} = ax - bxy$$
+$$\frac{dy}{dt} = cx - dy$$
+
+This is very close to the Lotka-Volterra predator-prey model, but the term for predator 
+growth is $cx$ instead of $cxy$. In this model the predators will eat the prey at a 
+constant rate, no matter how many of the predators there are. Make sure you don't use 
+these exact equations when you do the assignment!
+
+First, we'll simulate a trajectory for the two species.
+
+```{r}
+predator_prey <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(X, Y))
+  # parameters: vector of model parameters (c(a, b, c, d))
+  
+  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
+    
+  #now the state vector y has two elements because we have two species
+  X <- y[1] # prey
+  Y <- y[2] # predators
+  
+  a <- parameters['a']
+  b <- parameters['b']
+  c <- parameters['c']
+  d <- parameters['d']
+    
+  # calculate rate of change
+  dx <- a * X - b * Y * X
+  dy <- c * X - d * Y
+  
+  # return rate of change
+  return(list(c(dx, dy)))
+}
+```
+
+```{r}
+# run the numerical solution
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) # parameters named so that we can access them by name
+state <- c(X = 2, Y = 2) # same thing here
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+```
+
+```{r}
+# plot the results
+
+result %>% 
+  ggplot() +
+  geom_line(aes(x = time, y = X), color = 'red') +
+  geom_line(aes(x = time, y = Y), color = 'blue') +
+  labs(y = "Population size")
+```
+
+It looks like we have oscillations that decay to a fixed point. Notice that the prey population 
+(in red) dips below $1$ during each oscillation. If this was a real population, the prey would 
+have gone extinct on the first dip below $1$. This means that the parameters we've chosen aren't
+very realistic. We could instead choose parameters that would change the fixed points to real-world
+population sizes. 
+
+#### Challenge
+
+Modify the plotting code above to include a legend distinguishing 'predators' and 'prey'. 
+Feel free to look up a solution online.
+
+```{r, eval=FALSE, echo=FALSE}
+# Challenge solution
+
+result %>% 
+  rename(Prey = X, Predator = Y) %>% 
+  gather(PredPrey, PopulationSize, -time) %>% # the minus means use all columns except that one
+  ggplot(aes(x = time, y = PopulationSize, color = PredPrey)) +
+  geom_line() +
+  labs(y = "Population size")
+
+```
+
+### A note on using Euler's method to solve higher-dimensional systems
+
+*Note*: if you are using Euler's method to solve a two-dimensional system, make sure 
+you calculate the rates of change using the variables from the previous time step. For 
+example, in the predator-prey model, both $\Delta x$ and $\Delta y$ depend on $x$ and $y$, 
+and it's important that you calculate $\Delta x$ and $\Delta y$ *before* updating the 
+values of $x$ and $y$.
+
+Here's an example. 
+
+```{r}
+# Define predator-prey equations
+
+dX_dt <- function(X, Y, a, b) {
+  # X: number of prey
+  # Y: number of predators
+  # a: growth rate of prey
+  # b: rate at which predators eat prey
+  
+  return(a * X - b * Y * X)
+}
+
+dY_dt <- function(X, Y, c, d) {
+  # X: number of prey
+  # Y: number of predators
+  # c: growth rate of predators from eating prey
+  # d: death rate for predators
+  
+  return (c * X - d * Y)
+}
+```
+
+```{r}
+# parameters
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+state <- c(X = 2, Y = 2)
+
+dt <- 0.01 # timestep - the smaller, the better
+tmax <- 30 # the total time we want to numerically solve for
+points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
+
+# vectors to store values of X, Y, and t at each timestep:
+X_vector <- numeric(points) # prey population size
+Y_vector <- numeric(points) # predator population size
+t_vector <- seq(0, tmax - dt, by = dt) # time vector
+
+# initial condition
+X0 <- 2
+Y0 <- 2
+X_vector[1] <- X0
+Y_vector[1] <- Y0
+
+X <- X0 # initialize variable X
+Y <- Y0 # initialize variable Y
+```
+
+This is the right way to do it.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # first calculate BOTH dX and dY
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  
+  # now update BOTH X and Y
+  X <- X + dX 
+  Y <- Y + dY
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+This is the wrong way.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # calculate dX and then update X (wrong)
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  X < X + dX
+  
+  # calculate dY and then update Y - this will use the new value of X instead of the old one.
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  Y <- Y + dY
+  
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+## Phase portraits in two dimensions
+
+#### Challenge
+
+What were the axes of the one-dimensional phase portraits we drew? What would the axes
+of a phase portrait for the predator-prey system above be?
+
+```{r, eval=FALSE, echo=FALSE}
+# Challenge solution
+
+# The axis was N in the 1D version. 
+# For a 2D system with variables x and y, the two axes would be x and y.
+```
+
+Continuing with the predator-prey example: instead of plotting our numerical trajectory as $X$ and 
+$Y$ vs. $t$, we'll plot $Y$ vs. $X$: predator population size vs. prey population size. 
+
+```{r}
+ggplot(result) +
+  geom_path(aes(x = X, y = Y, color = time)) # geom_line connects the dots in the wrong way - try it out and see
+```
+
+A phase portrait in two dimensions has two axes: one for each of the variables in the system.
+Here, the two variables are $X$ and $Y$, prey and predators. We want to include the same 
+information in this 2D phase portrait as in the 1D portrait: at minimum, we want to mark 
+the fixed points and draw a **vector field**: arrows indicating in which direction the rate 
+of change is for different values of $X$ and $Y$. 
+
+We can also add other information, and in the plot above we haven't yet drawn arrows or
+fixed points, but we have drawn a **trajectory** - the dots trace out what happens to $X$
+and $Y$ over time starting from $X = 2$, $Y = 2$. Time is no longer an axis in the plot,
+but it's still there, hidden in the path that the populations take. 
+
+Comparing these two ways of plotting a trajectory, we can see that oscillations in time
+look like circular motion in the phase portrait. The GIF below illustrates this.
+
+![Predator-prey simulation](image/predator-prey.gif)
+
+### Drawing qualitative phase portraits by hand
+
+Before we look at how to add more to phase portraits in R, let's practice the process by hand to
+get familiar with it. Let's use the following two-dimensional system as an example. The two state
+variables are $x$ (position) and $v$ (velocity), and this is a model of a mass attached to a 
+spring. $dx/dt$ is the rate of change of position, and $dv/dt$ is the rate of change of velocity. 
+
+$$\frac{dx}{dt} = v$$
+
+$$\frac{dv}{dt} = -\omega^2 x$$
+
+We want to draw a **vector field** in two dimensions to show how the system will evolve through time.
+Our axes are $x$ and $v$. It doesn't matter which one is the vertical axis and which one is
+horizontal, but let's put $x$ on the x-axis and $v$ on the y-axis. These variables aren't 
+population sizes, so they can realistically be negative and non-integers. 
+
+Next, we choose some pairs of $x$ and $v$ and evaluate both $dx/dt$ and $dv/dt$, drawing an
+arrow at $(x,v)$ in the direction of the derivative. Let's also set $\omega = 1$ for convenience.
+Let's start with $(0,0)$: both derivatives are 0, so there's no arrow. For $(0,1)$, $dx/dt = 1$
+and $dv/dt = 0$, so we draw an arrow pointing horizontally in the $+x$ direction. Similarly for
+$(1,0)$. For $(1,1)$, we draw an arrow that goes $1$ unit in the $x$ direction and $-1$ unit in
+the $y$ direction. As we keep filling in this grid, we start to get a picture of how the system
+can behave for different starting points of $x$ and $v$. 
+
+This is analogous to plotting $dN/dt$ vs. $N$ and drawing arrows to the right where $dN/dt$ is
+positive and arrows to the left when it's negative, except that now we have to consider that 
+the rate of change is affecting both variables at the same time. 
+
+#### Challenge
+
+Define a function called `mass_spring` that uses the format required by `ode` to calculate 
+and return $dx/dt$ and $dv/dt$. We will use this function later to plot a phase portrait in R.
+Remember that the arguments for your function must be called `t`, `y`, and `parameters`. 
+
+```{r, eval=FALSE, echo=FALSE}
+# Challenge solution
+
+mass_spring <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(x, v))
+  # parameters: vector of model parameters (c(omega))
+    
+  # the state vector y has two elements because we have two variables
+  x <- y[1] # position
+  v <- y[2] # velocity
+  
+  omega <- parameters[1]
+    
+  # calculate rate of change
+  dx <- v
+  dv <- -omega^2 * x
+  
+  # return rate of change
+  return(list(c(dx, dv)))
+}
+```
+
+### Using `phaseR` to draw phase portraits in R
+
+`phaseR` is a package specifically for drawing phase portraits. It can automatically calculate 
+and plot things like trajectories and vector fields. 
+
+```{r}
+library(phaseR)
+```
+
+```{r, eval=FALSE}
+?phaseR
+```
+
+```{r, eval=FALSE}
+?flowField # the nice thing about this packages is that it takes functions in the same format as `ode`
+```
+
+Let's plot a vector field and some trajectories for the predator-prey model.
+
+```{r}
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
+pp_flowField <- flowField(predator_prey, x.lim = c(0, 10), y.lim = c(0, 10),
+                          parameters = c(a = 5, b = 1, c = 1, d = 0.2), # same parameters as before,
+                          points = 15, # this is the density of grid points on which to plot arrows
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories
+pp_trajectory <- trajectory(predator_prey, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
+                                   byrow = TRUE), 
+                            t.end = 20, # how far in time to calculate the trajectories
+                            parameters = c(a = 5, b = 1, c = 1, d = 0.2), system = "two.dim")
+```
+
+#### Challenge
+
+Use `phaseR` and the function `flowField` to make a phase portrait for the mass-spring system 
+of differential equations. You will need to use the function you wrote in the previous challenge.
+Is there a fixed point, and if so, where do you think it is?
+
+```{r, echo=FALSE, eval=FALSE}
+# Challenge solution
+
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dv/dt
+mass_spring_flowField <- flowField(mass_spring, x.lim = c(-3,3), y.lim = c(-2,2),
+                          parameters = c(omega = 0.5), 
+                          points = 21, 
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories - not part of challenge, just for fun.
+mass_spring_trajectory <- trajectory(mass_spring, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = matrix(c(1, 1, 0, 1, 2, -1.5), ncol = 2,
+                                 byrow = TRUE), 
+                            t.end = 20, # how far in time to calculate the trajectories
+                            parameters = c(omega = 0.5), 
+                            system = "two.dim")
+```
+
+### Predator-prey simulation GIF in R
+
+```{r, eval=FALSE}
+library(animation)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+ani.options(interval = 0.00001)
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) 
+state <- c(X = 2, Y = 2)
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+saveGIF({ 
+    for (i in seq(1, length(result$time), by = 50)) { 
+      result_i <- head(result, i)
+      p1 <- ggplot(result_i) +
+        geom_line(aes(x = result_i$time, y = result_i$X), color = 'red') +
+        geom_line(aes(x = result_i$time, y = result_i$Y), color = 'blue') +
+        ylim(0, 8) +
+        xlab("Time") +
+        ylab("Population size")
+
+      p2 <- ggplot(result_i) +
+        geom_path(aes(x = result_i$X, y = result_i$Y, color = result_i$time)) +
+        theme(legend.position="none") + 
+        xlim(0, 8) +
+        ylim(0, 8) +
+        xlab("Prey population size X") +
+        ylab("Predator population size Y")
+    
+    grid.arrange(p1, p2, ncol = 2, top = "Predator-prey model")
+    }
+
+}, movie.name = "image/predator-prey.gif", ani.width = 900, ani.height = 600)
+
+```
+
+
