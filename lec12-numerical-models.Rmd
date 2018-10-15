@@ -47,7 +47,7 @@ eq_dn_dt <- "$\\frac{dN}{dt}$"
 
 Until now in this class, we've been talking about (mostly) linear models that are used to 
 determine how different variables relate to each other in a dataset (AKA "stats"). This week, I'll be talking
-about models that are used to summarize a biological idea about how populations behave. 
+about models that are used to summarize a biological idea about how populations behave in time. 
 The specific models I'll be talking about will likely be familiar to you from your previous ecology classes.
 
 <!--*How many have taken some theoretical ecology before?*-->
@@ -82,16 +82,16 @@ The specific models I'll be talking about will likely be familiar to you from yo
         or use very frequently and that I think are an important part of the theorist / data scientist toolkit. 
 
 3. In the next two lectures we will talk about population models and about using R to analyze models. 
-We will first do this qualitatively (no math), then quantitatively. We will talk about fitting models to data,
+We will talk about fitting models to data,
 and by the end I hope that you will be able to incorporate modelling into your project, 
 whether a model you design yourself or an existing ecological model. 
 
 ## Setting up a population model
 
-Let's look at some examples of one-dimensional models and talk about what we can learn from these models
-qualitatively, without doing any calculations.
+Let's look at some examples of one-dimensional population models and talk about what we can 
+learn from these models qualitatively, without doing any calculations.
 
-**Dimension**: the number of variables in your model. (Not the number of parameters.  
+**Dimension**: the number of variables in your model. (Not the number of parameters. 
 Variables are what track the species you're interested in, 
 and parameters are numbers that specify the details of the model.)
 
@@ -110,7 +110,8 @@ $$\frac{N_{t+\Delta t} - N_t}{\Delta t} = \frac{\Delta N}{\Delta t}$$
 $$lim_{\Delta t \to 0}\frac{N_{t+\Delta t} - N_t}{\Delta t} = lim_{\Delta t \to 0}\frac{\Delta N}{\Delta t} = \frac{dN}{dt}$$ 
 
 If you've taken calculus, you will recognize this as the first derivative of $N$ with respect to $t$. 
-If your calculus is foggy in your memory, when you see this notation think "change in $N$ per change in $t$.
+If your calculus is foggy in your memory, when you see this notation think "change in $N$ per change in $t$. For a linear function, this is the same as the $\beta$ coefficient we talked about a few classes ago.
+
 $dN$ is the notation commonly used to mean "a small amount of $N$," so this expression mathematically describes
 by what small amount $N$ will change in a small amount of time $dt$. This is also sometimes written as
 $\dot{N}$. I will usually use $dN/dt$ but you may see the dot notation in the literature. 
@@ -214,6 +215,7 @@ qplot(N_seq, dN_dt) +
   geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
 ```
 
+$dN/dt = 0$ when $N=0$, so $N=0$ is the only fixed point for this system. 
 We can also tell whether the fixed points are stable or unstable by looking at the sign of $dN/dt$ 
 on either side of the fixed point. For a one-dimensional system, our phase portrait is a line of $N$. 
 We mark the fixed point(s) with circles, and we draw an arrow to the left wherever $dN/dt$ is negative, 
@@ -299,7 +301,24 @@ qplot(N_seq, dN_dt) +
 
 The fixed points are at $N=0$ and $N=80$. If we change $K$, we can figure out that the second fixed point is actually just $N=K$. 
 
-Now we draw the phase portrait (on blackboard):
+Now we draw the phase portrait:
+
+```{r, echo=FALSE}
+line <- seq(-25,100)
+
+N <- c(0,80)
+y <- c(0,0)
+ggplot() +
+  geom_point(aes(N, y ), pch = 1, size = 3) +
+  geom_line(aes(x = line, y = 0)) +
+  geom_segment(mapping = aes(x=30,y=0, xend = 50, yend = 0), arrow=arrow(), size=2) +
+  geom_segment(mapping = aes(x=-8,y=0, xend = -18, yend = 0), arrow=arrow(), size=2) +
+  geom_segment(mapping = aes(x=95,y=0, xend = 85, yend = 0), arrow=arrow(), size=2) +
+  theme_classic() +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) 
+```
 
 <!-- Phase portrait for logistic eqn -->
 
@@ -324,7 +343,8 @@ fixed point - the ground.
 #### Challenge
 
 There is a subtlety to these differential equation descriptions of models. To see this, calculate
-$\frac{dN}{dt}$ for $r=1$ and $N=0.1$. Is this value positive, negative, or zero? Think about what $N=0.1$
+$\frac{dN}{dt}$ for the exponential model with $r=1$ and $N=0.1$. Is this value positive, 
+negative, or zero? Think about what $N=0.1$
 means biologically. Does it make sense that the population should increase if $N=0.1$?
 
 ```{r}
@@ -380,7 +400,7 @@ Find the fixed point(s) of the following differential equation.
 $$\frac{dN}{dt} = \text{sin}(N)$$
 
    - Plot $\frac{dN}{dt}$ vs. $N$ for $N$ ranging from $0$ to $10$.
-   - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
+   - Sketch a phase portrait on paper. Are the fixed point(s) stable or unstable?
 
 ```{r, echo=FALSE, eval=FALSE}
 # Challenge solution
@@ -457,7 +477,7 @@ implement Euler's method yourself; an example of how to do this is at the end of
 
 We will calculate numerical solutions for the logistic equation so that we can compare what we know
 about the fixed points and their stability with the way a population obeying this equation changes in
-time. We'll start with a paper example, then later implement it in R with a loop.
+time. We'll start with a paper example, then later implement it in R with `deSolve`.
 
 This is the update rule: 
 
@@ -591,12 +611,52 @@ class(result) # result is a 'matrix': an array of numbers
 ```
 
 ```{r}
-
 result <- data.frame(result) # convert it to a dataframe so we can use ggplot
 
 ggplot(result) +
   geom_point(aes(x = time, y = N))
 ```
+
+#### Challenge - in groups
+
+Use `deSolve` to calculate a numerical solution for the following differential equation:
+
+$$\frac{dx}{dt} = -2.3 x$$
+
+The exact solution is 
+
+$$x(t) = x_0 \text{e}^{-2.3t}$$
+
+Use an initial condition of $x_0 = 50$, and calculate your answer for $t$ from $0$ to $10$.
+
+```{r, echo=FALSE, eval=FALSE}
+# challenge solution
+
+dx_dt <- function(t, state, parameters) {
+  
+  x <- state
+  r <- parameters
+  
+  dN <- r * x
+  return(list(c(dN)))
+}
+
+parameters <- -2.3
+state <- 50
+times <- seq(0, 10, by = 0.1)
+
+result <- ode(y = state, times = times, func = dx_dt, parms = parameters)
+
+result <- data.frame(result)
+
+head(result)
+
+# plot the result
+ggplot(result) +
+  geom_point(aes(x = time, y = X1)) +
+  geom_line(aes(x = time, y = 50*exp(-2.3*time))) # add the exact solution
+```
+
 
 ## Extras 
 
@@ -694,58 +754,6 @@ N2 <- N1 + dN
 print(N2) # N is getting more and more negative!
  
 ```
-
-#### Challenge - in groups
-
-Use Euler's method to calculate a numerical solution for the following differential equation:
-
-$$\frac{dx}{dt} = -2.3 x$$
-
-The exact solution is 
-
-$$x(t) = x_0 \text{e}^{-2.3t}$$
-
-  - Use an initial condition of $x_0 = 50$, and calculate your answer for $t$ from $0$ to $10$.
-  - Try a few different step sizes ($\Delta t$) such as $0.1$, $0.7$, and $1$. What happens if $\Delta t$ is too large?
-
-```{r, echo=FALSE, eval=FALSE}
-# challenge solution
-
-dx_dt <- function(x) {
-  return(-2.3 * x)
-}
-
-dt <- 0.95 # timestep - the smaller, the better
-tmax <- 10 # the total time we want to numerically solve for
-points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
-
-# vectors to store values of N and t at each timestep:
-x_vector <- numeric(points) # population size
-t_vector <- seq(0, tmax - dt, by = dt) # time vector
-
-# initial condition
-x0 <- 50
-x_vector[1] <- x0
-
-x <- x0
-
-for (i in 2:points) {
-  # start at 2 because the initial state is at position 1
-  dx <- dx_dt(x) * dt
-  x <- x + dx # the variable N is changing at each step of the loop
-  x_vector[i] <- x
-}
-
-t_vector_small <- seq(0, tmax - 0.001, by = 0.001)
-
-qplot(t_vector, x_vector,
-      ylab = "x",
-      xlab = "Time t") +
-  geom_line(aes(x = t_vector, y = x_vector), color = 'blue') +
-  geom_line(aes(x = t_vector_small, y = x0*exp(-2.3 * t_vector_small)))
-
-```
-
 
 This is what's called **numerical instability** --- the numerical solution grows very large 
 (either positive or negative) but the true solution doesn't. In the logistic equation example above,
