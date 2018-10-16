@@ -114,7 +114,7 @@ or hand in the hard copy.*
     using your guess of the timescale from part (a) for the period.
     Use a colour other than black to plot the sine wave. 
     Note that the x axis must start at 0 in order for the offset of $2.75$
-    to match the data. (1 mark)
+    to match the data. (0.5 marks)
 
 (c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
     - Make a range of values for the period that span your guess from part (a).
@@ -129,4 +129,4 @@ or hand in the hard copy.*
 (d) Plot the lynx data again and plot your best fit curve on top. 
     Does your estimate of the cycle length match the literature?
     Why or why not? (Find and cite a resource that gives an estimate
-    of the lynx population cycle.)
+    of the lynx population cycle.) (0.5 marks)
