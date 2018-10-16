@@ -88,7 +88,7 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 11   | Nov 22 | Project work                                        | 1 TA/group     |
 | 12   | Nov 27 | Project work                                        | 1 TA/group     |
 | 12   | Nov 29 | Project work                                        | Everyone       |
-| 13   | Dec 04 | Project work                                        | Everyone       |
+| 13   | Dec 04 | Group presentations                                 | Everyone       |
 
 ## Assessment schedule
 | Assignment                | Type                | Due date   | Marks |
