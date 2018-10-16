@@ -629,32 +629,28 @@ $$x(t) = x_0 \text{e}^{-2.3t}$$
 
 Use an initial condition of $x_0 = 50$, and calculate your answer for $t$ from $0$ to $10$.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 # challenge solution
 
 dx_dt <- function(t, state, parameters) {
   
   x <- state
-  r <- parameters
   
-  dN <- r * x
-  return(list(c(dN)))
+  dx <- -2.3 * x
+  return(list(c(dx)))
 }
 
-parameters <- -2.3
-state <- 50
+state <- c(x = 50)
 times <- seq(0, 10, by = 0.1)
 
-result <- ode(y = state, times = times, func = dx_dt, parms = parameters)
-
+result <- ode(y = state, times = times, func = dx_dt)
 result <- data.frame(result)
-
 head(result)
 
 # plot the result
 ggplot(result) +
-  geom_point(aes(x = time, y = X1)) +
-  geom_line(aes(x = time, y = 50*exp(-2.3*time))) # add the exact solution
+  geom_point(aes(x = time, y = x)) +
+  geom_line(aes(x = times, y = 50*exp(-2.3*times))) # add the exact solution
 ```
 
 
