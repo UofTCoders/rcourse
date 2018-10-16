@@ -32,11 +32,11 @@ navbar:
     - text: 'Oct. 04: Simulating data: Randomization tests'
       href: lec09-Randomization-tests.html
     - text: 'Oct. 09: Multivariate stats'
-      #href: lec10-modelling.html
+      href: lec10-multivariate-stats.html
     - text: 'Oct. 11: Model selection'
       href: lec11-model-selection.html
     - text: 'Oct. 16: Numerically solving population models'
-      #href: lec12-datasets.html
+      href: lec12-numerical-models.html
     - text: 'Oct. 18: Time series analysis'
       #href: lec13-projects-r.html
     - text: 'Oct. 23: Datasets, hypothesis, begin projects'
