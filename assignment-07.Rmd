@@ -1,102 +1,132 @@
 ---
-title: 'Assignment 7: Project and team setup (8 marks)'
+title: "Assignment 7"
 output:
     html_document:
         toc: false
 ---
 
-*To submit this assignment, upload the full document on blackboard,
-including the original questions, your code, and the output. Submit both
-your `.Rmd` source file and a knitted `.html` version of the same file.*
+*To submit this assignment, upload the full document on Quercus,
+including the original questions, your code, and the output. Submit
+your assignment as a knitted `.pdf` or `.html` file.*
 
-These assignment tasks seem like a lot of work. However, we will be
-doing these tasks already during class and during project work. The
-purpose of the assignment is for you to get something started on your
-final project. While most of these assignment tasks are group based,
-please fill out each as an individual. In particular, the first question
-should be of *your* forked repository, not one of your team members.
-Each team member should submit their *own assignment*.
+*For questions that ask you to plot something by hand, indicate which
+assignment and question the plot is for and either include a photo or
+scan of it in the markdown document, create the plot digitally,
+or hand in the hard copy.*
 
-1.  A new repository has been created for your project on the
-    `UofTCoders` GitHub account. Create a fork of this project in your
-    GitHub account and paste the URL of this forked version below. (0.5
+1.  Qualitatively analyzing a one-dimensional model (2 marks)
+
+    Consider the differential equation $\frac{dx}{dt} = x(1-x)$.
+
+<!-- -->
+
+(a) Use R to plot $\frac{dx}{dt}$ vs. $x$ for $-1 \le x \le 2$. (0.5
     marks)
 
-    -   URL of *your* fork:
+(b) Sketch a one-dimensional phase portrait on paper (or digitally if you prefer).
+    Mark the direction of the derivative in each region with arrows and label the 
+    fixed points as "stable" or "unstable". (0.5 marks)
 
-2.  Create a `CONDUCT.md` file and open it up in RStudio. Write down
-    what you as a team decided on for acceptable conduct/behaviour of
-    team members to each other (e.g. "Must be considerate and
-    respectful"). Decide who on your team will save this file on their
-    forked version of the project. The team member needs to create a
-    pull request of this new file to the main project repository (on the
-    UofTCoders account). Copy and paste the link to the pull request.
-    Every team member must approve this pull request (we will show you
-    how to do this in class). Make sure the expectations and behaviours
-    are explicit and clear. (1.5 marks)
+(c) Use R to numerically solve this equation and plot $x$ vs. $t$ for
+    $0 \le t \le 10$. Plot trajectories for several different starting
+    values of $x$ (initial conditions) using `ggplot` and the `do`
+    function we used in class. Based on the long-time behaviour of the
+    system, which fixed point(s) are stable and which are unstable?
+    (1 mark)
 
-    -   URL of team member's pull request for `CONDUCT.md`:
+2.  The Allee Effect (3 marks)
 
-3.  A `README.md` file should already exist in your project. Complete
-    the following tasks in the README, discussed and written up *as a
-    team*. Decide who on your team will save this file on their forked
-    version and create a pull request of this file to the main project
-    repository. This person should *not* be the same person who did
-    task 2. Every team member must approve this pull request. (3.25
-    marks)
+    Generally, as population size increases, a population will
+    experience a decreased growth rate due to greater competition for
+    resources. This is a negative density-dependent growth rate, and one
+    example of this is the logistic model.
 
-    -   Create the following headers (make sure to use Markdown headers
-        `#`): "Introduction to the project", "Description of the data",
-        "Team description", "Installation instructions" (*note*, this
-        section we will provide for you).
+    The Allee effect introduces positive density dependence, where
+    increases in population size result in increased growth rates over a
+    certain range of population sizes. One way to incorporate
+    the Allee effect into the logistic growth equation is as follows:
 
-    -   Fill out the "Introduction to the project" section, answering
-        these questions in a paragraph form (don't include these
-        questions in the section). What is your project about? What is
-        the goal? Why are you doing it?
+    $$\frac{dN}{dt} = rN\left(1-\frac{N}{K}\right)\left(\frac{N-A}{K}\right)$$
 
-    -   Fill out the "Description of the data" section, and briefly
-        write down what the data is about, what are the variables you
-        think you'll use, how the data was collected, and how it will
-        answer your research questions. Include a reference of the
-        dataset if one is available, for instance:
+    Here $r$ represents the growth rate of the population, $K$ is the
+    carrying capacity, and $A$ is the critical population size above which 
+    the total growth rate is positive.
 
-            Forstmann BU, et al. (2014) Data from: Multi-modal ultra-high resolution
-            structural 7-Tesla MRI data repository. Dryad Digital Repository.
-            (https://dx.doi.org/10.5061/dryad.fb41s)
+(a) Take $r=1$, $A=10$, and $K=50$. Use R to plot $\frac{dN}{dt}$ vs.
+    $N$ for $0 \le N \le 55$. For which values of $N$ is the growth rate
+    ($\frac{dN}{dt}$) positive or negative? 
+    Which values of N are fixed points? (0.5 marks)
 
-    -   Fill out the "Team description" section by writing down a brief
-        biography of each member (including what their skills are and
-        what their approximate responsibilities (which can change later)
-        are for the project) and how team roles will be rotated.
+(b) Sketch a phase portrait on paper or digitally, leaving $A$ and
+    $K$ as variables (i.e. without choosing values for $A$ and $K$, but
+    with $0 \le A < K$). Mark the direction of the derivative in each
+    region with arrows and label the fixed points as "stable" or
+    "unstable". (1 mark)
 
-    -   URL of team member's pull request for `README.md`:
+(c) Use R to plot the **per capita** growth rate
+    ($\frac{1}{N}\frac{dN}{dt}$) vs. $N$ for this model of the Allee
+    effect and for the logistic growth model:
+    $\frac{dN}{dt} = rN(1-\frac{N}{K})$.
 
-4.  Create a file in the `doc/` folder called `objectives.md`. Create
-    one header (`#` markdown header) called "Study objectives". Create a
-    list (`-` markdown syntax) of each of your research questions that
-    you *as a team* thought of. It doesn't matter what the questions
-    are, how simple or complex or complicated or obvious they are, have
-    something written down. These research questions *will* change as
-    you do your analysis. The point is for you to get started thinking
-    about ideas. Decide on another (new) team member to create this
-    file, record it, and make a pull request of this new file. Every
-    team member must approve this pull request. (1 mark)
+    -   What do you notice about the density ($N$) dependence of the per
+        capita growth rate in each case? Hint: in the logistic model,
+        the growth rate **per capita** (per organism) decreases in a
+        straight line as $N$ increases.
 
-    -   URL of team member's pull request for `objectives.md`:
+    -   What happens to the Allee effect as $A$ decreases? Plot curves
+        for $A=0$ and a few values of $A>0$.
 
-5.  Create a file in the `doc/` folder called `analysis-plan.md`. Create
-    three headers (`#` markdown headers): "Possible analyses", "Possible
-    results tables", "Possible results figures". As a team, discuss and
-    record some possible analyses on the data that you could do to
-    answer the research questions. Discuss and record possible ways to
-    present your results (possible tables, some visualizations). Decide
-    on another (new) team member to create this file, record it, and
-    make a pull request of this new file. Every team member must approve
-    this pull request. *Note:* this analysis and presentation plan does
-    **not** have to be accurate, nor do you have to use this later on.
-    It could and will (very likely) change. The point is to get you as a
-    group thinking about how you will answer the research questions.
-    (1.75 marks)
+    -   The parameter $A$ controls the strength of the Allee effect: for
+        $A > 0$, the Allee effect is said to be strong, and for $A=0$,
+        the Allee effect is weak. What will happen to a population 
+        experiencing a strong Allee effect if the population size falls 
+        below $A$? What will happen to a population experiencing a weak 
+        Allee effect if the population size falls below $A$? (1 mark)
 
-    -   URL of team member's pull request for `analysis-plan.md`:
+(d) Describe two biological situations in which you might expect to see
+    an Allee effect (either weak or strong). (0.5 marks)
+
+3. The Canadian lynx population cycle (3 marks)
+
+    The Canadian lynx experiences large periodic changes in its population 
+    size over a timescale of several years. This is thought to be driven by 
+    oscillations in the population size of the snowshoe hare, the primary food 
+    source for the lynx. Read more about the lynx population cycle on this 
+    [Northwest Territories website](https://www.enr.gov.nt.ca/en/services/lynx/lynx-snowshoe-hare-cycle).
+    
+    R has a built-in dataset called `lynx` which contains annual population 
+    measurements for the Canadian lynx as a time series. 
+
+(a) Plot `lynx` vs. time in years using either `ggplot` or `qplot`. 
+    Plot points (`geom_point`) and a connecting line (`geom_line`). 
+    Create a time series that starts at 0 and ends at the total number of 
+    years in the dataset (total years $= 1934-1821$).
+    By eye, estimate the time between peaks in the population. (0.5 marks)
+
+(b) Define a function called `sine_model` that takes 5 arguments: a vector of years
+    for the x-axis and four parameters (amplitude, period, phase, and offset). 
+    Recall the general formula for a sine wave:
+    $$y = A \text{sin}(kx - b) + c$$
+    where $k = 2\pi / T$, $T$ is the period or length of time between peaks,
+    $A$ is the amplitude, $b$ is the phase, and $c$ is the offset.
+    Using a value of $A = c = 1700$ for both the amplitude and offset and a value of 
+    $b = 2.75$ for the phase, plot the lynx data as before and add a sine curve 
+    using your guess of the timescale from part (a) for the period.
+    Use a colour other than black to plot the sine wave. 
+    Note that the x axis must start at 0 in order for the offset of $2.75$
+    to match the data. (1 mark)
+
+(c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
+    - Make a range of values for the period that span your guess from part (a).
+    - Use the `sapply` function to calculate a predicted dataset using a sine model. 
+    Calculate the sum of the difference (*residuals*) between the lynx data and
+    your prediction, then return the sum of the residuals squared.
+    - Plot the sum of the residuals squared vs. the range of period values. By eye,
+    what is the minimum of this curve? What value of the period gives the best fit?
+    - Use the function `which` to extract the period value that gives the best fit. 
+    What is your calculated length of the lynx population cycle?
+    
+(d) Plot the lynx data again and plot your best fit curve on top. 
+    Does your estimate of the cycle length match the literature?
+    Why or why not? (Find and cite a resource that gives an estimate
+    of the lynx population cycle.)
