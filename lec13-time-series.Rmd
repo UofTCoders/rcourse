@@ -22,7 +22,7 @@ This data is publicly available, along with lots of other cool ecological data.
 > - Numerical solutions with multiple initial conditions (10 min)
 > - Fitting models to data 
 >     - Fitting simulated data (20 minutes)
-> - Exploring and plotting time series data (30 min)
+>     - Exploring and plotting time series data (20 min)
 >     - Fitting real data (40 minutes)
 > 
 > ### Setup
@@ -37,7 +37,6 @@ This data is publicly available, along with lots of other cool ecological data.
 ```{r math_shortcut, echo=FALSE}
 eq_dn_dt <- "$\\frac{dN}{dt}$"
 ```
-
 
 ## Recap 
 
@@ -93,15 +92,15 @@ library(deSolve)
 ```
 
 ```{r}
-# Run ode
+# Solve using ode
 
 # define parameters for the ode function
-parameters <- c(r = 0.5, K = 50)
-initial_conditions <- seq(10, 80, by = 10)
+parameters <- c(r = 0.5, K = 50) # use named parameters for clarity
+initial_conditions <- seq(10, 80, by = 10) # a vector of initial conditions
 times <- seq(0, 15, by = 0.01)
 
 # run ode inside a loop to calculate trajectories for several initial conditions
-results <- data_frame(initial_conditions = seq(10, 80, by = 10)) %>% # CTRL-shift-m to make pipe
+results <- data.frame(initial_conditions = seq(10, 80, by = 10)) %>% # CTRL-shift-m to make pipe
   # 'do' is a dplyr function that returns a dataframe after doing a series of computations.
   # once the results are in a data frame, everything we've learned about ggplot and dplyr can be used!
   do(data.frame( # 'data.frame' converts the output of 'ode' to a dataframe
@@ -124,7 +123,6 @@ Now we can use `ggplot` to plot all the trajectories.
 
 ```{r}
 # make a plot
-
 results %>%
     gather(Column, Value, -time) %>%
     ggplot(aes(x = time, y = Value, color = Column)) +
@@ -169,7 +167,7 @@ names(results) <- c('time', data.matrix(results[1, -1])) # [1,-1] means first ro
 
 ## Fitting models to data
 
-Fitting data is a massive field, one we've already spent a lot of time on,
+Fitting data is something we've already spent a lot of time on in this course,
 and there are many different strategies for choosing 
 parameters for a model depending on the assumptions you make about your data and model.
 Today we will use **least squares** to fit a model to time series data.
@@ -179,8 +177,8 @@ like using the same procedure, but there are certain cases in which it is possib
 
 ### Fitting simulated data with a single parameter
 
-Suppose we sample repeatedly from a bacterial population over time, and suppose we want 
-to fit our sampled data to an exponential growth model.
+Suppose we repeatedly measure a bacterial population's size over time, and suppose we want 
+to fit our data to an exponential growth model.
 
 Let's simulate some data from an exponential function to work with.
 
@@ -217,14 +215,15 @@ to determine which of two fits is better: whichever fit minimizes that number is
 
 In practice, there are many ways to find the particular parameter that gives the best fit. 
 One way is to start at some parameter value, then start adjusting it by small amounts and
-checking if the fit gets better or worse. If it gets worse, go in a different direction. 
+checking if the fit gets better or worse. If it gets worse, go in the other direction. 
 If it gets better, keep going in that direction until it either starts getting worse again
 or the amount by which it gets better is very small. This type of algorithm is called
 **gradient descent**. 
 
 Another option is to try a range of parameter values and choose the one that gives the best
 fit out of that list. This is simpler to implement than the previous algorithm, but it's
-also computationally more costly --- it can take a long time. 
+also computationally more costly: it can take a long time, especially if you don't know
+which range of parameters to try ahead of time. 
 
 We will do some examples of the second method today, what we'll call 'brute-force least squares'.  
 
@@ -233,12 +232,15 @@ We will do some examples of the second method today, what we'll call 'brute-forc
 r_vals <- seq(0.01, 0.3, by = 0.01)
 
 # use the function 'sapply' to loop over r_vals list
+# everything inside curly braces is a function that gets executed for each value of r
 resids_sq <- sapply(r_vals, function(r) {
     prediction <- Ndata[1] * exp(r * times) # we're not fitting N0, just assuming it's the first data point
     residuals <- prediction - Ndata
-    sum(residuals^2)
+    return(sum(residuals^2))
 })
 ```
+
+(Read more about the `apply` family of functions in the [documentation](https://www.rdocumentation.org/packages/base/versions/3.5.1/topics/lapply).)
 
 Let's plot the sum of residuals squared vs. $r$ to find which value of $r$ fits best:
 
@@ -266,31 +268,74 @@ qplot(times,Ndata) +
 
 Now let's do the same using the `lm` function. To use the `lm` function to fit an arbitrary function, 
 you need to be able to invert your function into the form $y = \alpha + \beta x$. This is not always possible; 
-for example, a function that is non-monotonic (goes up and down) can't be inverted unambiguously. 
+for example, a function that is non-monotonic (goes up and down), such as a sine wave, can't be inverted unambiguously. 
 Here, our function is $N = N_0 \text{e}^{rt}$, and since we want to extract the fit parameters $r$ 
 and $N_0$, we should get $t$ out of the exponent. Taking the logarithm of both sides, we get
 
 $$\text{log}N=\text{log}N_0 + rt$$
-This is now in the form $y = \alpha + \beta x$, with $y = \text{log}N$, $\beta = r$, $\alpha = \text{log}N_0$, and $x = t$. 
+
+Remember that the natural logarithm (`log` in R and written $\text{log}$ for us) is the 
+inverse of the exponential function `exp` ($\text{e}$): 
+$\text{e}^{\text{log}a} = \text{log}(\text{e}^{a})= a$.
+
+Our equation is now in the form $y = \alpha + \beta x$, with $y = \text{log}N$, $\beta = r$, 
+$\alpha = \text{log}N_0$, and $x = t$. Now we can use `lm`:
 
 ```{r}
-
-result <- lm(log(Ndata) ~ times)
+result <- glm(log(Ndata) ~ times)
 summary(result)
+```
 
+We can see that the beta coefficient does match the value of $r$ that we 
+started with, but the Intercept value is harder to assess because it's 
+actually $\text{log}N_0$ instead of just $N_0$. We can get back $N_0$ using `exp`:
+
+```{r}
 N0 <- exp(coef(result)["(Intercept)"])
 r <- coef(result)["times"]
 
+print(N0)
+print(r)
+```
+
+And we can use the fit parameters to plot the result.
+
+```{r}
 qplot(times, Ndata) +
   geom_line(aes(x = times, 
                 y = N0 * exp(r * times)))
 ```
 
+One advantage to using `lm` when possible is that it can more easily fit multiple 
+parameters than when you're fitting by hand. `lm` also gives you things like
+confidence intervals, and you can easily apply the model selection techniques 
+outlined last week. But there are situations when using `lm` or `glm` doesn't
+make as much sense, especially when you violate the assumptions they rely on.
+
+### Assumptions of least squares
+
+When is it appropriate to use least squares to fit your data? These assumptions are
+a recap of the assumptions of linear models section in lecture 8.
+
+**Assumptions of least squares:**
+
+- Normality of the residuals: the noise or error is **Gaussian-distributed**, which means 
+that the most likely value for a data point is the
+predicted value, but there is a Gaussian distribution with some width that determines how
+likely it is that the data will have a different value.
+- Homogeneity of variances at each X: All data points have the same variance in their 
+error; the width of the Gaussian distribution
+governing the error is the same for each data point. This can be modified though if it's not a
+good assumption. 
+- Fixed X: the noise or error is only in the dependent variable(s), not in the independent variable(s).
+- Independence: Each data point is independent of the other data points. 
+
 Now that we've fit some simulated data, let's try it out on real data.
 
 ## Plant phenology
 
-Today we'll be working with plant phenology data: *phenology* is the study of periodic or cyclic natural phenomena, 
+Today we'll be working with plant phenology data: *phenology* is 
+the study of periodic or cyclic natural phenomena, 
 and this dataset contains observations of the seasonal cycles of plants at three NEON sites in the US:
 Blandy Experimental Farm ([BLAN](https://www.neonscience.org/field-sites/field-sites-map/BLAN)) 
 and the Smithsonian Conservation Biology Institute
@@ -309,7 +354,9 @@ glimpse(plant_pheno)
 View(plant_pheno) # if you want to browse in a spreadsheet-like viewer
 ```
 
-Many of these columns aren't that relevant for us, but some that we're definitely interested in are `date`, `phenophaseIntensity`, and `scientificName`. Let's take a look at what kind of factors we have in the last two columns.
+Many of these columns aren't that relevant for us, but some that we're 
+definitely interested in are `date`, `phenophaseIntensity`, and `scientificName`. 
+Let's take a look at what kind of factors we have in the last two columns.
 
 ```{r}
 plant_pheno %>% 
@@ -319,7 +366,9 @@ plant_pheno %>%
   count(phenophaseIntensity)
 ```
 
-These are 7 species of tree / shrub in this dataset. Feel free to look up what the common names are for each of these; for example, *Liriodendron tulipifera*, the tulip tree, can be found along the US east coast as well as in Southern Ontario.
+These are 7 species of tree / shrub in this dataset. Feel free to look up 
+what the common names are for each of these; for example, *Liriodendron tulipifera*, 
+the tulip tree, can be found along the US east coast as well as in Southern Ontario.
 
 ![Lipidoptera tulipifera, by Jean-Pol GRANDMONT - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=9873223](image/Liriodendron_tulipifera.png)
 
@@ -340,7 +389,7 @@ Let's plot the phenophase intensity over time, grouped by the species.
 ```{r, warning=FALSE}
 ggplot(plant_pheno, 
        aes(x = date, y = phenophaseIntensityMean, color = scientificName)) +
-         geom_point() 
+         geom_point()
 ```
 
 The pattern we would expect is already visible in this first plot - the leaves come out in the spring, 
@@ -353,6 +402,10 @@ then compare the fitted parameters to see if there are differences.
 Let's try to fit a sine wave to the phenophase intensity. A generic sine wave has four parameters:
 
 $$y = A \text{sin}(kx - b) + c$$
+where $k = 2\pi / T$, $T$ is the period or length of time between peaks, 
+$A$ is the amplitude, $b$ is the phase, and $c$ is the vertical shift or offset. 
+
+Let's plot a sine wave:
 
 ```{r}
 # plot a sine wave
@@ -369,94 +422,104 @@ qplot(x, A*sin(k*x-b)+c) +
 Note that we're not solving a differential equation to get our model - we're just assuming some 
 shape for our function. In general you should choose models that make sense and that you have some 
 reason for choosing; this is an example that is probably not up to snuff with the true phenologists 
-but will roughly match the pattern in the data. A sine wave is the simplest expression for an oscillation.
+but will roughly match the pattern in the data. A sine wave is the one of the simplest ways
+to express an oscillation.
 
-Let's calculate the mean phenophase intensity across individuals in the same species.
+In order to use the date as a numeric value for fitting purposes, 
+we need to convert it from a `date` object to a numeric object. 
 
 ```{r}
-plant_pheno_species_mean <- plant_pheno %>% 
-  filter(!is.na(phenophaseIntensityMean)) %>% 
-  group_by(scientificName, date) %>% 
-  summarise(phenophaseIntensityBySpecies = mean(phenophaseIntensityMean))
-
-head(plant_pheno_species_mean)
+str(plant_pheno$date)
 ```
 
-```{r}
-ggplot(plant_pheno_species_mean, aes(x=date, y=phenophaseIntensityBySpecies, colour = scientificName)) +
-  geom_point()
-```
-
-Now we have seven timeseries, one for each species. Let's check to see if there are any observations that are doubled for a given date --- we want single observations per species here.
-
-```{r}
-# check to see if there is ever more than one observation for a given date - want nothing returned here
-
-plant_pheno_species_mean %>% 
-  group_by(scientificName) %>% 
-  count(date) %>% 
-  filter(n > 1)
-```
-
-Now we will create a test function to get a rough idea for the parameters. I played around with these numbers ahead of time so that we could know roughly which parameter regime to search. 
-
-```{r}
-dates = plant_pheno_species_mean %>% 
+```{r, message=FALSE}
+# create a list of all the dates in ascending order
+dates = plant_pheno %>% 
   arrange(date) %>% 
   select(date)
 
+# create a function to subtract two dates
 subtract_dates <- function(date1, date2) {
   result <- date1 - date2
 }
 
+# create a numeric dates list to use in fitting
 dates_numeric <- mapply(subtract_dates,
                  dates$date, # first argument in subtract_dates function 
                  dates$date[1]) # second argument in subtract_dates function - the first date
 
-# add the numeric dates to the dataframe
-plant_pheno_species_mean$date_numeric <- mapply(subtract_dates, 
-                                                plant_pheno_species_mean$date,
-                                                dates$date[1])
-
-# period = 365 days
-# wavenumber of sine function = 2 * pi/lambda 
-
-sine_model <- function(x, amplitude, wavelength, phase, offset) {
-  return(amplitude*sin(2*pi/wavelength*x + phase) + offset)
-}
-
-guess_curve <- sine_model(dates_numeric, 0.5, 365, 0.5, 0.5)
+# add numeric dates to the dataframe
+plant_pheno$date_numeric <- mapply(subtract_dates, 
+                                                plant_pheno$date,
+                                                dates$date[1]) # subtract the first date
 ```
 
+```{r}
+# drop rows that have NA in phenophaseIntensityMean column
+plant_pheno <- 
+  plant_pheno[!is.na(plant_pheno$phenophaseIntensityMean),]
+```
+
+Let's fit a particular individual's phenophase intensity.
 
 ```{r}
-qplot(x = dates$date, y = guess_curve) +
-  geom_point(data = plant_pheno_species_mean, 
-       aes(x = date, y = phenophaseIntensityBySpecies, colour = scientificName))
+# find an individual
+plant_pheno %>% 
+  filter(scientificName == "Liriodendron tulipifera L.") %>% 
+  select(scientificName, individualID) %>% 
+  head(1)
+
+# make a data frame with one individual
+tulip_tree <- plant_pheno %>% 
+  filter(individualID == "NEON.PLA.D02.SCBI.06071")
+```
+
+Now we will create a test sine function to get a rough idea for the 
+parameters. I played around with these numbers ahead of time so that 
+we could know roughly which parameter regime to search. 
+
+```{r}
+# period = 365 days
+# wavenumber of sine function = 2 * pi/period 
+
+sine_model <- function(x, amplitude, period, phase, offset) {
+  return(amplitude*sin(2*pi/period*x + phase) + offset)
+}
+A <- 0.5 # phenophase intensity values go between 0 and 1
+offset <- 0.5 # add 0.5 to make min 0 and max 1
+period <- 365 # number of days in a year
+phase <- 0.5 # this is a guess
+
+guess_curve <- sine_model(dates_numeric, A, period, phase, offset)
+```
+
+```{r}
+qplot(x = dates$date, y = guess_curve) + # guess data
+  geom_point(data = tulip_tree,  # actual data
+       aes(x = date, y = phenophaseIntensityMean, colour = scientificName))
 ```
 
 We will only fit $b$, the horizontal shift, since we already know the other parameters: we know that the
-minimum and maximum must be 0 and 1 since the intensity goes from 0 to 100, and this sets both $c$ and $A$.
+minimum and maximum must be 0 and 1 since the intensity goes from 0 to 100%, and this sets both $c$ and $A$.
 We also know $k$, since we know that the oscillation should go around once in a year (365 days).
 If we were being more fancy, we might want to take into account things like temperature and leap years;
 there is a `pheno` package in R specifically for plotting and analyzing phenological data.
 
-```{r}
 
+```{r}
 # Make a range of b parameter values to try
 b_vals <- seq(0.2, 0.8, by = 0.01)
-
-tulip_tree <- plant_pheno_species_mean %>%
-  filter(scientificName == "Liriodendron tulipifera L.") 
 
 # use the function 'sapply' to loop over b_vals list
 resids_sq <- sapply(b_vals, function(b) {
     prediction <- 0.5*sin(2*pi/365*tulip_tree$date_numeric + b) +0.5
-    residuals <- prediction - tulip_tree$phenophaseIntensityBySpecies
+    residuals <- prediction - tulip_tree$phenophaseIntensityMean
     sum(residuals^2)
-    
 })
 ```
+
+As before, plotting the sum of the residuals squards vs. the fit parameter 
+will show us if it worked: the best fit is the minimum of the curve.
 
 ```{r}
 qplot(b_vals, resids_sq)
@@ -474,73 +537,59 @@ b_fit
 Finally, let's plot the fit against the original data:
 
 ```{r}
-ggplot(data = tulip_tree, aes(x = date, y = phenophaseIntensityBySpecies)) +
+ggplot(data = tulip_tree, aes(x = date, y = phenophaseIntensityMean)) +
   geom_point() + 
-  geom_point(aes(x = date, y = 0.5*sin(2*pi/365*tulip_tree$date_numeric + b_fit) +0.5, colour = 'b'))
+  geom_point(aes(x = date, y = 0.5*sin(2*pi/365*tulip_tree$date_numeric + b_fit) +0.5, colour = 'red'))
 ```
 
-Not bad! To wrap up, let's compare the fits for the rest of the species.
+Not bad! To wrap up, let's fit the rest of the individuals and look at the fits for each species.
+
+### Fit each individual separately
 
 ```{r}
 # Make a range of b parameter values to try
-b_vals <- seq(0.1, 0.8, by = 0.015)
+b_vals <- seq(0.01, 1.3, by = 0.015)
 
 # create a function that does least squares for this model
 least_squares <- function(df, b_vals) {
   resids_sq <- sapply(b_vals, function(b) {
     prediction <- 0.5*sin(2*pi/365*df$date_numeric + b) +0.5
-    residuals <- prediction - df$phenophaseIntensityBySpecies
+    residuals <- prediction - df$phenophaseIntensityMean
     sum(residuals^2)
     })
   return(data.frame(b_vals, resids_sq))
 }
 
 # create a data frame that contains the residuals grouped by species
-resids_sq_all_species <- plant_pheno_species_mean %>%
-  group_by(scientificName) %>% 
+resids_sq_individuals <- plant_pheno %>%
+  group_by(individualID, scientificName) %>% 
   do(data.frame(val=least_squares(., b_vals)))
-
-resids_sq_all_species
 ```
 
 ```{r}
-ggplot(resids_sq_all_species, aes(x=val.b_vals, y = val.resids_sq, colour = scientificName)) +
+ggplot(resids_sq_individuals, aes(x=val.b_vals, y = val.resids_sq, colour = scientificName)) +
   geom_point()
 ```
-Get the best fit $b$ value for each species:
+Get the best fit $b$ value for each individual:
 
 ```{r}
-b_df <- resids_sq_all_species %>% 
-  group_by(scientificName) %>% 
-  summarize(fit = b_vals[which(val.resids_sq== min(val.resids_sq))])
+which(resids_sq_individuals$val.resids_sq == min(resids_sq_individuals$val.resids_sq))
 
-b_df
+b_df_all <- resids_sq_individuals %>% 
+  group_by(individualID, scientificName) %>% 
+  summarize(phase = b_vals[which(val.resids_sq== min(val.resids_sq))])
+
+head(b_df_all)
 ```
 
 ```{r}
-
-calculate_fit_curve <- function(df) {
-  y <- 0.5*sin(2*pi/365*df$date_numeric + df$fit) +0.5
-  date <- df$date
-  return(data.frame(date, y))
-}
-
-# add fits to data frame
-plant_pheno_species_mean <- inner_join(plant_pheno_species_mean, b_df)
-
-plant_pheno_species_mean
-
-fit_curves <- plant_pheno_species_mean %>% 
-  group_by(scientificName) %>% 
-  do(data.frame(calculate_fit_curve(.)))
-
-fit_curves
-
-ggplot(data = plant_pheno_species_mean, aes(x = date, y = phenophaseIntensityBySpecies, 
-                                            colour = scientificName)) +
-  geom_point() + 
-  geom_point(data= fit_curves, aes(x = date, y = y, colour = scientificName))
+# plot
+ggplot(b_df_all, aes(x = scientificName, y = phase, colour = scientificName)) +
+  geom_violin(scale = 'count', draw_quantiles = 0.5) +
+  geom_jitter(height = 0, width = 0.1) 
+  #geom_point(data = b_df, aes(x = scientificName, y = fit, colour = scientificName))
 ```
+
 
 ## Extras
 
@@ -854,7 +903,7 @@ Let's plot a vector field and some trajectories for the predator-prey model.
 
 ```{r}
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
-pp_flowField <- flowField(predator_prey, x.lim = c(0, 10), y.lim = c(0, 10),
+pp_flowField <- flowField(predator_prey, xlim = c(0, 10), ylim = c(0, 10),
                           parameters = c(a = 5, b = 1, c = 1, d = 0.2), # same parameters as before,
                           points = 15, # this is the density of grid points on which to plot arrows
                           system = 'two.dim', # 'two.dim' is default
@@ -865,7 +914,7 @@ pp_trajectory <- trajectory(predator_prey,
                             # y0 is a matrix where each row is pairs of (X, Y) 
                             y0 = matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
                                    byrow = TRUE), 
-                            t.end = 20, # how far in time to calculate the trajectories
+                            tlim = c(0,20), # how far in time to calculate the trajectories
                             parameters = c(a = 5, b = 1, c = 1, d = 0.2), system = "two.dim")
 ```
 
@@ -879,7 +928,7 @@ Is there a fixed point, and if so, where do you think it is?
 # Challenge solution
 
 # plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dv/dt
-mass_spring_flowField <- flowField(mass_spring, x.lim = c(-3,3), y.lim = c(-2,2),
+mass_spring_flowField <- flowField(mass_spring, xlim = c(-3,3), ylim = c(-2,2),
                           parameters = c(omega = 0.5), 
                           points = 21, 
                           system = 'two.dim', # 'two.dim' is default
@@ -890,7 +939,7 @@ mass_spring_trajectory <- trajectory(mass_spring,
                             # y0 is a matrix where each row is pairs of (X, Y) 
                             y0 = matrix(c(1, 1, 0, 1, 2, -1.5), ncol = 2,
                                  byrow = TRUE), 
-                            t.end = 20, # how far in time to calculate the trajectories
+                            tlim = c(0,20), # how far in time to calculate the trajectories
                             parameters = c(omega = 0.5), 
                             system = "two.dim")
 ```
