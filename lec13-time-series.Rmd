@@ -5,7 +5,7 @@ author: "Madeleine Bonsma-Fisher"
 
 ## Lesson preamble
 
-This lesson uses data from the National Ecological Observatory Network (NEON) [link](https://www.neonscience.org/). 
+This lesson uses data from the National Ecological Observatory Network (NEON) [[link](https://www.neonscience.org/)]. 
 This data is publicly available, along with lots of other cool ecological data.
 
 > ### Learning objectives
@@ -282,7 +282,7 @@ Our equation is now in the form $y = \alpha + \beta x$, with $y = \text{log}N$, 
 $\alpha = \text{log}N_0$, and $x = t$. Now we can use `lm`:
 
 ```{r}
-result <- glm(log(Ndata) ~ times)
+result <- lm(log(Ndata) ~ times)
 summary(result)
 ```
 
@@ -309,8 +309,97 @@ qplot(times, Ndata) +
 One advantage to using `lm` when possible is that it can more easily fit multiple 
 parameters than when you're fitting by hand. `lm` also gives you things like
 confidence intervals, and you can easily apply the model selection techniques 
-outlined last week. But there are situations when using `lm` or `glm` doesn't
-make as much sense, especially when you violate the assumptions they rely on.
+outlined last week. 
+
+But be careful when converting a model to a form that can be fit with `lm`.
+By applying functional transformations to your model, you are subtly changing 
+its assumptions. For example, we assume when using least squares that the residuals
+are normally distributed (which they were in our simulated data), however, when 
+taking the logarithm of both sides, the residuals will no longer be normally 
+distributed. We can see this if we add a bit more data to our simulated exponential
+model.
+
+```{r}
+times <- seq(0,20, by = 0.01) # sample times
+r <- 0.2 # growth rate
+N0 <- 10 # initial population
+
+# use the function 'rnorm' to add noise to the data
+Ndata <- N0*exp(r*times) + rnorm(n = length(times), mean = 0, sd = 10) 
+
+Ndata[1] <- N0 # fix the starting value to be N0 - this means we don't have to fit the intercept
+
+qplot(times, Ndata)
+```
+
+```{r}
+# Fit using explicit 'brute force' least squares
+
+# Make a range of r parameter values to try
+r_vals <- seq(0.01, 0.3, by = 0.005)
+
+# use the function 'sapply' to loop over r_vals list
+# everything inside curly braces is a function that gets executed for each value of r
+resids_sq <- sapply(r_vals, function(r) {
+    prediction <- Ndata[1] * exp(r * times) 
+    residuals <- prediction - Ndata
+    return(sum(residuals^2))
+})
+
+best_fit <- which(resids_sq == min(resids_sq))
+r_fit <- r_vals[best_fit] 
+```
+
+```{r, warning=FALSE}
+# Fit by inverting the equation and using lm
+result <- lm(log(Ndata) ~ times)
+
+N0 <- exp(coef(result)["(Intercept)"])
+r <- coef(result)["times"]
+```
+
+Now we can compare the distribution of the residuals in both cases. 
+One of the assumptions of least squares is that the residuals are normally
+distributed. 
+
+```{r, warning=FALSE, message=FALSE}
+prediction_lm <- log(N0) + r * times # best fit using lm
+prediction_ls <- Ndata[1] * exp(r_fit * times) # best fit using least squares explicitly
+
+resids_lm <- prediction_lm - log(Ndata)
+resids_ls <- prediction_ls - Ndata
+
+resids_lm <- resids_lm[!is.na(resids_lm)]
+```
+
+```{r}
+
+# calculate a normal distribution using the standard deviation of each set of residuals
+x_vec_ls <- seq(-30, 30, by = 0.5)
+sigma_ls <- sd(resids_ls)
+gaussian_ls <- exp(-x_vec_ls^2/(2*sigma_ls^2))/sqrt(2*pi*sigma_ls^2)
+
+x_vec_lm <- seq(-2, 3, by = 0.05)
+sigma_lm <- sd(resids_lm)
+gaussian_lm <- exp(-x_vec_lm^2/(2*sigma_lm^2))/sqrt(2*pi*sigma_lm^2)
+```
+
+The residuals for the original equation are in fact normally distributed, which is how 
+we set it up in the first place.
+
+```{r}
+qplot() +
+  geom_histogram(aes(x=resids_ls, y = ..density..), binwidth = 2) +
+  geom_line(aes(x = x_vec_ls, y = gaussian_ls))
+```
+
+BUT the residuals for the inverted equation are NOT normally distributed. 
+
+```{r}
+qplot() +
+  geom_histogram(aes(x = resids_lm, y = ..density..), binwidth = 0.05) +
+  geom_line(aes(x = x_vec_lm, y = gaussian_lm))
+```
 
 ### Assumptions of least squares
 
@@ -343,7 +432,7 @@ and the Smithsonian Conservation Biology Institute
 Smithsonian Environmental Research Center
 ([SERC](https://www.neonscience.org/field-sites/field-sites-map/serc)) in Maryland. 
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 # Load the data
 plant_pheno <- read_csv("data/plant_phenology.csv")
 
@@ -372,10 +461,12 @@ the tulip tree, can be found along the US east coast as well as in Southern Onta
 
 ![Lipidoptera tulipifera, by Jean-Pol GRANDMONT - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=9873223](image/Liriodendron_tulipifera.png)
 
-Notice too that the `phenophaseIntensity` column is a character column, so if we want to use those values
-as numbers for plotting, we'll need to convert them to something numeric. I did this manually to create the
-column `phenophaseIntensityMean`, which takes the character value in the `phenophaseIntensity` column and
-converts it to a number which is the midpoint of that interval.
+Notice too that the `phenophaseIntensity` column is a character column, so if 
+we want to use those values as numbers for plotting, we'll need to convert 
+them to something numeric. I did this manually to create the
+column `phenophaseIntensityMean`, which takes the character value in the 
+`phenophaseIntensity` column and converts it to a number which is the midpoint 
+of that interval.
 
 ```{r}
 str(plant_pheno$phenophaseIntensity)
@@ -412,7 +503,7 @@ Let's plot a sine wave:
 x <- seq(0, 3, 0.01)
 A <- 1
 k <- 2*pi
-b <- 0
+b <- 0.5
 c <- 0
 
 qplot(x, A*sin(k*x-b)+c) +
@@ -421,11 +512,11 @@ qplot(x, A*sin(k*x-b)+c) +
 
 Note that we're not solving a differential equation to get our model - we're just assuming some 
 shape for our function. In general you should choose models that make sense and that you have some 
-reason for choosing; this is an example that is probably not up to snuff with the true phenologists 
+reason for choosing; this is an example that would probably not be used by true phenologists 
 but will roughly match the pattern in the data. A sine wave is the one of the simplest ways
 to express an oscillation.
 
-In order to use the date as a numeric value for fitting purposes, 
+In order to use the date as a numeric x-axis for fitting purposes, 
 we need to convert it from a `date` object to a numeric object. 
 
 ```{r}
@@ -496,15 +587,15 @@ guess_curve <- sine_model(dates_numeric, A, period, phase, offset)
 ```{r}
 qplot(x = dates$date, y = guess_curve) + # guess data
   geom_point(data = tulip_tree,  # actual data
-       aes(x = date, y = phenophaseIntensityMean, colour = scientificName))
+       aes(x = date, y = phenophaseIntensityMean, colour = scientificName)) 
 ```
 
-We will only fit $b$, the horizontal shift, since we already know the other parameters: we know that the
-minimum and maximum must be 0 and 1 since the intensity goes from 0 to 100%, and this sets both $c$ and $A$.
+We will only fit $b$, the horizontal shift, since we already know the other 
+parameters: we know that the minimum and maximum must be 0 and 1 since the 
+intensity goes from 0 to 100%, and this sets both $c$ and $A$.
 We also know $k$, since we know that the oscillation should go around once in a year (365 days).
 If we were being more fancy, we might want to take into account things like temperature and leap years;
 there is a `pheno` package in R specifically for plotting and analyzing phenological data.
-
 
 ```{r}
 # Make a range of b parameter values to try
@@ -542,7 +633,9 @@ ggplot(data = tulip_tree, aes(x = date, y = phenophaseIntensityMean)) +
   geom_point(aes(x = date, y = 0.5*sin(2*pi/365*tulip_tree$date_numeric + b_fit) +0.5, colour = 'red'))
 ```
 
-Not bad! To wrap up, let's fit the rest of the individuals and look at the fits for each species.
+Not bad! Next, we'll do this for every single individual in the entire dataset. 
+With fits for each individual, we can look at the distribution of the phase shifts
+for each species to get a sense of when each species gets its leaves.
 
 ### Fit each individual separately
 
@@ -573,8 +666,7 @@ ggplot(resids_sq_individuals, aes(x=val.b_vals, y = val.resids_sq, colour = scie
 Get the best fit $b$ value for each individual:
 
 ```{r}
-which(resids_sq_individuals$val.resids_sq == min(resids_sq_individuals$val.resids_sq))
-
+# store the best fit values in a new data frame
 b_df_all <- resids_sq_individuals %>% 
   group_by(individualID, scientificName) %>% 
   summarize(phase = b_vals[which(val.resids_sq== min(val.resids_sq))])
@@ -582,18 +674,31 @@ b_df_all <- resids_sq_individuals %>%
 head(b_df_all)
 ```
 
+We have best fit values for the phase for every individual plant in our dataset.
+To visualize this, we will make a violin plot of the phases, grouped by species.
+
 ```{r}
-# plot
+# violin plot
 ggplot(b_df_all, aes(x = scientificName, y = phase, colour = scientificName)) +
   geom_violin(scale = 'count', draw_quantiles = 0.5) +
-  geom_jitter(height = 0, width = 0.1) 
-  #geom_point(data = b_df, aes(x = scientificName, y = fit, colour = scientificName))
+  geom_jitter(height = 0, width = 0.1) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 
+The phase $b$ is a positive number for each of these, and in our model we fit the curve
+like this:
+
+$$y = A\text{sin}(kx + b) + c$$
+A positive $b$ shifts the curve to the left, so species with larger $b$ get their leaves earlier in the spring,
+according to our model. 
+
+Limitation: didn't take into account that some species will have a longer season overall.
 
 ## Extras
 
-## Qualitative analysis of 2D models
+### Qualitative analysis of 2D models
 
 Now we'll move on to look at how to analyze two-dimensional models. **Two-dimensional** 
 means that there are now two variables in the system (like $x$ and $y$, prey and predators) 
