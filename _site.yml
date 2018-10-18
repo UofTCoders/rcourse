@@ -38,7 +38,7 @@ navbar:
     - text: 'Oct. 16: Numerically solving population models'
       href: lec12-numerical-models.html
     - text: 'Oct. 18: Time series analysis'
-      #href: lec13-projects-r.html
+      href: lec13-time-series.html
     - text: 'Oct. 23: Datasets, hypothesis, begin projects'
       href: lec12-datasets.html
     - text: 'Oct. 25: Reproducible science'
