@@ -30,7 +30,7 @@ This data is publicly available, along with lots of other cool ecological data.
 > - `install.packages('tidyverse')` (done already)
 > - `install.packages('deSolve')` (done already)
 > - Download the data: 
-[https://github.com/UofTCoders/rcourse/raw/master/data/plant_phenology.csv](https://github.com/UofTCoders/rcourse/raw/master/data/Fitzpatrick_2018.csv)
+[https://github.com/UofTCoders/rcourse/blob/master/data/plant_phenology.csv](https://github.com/UofTCoders/rcourse/blob/master/data/plant_phenology.csv)
 
 -----
 
