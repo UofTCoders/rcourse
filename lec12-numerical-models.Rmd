@@ -760,6 +760,337 @@ For accuracy, $\Delta t$ should be small. But the smaller it is, the longer it w
 compute the numerical approximation. In practice, choose a $\Delta t$ that is small enough that
 your solution doesn't behave strangely, but large enough that you can simulate it in a reasonable amount of time. 
 
+### Qualitative analysis of 2D models
+
+**Two-dimensional** 
+means that there are now two variables in the system (like $x$ and $y$, prey and predators) 
+instead of one (like $N$).
+
+Many of the concepts and tools from analyzing one-dimensional models will be used 
+here as well, but we will add some things that are specific to more than one dimension. 
+
+To motivate some of these new concepts and the idea of modelling in two dimensions, 
+let's analyze a model of two species interacting.
+
+$$\frac{dx}{dt} = ax - bxy$$
+$$\frac{dy}{dt} = cx - dy$$
+
+This is very close to the Lotka-Volterra predator-prey model, but the term for predator 
+growth is $cx$ instead of $cxy$. In this model the predators will eat the prey at a 
+constant rate, no matter how many of the predators there are. 
+
+First, we'll simulate a trajectory for the two species.
+
+```{r}
+predator_prey <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(X, Y))
+  # parameters: vector of model parameters (c(a, b, c, d))
+  
+  # the arguments need to be named "t", "y", and "parameters", otherwise this won't work with phaseR, a package we will use later
+    
+  #now the state vector y has two elements because we have two species
+  X <- y[1] # prey
+  Y <- y[2] # predators
+  
+  a <- parameters['a']
+  b <- parameters['b']
+  c <- parameters['c']
+  d <- parameters['d']
+    
+  # calculate rate of change
+  dx <- a * X - b * Y * X
+  dy <- c * X - d * Y
+  
+  # return rate of change
+  return(list(c(dx, dy)))
+}
+```
+
+```{r}
+# run the numerical solution
+
+parameters = c(a = 5, b = 1, c = 1, d = 0.2) # parameters named so that we can access them by name
+state <- c(X = 2, Y = 2) # same thing here
+times <- seq(0, 50, by = 0.01)
+
+result <- ode(y = state, times = times, func = predator_prey, parms = parameters)
+result <- data.frame(result)
+
+```
+
+```{r}
+# plot the results
+
+result %>% 
+  ggplot() +
+  geom_line(aes(x = time, y = X), color = 'red') +
+  geom_line(aes(x = time, y = Y), color = 'blue') +
+  labs(y = "Population size")
+```
+
+It looks like we have oscillations that decay to a fixed point. Notice that the prey population 
+(in red) dips below $1$ during each oscillation. If this was a real population, the prey would 
+have gone extinct on the first dip below $1$. This means that the parameters we've chosen aren't
+very realistic. We could instead choose parameters that would change the fixed points to real-world
+population sizes. 
+
+We can modify the plotting code above to include a legend distinguishing 'predators' and 'prey'. 
+
+```{r}
+# Challenge solution
+
+result %>% 
+  rename(Prey = X, Predator = Y) %>% 
+  gather(PredPrey, PopulationSize, -time) %>% # the minus means use all columns except that one
+  ggplot(aes(x = time, y = PopulationSize, color = PredPrey)) +
+  geom_line() +
+  labs(y = "Population size")
+```
+
+### A note on using Euler's method to solve higher-dimensional systems
+
+*Note*: if you are using Euler's method to solve a two-dimensional system, make sure 
+you calculate the rates of change using the variables from the previous time step. For 
+example, in the predator-prey model, both $\Delta x$ and $\Delta y$ depend on $x$ and $y$, 
+and it's important that you calculate $\Delta x$ and $\Delta y$ *before* updating the 
+values of $x$ and $y$.
+
+Here's an example. 
+
+```{r}
+# Define predator-prey equations
+
+dX_dt <- function(X, Y, a, b) {
+  # X: number of prey
+  # Y: number of predators
+  # a: growth rate of prey
+  # b: rate at which predators eat prey
+  
+  return(a * X - b * Y * X)
+}
+
+dY_dt <- function(X, Y, c, d) {
+  # X: number of prey
+  # Y: number of predators
+  # c: growth rate of predators from eating prey
+  # d: death rate for predators
+  
+  return (c * X - d * Y)
+}
+```
+
+```{r}
+# parameters
+a <- 5
+b <- 1
+c <- 1
+d <- 0.2
+
+state <- c(X = 2, Y = 2)
+
+dt <- 0.01 # timestep - the smaller, the better
+tmax <- 30 # the total time we want to numerically solve for
+points <- tmax/dt # the number of data points in the simulation - add 1 so that we can start at t=0
+
+# vectors to store values of X, Y, and t at each timestep:
+X_vector <- numeric(points) # prey population size
+Y_vector <- numeric(points) # predator population size
+t_vector <- seq(0, tmax - dt, by = dt) # time vector
+
+# initial condition
+X0 <- 2
+Y0 <- 2
+X_vector[1] <- X0
+Y_vector[1] <- Y0
+
+X <- X0 # initialize variable X
+Y <- Y0 # initialize variable Y
+```
+
+This is the right way to do it.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # first calculate BOTH dX and dY
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  
+  # now update BOTH X and Y
+  X <- X + dX 
+  Y <- Y + dY
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+This is the wrong way.
+
+```{r}
+for (i in 2:points) {
+  # start at 2 because the initial state is at position 1
+  
+  # calculate dX and then update X (wrong)
+  dX <- dX_dt(X = X, Y = Y, a = a, b = b) * dt
+  X < X + dX
+  
+  # calculate dY and then update Y - this will use the new value of X instead of the old one.
+  dY <- dY_dt(X = X, Y = Y, c = c, d = d) * dt
+  Y <- Y + dY
+  
+  X_vector[i] <- X
+  Y_vector[i] <- Y
+}
+```
+
+### Phase portraits in two dimensions
+
+Continuing with the predator-prey example: instead of plotting our numerical trajectory as $X$ and 
+$Y$ vs. $t$, we'll plot $Y$ vs. $X$: predator population size vs. prey population size. 
+
+```{r}
+ggplot(result) +
+  geom_path(aes(x = X, y = Y, color = time)) # geom_line connects the dots in the wrong way - try it out and see
+```
+
+A phase portrait in two dimensions has two axes: one for each of the variables in the system.
+Here, the two variables are $X$ and $Y$, prey and predators. We want to include the same 
+information in this 2D phase portrait as in the 1D portrait: at minimum, we want to mark 
+the fixed points and draw a **vector field**: arrows indicating in which direction the rate 
+of change is for different values of $X$ and $Y$. 
+
+We can also add other information, and in the plot above we haven't yet drawn arrows or
+fixed points, but we have drawn a **trajectory** - the dots trace out what happens to $X$
+and $Y$ over time starting from $X = 2$, $Y = 2$. Time is no longer an axis in the plot,
+but it's still there, hidden in the path that the populations take. 
+
+Comparing these two ways of plotting a trajectory, we can see that oscillations in time
+look like circular motion in the phase portrait. The GIF below illustrates this.
+
+![Predator-prey simulation](image/predator-prey.gif)
+
+### Drawing qualitative phase portraits by hand
+
+Before we look at how to add more to phase portraits in R, let's practice the process by hand to
+get familiar with it. Let's use the following two-dimensional system as an example. The two state
+variables are $x$ (position) and $v$ (velocity), and this is a model of a mass attached to a 
+spring. $dx/dt$ is the rate of change of position, and $dv/dt$ is the rate of change of velocity. 
+
+$$\frac{dx}{dt} = v$$
+
+$$\frac{dv}{dt} = -\omega^2 x$$
+
+We want to draw a **vector field** in two dimensions to show how the system will evolve through time.
+Our axes are $x$ and $v$. It doesn't matter which one is the vertical axis and which one is
+horizontal, but let's put $x$ on the x-axis and $v$ on the y-axis. These variables aren't 
+population sizes, so they can realistically be negative and non-integers. 
+
+Next, we choose some pairs of $x$ and $v$ and evaluate both $dx/dt$ and $dv/dt$, drawing an
+arrow at $(x,v)$ in the direction of the derivative. Let's also set $\omega = 1$ for convenience.
+Let's start with $(0,0)$: both derivatives are 0, so there's no arrow. For $(0,1)$, $dx/dt = 1$
+and $dv/dt = 0$, so we draw an arrow pointing horizontally in the $+x$ direction. Similarly for
+$(1,0)$. For $(1,1)$, we draw an arrow that goes $1$ unit in the $x$ direction and $-1$ unit in
+the $y$ direction. As we keep filling in this grid, we start to get a picture of how the system
+can behave for different starting points of $x$ and $v$. 
+
+This is analogous to plotting $dN/dt$ vs. $N$ and drawing arrows to the right where $dN/dt$ is
+positive and arrows to the left when it's negative, except that now we have to consider that 
+the rate of change is affecting both variables at the same time. 
+
+#### Example
+
+Define a function called `mass_spring` that uses the format required by `ode` to calculate 
+and return $dx/dt$ and $dv/dt$. We will use this function later to plot a phase portrait in R.
+Remember that the arguments for your function must be called `t`, `y`, and `parameters`. 
+
+```{r}
+mass_spring <- function(t, y, parameters) {
+  # calculates dx/dt and dy/dt for a predator-prey model
+  
+  # t: time at which to evaluate derivatives
+  # y: vector of system variables (c(x, v))
+  # parameters: vector of model parameters (c(omega))
+    
+  # the state vector y has two elements because we have two variables
+  x <- y[1] # position
+  v <- y[2] # velocity
+  
+  omega <- parameters[1]
+    
+  # calculate rate of change
+  dx <- v
+  dv <- -omega^2 * x
+  
+  # return rate of change
+  return(list(c(dx, dv)))
+}
+```
+
+### Using `phaseR` to draw phase portraits in R
+
+`phaseR` is a package specifically for drawing phase portraits. It can automatically calculate 
+and plot things like trajectories and vector fields. 
+
+```{r}
+library(phaseR)
+```
+
+```{r, eval=FALSE}
+?phaseR
+```
+
+```{r, eval=FALSE}
+?flowField # the nice thing about this packages is that it takes functions in the same format as `ode`
+```
+
+Let's plot a vector field and some trajectories for the predator-prey model.
+
+```{r}
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dy/dt
+pp_flowField <- flowField(predator_prey, xlim = c(0, 10), ylim = c(0, 10),
+                          parameters = c(a = 5, b = 1, c = 1, d = 0.2), # same parameters as before,
+                          points = 15, # this is the density of grid points on which to plot arrows
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories
+pp_trajectory <- trajectory(predator_prey, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = matrix(c(1, 1, 8, 5, 2, 0, 0, 8), ncol = 2,
+                                   byrow = TRUE), 
+                            tlim = c(0,20), # how far in time to calculate the trajectories
+                            parameters = c(a = 5, b = 1, c = 1, d = 0.2), system = "two.dim")
+```
+
+#### Example
+
+Use `phaseR` and the function `flowField` to make a phase portrait for the mass-spring system 
+of differential equations. You will need to use the function you wrote in the previous challenge.
+Is there a fixed point, and if so, where do you think it is?
+
+```{r}
+
+# plot vector field: on a grid of points, plot an arrow in the direction of dx/dt and dv/dt
+mass_spring_flowField <- flowField(mass_spring, xlim = c(-3,3), ylim = c(-2,2),
+                          parameters = c(omega = 0.5), 
+                          points = 21, 
+                          system = 'two.dim', # 'two.dim' is default
+                          add = FALSE)
+
+# add trajectories - not part of challenge, just for fun.
+mass_spring_trajectory <- trajectory(mass_spring, 
+                            # y0 is a matrix where each row is pairs of (X, Y) 
+                            y0 = matrix(c(1, 1, 0, 1, 2, -1.5), ncol = 2,
+                                 byrow = TRUE), 
+                            tlim = c(0,20), # how far in time to calculate the trajectories
+                            parameters = c(omega = 0.5), 
+                            system = "two.dim")
+```
+
 ### Lotka-Volterra Predator-Prey model 
 
 ![Lotka-Volterra system simulation](image/lotka-volterra.gif)
@@ -830,7 +1161,6 @@ saveGIF({
 
 
 ```
-
 
 ### Simulation of the logistic equation
 
