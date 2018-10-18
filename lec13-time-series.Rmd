@@ -721,5 +721,301 @@ we would need a more complicated model with more fit parameters.
 
 ## Extras
 
+### Fitting models with two or more parameters
 
+```{r, eval=FALSE}
+# https://uoftcoders.github.io/rcourse/data/plant-biomass-preprocess.csv
+plant_data <- read.csv("plant-biomass-preprocess.csv")
+```
 
+```{r, echo=FALSE}
+# The dataset downloaded at the beginning
+plant_data <- read.csv("data/plant-biomass-preprocess.csv")
+```
+
+We can use our usual tricks to see what's in our dataset:
+
+```{r, eval=FALSE}
+summary(plant_data) # create a summary of the dataset
+head(plant_data) # display the first few rows of the data
+colnames(plant_data) # show the column names
+```
+
+Let's plot just one of the habitats, sites, and treatments vs. time and colour by species.
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+plant_data %>% 
+  filter(habitat == "Tundra") %>%
+  filter(site == 3) %>% 
+  filter(treatment == "rodentexclosure") %>% 
+  gather(Species, Value, -year, -treatment, -habitat, -site) %>% 
+  ggplot() +
+  geom_point(aes(x = year, y = Value, color = Species))
+```
+
+*Empetrum nigrum* looks like it could be following logistic growth, so let's try to fit 
+the data to that model. First, let's make a new variable with just the data we want to fit.
+
+```{r}
+e_nigrum <- plant_data %>% 
+  filter(site == 3) %>% 
+  filter(habitat == "Tundra") %>% 
+  filter(treatment == "rodentexclosure") %>% 
+  select(year, empetrum_nigrum) 
+```
+
+Now we define a logistic model function so that we can numerically generate the model's
+solution and compare it to the data.
+
+```{r}
+logistic_fn <- function(t, state, parameters) {
+  # Calculates dN/dt for the logistic equation
+  
+  # t: time point at which to evaluate derivative (doesn't actually change anything in this example)
+  # state: vector of variables (here it's just N)
+  # parameters: vector of model parameters c(r, K)
+  
+  N <- state 
+  
+  r <- parameters[1] # the first element of the parameters vector is r
+  K <- parameters[2] # the second element of the parameters vector is K
+
+  #rate of change
+  dN <- r * N * (1 - N / K)
+    
+  #return rate of change
+  return(list(c(dN)))
+}
+```
+
+Let's try running a single numerical solution and plotting it alongside the data.
+
+```{r}
+library(deSolve)
+
+parameters <- c(r = 0.5, K = 150)
+state <- c(N = e_nigrum[1,2]) # the first row and second column is the initial population size
+times <- seq(0, 14, by = 1) # make the same time vector as the data
+
+result <-
+  ode(
+  y = state,
+  times = times,
+  func = logistic_fn,
+  parms = parameters
+  )
+```
+
+```{r}
+# Plot
+result <- data.frame(result)
+
+p1 <- ggplot(e_nigrum) +
+  geom_point(aes(x = year, y = empetrum_nigrum))
+
+p1 +
+  geom_point(aes(x = time + 1998, y = N), result, color = 'blue') +
+  geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
+```
+
+Now we'll define a grid of $r$ and $K$ values to try, then calculate a numerical solution 
+for each combination of parameters. Here we're combining solving the differential equation
+and least squres in one fell swoop: for each combination of parameters, we use `ode` 
+to generate a numerical solution, then calculate the residuals and the fit. 
+
+```{r}
+logistic_pred_fn <- function(r, K) {
+    result <- ode(y = state, 
+                  times = times, 
+                  func = logistic_fn,
+                  parms = c(r = r, K = K))
+    result <- data.frame(result)
+    residuals <- result$N - e_nigrum$empetrum_nigrum
+    sum(residuals^2)
+}
+
+rvals <- seq(0.05, 1.0, by = 0.05)
+Kvals <- seq(120, 180, by = 5)
+# Create a two column data frame with every combination of rvals and Kvals
+params <- expand.grid(r = rvals, K = Kvals)
+
+# Apply the logistic_pred_fn to each combination of rvals and Kvals.
+# This is known as vectorization, which is R's strength.
+resids <- mapply(logistic_pred_fn,
+                 params$r, # First arg in logistic_pred_fn
+                 params$K) # Second arg in logistic_pred_fn
+resids <- matrix(resids, nrow = length(rvals), ncol = length(Kvals))
+```
+
+We can use the library `lattice` to plot the surface of sums of residuals squared:
+
+```{r}
+library(lattice)
+
+wireframe(
+  resids,
+  shade = TRUE,
+  xlab = "R",
+  ylab = "K",
+  scales = list(arrows = FALSE) # fix so that axes are correct numbers
+  ) 
+```
+
+Now we extract the values of $r$ and $K$ that minimize the sum of residuals squared:
+
+```{r}
+best_fit <- which(resids == min(resids), arr.ind = TRUE)
+
+r_fit <- rvals[best_fit[1]] # r is varied across the rows of the surface
+K_fit <- Kvals[best_fit[2]] # K is varied across the columns of the surface
+```
+
+And now we can plot the best fit curve with the data:
+
+```{r}
+result <-
+  ode(
+  y = state,
+  times = times,
+  func = logistic_fn,
+  parms = c(r = r_fit, K = K_fit)
+  )
+  
+result <- data.frame(result)
+
+p2 <- ggplot(e_nigrum) +
+  geom_point(aes(x = year, y = empetrum_nigrum))
+
+p2 +
+  geom_point(aes(x = time + 1998, y = N), result, color = 'blue') +
+  geom_line(aes(x = time + 1998, y = N), result, color = 'blue')
+```
+
+You can do this process with more than two parameters as well, but the search space will 
+be larger and the simulations necessary will take longer.
+
+### Maximum Likelihood
+
+Maximum likelihood is a way of finding parameters of a given probability distribution that
+best match data. It answers the question: which paremeter(s) make the data most likely to 
+have occured?
+
+Likelihood is defined as $P(\text{data} | \text{model})$, which you can read as *the probability
+of the data given the model*. This is subtly different from $P(\text{model} | \text{data})$, 
+the probability of the model given the data, which is what you're really after. But according to
+Bayes' theorem, these two quantities are proportional, and so in practice, maximizing the
+likelihood is equivalent to maximizing the probability of a particular model given your data. 
+
+Bayes' theorem, for the curious:
+
+$$ P(A | B) = \frac{P(B | A)P(A)}{P(B)}$$
+
+#### Least squares from maximum likelihood
+
+Least squares is the maximum likelihood solution for the assumption that errors are Gaussian
+distributed. This assumption can be formulated like this: for a set of data $y$ as a function 
+of $x$, let $e_i$ be the difference between the predicted and measured value of $y$ at point
+$x_i$. We assume $e_i$ follows a **Gaussian** or **normal** distribution with mean $0$ and
+variance $\sigma^2$: 
+
+$$P(e_i) = \frac{1}{\sqrt{2 \pi \sigma^2}} \text{e}^{-\frac{e_i^2}{2\sigma^2}}$$
+
+We also assume that each data point $y_i$ is independent, so the probability for the entire
+dataset is a product of all the probabilities for each data point:
+
+$$P(\vec{e}) = P(e_1)P(e_2) ... P(e_N) = \prod_{i=1}^N P(e_i) $$
+
+This is the **likelihood**, this is the quantity we want to maximize. To make our lives
+easier, we can also maximize the logarithm of the likelihood instead, since the logarithm 
+is an increasing function and its maximum will still be in the same spot. 
+
+The log-likelihood is 
+
+$$\sum_{i=1}^N \text{log}P(e_i) = \sum_{i=1}^N \left( \text{log} \frac{1}{\sqrt{2 \pi \sigma^2}} - \frac{e_i^2}{2\sigma^2} \right)$$
+
+$$ = N \text{log} \frac{1}{\sqrt{2 \pi \sigma^2}} - \frac{1}{2\sigma^2}\sum_{i=1}^N e_i^2$$
+
+The first term is a constant, and so we can forget about it when looking for the maximum. 
+What we're left with is wanting to maximize
+
+$$- \frac{1}{2\sigma^2}\sum_{i=1}^N e_i^2$$
+
+Since $\sigma$ is a constant, we can drop the prefactor as well. Finally, we can change
+the sign and *minimize* what's left:
+
+$$\sum_{i=1}^N e_i^2$$
+
+But remember that $e_i$ is just the difference between the predicted $y_i$ and the actual
+data point $y_i$, so the quantity above is just the sum of the squares of the residuals,
+exactly what we want to minimize in least squares. 
+
+#### Calculating AIC directly
+
+For a set of data $y$ as a function 
+of $x$, let $e_i$ be the difference between the predicted and measured value of $y$ at point
+$x_i$. We assume $e_i$ follows a **Gaussian** or **normal** distribution with mean $0$ and
+variance $\sigma$: The log-likelihood is:
+
+$$ = N \text{log} \frac{1}{\sqrt{2 \pi \sigma^2}} - \frac{1}{2\sigma^2}\sum_{i=1}^N e_i^2$$
+
+Generate some data:
+
+```{r}
+times <- seq(0,10, by = 0.2) # sample times
+r <- 0.2 # growth rate
+N0 <- 10 # initial population
+
+# use the function 'rnorm' to add noise to the data
+Ndata <- N0*exp(r*times) + rnorm(n = length(times), mean = 0, sd = 0.75) 
+
+Ndata[1] <- N0 # fix the starting value to be N0 - this means we don't have to fit the intercept
+
+qplot(times,Ndata) # check with a plot
+```
+Fit the data to our model using least squares:
+
+```{r}
+# Make a range of r parameter values to try
+r_vals <- seq(0.01, 0.3, by = 0.01)
+
+# use the function 'sapply' to loop over r_vals list
+# everything inside curly braces is a function that gets executed for each value of r
+resids_sq <- sapply(r_vals, function(r) {
+    prediction <- Ndata[1] * exp(r * times) # we're not fitting N0, just assuming it's the first data point
+    residuals <- prediction - Ndata
+    return(sum(residuals^2))
+})
+
+best_fit <- which(resids_sq == min(resids_sq))
+r_fit <- r_vals[best_fit] 
+```
+
+The formula for AIC is 
+
+$$\text{AIC} = -2\text{log} \mathcal{L} + 2p$$
+
+Calculate the log-likelihood and AIC:
+
+```{r}
+prediction <- Ndata[1] * exp(r_fit * times) # predicted fit
+e_vec <- prediction - Ndata # vector of residuals
+
+N <- length(Ndata) # number of data points
+sigma <- sd(e_vec) # standard deviation of residuals
+
+log_likelihood <- N*log(1/sqrt(2*pi*sigma^2)) - 1/(2*sigma^2) * sum(e_vec^2)
+log_likelihood
+
+# calculate AIC
+aic <- -2*log_likelihood + 2*2 # 2 degrees of freedom
+aic
+```
+
+Be careful though: this AIC value will not necessarily be the same as what you 
+get from `lm` or `glm`: it could be because you've transformed your data and so 
+the maximum likelihood solution is not the same, or that `lm` or `glm` uses 
+another method with a different likelihood. Either way, it's important to know 
+the assumptions that go into it when you're comparing models. 
