@@ -91,18 +91,18 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 13   | Dec 04 | Group presentations                                 | Everyone       |
 
 ## Assessment schedule
-| Assignment                | Type                | Due date   | Marks |
-|---------------------------|---------------------|------------|-------|
-| Getting set up            | Individual          | Sep 18     | 4     |
-| Basic R and dplyr         | Individual          | Sep 25     | 8     |
-| dplyr and tidy data       | Individual          | Oct 02     | 8     |
-| Statistical modelling     | Individual          | Oct 09     | 8     |
-| Bootstrapping & multivariate stats            | Individual          | Oct 16     | 8     |
-| Model selection and time series analysis    | Individual          | Oct 23     | 8     |
-| Project setup             | Project, Individual | Oct 30     | 8     |
-| Data visualization        | Project, Individual | Nov 13     | 8     |
-| Final project work        | Project, Group      | Dec 05     | 32    |
-| Weekly project updates    | Individual          | -          | 8     |
+| Assignment                       | Type                | Due date   | Marks |
+|----------------------------------|---------------------|------------|-------|
+| Getting set up                   | Individual          | Sep 18     | 4     |
+| Basic R and dplyr                | Individual          | Sep 25     | 8     |
+| dplyr and tidy data              | Individual          | Oct 02     | 8     |
+| Linear models                    | Individual          | Oct 09     | 8     |
+| LMEMs and randomization tests    | Individual          | Oct 16     | 8     |
+| Multivariate stats and model selection | Individual    | Oct 23     | 8     |
+| Population modelling             | Individual          | Oct 30     | 8     |
+| Project setup                    | Project, Individual | Nov 13     | 8     |
+| Final project work               | Project, Group      | Dec 05     | 32    |
+| Weekly project updates           | Individual          | -          | 8     |
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
