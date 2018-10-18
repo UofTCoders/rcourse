@@ -172,6 +172,16 @@ Final assignment is in a group and to succeed, you need to understand team dynam
     Data about number of birds at multiple stops in North America. Many datasets
     of varying rows that need to be linked together. ~`r (50*114)/1000` Gb size
     (can be shortened) across >50 files.
+    
+- [National Ecological Observatory Network](http://data.neonscience.org/static/browse.html)
+
+    A repository of many large scale ecological datasets from a variety of systems collected over           multiple years at at approximately 50 sites in the USA. Feel free to browse the datasets for ones of     interest to you, but I have highlighted a few below. 
+    
+    + [Ground beetles in pitfall traps](http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001): ~26 Mb .csv file with ID of ground beetle species from 40 traps arrayed in each of ~50 NEON sites since 2013. 
+    + [Macroinvertebrate collection](http://data.neonscience.org/data-product-view?dpCode=DP1.20120.001): ~9 Mb .csv file with ID's of benthid macroinvertebrates from lakes, non-wadeable streams, and wadeable streams from sites across the NEON network dating back to 2014. 
+    + [Plant presence/absence and percent cover](http://data.neonscience.org/data-product-view?dpCode=DP1.10058.001): Presence/absence and percent cover of species in 10m^2^, 100m^2^, and 400m^2^ quadrats from multiple plots in each of 50 NEON sites dating back to 2013. This is the dataset we worked with in lecture 9. 
+    
+In addition to the datasets shown above, we encourage students to bring their own datasets for use in their group projects.
 
 ### Example hypotheses with figures
 
