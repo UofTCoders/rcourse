@@ -139,7 +139,7 @@ If we take one unit of time to be the time between divisions, we can assume that
 approximately doubles at each time point.
 
 ```{r}
-library(ggplot2) # ggplot2 includes the qplot function
+library(tidyverse) # ggplot2 includes the qplot function
 # qplot produces plots that are similar to ggplot, but you don't need a dataframe to use it.
 # We could use ggplot instead by first making a dataframe out of our data:
 # data <- data.frame(times, population_size)
