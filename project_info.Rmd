@@ -50,7 +50,8 @@ The following components will be graded as part of the project:
     * Code: project results must be reproducible by someone else
    
 3. 10 minute presentation with 2 minutes for questions, styled as a conference
-presentation (assume not too much familiarity with the topic in the audience)
+presentation (assume not too much familiarity with the topic in the audience).
+The presentations will be held on the last day of class (Dec 4).
 
 4. Self-assessed contributions: maximum 1 page, outlining individual contributions
 (code, writing, presenting, etc). Each group member will submit their own
@@ -60,6 +61,15 @@ While you may not submit your work for this course for credit in another course,
 are welcome to publish or present your work in an academic setting. Groups are
 encouraged to publish their work on [figshare](https://figshare.com/), an open, 
 citable repository of scientific content. 
+
+All items (except the presentation) are due on December 5th at 11:59 pm.
+
+## Project submission
+
+The project report and code should be submitted on GitHub - each group will have 
+their own GitHub repository to which you can upload your report and code. 
+
+The self-assessment should be submitted through Quercus.
 
 ## Project grading rubric
 
