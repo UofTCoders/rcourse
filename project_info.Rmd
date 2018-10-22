@@ -24,7 +24,7 @@ that you may not submit anything twice: any work you do as part of this course m
 be submitted for credit in another course (such as a fourth-year research project) and vice versa. 
 If choosing a dataset not listed, make sure it is well-documented, legitimate, and 
 complex enough to support your analysis efforts. Your work should be original; your
-project should not be a reproduction of published analysis. 
+project should not be a reproduction of published analyses. 
 
 ### Project deliverables
 
