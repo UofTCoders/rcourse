@@ -2,7 +2,6 @@
 title: "Final project information"
 output:
   html_document: default
-  html_notebook: default
 ---
 
 ## Project description
