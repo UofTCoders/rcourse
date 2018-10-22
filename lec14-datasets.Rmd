@@ -1,6 +1,6 @@
 ---
 title: "Scientific method, team dynamics, and project datasets"
-author: "Luke Johnston"
+author: "Luke Johnston, Madeleine Bonsma-Fisher, James Santangelo"
 ---
 
 ## Lesson preamble:
@@ -15,7 +15,6 @@ author: "Luke Johnston"
 >
 > ### Lesson outline:
 >
-> - Fill out survey for modelling section (5 min)
 > - What is the scientific method (20 min)
 > - Team dynamics and assigning roles and tasks (15-20 min)
 > - Getting into groups (10 min)
@@ -49,7 +48,6 @@ digraph rmarkdown {
     {HypothesisTrue HypothesisFalse AnalyzeData CollectData} -> Hypothesis
 }')
 ```
-
 
 ### Steps in the scientific process[^sci_method]
 
@@ -132,7 +130,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Introduce each other:
     - Find out everyone's name and year of study
     - Find out other things about each other (e.g. any plans for next year, etc)
-- Create a one or two word "team name". We'll use this to create a shared folder for everyone to use.
+- Create a one or two word "team name". We'll use this to create a shared submission folder for everyone to use.
 - Assign roles to each person (these roles will be rotated in every group setting):
     - You need: facilitator, recorder, organizer
     - Discuss how and when roles will be rotated *(record it)*
