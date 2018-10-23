@@ -15,7 +15,6 @@ author: "Luke Johnston"
 >
 > ### Lesson outline:
 >
-> - Fill out survey for modelling section (5 min)
 > - What is the scientific method (20 min)
 > - Team dynamics and assigning roles and tasks (15-20 min)
 > - Getting into groups (10 min)
@@ -122,13 +121,17 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Mostly its common sense (be kind and respectful)
     - But its important that you as a team write out what everyone wants and agrees to
 
+#### Example Code of Conduct:
+- [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct)
+- [UofT Coders Code of Conduct](https://github.com/UofTCoders/studyGroup/blob/gh-pages/codeOfConduct.md)
+
 ## Exercise
 
 ### As a group, complete these tasks
 
 <!-- show assigned groups -->
 
-- Get into your assigned groups
+- Get into your groups
 - Introduce each other:
     - Find out everyone's name and year of study
     - Find out other things about each other (e.g. any plans for next year, etc)
@@ -195,7 +198,7 @@ Final assignment is in a group and to succeed, you need to understand team dynam
     
 - [Beaver abundance and distribution](https://open.canada.ca/data/en/dataset/b9f21e91-d34d-4730-8195-edf051121e9d)
 
-    Aerial and ground surveys of beaver abundance, feeding, and lodge distribution on Elk Island            starting in 1959.
+    Aerial and ground surveys of beaver abundance, feeding, and lodge distribution in Elk Island National Park           starting in 1959.
     
 - Benthic invertebrate abundance in [Ivvavik](https://open.canada.ca/data/en/dataset/3bad5ce0-0b16-43ee-be32-78cc2f64843f), [Tuktut](https://open.canada.ca/data/en/dataset/9046af59-81c4-4759-8979-f6185af8387d), and [Aulavik](https://open.canada.ca/data/en/dataset/2770949b-043c-4073-bc6c-b38b03a5f528)
 
@@ -291,7 +294,7 @@ published articles are available.
     - Just write what ever comes to mind, whether it is an idea or not. Just start writing!
 
 Make sure to *record* everything down! Many of these tasks will also be part of
-assignment 7!
+assignment 8!
 
 ### Set up GitHub account
 
