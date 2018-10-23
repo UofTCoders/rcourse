@@ -1,33 +1,79 @@
 ---
-title: "Final assignment: Scientific report"
+title: "Final assignment: Scientific report and presentation"
 output:
     html_document:
         toc: false
 ---
 
-The final assignment is straightforward, but challenging. As a
-team, you will work together to compile your findings into a scientific report. 
-Imagine you are scientists writing a paper to publish your results in a
-peer-reviewed journal.
+## Project description
 
-Your report should have at least these sections: 
+The course project is a self-directed group data analysis project using real 
+ecological data and rigorous scientific methods. Groups are expected to hypothesize
+about their chosen data, examine their hypotheses with reproducible and quantitative
+analysis techniques, visualize their results, and create scientific products in the
+form of a report and a presentation.
 
-- "Abstract"
-- "Background and Rationale"
-- "Research Objectives and Hypotheses" 
-- "Methods" (with "Data Description" and "Data Analysis" subsections)
-- "Results"
-- "Discussion"
-- "Conclusion"
+You might end up with a publishable scientific product! 
+[This paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210691/) was written by a
+group of graduate students as part of the first version of this course, 
+which was created by Dr. Christie Bahlai. 
+
+### Data
+
+A list of recommended datasets can be found
+[here](https://uoftcoders.github.io/rcourse/lec14-datasets.html#datasets_available_for_use). 
+You are welcome to choose a
+dataset not listed, or data collected as part of a research project, but keep in mind
+that you may not submit anything twice: any work you do as part of this course may not
+be submitted for credit in another course (such as a fourth-year research project) and vice versa. 
+If choosing a dataset not listed, make sure it is well-documented, legitimate, and 
+complex enough to support your analysis efforts. Your work should be original; your
+project should not be a reproduction of published analyses. 
+
+### Project deliverables
+
+The following components will be graded as part of the project:
+
+1. Weekly project updates:
+    * These will take place on Tuesdays at the beginning of class
+    * Two people will present from the group, rotating each week 
+   (each member will present 3-4 times over the course of the project)
+    * Each group update should take no more than 2 minutes
+    * These can be very informal: no slides or visuals are necessary 
+   (but you can include them if you want to)
+    * You will not be marked on correctness; you are encouraged to be open about 
+   any difficulties your group is facing so that other groups and the instructors
+   can provide helpful feedback
+  
+2. Report styled as a journal article, with these or similar sections (more info below): 
+    * Abstract
+    * Introduction / Background and Rationale
+    * Methods (with "Data Description" and "Data Analysis" subsections)
+    * Results 
+    * Discussion 
+    * Conclusion
+    * Code: project results must be reproducible by someone else
+   
+3. 10 minute presentation with 2 minutes for questions, styled as a conference
+presentation (assume not too much familiarity with the topic in the audience).
+The presentations will be held on the last day of class (Dec 4).
+
+4. Self-assessed contributions: maximum 1 page outlining individual contributions
+(code, writing, presenting, etc). Each group member will submit their own
+self-assessment.
+
+While you may not submit your work for this course for credit in another course, you
+are welcome to publish or present your work in an academic setting. Groups are
+encouraged to publish their work on [figshare](https://figshare.com/), an open, 
+citable repository of scientific content. 
+
+### Report guidelines
 
 For the report, you are expected to:
 
-- Search the previous research and literature on your research questions (*note*:
-for this report, this is not terribly important and it will be worth very little
-marks. Don't waste much time on this. We use this more so it helps you with your
-analysis).
+- Search the previous research and literature on your research questions.
 - Have clear and explicit objectives and hypotheses.
-- Adequately describe and properly cite the data source you will analyze.
+- Adequately describe and properly cite the data source(s) you will analyze.
 - Describe your data analysis in sufficient detail for others to understand what
 you did and why.
 - Show all the results of your pre-planned data analysis and any additional 
@@ -40,10 +86,8 @@ The report and associated code is expected to:
 - Be entirely reproducible.
 - Have well documented code.
 
-You are also expected to:
-
-- Work well as a team.
-- Use Git and GitHub to show your work and workflow with your team.
+You are also expected to work well as a team, and use GitHub to submit and store 
+your final product (more details below).
 
 As a *guideline*, aim for at least 2500 words and about 6-8 figures/tables.
 *This is **not** a hard criteria*. We are flexible in these *guidelines*, since
@@ -51,16 +95,29 @@ we want you to learn to work as a team and create a scientific product. You'll
 be surprised how quickly the words, figures, and tables start adding up.
 
 Your code should follow the coding style found [on our resources page](resources.html). 
-We will comment on your code as you work toward the final assignment, so you
-should be aware of the coding style by the due date.
 
-## Grading rubric
+All items (except the presentation) are due on December 5th at 11:59 pm.
+
+## Project submission
+
+The project report and code should be submitted on GitHub as an R project 
+(more details on R projects in assignment 8) - each group will have 
+their own GitHub repository in the [EEB313-2018](https://github.com/eeb313-2018)
+organization to which you can upload your report and code. 
+You are welcome to use your GitHub repository for collaborative work 
+during the project, but feel free to use other tools such as Google Drive,
+Dropbox, Overleaf, etc. if you prefer. 
+
+The self-assessment should be submitted as a pdf through Quercus.
+
+## Project grading rubric
 
 |                                                | Inadequate (0 marks)                                                                                                                                                                                          | Adequate (4 marks)                                                                                                                                                | Excellent (8 marks)                                                                                                                                                                    |
 |------------|--------------------|--------------------|--------------------|
-| Contribution to group work and self-assessment | Student contributed little to project; self-assessed contributions are low in quality and/or quantity; self-assessment is not consistent with actual contribution.                                            | Student contributed adequately to project; made some significant contributions                                                                                    | Student substantially contributed to project to ensure success; self-assessed contributions are crucial to project; self-assessment is consistent with actual contribution.            |
-| Weekly progress (measured in GitHub commits)   | Several weeks in which no contributions are made to project                                                                                                                                                   | Adequate progress on project is made in most weeks                                                                                                                | Significant progress is made every week                                                                                                                                                |
+| Contribution to group work | Student contributed little to project; self-assessed contributions are low in quality and/or quantity; self-assessment is not consistent with actual contribution.                                            | Student contributed adequately to project; made some significant contributions                                                                                    | Student substantially contributed to project to ensure success; self-assessed contributions are crucial to project; self-assessment is consistent with actual contribution. |
 | Content                                        | Missing crucial information; methods and results are inconsistent, not logical, or not adequately explained; conclusions are confusing or unsupported by results; unnecessary information included as clutter | Most essential information included; methods and results are adequately described; conclusions supported by results; most included material is relevant to report | All essential information included; methods and results are succinct, clear, logical, and scientifically valid; conclusions are creative and meaningful; project is concise throughout |
 | Style and reproducibility                      | Code and writing are poorly organized, poorly formatted, missing units, difficult to read, poorly documented, difficult to reproduce analyses                                                                 | Code and writing are well-organized, well-formatted, consistent use of units and significant figures                                                              | Code and writing are precise and clear throughout, free of errors, well-organized, well-documented, easily reproducible analyses, publication-ready                                    |
+| Presentation                      | Presentation is poorly organized; much too long or much too short; presentation is unclear; presentation is missing information; presentation is not scientific and professional; presentation uses too much jargon; not all team members participate; does not adequately address audience questions            | Presentation is adequately organized; timing is appropriate; most information is presented logically; presentation is scientific and professional; most jargon is avoided; all team members participate but equally; audience questions are sometimes addressed well | Presentation is clearly and logically organized; presentation flows and is easy to follow; presentation includes appropriate information without jargon; presentation is well-rehearsed and high-quality; all team members participate equally; audience questions are clearly addressed |
 
-As the final project is a team effort, all members within a group will receive the same mark. A final project that is considered to lie between two of the defined levels will be marked accordingly, e.g. between "Adequate" and "Excellent" would be 5, 6, or 7 marks.
+As the final project is a team effort, all members within a group will receive the same mark in the final three categories and an individual mark for their contribution to group work. A final project that is considered to lie between two of the defined levels will be marked accordingly, e.g. between "Adequate" and "Excellent" would be 5, 6, or 7 marks.
+
