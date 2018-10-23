@@ -121,6 +121,10 @@ Final assignment is in a group and to succeed, you need to understand team dynam
 - Mostly its common sense (be kind and respectful)
     - But its important that you as a team write out what everyone wants and agrees to
 
+#### Example Code of Conduct:
+- [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct)
+- [UofT Coders Code of Conduct](https://github.com/UofTCoders/studyGroup/blob/gh-pages/codeOfConduct.md)
+
 ## Exercise
 
 ### As a group, complete these tasks
