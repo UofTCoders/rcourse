@@ -7,7 +7,7 @@
 
 # Generate the slide html files, of only the lectures.
 rmd_files <- c(
-    "lec12-datasets.Rmd"
+    "lec14-datasets.Rmd"
 )
 
 if (!is.na(rmd_files)) {
