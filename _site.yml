@@ -40,7 +40,7 @@ navbar:
     - text: 'Oct. 18: Time series analysis'
       href: lec13-time-series.html
     - text: 'Oct. 23: Datasets, hypothesis, begin projects'
-      href: lec12-datasets.html
+      href: lec14-datasets.html
     - text: 'Oct. 25: Reproducible science'
       href: lec14-git.html
     - text: 'Oct. 30: Reproducible science'
