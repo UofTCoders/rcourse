@@ -1,6 +1,7 @@
 ---
 title: "Scientific method, team dynamics, and project datasets"
 author: "Luke Johnston"
+output: pdf_document
 ---
 
 ## Lesson preamble:
@@ -23,6 +24,12 @@ author: "Luke Johnston"
 > - Datasets available for use (10-20 min)
 
 -----
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# install.packages("webshot")
+webshot::install_phantomjs()
+```
+
 
 ## Scientific method
 
