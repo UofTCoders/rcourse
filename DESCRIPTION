@@ -38,6 +38,7 @@ Imports:
     psych,
     multcomp,
     qgraph,
-    MuMIn
+    MuMIn,
+    webshot
 Remotes: 
     rstudio/rmarkdown
