@@ -299,8 +299,11 @@ until your changes are ready to merge.
 
 Once a pull request has been merged into the main repo, the branch on our fork 
 isn't needed anymore. Because of this, GitHub will immediately prompt you to delete
-the `initial-edit` branch as soon as the merge has been completed. Great work --
-your edits are now on the main repo!
+the `initial-edit` branch as soon as the merge has been completed. 
+
+![_Pictured: GitHub's branch deletion prompt_](image/delete_branch.png)
+
+Great work -- your edits are now on the main repo!
 
 #### Syncing your fork
 
