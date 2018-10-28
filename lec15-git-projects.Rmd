@@ -33,28 +33,31 @@ it is primarily used for software development, Git can be used to track
 changes in any files, and is an indispensable tool for collaborative projects.
 
 Git is often used via [GitHub](http://www.github.com), a website that
-hosts Git repositories. GitHub therefore facilitates collaboration
-by allowing for code review and other useful features. In the spirit of 
-'working open' and ensuring scientific reproducibility, it has also become increasingly 
-common for scientists to upload scripts and related files to GitHub for others to use.
+hosts Git repositories. GitHub facilitates collaboration by allowing for code review 
+and other useful features. In the spirit of 'working open' and ensuring scientific 
+reproducibility, it has also become increasingly common for scientists to upload 
+scripts and related files to GitHub for others to use.
 
 In this lesson, we'll be covering some basic Git commands, before
 moving on to using GitHub for the upcoming group projects.
-The members of group will be given admin access to a pre-made repository. 
+All members of the group will be given admin access to a pre-made repository. 
 
 ### Command line Git
 
 #### Setup and Installation
 
-Git is primarily used through a _bash interpreter_, also known as a 'bash shell', 
-'the command line', or 'the terminal'. While bash interpreters are 
-natively available on Mac and Linux operating systems, Windows users may 
-have to externally install a bash shell.
+Git is primarily used on the command line. The implementation of the
+command line that we'll be using is known as a 'bash interpreter', or
+'shell'. While bash interpreters are natively available on Mac and Linux 
+operating systems, Windows users may have to externally install a bash shell.
 
 To install Git on a **Mac**, you will have to install [Xcode](https://itunes.apple.com/ca/app/xcode/id497799835?mt=12),
 which can be downloaded from the Mac App store. Be warned: Xcode is a very 
 large download (approximately 6 GB)! Install Xcode and Git should be
-ready for use.
+ready for use. (_Note: most students will have already installed Xcode
+already for some R packages we used earlier in the course. If you're not
+sure whether this is the case, run the `git --version` command described
+below_)
 
 To install Git (and Bash) on **Windows**, download [Git for Windows](https://gitforwindows.org/) from its [website](https://github.com/git-for-windows/git/releases/tag/v2.19.1.windows.1). 
 At the time of writing, 2.19.1 is the most recent version. Download the `exe`
@@ -113,7 +116,7 @@ in said directory.
 mkdir [foldername]
 ```
 
-`mkdir`, or 'make directory', will create a few directory with
+`mkdir`, or 'make directory', will create a new directory with
 the specified name. For instance, `mkdir thesis` will create a folder
 called `thesis`, which can then be entered with `cd thesis`.
 
@@ -133,6 +136,7 @@ work, after which Control + X will exit without prompting.
 
 First, we have to tell Git who we are. This is especially important
 when collaborating with Git and keeping track of who did what!
+Keep in mind that this only has to be done the first time we're using Git.
 
 This is done with the `git config` command. When using Git, _all_ commands begin
 with `git`, followed by more specific subcommands. 
@@ -156,9 +160,9 @@ which is available in its entirety [here](http://swcarpentry.github.io/git-novic
 
 Material covered in class, in order:
 
-- [Creating a repository](http://swcarpentry.github.io/git-novice/03-create/index.html)
-- [Tracking changes](http://swcarpentry.github.io/git-novice/04-changes/index.html)
-- [Exploring history](http://swcarpentry.github.io/git-novice/05-history/index.html)
+- [Creating a repository](https://swcarpentry.github.io/git-novice/03-create/index.html)
+- [Tracking changes](https://swcarpentry.github.io/git-novice/04-changes/index.html)
+- [Exploring history](https://swcarpentry.github.io/git-novice/05-history/index.html)
 
 ## Collaborating with GitHub
 
@@ -197,21 +201,21 @@ at the moment of forking, and so GitHub will indicate that the fork
 is currently 'even' with its original. Any edits that are made in
 the fork will be unique to the fork, leaving the original unchanged.
 
-But what if we do want our changes to show on the main repo? This is
+But how do you add these changes to the main repo? Doing so is
 a two step process:
 
-1. First, we create a _branch_ on our _fork_ (not the main repo). This is yet 
+1. First, create a _branch_ on your _fork_ (not the main repo). This is yet 
 another copy of the fork (a copy of a copy!) that will store changes separately 
 from 'master', which is the default branch. 
 
-2. Once we have made our changes in this branch, we will submit what's
+2. Once you have made our changes in this branch, submit what's
 known as a _pull request_ from this edited branch to the main repo. This 
 allows your changes to be reviewed by the other members of your group before 
 they are merged into the main repo.
 
 Although this process may seem a bit laborious, using this method (also known as
 the 'GitHub flow') minimizes chances of error and ensures that all code
-is reviewed by more than one person. Understanding how and why this process works
+is reviewed by at least one other person. Understanding how and why this process works
 is key to collaborative work in software development and the like, and is used
 by all sorts of open source projects on GitHub ([including `dplyr` itself](https://github.com/tidyverse/dplyr)!)
 
@@ -227,7 +231,7 @@ instead.
 
 ![_Pictured: the branch dropdown menu_](image/branch_dropdown.png)
 
-We can now use the dropdown to switch back to `master`, but let's stay
+The dropdown can now be used to switch back to `master`, but let's stay
 in `initial-edit` for now. This is the place to make new changes -- 
 either by editing existing files or creating new ones. Let's create
 a simple Rmd file with the 'Create new file' button on the right side
@@ -256,11 +260,11 @@ and then click on 'Commit new file'.
 
 #### Pull requests
 
-After we've made our commit, GitHub takes us back to the main repo
-page, but now with an attention-grabbing yellow prompt about our
-new edit. GitHub has noticed that we have a new branch with
-edits, and over on the right side of the prompt, we have the option
-of creating a pull request.
+After a commit has been made, GitHub takes us back to the main repo
+page, but now with an attention-grabbing yellow prompt about these
+new edits. GitHub has noticed that we have a new branch with
+edits, and over on the right side of the prompt, GitHub presents the
+option of creating a pull request.
 
 ![_Pictured: GitHub's pull request prompt_](image/yellow_prompt.png)
 
@@ -270,13 +274,13 @@ button, there is a 'Pull request' option -- this can be used to open
 a pull request instead. You'll also notice that the left side of this
 bar lists how many commits ahead of `master` your branch currently is.
 
-Either way, once we decide to open a pull request, GitHub takes us to
-the 'Pull requests' tab of the _main repo_ and prompts us to write about
-our pull request. Here, we can (and should) explain the changes we've
+Either way, once you decide to open a pull request, GitHub takes you to
+the 'Pull requests' tab of the _main repo_ and prompts you to write about
+our pull request. Here, you can (and should) explain the changes you've
 made for our group members, so that they know what to look for and review.
 Be specific and detailed to save your group members' time -- it's a good
 idea to start off your pull request message with an overall summary 
-('adding data cleaning `dplyr` code') followed by a point-form list of
+('adding `dplyr` code to clean dataset') followed by a point-form list of
 what changes have been made, if necessary. 
 
 Once the pull request has been made, GitHub will list both your message
@@ -284,7 +288,7 @@ and your commit messages below. You also have the option of merging the
 pull request yourself -- but _don't do this_! When collaborating, always
 have someone else review and merge your pull request. 
 
-If all does not look good, your team members can add messages below, and
+If all does _not_ look good, your team members can add messages below, and
 tag others using the @ symbol, similarly to most social networks. If
 more changes are needed before the pull request is ready to merge, 
 any new commits you make to the branch on your fork (`initial-edit` in
@@ -293,19 +297,22 @@ This way, you can incorporate any changes or fixes suggested by your
 team members simply by continuing to work in your fork's new branch
 until your changes are ready to merge.
 
-Once a pull request has been merged, the branch on our fork isn't needed
-anymore. Because of this, GitHub will immediately prompt us to delete
-the `initial-edit` branch as soon as it's been merged. Our edits
-are now on the main repo!
+Once a pull request has been merged into the main repo, the branch on our fork 
+isn't needed anymore. Because of this, GitHub will immediately prompt you to delete
+the `initial-edit` branch as soon as the merge has been completed. Great work --
+your edits are now on the main repo!
 
 #### Syncing your fork
 
 There's one issue with the above, though -- now, the `master` branch
-on our fork is out of date with the current state of the main repo.
-To update our fork, we have to go back to the command line.
+on your fork is out of date with the current state of the main repo.
+The fork has to be synced to remedy this issue. 
 
-To begin with, _clone_ your fork to your computer. To do this,
-open a bash shell, and navigate over to whichever folder you would
+First, head to your fork on GitHub, and click on the green 'Clone or 
+download' button on the right side of the page. This yields a link 
+to your fork. Copy this link to your clipboard.
+
+Next, open a bash shell, and navigate over to whichever folder you would
 like a copy of your repo to be saved in. Then, head to your fork
 on GitHub, and click the green 'Clone or download' button on the right
 side of the page. This yields a link to your repo. Copy this to your clipboard,
@@ -315,13 +322,13 @@ and head back to bash. Then, substituting in your link below, run:
 git clone [repo link]
 ```
 
-This will create a new folder in your current working directory that contains
-the contents of your fork. Enter this new folder with `cd` and type `git status`
-to make sure the repo has been cloned properly. `git status` should output
-that the branch is even with `origin/master`, indicating that it is currently
-the same as the current state of your fork. 
+This process, known as 'cloning', will create a new folder in your current 
+working directory that contains the contents of your fork. Enter this new 
+folder with `cd` and type `git status` to make sure the repo has been cloned 
+properly. `git status` should output that the branch is even with `origin/master`, 
+indicating that it is currently the same as the current state of your fork. 
 
-To get our fork up to date with the main repo, we have to add a _remote_ 
+To get your fork up to date with the main repo, you next have to add a _remote_ 
 linking to the main repo. Head to your group's repo and once again click
 on 'Clone or download' to grab its link. Then, using the main repo link, run:
 
@@ -351,7 +358,7 @@ git merge upstream/master
 ```
 
 Your local copy is now even with the main repo! Finally,
-we have to push these changes to the GitHub version of our fork:
+push these changes to the GitHub version of your fork:
 
 ```
 git push origin master
@@ -366,8 +373,8 @@ When other group members add to the main repo through their own
 pull requests, you have to make sure those edits have been incorporated
 into your repo before making new changes of your own. This ensures
 that there aren't any conflicts within files, wherein your edits
-would otherwise clash with someone else's if one of you is working 
-with an earlier version of the file.
+clash with someone else's if one of you is working with an earlier 
+version of the file.
 
 To remain up to date, navigate to the local copy of your repo using
 bash, and once again repeat the above steps:
@@ -403,9 +410,10 @@ The 'GitHub flow':
 2. Create a new branch on your fork
 3. Make your edits (with informative commit messages along the way)
 4. Submit a pull request
-5. Have your group members review your pull request, and merge if appropriate
-6. Delete your branch
-7. Sync your fork to be up to date with the new changes
+5. Have your group members review your pull request
+6. If your group requests further edits prior to merging, make more commits in the new branch
+7. Once your edits have been merged, delete your new edits-containing branch
+8. Sync your fork to be up to date with the new changes
 
 Additional resources:
 
