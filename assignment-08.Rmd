@@ -1,80 +1,102 @@
 ---
-title: 'Assignment: Data visualization (8 marks)'
+title: 'Assignment 7: Project and team setup (8 marks)'
 output:
     html_document:
         toc: false
 ---
 
-<!-- keep this part -->
 *To submit this assignment, upload the full document on blackboard,
-including the original questions, your code, and the output. Submit both
-your `.Rmd` source file and a knitted `.html` version of the same file.*
+including the original questions, your code, and the output. Submit
+your assignment as a knitted `.pdf` or `.html` file.*
 
-1.  Recreate a customized plot using what you've learned (3.5 marks).
+These assignment tasks seem like a lot of work. However, we will be
+doing these tasks already during class and during project work. The
+purpose of the assignment is for you to get something started on your
+final project. While most of these assignment tasks are group based,
+please fill out each as an individual. In particular, the first question
+should be of *your* forked repository, not one of your team members.
+Each team member should submit their *own assignment*.
 
-    We will use the CO2 dataset studying the cold tolerance on the grass
-    species *Echinochloa crus-galli*.
-
-```{r}
-# Load the CO2 dataset in base R (there is also a co2 dataset, be careful with capitalization)
-CO2 <- datasets::CO2
-```
-
-    Recreate the plot below using the following specified parameters:
-
-    - colors: grey & orange (*Hint:* Use `scale_color_manual`. Check the help docs)
-    - point size: 3
-    - point alpha: 0.6
-    - theme: theme_light
-    - smoothing method: 'loess' (default)
-    - smoothing function alpha: 0.2
-    
-![Figure for question 1](image/assignment-8-figure-q1.png)
-
-2.  Create your own custom ggplot2 theme for your team. You'll use this
-    theme when making all of your graphs for your final report. Work
-    with your team, using the code below as the base, to decide how you
-    want all your graphs to look like. What we exactly expect as an
-    answer isn't specific, but we do expect you and your team to try to
-    make an effort at making your own custom and visually appealling
-    theme. See the links below for help and documentation on changing
-    all aspects of your graph theme. Paste the code in this question. (4
+1.  A new repository has been created for your project on the
+    `EEB313-2018` GitHub account. Create a fork of this project in your
+    GitHub account and paste the URL of this forked version below. (0.5
     marks)
 
-```{r}
-library(ggplot2)
-# Sample data and plot to use to create your theme
-p <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = cut(Petal.Length, 3))) +
-    geom_point() +
-    facet_grid( ~ Species)
+    -   URL of *your* fork:
 
-team_theme <- function() {
-    # Make all your edits here for the theme.
-    # The code below is an example, change them when creating your theme
-    theme(axis.line = element_line(color = "red"),
-          text = element_text(size = 8),
-          legend.text = element_text(size = 12, family = "serif")) # this is an example
-}
-p + team_theme()
-```
+2.  Create a `CONDUCT.md` file and open it up in RStudio. Write down
+    what you as a team decided on for acceptable conduct/behaviour of
+    team members to each other (e.g. "Must be considerate and
+    respectful"). Decide who on your team will save this file on their
+    forked version of the project. The team member needs to create a
+    pull request of this new file to the main project repository (on the
+    UofTCoders account). Copy and paste the link to the pull request.
+    Every team member must approve this pull request (we will show you
+    how to do this in class). Make sure the expectations and behaviours
+    are explicit and clear. (1.5 marks)
 
--   ggplot2 official documentation on all the possible theme items:
-    <https://ggplot2.tidyverse.org/reference/theme.html>
--   ggplot2 official documentation on modifying theme items:
-    <https://ggplot2.tidyverse.org/reference/theme_get.html>
--   Great online book with tutorial walking through how to create a new
-    theme:
-    <https://bookdown.org/rdpeng/RProgDA/building-a-new-theme.html#creating-a-new-theme>
--   ggthemes (package with even more pre-created themes) documentation
-    on what possible themes look like (can use this as inspiration, and
-    even copy if you want! But don't copy the themes entirely... you
-    want the theme to be your own):
-    <https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html>
+    -   URL of team member's pull request for `CONDUCT.md`:
 
-3.  Once you've created the custom theme, decide on a team member that
-    will save this theme to their fork of your team's GitHub account.
-    Create a new file in the `R/` folder called `graph_theme.R`. Paste
-    the `team_theme` function code into this file. Commit this file and
-    submit a PR of this change to the main team repo. (0.5 marks)
-    
-    - URL of pull request:
+3.  A `README.md` file should already exist in your project. Complete
+    the following tasks in the README, discussed and written up *as a
+    team*. Decide who on your team will save this file on their forked
+    version and create a pull request of this file to the main project
+    repository. This person should *not* be the same person who did
+    task 2. Every team member must approve this pull request. (3.25
+    marks)
+
+    -   Create the following headers (make sure to use Markdown headers
+        `#`): "Introduction to the project", "Description of the data",
+        "Team description", "Installation instructions" (*note*, this
+        section we will provide for you).
+
+    -   Fill out the "Introduction to the project" section, answering
+        these questions in a paragraph form (don't include these
+        questions in the section). What is your project about? What is
+        the goal? Why are you doing it?
+
+    -   Fill out the "Description of the data" section, and briefly
+        write down what the data is about, what are the variables you
+        think you'll use, how the data was collected, and how it will
+        answer your research questions. Include a reference of the
+        dataset if one is available, for instance:
+
+            Forstmann BU, et al. (2014) Data from: Multi-modal ultra-high resolution
+            structural 7-Tesla MRI data repository. Dryad Digital Repository.
+            (https://dx.doi.org/10.5061/dryad.fb41s)
+
+    -   Fill out the "Team description" section by writing down a brief
+        biography of each member (including what their skills are and
+        what their approximate responsibilities (which can change later)
+        are for the project) and how team roles will be rotated.
+
+    -   URL of team member's pull request for `README.md`:
+
+4.  Create a file in the `doc/` folder called `objectives.md`. Create
+    one header (`#` markdown header) called "Study objectives". Create a
+    list (`-` markdown syntax) of each of your research questions that
+    you *as a team* thought of. It doesn't matter what the questions
+    are, how simple or complex or complicated or obvious they are, have
+    something written down. These research questions *will* change as
+    you do your analysis. The point is for you to get started thinking
+    about ideas. Decide on another (new) team member to create this
+    file, record it, and make a pull request of this new file. Every
+    team member must approve this pull request. (1 mark)
+
+    -   URL of team member's pull request for `objectives.md`:
+
+5.  Create a file in the `doc/` folder called `analysis-plan.md`. Create
+    three headers (`#` markdown headers): "Possible analyses", "Possible
+    results tables", "Possible results figures". As a team, discuss and
+    record some possible analyses on the data that you could do to
+    answer the research questions. Discuss and record possible ways to
+    present your results (possible tables, some visualizations). Decide
+    on another (new) team member to create this file, record it, and
+    make a pull request of this new file. Every team member must approve
+    this pull request. *Note:* this analysis and presentation plan does
+    **not** have to be accurate, nor do you have to use this later on.
+    It could and will (very likely) change. The point is to get you as a
+    group thinking about how you will answer the research questions.
+    (1.75 marks)
+
+    -   URL of team member's pull request for `analysis-plan.md`:
