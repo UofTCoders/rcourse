@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 7: Project and team setup (8 marks)'
+title: 'Assignment 8: Project and team setup (8 marks)'
 output:
     html_document:
         toc: false
