@@ -173,12 +173,12 @@ If you have not already made a GitHub account, do so now [here](www.github.com).
 
 All groups have been provided with existing repositories, but a new
 repository can be made by clicking on the `+` in the top right of the page
-and selecting 'New repository'. For now, however, we'll navigate to
-our provided group repos.
+and selecting 'New repository'. For now, however, navigate to
+your provided group repo.
 
 ### Creating a fork
 
-The repos that have already been created can be thought of as 'master
+The repos that have already been created can be thought of as 'main
 repos', which will contain the 'primary' version of the repo at any
 given point in time. However, instead of directly uploading and editing
 files right within this main repo itself, we will begin by _forking_ the
@@ -224,7 +224,7 @@ by all sorts of open source projects on GitHub ([including `dplyr` itself](https
 In a given repo, there is a 'Branch: master' button just above the
 list of files. Clicking on this will bring up a dropdown menu containing a list
 of branches (which currently just contains `master`) and a text field.
-A new branch can be created by typing in the text field. Let's make
+A new branch can be created by typing in the text field. Start by making
 a new branch called `initial-edit` using said text field. GitHub
 will then refresh, and the button will now say 'Branch: initial-edit'
 instead.
@@ -260,9 +260,9 @@ and then click on 'Commit new file'.
 
 #### Pull requests
 
-After a commit has been made, GitHub takes us back to the main repo
+After a commit has been made, GitHub takes you back to the main repo
 page, but now with an attention-grabbing yellow prompt about these
-new edits. GitHub has noticed that we have a new branch with
+new edits. GitHub has noticed that your fork has a new branch with
 edits, and over on the right side of the prompt, GitHub presents the
 option of creating a pull request.
 
@@ -274,10 +274,10 @@ button, there is a 'Pull request' option -- this can be used to open
 a pull request instead. You'll also notice that the left side of this
 bar lists how many commits ahead of `master` your branch currently is.
 
-Either way, once you decide to open a pull request, GitHub takes you to
+Following either method of opening a pull request, GitHub takes you to
 the 'Pull requests' tab of the _main repo_ and prompts you to write about
-our pull request. Here, you can (and should) explain the changes you've
-made for our group members, so that they know what to look for and review.
+your pull request. Here, you can (and should) explain the changes you've
+made for your group members, so that they know what to look for and review.
 Be specific and detailed to save your group members' time -- it's a good
 idea to start off your pull request message with an overall summary 
 ('adding `dplyr` code to clean dataset') followed by a point-form list of
@@ -297,7 +297,7 @@ This way, you can incorporate any changes or fixes suggested by your
 team members simply by continuing to work in your fork's new branch
 until your changes are ready to merge.
 
-Once a pull request has been merged into the main repo, the branch on our fork 
+Once a pull request has been merged into the main repo, the branch on your fork 
 isn't needed anymore. Because of this, GitHub will immediately prompt you to delete
 the `initial-edit` branch as soon as the merge has been completed. 
 
@@ -316,16 +316,13 @@ download' button on the right side of the page. This yields a link
 to your fork. Copy this link to your clipboard.
 
 Next, open a bash shell, and navigate over to whichever folder you would
-like a copy of your repo to be saved in. Then, head to your fork
-on GitHub, and click the green 'Clone or download' button on the right
-side of the page. This yields a link to your repo. Copy this to your clipboard,
-and head back to bash. Then, substituting in your link below, run:
+like a copy of your repo to be saved in. Then, run:
 
 ```
 git clone [repo link]
 ```
 
-This process, known as 'cloning', will create a new folder in your current 
+This process, known as _cloning_, will create a new folder in your current 
 working directory that contains the contents of your fork. Enter this new 
 folder with `cd` and type `git status` to make sure the repo has been cloned 
 properly. `git status` should output that the branch is even with `origin/master`, 
@@ -348,7 +345,7 @@ git remote -v
 to get a list of existing remotes. This should return four links,
 two of which are labelled `origin` and two of which are labelled `upstream`.
 
-Next, we have to _fetch_ the new changes that are in the main repo. 
+Next, you have to _fetch_ the new changes that are in the main repo. 
 
 ```
 git fetch upstream
@@ -368,7 +365,7 @@ git push origin master
 ```
 
 and now the GitHub version of the fork is all synced up, ready for
-your next batch of edits and ensuing pull request!
+your next batch of edits, and eventually another pull request!
 
 #### Keeping your fork up to date
 
