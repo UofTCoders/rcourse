@@ -42,7 +42,7 @@ navbar:
     - text: 'Oct. 23: Datasets, hypothesis, begin projects'
       href: lec14-datasets.html
     - text: 'Oct. 25: Reproducible science'
-      href: lec14-git.html
+      href: lec15-git-projects.html
     - text: 'Oct. 30: Reproducible science'
       href: lec17-rmarkdown.html
     - text: 'Nov. 01: Project work (no lesson)'
