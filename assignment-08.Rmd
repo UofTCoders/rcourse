@@ -18,9 +18,8 @@ should be of *your* forked repository, not one of your team members.
 Each team member should submit their *own assignment*.
 
 1.  A new repository has been created for your project on the
-    `EEB313-2018` GitHub account. Create a fork of this project in your
-    GitHub account and paste the URL of this forked version below. (0.5
-    marks)
+    `EEB313-2018` GitHub account. Paste the URL of this forked 
+    version below. (0.5 marks)
 
     -   URL of *your* fork:
 
@@ -72,16 +71,16 @@ Each team member should submit their *own assignment*.
 
     -   URL of team member's pull request for `README.md`:
 
-4.  Create a file in the `doc/` folder called `objectives.md`. Create
-    one header (`#` markdown header) called "Study objectives". Create a
-    list (`-` markdown syntax) of each of your research questions that
-    you *as a team* thought of. It doesn't matter what the questions
-    are, how simple or complex or complicated or obvious they are, have
-    something written down. These research questions *will* change as
-    you do your analysis. The point is for you to get started thinking
-    about ideas. Decide on another (new) team member to create this
-    file, record it, and make a pull request of this new file. Every
-    team member must approve this pull request. (1 mark)
+4.  Create a folder in your forked repo called `doc/` [**Hint:** See [this link](https://github.com/KirstieJane/STEMMRoleModels/wiki/Creating-new-folders-in-GitHub-repository-via-the-browser) on creating folders from the GitHub editor]. Create a file in the `doc/` 
+    folder called `objectives.md`. Create one header (`#` markdown header) 
+    called "Study objectives". Create a list (`-` markdown syntax) of each 
+    of your research questions that you *as a team* thought of. It doesn't 
+    matter what the questions are, how simple, complicated 
+    or obvious they are. Just have something written down. These research 
+    questions *will* change as you do your analyses. The point is for 
+    you to get started thinking about ideas. Decide on another (new) 
+    team member to create this file, record it, and make a pull request 
+    of this new file. Every team member must approve this pull request. (1 mark)
 
     -   URL of team member's pull request for `objectives.md`:
 
