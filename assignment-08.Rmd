@@ -9,7 +9,7 @@ output:
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` or `.html` file.*
 
-Prior to beginning this assignment, we suggest you take a look through [this link](https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html) on how to manage project in RStudio using Rprojects. While not a comonent of this assignment, the tutorial will prove useful as you move forward with your group projects. 
+Prior to beginning this assignment, we suggest you take a look through [this link](https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html) on how to manage project in RStudio using Rprojects. While not a component of this assignment, the tutorial will prove useful as you move forward with your group projects. 
 
 These assignment tasks seem like a lot of work. However, we will be
 doing these tasks already during class and during project work. The
