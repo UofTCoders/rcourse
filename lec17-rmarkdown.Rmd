@@ -210,7 +210,8 @@ it out. Here is an example:
 
 ### Images and Figures
 
-To include an image, use the following syntax:
+To include an image, use the following syntax which will store the caption of your
+image and the image source to display:
 
 ```
 [caption for my image](path/to/image.png)
@@ -279,7 +280,7 @@ such as a .bib file which many citation managers can generate for you and will
 hold all the references you need for your document.
 
 These are some great open source reference managers you can take advantage of
-for managing your references, all of which make it pretty easy to export as BibTeX:
+for managing your references, all of which make it pretty easy to export as BibTeX or .bib file:
 
 - [Zotero](https://www.zotero.org/)
 - [Jabref](https://www.jabref.org/)
@@ -299,18 +300,12 @@ Statement [@Smith2014; @Logan1997].
 
 To make a bibliography, you may also want to specify a citation style guide to
 format your bibliography (in the form of a .csl file). The official repository
-for recognized citation styles is available [here](https://github.com/citation-style-language/styles). Because of the permissive
-licensing, you can actually customize or make your own styles too! [This visual
-editor](https://editor.citationstyles.org/visualEditor/) is a great tool to modify
-styles to your liking.
+for recognized citation styles is available [here](https://github.com/citation-style-language/styles). Because of the permissive licensing, you can actually customize or 
+make your own styles too! [This visual editor](https://editor.citationstyles.org/visualEditor/) is a great tool to modify styles to your liking. Download the file and put it 
+somewhere you will remember and can access later. 
+I like to keep it in the same folder as my project.
 
-
-
-#### Exercise
-
-Take some time to find the style guide for your field and to download that file.
-
-Once you have the correct .csl file, you can specify it in your YAML metadata:
+Once you have the correct .csl file, you can specify it in your YAML metadata as follows:
 
 ```
 ---
@@ -349,7 +344,9 @@ be reordered for you, by order of occurrence! From the [Pandoc documentation](ht
 #### Changing the output file format
 
 To change the output format of your .Rmd file, try changing the `output`
-metadata in the YAML header from "html_document" to "word_document"
+metadata in the YAML header from "html_document" to "word_document".
+In order to output to "pdf_document", you need to have a LaTeX engine
+installed.
 
 #### Table of Contents
 
