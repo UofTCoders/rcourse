@@ -71,7 +71,7 @@ navbar:
     - text: Assignment 7
       href: assignment-07.html
     - text: Assignment 8
-      #href: assignment-08.html
+      href: assignment-08.html
     - text: Final project
       href: assignment-final.html
   #- text: Slides
