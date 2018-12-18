@@ -1,8 +1,5 @@
 ---
 title: 'Syllabus: EEB313 Quantitative Methods in R for Biology [24L, 12P]'
-output:
-  pdf_document: default
-  word_document: default
 ---
 
 This course covers statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science. Students will learn to develop ecological population models, analyze data, and document their research using the R programming language. No prerequisite programming experience is required.

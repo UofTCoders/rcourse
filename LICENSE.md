@@ -4,6 +4,7 @@ title: "Licensing and copyright information"
 
 The course material is licensed under the 
 [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/)
+and the course code is licensed under a [MIT License](LICENSE-MIT.html)
 by the [UofTCoders](https://uoftcoders.github.io) (see the [about](about.html)
 for those involved in creating the course).
 In addition to our own developed material, we have also modified material from
