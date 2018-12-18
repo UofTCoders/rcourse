@@ -1,5 +1,5 @@
 ---
-title: "Reproducible science with Git and GitHub"
+title: "Reproducible science and collaboration with Git and GitHub"
 author: Ahmed Hasan
 ---
 
@@ -8,6 +8,7 @@ author: Ahmed Hasan
 > ### Lesson objectives:
 >
 > - Understand basic bash commands
+> - Understand the logic of version control 
 > - Practice using Git commands at the command line
 > - Learn how and when to use branches
 > - Learn how to effectively use Pull Requests
@@ -30,11 +31,9 @@ author: Ahmed Hasan
 
 Git is a version control system that tracks changes in files. Although
 it is primarily used for software development, Git can be used to track
-changes in any files, and is an indispensable tool for collaborative projects.
+changes in any files, and is an indispensable tool for collaborative projects. Using Git, we effectively create different versions of our files and track who has made what changes. The complete history of the changes for a particular project and their metadata make up a repository. 
 
-Git is often used via [GitHub](http://www.github.com), a website that
-hosts Git repositories. GitHub facilitates collaboration by allowing for code review 
-and other useful features. In the spirit of 'working open' and ensuring scientific 
+to sync the repository across different computers and to collaborate with others, Git is often used via [GitHub](http://www.github.com), a web-based service that hosts Git repositories. In the spirit of 'working open' and ensuring scientific 
 reproducibility, it has also become increasingly common for scientists to upload 
 scripts and related files to GitHub for others to use.
 
@@ -124,13 +123,14 @@ called `thesis`, which can then be entered with `cd thesis`.
 nano [filename]
 ```
 
-`nano` is a text editor, similar to Notepad on Windows, except that
-it opens right within the bash window. If the filename provided doesn't 
+`nano` is a text editor for unix-like systems that opens right within the bash window. If the filename provided doesn't 
 refer to an existing file, `nano` will create a new file with that name. 
 Once you're done with `nano`, press Control + X to exit - `nano` will ask 
 whether you want to save your work, which can be answered by pressing either 
 `y` or `n`. Alternatively, Control + O followed by Enter will save your current 
 work, after which Control + X will exit without prompting.
+
+You can use any other text editor based on your system, for example, Notepad on Windows. 
 
 #### Getting started with Git
 
@@ -153,9 +153,16 @@ Here, we'll use `nano`, as mentioned above:
 git config --global core.editor "nano"
 ```
 
-#### Version control with Git
+here is a [link](http://swcarpentry.github.io/git-novice/02-setup/index.html) to instructions on how to config other text editors. 
 
-*Material for the following section of the class was taught from [Software Carpentry](www.software-carpentry.org)'s openly available Intro to Git lesson,
+use the following to review and your Git configurations:
+
+```
+git config --list
+```
+
+#### Version control with Git
+Note: *Material for the following section of the class was taught from [Software Carpentry](www.software-carpentry.org)'s openly available Intro to Git lesson,
 which is available in its entirety [here](http://swcarpentry.github.io/git-novice/).* 
 
 Material covered in class, in order:
@@ -163,6 +170,43 @@ Material covered in class, in order:
 - [Creating a repository](https://swcarpentry.github.io/git-novice/03-create/index.html)
 - [Tracking changes](https://swcarpentry.github.io/git-novice/04-changes/index.html)
 - [Exploring history](https://swcarpentry.github.io/git-novice/05-history/index.html)
+
+##### Summary: Basic Git commands
+
+- `git init` (or `git clone`)
+- `git status`
+- `git log`
+- `git add`
+- `git commit`
+- `git checkout`
+
+#### Branching
+
+Git commit history is a [directed acyclic
+graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) (or DAG), which
+means that every single commit always has at least one 'parent' commit (the
+previous commit(s) in the history), and any individual commit can have multiple
+'children'. This history can be traced back through the 'lineage' or
+'ancestry'.
+
+##### What are branches?
+
+Branches are simply a *named pointer* to a commit in the DAG, which
+automatically *move forward* as commits are made. Divergent commits (two
+commits with the same parent) could be considered "virtual" branches. Since
+they are simply pointers, branches in Git are very lightweight.
+
+![Examples of branching](image/branches.svg)
+
+##### Why use them?
+
+- To keep experimental work separate
+- To separate trials
+- To ease collaboration
+- To separate bug fixes from development
+
+Since you will be using Github, we will learn how to make branches in the second section of the lesson when we learn about GitHub.
+
 
 ## Collaborating with GitHub
 
@@ -384,6 +428,8 @@ git fetch upstream
 git merge upstream/master
 git push origin master
 ```
+Note: 
+The `git pull` command combines two other commands, `git fetch` and `git merge`.
 
 This will download any changes your group members may have made
 and update both the local and GitHub versions of your fork accordingly.
@@ -419,5 +465,6 @@ Additional resources:
 
 - [A visual demonstration](https://guides.github.com/introduction/flow/) of the GitHub flow.
 - A useful [Git command cheat sheet](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf).
+- Guide to a [good Git Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows)
 
 
