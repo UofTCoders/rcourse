@@ -44,7 +44,7 @@ navbar:
     - text: 'Oct. 25: Reproducible science'
       href: lec15-git-projects.html
     - text: 'Oct. 30: Reproducible science'
-      href: lec17-rmarkdown.html
+      href: lec16-rmarkdown.html
     - text: 'Nov. 01: Project work (no lesson)'
     - text: 'Nov. 13: Project work (no lesson)'
     - text: 'Nov. 15: Project work (no lesson)'
