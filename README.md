@@ -46,11 +46,12 @@ The course's lesson material is broadly subdivided into three main topics:
     * Introduces concepts such as regression, principal component analysis, and statistical models
 3. Numerical modelling (Lectures 11-12)
     * Introduces students to numerically modelling populations in R
-3. Reproducible science (Lectures 13-15)
+4. Reproducible science (Lectures 13-15)
     * Prepares students for project work period and introduces methods for reproducible science (GitHub, R Markdown)
 
 If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md]. 
 
 ## Related Publications
 
+Bonsma-Fisher M, Hasan AR (2018). Working with plant phenology data and fitting a nonlinear model using least squares in R. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4Q73D. [Available online](https://qubeshub.org/qubesresources/publications/978/1).
 
