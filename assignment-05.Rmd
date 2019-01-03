@@ -5,92 +5,127 @@ output:
         toc: false
 ---
 
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
-**1.  Linear mixed-effects models (4 marks).**
+1. Linear mixed-effects models (4 marks).
 
-Santangelo _et al._ (In press) were interested in understanding how plant defenses, herbivores,
-and pollinators influence the expression of plant floral traits (e.g. flower size). Their experiment
-had 3 treatments, each with 2 levels: Plant defense (2 levels: defended vs. undefended), herbivory
-(2 levels: reduced vs. ambient) and pollination (2 levels: open vs. supplemental). These treatments
-were fully crossed for a total of 8 treatment combinations. In each treatment combination, they grew 
-4 individuals from each of 25 plant genotypes for a total of 800 plants (8 treatment combinations x 
-25 genotypes x 4 individuals per genotype). Plants were grown in a common garden at the Koffler 
-Scientific Reserve (UofTs field research station) and 6 floral traits were measured on all plants 
-throughout the summer. We will analyze how the treatments influenced one of these traits in this 
-exercise. Run the code chunk below to download the data, which includes only a subset of the columns 
-from the full dataset:
+    Santangelo _et al._ (In press) were interested in understanding how plant
+    defenses, herbivores, and pollinators influence the expression of plant floral
+    traits (e.g. flower size). Their experiment had 3 treatments, each with 2
+    levels: Plant defense (2 levels: defended vs. undefended), herbivory (2 levels:
+    reduced vs. ambient) and pollination (2 levels: open vs. supplemental). These
+    treatments were fully crossed for a total of 8 treatment combinations. In each
+    treatment combination, they grew 4 individuals from each of 25 plant genotypes
+    for a total of 800 plants (8 treatment combinations x 25 genotypes x 4
+    individuals per genotype). Plants were grown in a common garden at the Koffler
+    Scientific Reserve (UofTs field research station) and 6 floral traits were
+    measured on all plants throughout the summer. We will analyze how the treatments
+    influenced one of these traits in this exercise. Run the code chunk below to
+    download the data, which includes only a subset of the columns from the full
+    dataset:
     
-```{r message=FALSE, warning=FALSE}
-library(tidyverse)
-
-plant_data <- paste0("https://raw.githubusercontent.com/",
-                    "James-S-Santangelo/rcourse/",
-                    "master/data/Santangelo_JEB_2018.csv")
-download.file(plant_data, "Santangelo_JEB_2018.csv")
-plant_data <- read_csv("Santangelo_JEB_2018.csv", 
-                       col_names = TRUE)
-glimpse(plant_data)
-head(plant_data)
-```
-
-You can see that the data contain 792 observations (i.e. plants, 8 died during the experiment). There are 50 
-genotypes across 3 treatments: Herbivory, Pollination, and HCN (i.e. hydrogen cyanide, a plant defense). There
-are 6 plant floral traits: Number of days to first flower, banner petal length, banner petal width, plant biomass, 
-number of flowers, and number of inflorescences. Finally, since plants that are closer in space in the common
-garden may have similar trait expression due to more similar environments, the authors included 6 spatial "blocks" to 
-account for this environmental variation (i.e. Plant from block A "share" an environment and those from block B
-"share" an environment, etc.). Also keep in mind that each treatment combination contains 4 individuals of each
-genotype, which are likely to have similar trait expression due simply to shared genetics.
+    ```{r}
+    library(tidyverse)
     
-(a) Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model examining how herbivores (`Herbivory`), Pollinators (`Pollination`), 
-plant defenses (`HCN`) _and all interactions_ influences the length of banner petals (`Avg.Bnr.Ht`) produced by
-plants while accounting for variation due to spatial block and plant genotype. Also allow the intercept for `Genotype` to vary across the levels of the herbivory treatment. (1 mark: 0.5 for correct fixed effects specification and 0.5 for correct random effects structure). You only need to specify the model for this part of the question.
+    plant_data <- paste0("https://raw.githubusercontent.com/",
+                        "James-S-Santangelo/rcourse/",
+                        "master/data/Santangelo_JEB_2018.csv")
+    download.file(plant_data, "Santangelo_JEB_2018.csv")
+    plant_data <- read_csv("Santangelo_JEB_2018.csv", 
+                           col_names = TRUE)
+    glimpse(plant_data)
+    head(plant_data)
+    ```
 
-(b) Summarize (i.e. get the output) the model that you ran in part (a). Did any of the treatments have a significant effect on banner petal length? If so, which ones? Based on your examination of the model output, how can you tell which level of the significant treatments resulted in longer or shorter mean banner petal lengths? Make a statement for each significant effect in the model (1 mark).
+    You can see that the data contain 792 observations (i.e. plants, 8 died during
+    the experiment). There are 50 genotypes across 3 treatments: Herbivory,
+    Pollination, and HCN (i.e. hydrogen cyanide, a plant defense). There are 6 plant
+    floral traits: Number of days to first flower, banner petal length, banner petal
+    width, plant biomass, number of flowers, and number of inflorescences. Finally,
+    since plants that are closer in space in the common garden may have similar
+    trait expression due to more similar environments, the authors included 6
+    spatial "blocks" to account for this environmental variation (i.e. Plant from
+    block A "share" an environment and those from block B "share" an environment,
+    etc.). Also keep in mind that each treatment combination contains 4 individuals
+    of each genotype, which are likely to have similar trait expression due simply
+    to shared genetics.
+    
+    a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model
+    examining how herbivores (`Herbivory`), Pollinators (`Pollination`), plant
+    defenses (`HCN`) _and all interactions_ influences the length of banner petals
+    (`Avg.Bnr.Ht`) produced by plants while accounting for variation due to spatial
+    block and plant genotype. Also allow the intercept for `Genotype` to vary across
+    the levels of the herbivory treatment. (1 mark: 0.5 for correct fixed effects
+    specification and 0.5 for correct random effects structure). You only need to
+    specify the model for this part of the question.
 
-(c) Using `dplyr` and `gglot2`, plot the mean banner length for one of the significant interactions in the model above (whichever you choose). The idea is to show how both treatments interact to influence the mean length of banner petals (**Hint** use different shapes, colours, linetypes, etc. in `ggplot()`). Feel free to use whatever kind of plot you would that is appropriate to this kind of data. Also include 1 standard error around the mean. [**Hint:** you should summarize the data in `dplyr` prior to plotting with `ggplot()`]. As a reminder, I have included the formula to calculate the standard error of the mean below. (1 mark).
+    b. Summarize (i.e. get the output) the model that you ran in part (a). Did
+    any of the treatments have a significant effect on banner petal length? If
+    so, which ones? Based on your examination of the model output, how can you
+    tell which level of the significant treatments resulted in longer or shorter
+    mean banner petal lengths? Make a statement for each significant effect in
+    the model (1 mark).
 
-$$ SE = \frac{sd}{\sqrt{n}}  $$
+    c. Using `dplyr` and `gglot2`, plot the mean banner length for one of the
+    significant interactions in the model above (whichever you choose). The idea
+    is to show how both treatments interact to influence the mean length of
+    banner petals (**Hint** use different shapes, colours, linetypes, etc. in
+    `ggplot()`). Feel free to use whatever kind of plot you would that is
+    appropriate to this kind of data. Also include 1 standard error around the
+    mean. **Hint:** you should summarize the data in `dplyr` prior to plotting
+    with `ggplot()`. As a reminder, I have included the formula to calculate
+    the standard error of the mean below. (1 mark).
 
-(d) After accounting for the fixed effects, how much of the variation in banner petal length was explained by each of the random effects in the model? Show your work (0.5 marks). 
+    $$ SE = \frac{sd}{\sqrt{n}}  $$
 
-(e) Descibe the pattern you see in the figure generated in part (c). Why do you think the interaction you plotted was significant in the model? Suggest one plausible ecological explanation for the observed pattern. (0.5 marks)
+    d. After accounting for the fixed effects, how much of the variation in
+    banner petal length was explained by each of the random effects in the
+    model? Show your work (0.5 marks).
 
-**2. Simulating data (2 marks)**
+    e. Descibe the pattern you see in the figure generated in part (c). Why do
+    you think the interaction you plotted was significant in the model? Suggest
+    one plausible ecological explanation for the observed pattern. (0.5 marks)
 
-(a) Generate a gamma distribution by randomly sampling 30 points from a distribution with shape parameter equal to 1.25 and rate parameter equal to 0.5. Plot this distribution. Set a seed of 42. (0.5 mark).
+2. Simulating data (2 marks)
 
-(b) Plot the distribution of sample means obtained by generating 5000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 5000 means, each from a different simulated gamma distribution. Set a seed of 43. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
+    a. Generate a gamma distribution by randomly sampling 30 points from a distribution with shape parameter equal to 1.25 and rate parameter equal to 0.5. Plot this distribution. Set a seed of 42. (0.5 mark).
 
-(c) In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model, while holding the other variables constant. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. Set a seed of 44. (1 mark).
+    b. Plot the distribution of sample means obtained by generating 5000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 5000 means, each from a different simulated gamma distribution. Set a seed of 43. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
 
-1. `x1` is an explanatory variable with _sequence_ from 41 to 60 with 1 unit intervals between each value (i.e. 20 values total).
-2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 62 and standard deviation equal to 2.7.
-2. `x3` is an explanatory variable of length 20 randomly drawn for a gamma distribution with shape equal to 5 and rate equal to 0.5.
-3. the `y_intercept` is 20
-4. The beta associated with `x1` is 0.62.
-5. The beta associated with `x2` is 0.047`
-6. The beta associated with `x3` is 0.175
-6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.65.
-7. `y` is a linear combination of `x1`, `x2` and `x3`. There are no interations. Don't forget about the error. 
+    c. In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model, while holding the other variables constant. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. Set a seed of 44. (1 mark).
 
-**3. Randomization test (2 marks)**
+        1. `x1` is an explanatory variable with _sequence_ from 41 to 60 with 1 unit intervals between each value (i.e. 20 values total).
+        2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 62 and standard deviation equal to 2.7.
+        2. `x3` is an explanatory variable of length 20 randomly drawn for a gamma distribution with shape equal to 5 and rate equal to 0.5.
+        3. the `y_intercept` is 20
+        4. The beta associated with `x1` is 0.62.
+        5. The beta associated with `x2` is 0.047`
+        6. The beta associated with `x3` is 0.175
+        6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.65.
+        7. `y` is a linear combination of `x1`, `x2` and `x3`. There are no interations. Don't forget about the error. 
 
-Run the code chunk below to load the data that will be used in this exercise.
+3. Randomization test (2 marks)
 
-```{r message=FALSE, warning=FALSE}
-df <- paste0("https://raw.githubusercontent.com/",
-                    "James-S-Santangelo/rcourse/",
-                    "master/data/Assign05_Question3.csv")
-download.file(df, "Assign05_Question3.csv")
-df <- read_csv("Assign05_Question3.csv", 
-                       col_names = TRUE)
-glimpse(df)
-```
+    Run the code chunk below to load the data that will be used in this exercise.
 
-(a) Generate a histogram showing the null distribution of t-statistics between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed t-statistic as a dashed vertical line. Set a seed of 46. [**Hint:** You'll need to extract the t stat from a t-test saved as an object]
+    ```{r message=FALSE, warning=FALSE}
+    df <- paste0(
+        "https://raw.githubusercontent.com/",
+        "James-S-Santangelo/rcourse/",
+        "master/data/Assign05_Question3.csv"
+        )
+    download.file(df, "Assign05_Question3.csv")
+    df <- read_csv("Assign05_Question3.csv", 
+                           col_names = TRUE)
+    glimpse(df)
+    ```
 
-(b) Perform a permutation test testing whether the observed t statistic between groups one and two is different than what would be expected by chance. Include a statement about whether there is a significant difference between groups based on your permutation test and be sure to include the P-value. How does this P-value compare to one obtained from a simple t-test? Why? (1 mark)
+    a. Generate a histogram showing the null distribution of t-statistics between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed t-statistic as a dashed vertical line. Set a seed of 46. **Hint:** You'll need to extract the t stat from a t-test saved as an object.
+
+    b. Perform a permutation test testing whether the observed t statistic between groups one and two is different than what would be expected by chance. Include a statement about whether there is a significant difference between groups based on your permutation test and be sure to include the P-value. How does this P-value compare to one obtained from a simple t-test? Why? (1 mark)

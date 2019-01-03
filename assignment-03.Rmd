@@ -5,6 +5,10 @@ output:
         toc: false
 ---
 
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 you assignment as a knitted `.pdf` (prefered) or `.html` file.*
@@ -16,7 +20,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     levels of activity (0 and 1), rather than a continuous range 0-1,
     which will facilitate plotting.
 
-    ``` {.r}
+    ```{r}
     library(tidyverse)
     beaver1 <- beaver1 %>%
         mutate(factor_activ = factor(activ))
