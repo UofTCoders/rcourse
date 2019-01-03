@@ -1,11 +1,11 @@
 ---
-title: 'Assignment 8: Project and team setup (8 marks)'
+title: 'Assignment 8: Project and team setup, echo=FALSE (8 marks)'
 output:
     html_document:
         toc: false
 ---
 
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
@@ -77,7 +77,9 @@ Each team member should submit their *own assignment*.
 
     -   URL of team member's pull request for `README.md`:
 
-4.  Create a folder in your forked repo called `doc/` [**Hint:** See [this link](https://github.com/KirstieJane/STEMMRoleModels/wiki/Creating-new-folders-in-GitHub-repository-via-the-browser) on creating folders from the GitHub editor]. Create a file in the `doc/` 
+4.  Create a folder in your forked repo called `doc/` (**Hint:** See [this
+link](https://github.com/KirstieJane/STEMMRoleModels/wiki/Creating-new-folders-in-GitHub-repository-via-the-browser)
+on creating folders from the GitHub editor). Create a file in the `doc/`
     folder called `objectives.md`. Create one header (`#` markdown header) 
     called "Study objectives". Create a list (`-` markdown syntax) of each 
     of your research questions that you *as a team* thought of. It doesn't 
