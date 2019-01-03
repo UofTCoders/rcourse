@@ -287,9 +287,7 @@ First, let's look at the type of data we need for this analysis.
 
 ```{r message=FALSE, warning=FALSE}
 # Load in example dataset
-comMatrix_example <-paste0("https://raw.githubusercontent.com/",
-                           "James-S-Santangelo/rcourse/master/data/",
-                           "lec09_CommunityMatrix_Example.csv")
+comMatrix_example <- "https://github.com/UofTCoders/rcourse/blob/master/data/lec09_CommunityMatrix_Example.csv"
 download.file(comMatrix_example, "lec09_CommunityMatrix_Example.csv")
 
 comMatrix_example <- read_csv("lec09_CommunityMatrix_Example.csv")
@@ -307,9 +305,7 @@ Let's read in some real data before proceeding. The data are from the [National 
 
 ```{r message=FALSE, warning=FALSE}
 # Load in NEON data
-neon_data <- paste0("https://raw.githubusercontent.com/",
-                    "James-S-Santangelo/rcourse/master/data/",
-                    "NEON_PlantPA_HARV_201707.csv")
+neon_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/NEON_PlantPA_HARV_201707.csv"
 download.file(neon_data, "NEON_PlantPA_HARV_201707.csv")
 neon_data <- read_csv("NEON_PlantPA_HARV_201707.csv")
 glimpse(neon_data)

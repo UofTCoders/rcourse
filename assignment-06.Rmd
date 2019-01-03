@@ -17,9 +17,7 @@ library(tidyverse)
 library(lme4)
 library(lmerTest)
 
-Santangelo_data <- paste0("https://raw.githubusercontent.com/",
-                          "James-S-Santangelo/rcourse/",
-                          "master/data/Santangelo_JEB_2018.csv")
+Santangelo_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Santangelo_JEB_2018.csv"
 download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
 Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
                             col_names = TRUE)

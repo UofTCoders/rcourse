@@ -26,9 +26,7 @@ from the full dataset:
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 
-plant_data <- paste0("https://raw.githubusercontent.com/",
-                    "James-S-Santangelo/rcourse/",
-                    "master/data/Santangelo_JEB_2018.csv")
+plant_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Santangelo_JEB_2018.csv"
 download.file(plant_data, "Santangelo_JEB_2018.csv")
 plant_data <- read_csv("Santangelo_JEB_2018.csv", 
                        col_names = TRUE)
@@ -82,9 +80,7 @@ $$ SE = \frac{sd}{\sqrt{n}}  $$
 Run the code chunk below to load the data that will be used in this exercise.
 
 ```{r message=FALSE, warning=FALSE}
-df <- paste0("https://raw.githubusercontent.com/",
-                    "James-S-Santangelo/rcourse/",
-                    "master/data/Assign05_Question3.csv")
+df <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Assign05_Question3.csv"
 download.file(df, "Assign05_Question3.csv")
 df <- read_csv("Assign05_Question3.csv", 
                        col_names = TRUE)
