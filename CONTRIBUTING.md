@@ -40,7 +40,8 @@ More on the practice of continuous integration can be found on [Travis CI's webs
 
 ## Format
 
-We follow a consistent format across all course materials.
+We follow a consistent format across all course materials. A lesson
+template can be found [here][lecture-template].
 
 ### Lessons
 
@@ -74,5 +75,6 @@ downloading required data, or data cleaning if necessary.
 [github-flow]: https://guides.github.com/introduction/flow/
 [glossary]: https://help.github.com/articles/github-glossary/
 [knitr-explanation]: https://rmarkdown.rstudio.com/authoring_quick_tour.html
+[lecture-template]: https://github.com/UofTCoders/rcourse/blob/master/_templates/lectures.Rmd
 [pull-requests]: https://help.github.com/articles/about-pull-requests/
 [travis-website]: https://travis-ci.org/
