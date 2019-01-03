@@ -55,3 +55,10 @@ If you are interested in contributing to the course material, please refer to th
 
 Bonsma-Fisher M, Hasan AR (2018). Working with plant phenology data and fitting a nonlinear model using least squares in R. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4Q73D. [Available online](https://qubeshub.org/qubesresources/publications/978/1).
 
+## Acknowledgements
+
+We thank Dr. Christie Bahlai, Dr. Asher Cutter, Dr. Martin Krkosek, and the Department of Ecology
+and Evolutionary Biology at the University of Toronto for helping make this course a reality.
+
+We also thank Dr. Megan Jones and Dr. Kusum Naithani for their support and guidance, particularly
+around use of the NEON Ecological Observatory data. 
