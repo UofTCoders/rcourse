@@ -5,7 +5,7 @@ output:
         toc: false
 ---
 
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
@@ -43,18 +43,19 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
         computer. You might receive warnings that functions from other
         packages are masked when you load `tidyverse`, this is fine.
 
-    ```{r, eval=FALSE}
-    install.packages("tidyverse")
-    install.packages("rmarkdown")
-
-    library(tidyverse)
-    library(rmarkdown)
-
-    sessionInfo()
-
-    # Expected answer
-    # The output is included below this code chunk with the appropriate packages loaded.
-    ```
+        ```{r, eval=FALSE}
+        install.packages("tidyverse")
+        install.packages("rmarkdown")
+    
+        library(tidyverse)
+        library(rmarkdown)
+    
+        sessionInfo()
+    
+        # Expected answer
+        # The output is included below this code chunk with the appropriate 
+        # packages loaded.
+        ```
 
 2.  What is R Markdown and why are we using it in this class? *Hint:*
     You are using R Markdown right now to complete this assignment! (1
@@ -62,6 +63,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     -   Which key combination would you use to insert a chunk of code in
         an R Markdown document?
     -   Which key combination would you use to execute a code chunk?
+
 3.  Provide a few reasons as to why it is beneficial to create documents
     like the R Notebooks rather than using a spreadsheet software for
     exploratory data analyses? (1 mark)
