@@ -15,20 +15,14 @@ Depends: R (>= 3.4.0)
 License: CC-BY
 Encoding: UTF-8
 Imports: 
-    rmarkdown (>= 1.10.13),
+    rmarkdown,
     knitr,
-    dplyr,
-    tidyr,
-    ggplot2,
-    DiagrammeR,
     tidyverse,
     GGally,
-    datasauRus,
     broom,
     deSolve,
     phaseR,
     lattice,
-    plotly,
     lme4,
     lmerTest,
     reshape2,
@@ -37,8 +31,4 @@ Imports:
     car,
     psych,
     multcomp,
-    qgraph,
-    MuMIn,
-    webshot
-Remotes: 
-    rstudio/rmarkdown
+    MuMIn
