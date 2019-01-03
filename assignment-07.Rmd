@@ -5,7 +5,7 @@ output:
         toc: false
 ---
 
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
@@ -22,21 +22,17 @@ or hand in the hard copy.*
 
     Consider the differential equation $\frac{dx}{dt} = x(1-x)$.
 
-<!-- -->
-
-(a) Use R to plot $\frac{dx}{dt}$ vs. $x$ for $-1 \le x \le 2$. (0.5
-    marks)
-
-(b) Sketch a one-dimensional phase portrait on paper (or digitally if you prefer).
-    Mark the direction of the derivative in each region with arrows and label the 
-    fixed points as "stable" or "unstable". (0.5 marks)
-
-(c) Use R to numerically solve this equation and plot $x$ vs. $t$ for
-    $0 \le t \le 10$. Plot trajectories for several different starting
-    values of $x$ (initial conditions) using `ggplot` and the `do`
-    function we used in class. Based on the long-time behaviour of the
-    system, which fixed point(s) are stable and which are unstable?
-    (1 mark)
+    a. Use R to plot $\frac{dx}{dt}$ vs. $x$ for $-1 \le x \le 2$. (0.5 marks)
+    
+    b. Sketch a one-dimensional phase portrait on paper (or digitally if you
+    prefer). Mark the direction of the derivative in each region with arrows and
+    label the fixed points as "stable" or "unstable". (0.5 marks)
+    
+    c. Use R to numerically solve this equation and plot $x$ vs. $t$ for $0 \le
+    t \le 10$. Plot trajectories for several different starting values of $x$
+    (initial conditions) using `ggplot` and the `do` function we used in class.
+    Based on the long-time behaviour of the system, which fixed point(s) are
+    stable and which are unstable? (1 mark)
 
 2.  The Allee Effect (3 marks)
 
@@ -56,39 +52,37 @@ or hand in the hard copy.*
     carrying capacity, and $A$ is the critical population size above which 
     the total growth rate is positive.
 
-(a) Take $r=1$, $A=10$, and $K=50$. Use R to plot $\frac{dN}{dt}$ vs.
-    $N$ for $0 \le N \le 55$. For which values of $N$ is the growth rate
-    ($\frac{dN}{dt}$) positive or negative? 
-    Which values of N are fixed points? (0.5 marks)
+    a. Take $r=1$, $A=10$, and $K=50$. Use R to plot $\frac{dN}{dt}$ vs. $N$ for
+    $0 \le N \le 55$. For which values of $N$ is the growth rate
+    ($\frac{dN}{dt}$) positive or negative? Which values of N are fixed points?
+    (0.5 marks)
 
-(b) Sketch a phase portrait on paper or digitally, leaving $A$ and
-    $K$ as variables (i.e. without choosing values for $A$ and $K$, but
-    with $0 \le A < K$). Mark the direction of the derivative in each
-    region with arrows and label the fixed points as "stable" or
-    "unstable". (1 mark)
+    b. Sketch a phase portrait on paper or digitally, leaving $A$ and $K$ as
+    variables (i.e. without choosing values for $A$ and $K$, but with $0 \le A <
+    K$). Mark the direction of the derivative in each region with arrows and
+    label the fixed points as "stable" or "unstable". (1 mark)
 
-(c) Use R to plot the **per capita** growth rate
-    ($\frac{1}{N}\frac{dN}{dt}$) vs. $N$ for this model of the Allee
-    effect and for the logistic growth model:
-    $\frac{dN}{dt} = rN(1-\frac{N}{K})$.
+    c. Use R to plot the **per capita** growth rate ($\frac{1}{N}\frac{dN}{dt}$)
+    vs. $N$ for this model of the Allee effect and for the logistic growth
+    model: $\frac{dN}{dt} = rN(1-\frac{N}{K})$.
 
-    -   What do you notice about the density ($N$) dependence of the per
-        capita growth rate in each case? Hint: in the logistic model,
-        the growth rate **per capita** (per organism) decreases in a
-        straight line as $N$ increases.
+        -   What do you notice about the density ($N$) dependence of the per
+            capita growth rate in each case? Hint: in the logistic model,
+            the growth rate **per capita** (per organism) decreases in a
+            straight line as $N$ increases.
+    
+        -   What happens to the Allee effect as $A$ decreases? Plot curves
+            for $A=0$ and a few values of $A>0$.
+    
+        -   The parameter $A$ controls the strength of the Allee effect: for
+            $A > 0$, the Allee effect is said to be strong, and for $A=0$,
+            the Allee effect is weak. What will happen to a population 
+            experiencing a strong Allee effect if the population size falls 
+            below $A$? What will happen to a population experiencing a weak 
+            Allee effect if the population size falls below $A$? (1 mark)
 
-    -   What happens to the Allee effect as $A$ decreases? Plot curves
-        for $A=0$ and a few values of $A>0$.
-
-    -   The parameter $A$ controls the strength of the Allee effect: for
-        $A > 0$, the Allee effect is said to be strong, and for $A=0$,
-        the Allee effect is weak. What will happen to a population 
-        experiencing a strong Allee effect if the population size falls 
-        below $A$? What will happen to a population experiencing a weak 
-        Allee effect if the population size falls below $A$? (1 mark)
-
-(d) Describe two biological situations in which you might expect to see
-    an Allee effect (either weak or strong). (0.5 marks)
+    d. Describe two biological situations in which you might expect to see an Allee
+    effect (either weak or strong). (0.5 marks)
 
 3. The Canadian lynx population cycle (3 marks)
 
@@ -101,36 +95,42 @@ or hand in the hard copy.*
     R has a built-in dataset called `lynx` which contains annual population 
     measurements for the Canadian lynx as a time series. 
 
-(a) Plot `lynx` vs. time in years using either `ggplot` or `qplot`. 
-    Plot points (`geom_point`) and a connecting line (`geom_line`). 
-    Create a time series that starts at 0 and ends at the total number of 
-    years in the dataset (total years $= 1934-1821$).
-    By eye, estimate the time between peaks in the population. (0.5 marks)
+    a. Plot `lynx` vs. time in years using either `ggplot` or `qplot`. Plot points
+    (`geom_point`) and a connecting line (`geom_line`). Create a time series that
+    starts at 0 and ends at the total number of years in the dataset (total years $=
+    1934-1821$). By eye, estimate the time between peaks in the population. (0.5
+    marks)
 
-(b) Define a function called `sine_model` that takes 5 arguments: a vector of years
-    for the x-axis and four parameters (amplitude, period, phase, and offset). 
+    b. Define a function called `sine_model` that takes 5 arguments: a vector of
+    years for the x-axis and four parameters (amplitude, period, phase, and offset).
     Recall the general formula for a sine wave:
-    $$y = A \text{sin}(kx - b) + c$$
-    where $k = 2\pi / T$, $T$ is the period or length of time between peaks,
-    $A$ is the amplitude, $b$ is the phase, and $c$ is the offset.
-    Using a value of $A = c = 1700$ for both the amplitude and offset and a value of 
-    $b = 2.75$ for the phase, plot the lynx data as before and add a sine curve 
-    using your guess of the timescale from part (a) for the period.
-    Use a colour other than black to plot the sine wave. 
-    Note that the x axis must start at 0 in order for the offset of $2.75$
-    to match the data. (0.5 marks)
-
-(c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
-    - Make a range of values for the period that span your guess from part (a).
-    - Use the `sapply` function to calculate a predicted dataset using a sine model. 
-    Calculate the sum of the difference (*residuals*) between the lynx data and
-    your prediction, then return the sum of the residuals squared.
-    - Plot the sum of the residuals squared vs. the range of period values. By eye,
-    what is the minimum of this curve? What value of the period gives the best fit?
-    - Use the function `which` to extract the period value that gives the best fit. 
-    What is your calculated length of the lynx population cycle?
     
-(d) Plot the lynx data again and plot your best fit curve on top. 
-    Does your estimate of the cycle length match the literature?
-    Why or why not? (Find and cite a resource that gives an estimate
-    of the lynx population cycle.) (0.5 marks)
+        $$y = A \text{sin}(kx - b) + c$$
+    
+        where $k = 2\pi / T$, $T$ is the period or length of time between peaks, $A$
+        is the amplitude, $b$ is the phase, and $c$ is the offset. Using a value of
+        $A = c = 1700$ for both the amplitude and offset and a value of $b = 2.75$
+        for the phase, plot the lynx data as before and add a sine curve using your
+        guess of the timescale from part (a) for the period. Use a colour other than
+        black to plot the sine wave. Note that the x axis must start at 0 in order
+        for the offset of $2.75$ to match the data. (0.5 marks)
+
+    c. Use least-squares fitting to refine your estimate of the lynx cycle length.
+    (1.5 marks)
+    
+        - Make a range of values for the period that span your guess from part (a).
+        - Use the `sapply` function to calculate a predicted dataset using a
+        sine model. Calculate the sum of the difference (*residuals*) between
+        the lynx data and your prediction, then return the sum of the residuals
+        squared.
+        - Plot the sum of the residuals squared vs. the range of period values.
+        By eye, what is the minimum of this curve? What value of the period
+        gives the best fit?
+        - Use the function `which` to extract the period value that gives the
+        best fit.
+        What is your calculated length of the lynx population cycle?
+    
+    d. Plot the lynx data again and plot your best fit curve on top. Does your
+    estimate of the cycle length match the literature? Why or why not? (Find and
+    cite a resource that gives an estimate of the lynx population cycle.) (0.5
+    marks)
