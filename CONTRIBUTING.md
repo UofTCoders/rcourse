@@ -1,6 +1,6 @@
 # Contributing
 
-Quantitative Methods for Biology in R is an open-source course,
+Quantitative Methods in R for Biology is an open-source course,
 aimed at a third- to fourth-year undergraduate level. 
 
 ## How to Contribute
@@ -26,14 +26,15 @@ Git-related terminology.
 ## Continuous Integration with Travis
 
 We use [Travis CI][travis-website] to test all materials in the course repo. Any changes
-(in the form of a pull request) will trigger a Travis build, where 
-Travis will attempt to [knit][knitr-explanation] all the 
-code in the repo. Any errors will cause the Travis build to fail.
+in the form of a pull request will trigger a Travis build, where 
+Travis will attempt to test the code in the repo,
+[knitting][knitr-explanation] all lesson materials in the process. 
+Any errors will cause the Travis build to fail.
 
 Pull requests can only be merged into the repo with a passing Travis build;
 this is to ensure that all course material is functional. If you submit a pull
-request that does not pass a Travis build, a traceback can be found on the link
-to that pull request's respective build. 
+request that does not pass a Travis build, a traceback to the error can be found 
+on the link to that pull request's respective build. 
 
 More on the practice of continuous integration can be found on [Travis CI's website][ci-explanation]. 
 
@@ -50,16 +51,16 @@ We follow a consistent format across all course materials.
 also list approximate time requirements for each segment. 
 
 3. Lessons include a mix of code chunks and text, organized using Markdown headers.
-Students should be able to follow the contents of the lesson from the text alone;
-i.e. the file should contain _all_ conceptual explanations. Please feel free to have a look
-through the existing lessons in the repo for examples. 
+
+4. Students should be able to follow the contents of the lesson from the text alone;
+i.e. the file should contain _all_ conceptual explanations.
 
 ### Assignments
 
 1. All assignments are in R Markdown (`.Rmd`) format.
 
-2. Assignment files are relatively light on code, and designed
-so that students fill in answers by adding in code chunks of their own.
+2. Assignment files contain a numbered list of questions and are comparatively light on code.
+They are designed such that students fill in answers by adding in code chunks of their own.
 
 3. Code chunks in assignments should mostly be limited to loading required packages,
 downloading required data, or data cleaning if necessary. 
