@@ -5,7 +5,7 @@ output:
         toc: false
 ---
 
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
@@ -16,58 +16,60 @@ your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
 1. In this exercise, we will once again use the data of Santangelo _et al._ (In press) that you used in assignment 5. Let's go ahead and load in the data.
 
-```{r message=FALSE, warning=FALSE}
-library(tidyverse)
-library(lme4)
-library(lmerTest)
+    ```{r message=FALSE, warning=FALSE}
+    library(tidyverse)
+    library(lme4)
+    library(lmerTest)
+    
+    Santangelo_data <- paste0("https://raw.githubusercontent.com/",
+                              "James-S-Santangelo/rcourse/",
+                              "master/data/Santangelo_JEB_2018.csv")
+    download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
+    Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
+                                col_names = TRUE)
+    glimpse(Santangelo_data)
+    head(Santangelo_data)
+    ```
 
-Santangelo_data <- paste0("https://raw.githubusercontent.com/",
-                          "James-S-Santangelo/rcourse/",
-                          "master/data/Santangelo_JEB_2018.csv")
-download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
-Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
-                            col_names = TRUE)
-glimpse(Santangelo_data)
-head(Santangelo_data)
-```
-
-(a) Create a mixed-effects model with banner petal length (`Avg.Bnr.Ht`) as the response variable and HCN, Pollination, and their interaction as fixed-effect predictors. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Pollination` interactions by including these terms as random effects. This will be our saturated model. [**Hint:** Take a look at lecture 8 for a reminder on how to code random effects using `lmer()`, especially how interation (i.e. crossed) random-effects are coded]. (0.5 marks)
-
-(b) We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
-
-(c) Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. [**Hint:** Think carefully about which random effects should and should not be removed from the model. See lecture 11 for the logic behind this decision and assignment 5 for a description of the dataset that will help guide this decision]. (1 mark)
-
-(d) Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to showw all the models and their AIC/AIC~c~ scores (1 mark)
-
-(e) Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction (i.e. larger or smaller banner petals in which treatment factor level?). Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
-
-(f) Use `dplyr` and `ggplot2` to plot the banner petal length of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). [**Hint:** `geom_errorbar()`]. (0.25 marks)
-
-(g) Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
+    a. Create a mixed-effects model with banner petal length (`Avg.Bnr.Ht`) as the response variable and HCN, Pollination, and their interaction as fixed-effect predictors. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Pollination` interactions by including these terms as random effects. This will be our saturated model. **Hint:** Take a look at lecture 8 for a reminder on how to code random effects using `lmer()`, especially how interation (i.e. crossed) random-effects are coded. (0.5 marks)
+    
+    b. We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
+    
+    c. Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. **Hint:** Think carefully about which random effects should and should not be removed from the model. See lecture 11 for the logic behind this decision and assignment 5 for a description of the dataset that will help guide this decision. (1 mark)
+    
+    d. Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to show all the models and their AIC/AIC~c~ scores (1 mark)
+    
+    e. Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction (i.e. larger or smaller banner petals in which treatment factor level?). Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
+    
+    f. Use `dplyr` and `ggplot2` to plot the banner petal length of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). **Hint:** `geom_errorbar()`. (0.25 marks)
+    
+    g. Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
 
 2. Install the`cluster` package so we can use the dataset "animals". Use the `?animals` to look at the documentation for the dataset, and load the packages below:
 
-```{r}
-#install.packages("cluster")
-library(cluster)
-library(psych)
-head(animals)
-```
+    ```{r}
+    # install.packages("cluster")
+    library(cluster)
+    library(psych)
+    head(animals)
+    ```
 
-(a) First, clean the data so that there are no missing values (recall: the `principal()` function does not handle NA's well). Then, create a correlation matrix and create an inital principal components matrix without rotation and with the full number of possible factors. Create a scree plot. Based on the eigenvalues and scree plot, decide on an appropriate number of components for your model and justify your decision. (1 mark)
+    a. First, clean the data so that there are no missing values (recall: the `principal()` function does not handle NA's well). Then, create a correlation matrix and create an inital principal components matrix without rotation and with the full number of possible factors. Create a scree plot. Based on the eigenvalues and scree plot, decide on an appropriate number of components for your model and justify your decision. (1 mark)
+    
+    b. Run your principal components analysis using the number of factors/components you have selected. Interpret the output using the `psych` package we used in class. Assign each variable to a component. Do the components you've come up with make sense to you? What do they have in common, if anything (1 mark)?
+    
+    c. Let's go back to our survey data. If you need to re-download it, use the code below:
 
-(b) Run your principal components analysis using the number of factors/components you have selected. Interpret the output using the `psych` package we used in class. Assign each variable to a component. Do the components you've come up with make sense to you? What do they have in common, if anything (1 mark)?
+        ```{r}
+        # If you need to re-download the survey:
+        download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
+        survey <- read_csv("survey.csv")
+        survey <- survey %>% 
+            # uses dplyr function to change all character vectors to factors
+            mutate_if(is.character, as.factor) 
+        head(survey)
+        ```
 
-(c) Let's go back to our survey data. If you need to re-download it, use the code below:
+        Choose two appropriate variables to run MANOVA on. Choose two categorical predictor variables. Run the analysis (without follow-up analyses), interpret the results, and explain your choice of variables. (1 mark).
 
-```{r}
-# If you need to re-download the survey:
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
-survey <- read_csv("survey.csv")
-survey %>% mutate_if(is.character, as.factor) -> survey #uses dplyr function to change all character vectors to factors
-head(survey)
-```
-
-Choose two appropriate variables to run MANOVA on. Choose two categorical predictor variables. Run the analysis (without follow-up analyses), interpret the results, and explain your choice of variables. (1 mark).
-
-(d) When would we prefer to use MANOVA over ANOVA? When is it not appropriate to use MANOVA? List one example each (1 mark).
+    d. When would we prefer to use MANOVA over ANOVA? When is it not appropriate to use MANOVA? List one example each (1 mark).
