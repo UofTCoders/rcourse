@@ -21,20 +21,26 @@ author: 'Lindsay Coome'
 >
 
 ## Setup
+
+
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
-# Have the following packages installed and loaded:
-# install.packages("car")
-# install.packages("psych")
-# install.packages("multcomp")
 library(car)
 library(psych)
 library(multcomp)
+```
 
+```{r, include=FALSE}
+survey <- read_csv("data/survey.csv.gz")
+```
+
+```{r, eval=FALSE}
 # If you need to re-download the survey:
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
+download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv")
 survey <- read_csv("survey.csv")
+```
 
+```{r}
 # uses dplyr function to change all character vectors to factors
 survey <- survey %>% 
     mutate_if(is.character, as.factor) 

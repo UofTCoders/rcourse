@@ -35,8 +35,13 @@ library(tidyverse)
 library(mice)
 ```
 
-```{r}
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") #if you need to re-download the survey
+```{r, include=FALSE}
+survey <- read_csv("data/survey.csv.gz")
+```
+
+```{r, eval=FALSE}
+# If you need to re-download the survey
+download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
 survey <- read_csv("survey.csv")
 ```
 
