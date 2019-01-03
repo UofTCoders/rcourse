@@ -334,7 +334,7 @@ means biologically. Does it make sense that the population should increase if $N
 r <- 1
 N <- 0.1
 
-print(r*N)
+r*N
 ```
 
 Clearly, if $N$ represents a real population, it can only ever take integer values (it must be *discrete*), 
