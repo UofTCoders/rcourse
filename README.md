@@ -39,9 +39,18 @@ groups present their work in a conference-style presentation, and submit a repor
 
 The course's lesson material is broadly subdivided into three main topics:
 
-1. Introductory R; data wrangling and data visualization
-2. Statistical analysis; regression, principal component analysis, statistical models
-3. Reproducible science; GitHub, R Markdown
+1. Introductory R (Lectures 1-5)
+    * Introduces students to the R programming language, with a focus on 
+      data wrangling and visualization.
+2. Statistical analysis (Lectures 6-10)
+    * Introduces concepts such as regression, principal component analysis, and statistical models
+3. Numerical modelling (Lectures 11-12)
+    * Introduces students to numerically modelling populations in R
+3. Reproducible science (Lectures 13-15)
+    * Prepares students for project work period and introduces methods for reproducible science (GitHub, R Markdown)
 
+If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md]. 
+
+## Related Publications
 
 
