@@ -6,7 +6,8 @@ Course in Ecology and Evolutionary Biology
 
 [![Build Status](https://travis-ci.org/UofTCoders/rcourse.svg?branch=master)](https://travis-ci.org/UofTCoders/rcourse)
 [![DOI](https://zenodo.org/badge/97400494.svg)](https://zenodo.org/badge/latestdoi/97400494)
-
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
 
