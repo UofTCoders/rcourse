@@ -1,13 +1,11 @@
 ---
 title: 'Assignment 4: exploratory data analysis and linear models (8 marks)'
 output:
-  html_document:
-    toc: no
-  pdf_document:
-    toc: no
+    html_document:
+        toc: false
 ---
 
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
