@@ -63,8 +63,7 @@ Let's start by loading and examining the data.
 library(tidyverse)
 
 # Load data
-rikz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo/",
-                    "rcourse/master/data/rikz_data.txt")
+rikz_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/rikz_data.txt"
 download.file(rikz_data, "rikz_data.txt")
 
 rikz_data <- read_delim("rikz_data.txt",
@@ -276,8 +275,7 @@ The experiment took place inside of growth chambers at the University of Toronto
 
 ```{r Fitzpatrick 2018 data, message=FALSE, warning=FALSE}
 # Load in and examine data
-Fitz_data <- paste0("https://raw.githubusercontent.com/James-S-Santangelo",
-                    "/rcourse/master/data/Fitzpatrick_2018.csv")
+Fitz_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Fitzpatrick_2018.csv"
 download.file(Fitz_data, "Fitzpatrick_2018.csv")
 
 Fitz_data <- read_csv("Fitzpatrick_2018.csv", col_names = TRUE)
