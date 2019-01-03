@@ -5,6 +5,10 @@ output:
         toc: false
 ---
 
+```{r setup}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 you assignment as a knitted `.pdf` (prefered) or `.html` file.*
@@ -39,7 +43,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
         computer. You might receive warnings that functions from other
         packages are masked when you load `tidyverse`, this is fine.
 
-    ``` {.r}
+    ```{r, eval=FALSE}
     install.packages("tidyverse")
     install.packages("rmarkdown")
 

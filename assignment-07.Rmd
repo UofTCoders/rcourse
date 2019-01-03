@@ -5,6 +5,10 @@ output:
         toc: false
 ---
 
+```{r setup}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 *To submit this assignment, upload the full document on Quercus,
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` or `.html` file.*
