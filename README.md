@@ -13,10 +13,11 @@ Course in Ecology and Evolutionary Biology
 Quantitative Methods in R for Biology is a course aimed at undergraduates at a third year level or above. 
 The course covers statistics and data analysis for ecology and reproducible quantitative methods in R. 
 
-Statistical analysis, modelling, simulation, and data analysis are essential skills for applying 
-ecology concepts to data. This course is designed to meet a growing demand for reproducible, openly accessible, 
+Statistical analysis, modelling, and data simulation are essential skills for ecologists and evolutionary biologists. 
+Furthermore, ever larger datasets are quickly becoming the norm in a variety of scientific disciplines. 
+This course is therefore designed to meet a growing demand for reproducible, openly accessible, 
 analytically thorough, and well-documented science. Students will learn to develop ecological population models, 
-analyze data, and document their research using the R programming language. No prior programming experience is required.
+analyze large datasets, and document their research using the R programming language. No prior programming experience is required.
 
 For more detail on the course, check out the [syllabus](https://uoftcoders.github.io/rcourse/).
 
