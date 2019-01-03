@@ -25,19 +25,9 @@ output: pdf_document
 
 -----
 
-```{r message=FALSE, warning=FALSE, include=FALSE}
-# install.packages("webshot")
-webshot::install_phantomjs()
-```
-
-
-## Scientific method
-
-<!-- What is the scientific method? -->
-
-### Simplified diagram of the scientific method
-
-```{r fig_scientific_method, echo=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, eval=FALSE}
+# Run these locally if making changes.
+library(dplyr)
 DiagrammeR::grViz('
 digraph rmarkdown {
     graph [layout = neato, overlap = false, splines = true]
@@ -53,9 +43,20 @@ digraph rmarkdown {
     Hypothesis -> CollectData -> AnalyzeData -> HypothesisTrue -> Report
     AnalyzeData -> HypothesisFalse -> Report
     {HypothesisTrue HypothesisFalse AnalyzeData CollectData} -> Hypothesis
-}')
+}') %>% 
+        DiagrammeRsvg::export_svg() %>%
+        charToRaw() %>%
+        rsvg::rsvg_png(file = "image/fig_scientific_method.png", 
+                       width = 500, height = 700)
 ```
 
+## Scientific method
+
+<!-- What is the scientific method? -->
+
+### Simplified diagram of the scientific method
+
+![Simplified process flow for the scientific method](image/fig_scientific_method.png)
 
 ### Steps in the scientific process[^sci_method]
 
