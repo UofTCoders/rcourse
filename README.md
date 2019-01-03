@@ -51,12 +51,22 @@ The course's lesson material is broadly subdivided into three main topics:
 
 If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md](https://github.com/UofTCoders/rcourse/blob/master/CONTRIBUTING.md). 
 
+If you are interested in using or modifying this content and repository for your 
+own course, you'll need to make a change to the Travis CI setup so you can host 
+the website on your own account. Check out the documentation on the [R Markdown
+online book](https://bookdown.org/yihui/bookdown/github.html). Here is a brief 
+excerpt taken from the book:
+
+1. Create a [personal access token](http://bit.ly/2cEBYWB) for your account on GitHub (make sure to enable the "repo" scope so that using this token will enable writing to your GitHub repos).
+1. Encrypt it in the environment variable `GITHUB_PAT` via command line `travis encrypt` and store it in `.travis.yml`, 
+e.g `travis encrypt GITHUB_PAT=TOKEN`. If you do not know how to install or use the Travis command-line tool, simply save this environment variable via https://travis-ci.org/user/repo/settings where `user` is your GitHub ID, and `repo` is the name of the repository.
+1. You can clone this `gh-pages` branch on Travis using your GitHub token, add the HTML output files from R Markdown (do not forget to add figures and CSS style files as well), and push to the remote repository.
+
 ## Related Publications
 
 Santangelo JS (2019). Data simulation and randomization tests. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4CT7P. [Available online.](https://qubeshub.org/qubesresources/publications/996/1).
 
 Bonsma-Fisher M, Hasan AR (2018). Working with plant phenology data and fitting a nonlinear model using least squares in R. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4Q73D. [Available online](https://qubeshub.org/qubesresources/publications/978/1).
-
 
 ## Acknowledgements
 
