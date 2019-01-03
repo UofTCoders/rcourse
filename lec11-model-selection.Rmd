@@ -75,14 +75,24 @@ library(lmerTest)
 library(MuMIn)
 ```
 
-```{r}
+```{r, eval=FALSE}
 # Load in data
-rikz_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/rikz_data.txt"
+rikz_data <- "https://uoftcoders.github.io/rcourse/data/rikz_data.txt"
 download.file(rikz_data, "rikz_data.txt")
 
 rikz_data <- read_delim("rikz_data.txt",
                          col_names = TRUE,
                          delim = "\t")
+rikz_data$Beach <- as.factor(rikz_data$Beach)
+```
+
+```{r, echo=FALSE}
+rikz_data <- read_delim("data/rikz_data.txt",
+                         col_names = TRUE,
+                         delim = "\t")
+```
+
+```{r}
 rikz_data$Beach <- as.factor(rikz_data$Beach)
 ```
 
@@ -173,9 +183,22 @@ The data consists of 140 observations (rows). Each row in the dataset correspond
 
 Let's start by loading in the data.
 
+```{r, eval=FALSE}
+# Load in Thompson and Johnson (2016) data
+Thompson_data <- "https://uoftcoders.github.io/rcourse/data/Thompson-Johnson_2016_Evol.csv"
+download.file(Thompson_data, "Thompson-Johnson_2016_Evol.csv")
+Thompson_data <- read_csv("Thompson-Johnson_2016_Evol.csv", 
+                          col_names = TRUE)
+```
+
+```{r, echo=FALSE}
+Thompson_data <- read_csv("data/Thompson-Johnson_2016_Evol.csv", 
+                          col_names = TRUE)
+```
+
 ```{r}
 # Load in Thompson and Johnson (2016) data
-Thompson_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Thompson-Johnson_2016_Evol.csv"
+Thompson_data <- "https://uoftcoders.github.io/rcourse/data/Thompson-Johnson_2016_Evol.csv"
 download.file(Thompson_data, "Thompson-Johnson_2016_Evol.csv")
 Thompson_data <- read_csv("Thompson-Johnson_2016_Evol.csv", 
                           col_names = TRUE)

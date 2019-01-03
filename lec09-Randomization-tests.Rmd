@@ -285,12 +285,18 @@ Randomization tests are applied in all corners of ecological and evolutionary re
 
 First, let's look at the type of data we need for this analysis.
 
-```{r message=FALSE, warning=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 # Load in example dataset
-comMatrix_example <- "https://github.com/UofTCoders/rcourse/blob/master/data/lec09_CommunityMatrix_Example.csv"
+comMatrix_example <- "https://uoftcoders.github.io/rcourse/data/lec09_CommunityMatrix_Example.csv"
 download.file(comMatrix_example, "lec09_CommunityMatrix_Example.csv")
-
 comMatrix_example <- read_csv("lec09_CommunityMatrix_Example.csv")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+comMatrix_example <- read_csv("data/lec09_CommunityMatrix_Example.csv")
+```
+
+```{r, message=FALSE, warning=FALSE}
 head(comMatrix_example)
 
 # Sliced to return a numeric Matrix, which is required for 
@@ -303,11 +309,18 @@ As you can see, the data is a matrix with sites (e.g. islands, quadrats, etc.) a
 
 Let's read in some real data before proceeding. The data are from the [National Ecological Observatory Network](https://www.neonscience.org/) and represent the presence and absence of plant species in eight square meter plots during the month of July, 2017, at a single site around Harvard, Boston, MA. Note this is only a subset of the very large dataset provided by NEON, which dates back to 2013 and includes about 46 different sites. 
 
-```{r message=FALSE, warning=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
 # Load in NEON data
-neon_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/NEON_PlantPA_HARV_201707.csv"
+neon_data <- "https://uoftcoders.github.io/rcourse/data/NEON_PlantPA_HARV_201707.csv"
 download.file(neon_data, "NEON_PlantPA_HARV_201707.csv")
 neon_data <- read_csv("NEON_PlantPA_HARV_201707.csv")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+neon_data <- read_csv("data/NEON_PlantPA_HARV_201707.csv")
+```
+
+```{r message=FALSE, warning=FALSE}
 glimpse(neon_data)
 ```
 

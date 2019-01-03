@@ -59,17 +59,29 @@ A diagrammatic representation of the dataset can be seen below (Modified from Zu
 
 Let's start by loading and examining the data. 
 
-```{r Load and examine data, message=FALSE, warning=FALSE}
+```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
+```
 
+```{r, echo=FALSE}
+rikz_data <- read_delim("data/rikz_data.txt",
+                         col_names = TRUE,
+                         delim = "\t")
+```
+
+```{r, eval=FALSE}
 # Load data
-rikz_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/rikz_data.txt"
+rikz_data <- "https://uoftcoders.github.io/rcourse/data/rikz_data.txt"
 download.file(rikz_data, "rikz_data.txt")
 
 rikz_data <- read_delim("rikz_data.txt",
                          col_names = TRUE,
                          delim = "\t")
-rikz_data$Beach <- as.factor(rikz_data$Beach)
+```
+
+```{r}
+rikz_data <- rikz_data %>% 
+    mutate(Beach = as.factor(Beach))
 
 # Examine structure of the dataframe and view first 5 columns
 glimpse(rikz_data)
@@ -273,20 +285,26 @@ I will illustrate both deeply nested and crossed random effects in a single mode
 
 The experiment took place inside of growth chambers at the University of Toronto, where plants were randomly assigned into trays, which were then randomly assigned onto racks in the growth chamber. Thus, plants only occurs within one tray and each tray only occurs within one rack (tray is nested within rack). Given that plants within a tray could be more similar to one another than plants from another tray (i.e. tray effect) and the same is true for racks, this non-independence needs to be accounted for. However, every accession occurred on every rack (i.e. crossed effect) and individual plants from an accession are likely to be more similar to other plants from that accession than to plants from another accession. Again, this non-independence needs to be accounted for. The authors tracked flowering date and counted the number of fruit produced by each plant (n = 879) at the end of the experiment. The code below provides a useful way of examining the data to assess whether terms are nested or crossed and then fits a mixed-effects model to the Fitzpatrick *et al.* data. The question we are interested in here is: **Do soil microbes, drought, or their interaction influence the number of fruit produced by _A. thaliana_ plants?**
 
-```{r Fitzpatrick 2018 data, message=FALSE, warning=FALSE}
+```{r, echo=FALSE}
+Fitz_data <- read_csv("data/Fitzpatrick_2018.csv", col_names = TRUE)
+```
+
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
 # Load in and examine data
-Fitz_data <- "https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/Fitzpatrick_2018.csv"
+Fitz_data <- "https://uoftcoders.github.io/rcourse/data/Fitzpatrick_2018.csv"
 download.file(Fitz_data, "Fitzpatrick_2018.csv")
-
 Fitz_data <- read_csv("Fitzpatrick_2018.csv", col_names = TRUE)
+```
 
+```{r}
 # Let's change some columns to factors and remove rows with no fruit data
 Fitz_data <- Fitz_data %>%
-                 mutate(tray = as.factor(tray),
-                        rack = as.factor(rack),
-                        accession = as.factor(accession)) %>%
-                 filter(!is.na(fruit))
-
+    mutate(
+        tray = as.factor(tray),
+        rack = as.factor(rack),
+        accession = as.factor(accession)
+    ) %>% 
+    filter(!is.na(fruit))
 
 glimpse(Fitz_data)
 head(Fitz_data)
