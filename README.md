@@ -49,11 +49,14 @@ The course's lesson material is broadly subdivided into four main topics:
 4. Reproducible science (Lectures 13-15)
     * Prepares students for project work period and introduces methods for reproducible science (GitHub, R Markdown).
 
-If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md]. 
+If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md](https://github.com/UofTCoders/rcourse/blob/master/CONTRIBUTING.md). 
 
 ## Related Publications
 
+Santangelo JS (2019). Data simulation and randomization tests. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4CT7P. [Available online.](https://qubeshub.org/qubesresources/publications/996/1).
+
 Bonsma-Fisher M, Hasan AR (2018). Working with plant phenology data and fitting a nonlinear model using least squares in R. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4Q73D. [Available online](https://qubeshub.org/qubesresources/publications/978/1).
+
 
 ## Acknowledgements
 
