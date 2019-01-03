@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 1 - Intro to programming (4 marks)'
+title: 'Assignment 1: Intro to programming (4 marks)'
 output:
     html_document:
         toc: false
