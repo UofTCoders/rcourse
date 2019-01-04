@@ -18,6 +18,7 @@ author: "Lindsay Coome"
 > - MANOVA (50 min)
 
 ## Setup
+
 ```{r message=FALSE, warning=FALSE}
 library(car)
 library(psych)
@@ -26,7 +27,9 @@ library(tidyverse)
 
 download.file("http://www.lindsaycoome.com/jellfish.csv", "jellyfish.csv")
 jellyfish <- read_csv("jellyfish.csv")
-jellyfish %>% mutate_if(is.character, as.factor) -> jellyfish #uses dplyr function to change all character vectors to factors
+jellyfish <- jellyfish %>% 
+    # uses dplyr function to change all character vectors to factors
+    mutate_if(is.character, as.factor)
 ```
 
 ## Multivariate vs. univariate statistics

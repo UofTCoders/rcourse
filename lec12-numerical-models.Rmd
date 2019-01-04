@@ -253,23 +253,6 @@ $$\frac{dN}{dt} = N - a$$
    - Plot $\frac{dN}{dt}$ vs. $N$, like we did earlier.
    - Sketch a phase portrait. Are the fixed point(s) stable or unstable?
 
-<!--
-The fixed point is shifted by $a$. This isn't really a good model, but if $a > 0$ the population will decrease 
-if $N < a$ and will increase if $N > a$ - maybe this could reflect a minimum population needed to reproduce,
-like, say, 2. If $a < 0$, $N = 0$ is still not a fixed point, but since $N$ can't really decrease below 0, 
-this doesn't really make sense. If $a = 0$, we recover the previous exponential model. 
-
-```{r}
-a <- 3 # choose some value for a
-
-N_seq <- seq(-20, 20, by = 0.2)
-dN_dt <- N_seq - a
-
-qplot(N_seq, dN_dt) +
-  geom_line(aes(x = N_seq, y = 0)) # a line at zero for visual aid
-```
--->
-
 ### The logistic model
 
 Of course in real life there must be an upper limit to growth, otherwise the surface of the earth would be
@@ -351,7 +334,7 @@ means biologically. Does it make sense that the population should increase if $N
 r <- 1
 N <- 0.1
 
-print(r*N)
+r*N
 ```
 
 Clearly, if $N$ represents a real population, it can only ever take integer values (it must be *discrete*), 

@@ -221,7 +221,7 @@ Navigate to this directory in your file browser and create a folder called
 
 Alternatively, you could use R to create this directory.
 
-```{r}
+```{r, eval=FALSE}
 dir.create("data-processed")
 
 # To suppress the warning, we could do
