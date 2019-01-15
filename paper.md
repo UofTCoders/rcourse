@@ -63,7 +63,7 @@ statistical and programming skills to primarily upper-year undergraduate biology
 students. Our learning module has three self-contained submodules spanning
 sixteen lessons: 1) Programming in R, basic data wrangling, and visualizations;
 2) Exploratory data analysis, statistics, and modelling; and 3) Collaborative
-and reproducible science. Our learning module includes eight assignments,
+and reproducible science. Our learning module includes eight assignments
 distributed throughout the term to assess students' learning and understanding.
 The material is made available as R Markdown documents and designed to be taught
 using R Notebooks. Students are not expected to have any prior knowledge of the
@@ -144,9 +144,9 @@ coding along, forms the primary focus of each lesson. This hands-on approach to
 teaching is frequently used by teaching organizations such as 
 [Software Carpentry](https://software-carpentry.org/blog/2016/04/tips-tricks-live-coding.html)
 [@carpentry;@rubin_effectiveness_2013;@haaranen_programming_2017;@wilson_teaching_2018].
-While many learning outcomes focused on developing programming proficiency, some
-lessons were centred around concepts (such as "Statistical Modelling" or
-"Differential Equations"), during which we still used the live-coding approach.
+While many learning outcomes focus on developing programming proficiency, some
+lessons are centred around concepts (such as "Statistical Modelling" or
+"Differential Equations"), during which we still use the live-coding approach.
 This approach not only demonstrates the concepts in a step-by-step fashion but
 also helps students practice writing code.
 3. *Interwoven Exercises*: Coding exercises or discussion points are
@@ -184,7 +184,7 @@ quantitative research methods and skills.
 
 To maximize the learning experience, we prioritized in-class participation,
 engagement, and hands-on experience. The main teaching techniques we used to
-achieve this goal were participatory live-coding, interweaving exercises with
+achieve this goal were participatory live-coding, exercises interwoven with
 teaching, and project-based learning
 [@sawyer_cambridge_2006;@strobel_when_2009;@markham_project_2011] where students
 collaborated in teams on data analysis problems to mimic a real world scenario.
@@ -209,7 +209,7 @@ tools, as they usually must use what their supervisor or colleagues use. Those
 who do try to learn these modern tools often do so in isolation and without much
 formal training available. These are major barriers to learning. To help break
 down these barriers, we launched the graduate student group 
-[University of Toronto Coders](http://uoftcoders.github.io/) where we run
+[University of Toronto Coders](https://uoftcoders.github.io/) where we run
 peer-led learning sessions on using code for research through skill sharing,
 co-working, and community building in a friendly and supportive environment.
 
@@ -243,6 +243,6 @@ JSS, LC, MB-F, and ARH taught the second iteration of the course, with guest
 lectures from SM and LT. Lesson development for second iteration: JO and ARH
 (1-5), JSS (8, 9, 11), LC (6, 7, 10), MB-F (12, 13), LWJ (14), ARH and SM (15),
 LT (16). LWJ, MB-F, JO, SM, LT, ARH, and JSS wrote the paper. LWJ, MB-F, ES, JO,
-LT, JSS, and AH proofread and editted the final draft.
+LT, JSS, and AH proofread and edited the final draft.
 
 # References
