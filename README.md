@@ -65,7 +65,7 @@ e.g `travis encrypt GITHUB_PAT=TOKEN`. If you do not know how to install or use 
 
 ## Related Publications
 
-Santangelo JS (2019). Data simulation and randomization tests. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4CT7P. [Available online.](https://qubeshub.org/qubesresources/publications/996/1).
+Santangelo JS (2019). Data simulation and randomization tests. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4CT7P. [Available online](https://qubeshub.org/qubesresources/publications/996/1).
 
 Bonsma-Fisher M, Hasan AR (2018). Working with plant phenology data and fitting a nonlinear model using least squares in R. NEON Faculty Mentoring Network, QUBES Educational Resources. doi:10.25334/Q4Q73D. [Available online](https://qubeshub.org/qubesresources/publications/978/1).
 
