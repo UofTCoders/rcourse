@@ -50,18 +50,18 @@ The course's lesson material is broadly subdivided into three main topics:
 3. Reproducible science (Lectures 13-15)
     * Prepares students for project work period and introduces methods for reproducible science (GitHub, R Markdown).
 
+## Content Reuse Instructions
+
 If you are interested in using or modifying this content and repository for your 
-own course, you'll need to make a change to the Travis CI setup so you can host 
-the website on your own account. Check out the documentation on the [R Markdown
-online book](https://bookdown.org/yihui/bookdown/github.html). Here is a brief 
-excerpt taken from the book:
+own course, there are a few steps you need to take:
 
-1. Create a [personal access token](http://bit.ly/2cEBYWB) for your account on GitHub (make sure to enable the "repo" scope so that using this token will enable writing to your GitHub repos).
-1. Encrypt it in the environment variable `GITHUB_PAT` via command line `travis encrypt` and store it in `.travis.yml`, 
-e.g `travis encrypt GITHUB_PAT=TOKEN`. If you do not know how to install or use the Travis command-line tool, simply save this environment variable via https://travis-ci.org/user/repo/settings where `user` is your GitHub ID, and `repo` is the name of the repository.
-1. You can clone this `gh-pages` branch on Travis using your GitHub token, add the HTML output files from R Markdown (do not forget to add figures and CSS style files as well), and push to the remote repository.
+1. Create a fork of this repository.
+1. Create a [personal access token](http://bit.ly/2cEBYWB) for your account on GitHub (make sure to enable the "repo" scope so that using this token will enable writing to your GitHub repos) and copy the token to your clipboard.
+1. Go to https://travis-ci.org/USER/REPO/settings replacing `USER` with your GitHub ID and `REPO` with the name of the forked repository.
+1. Under the section "Environment Variables", type `GITHUB_TOKEN` in the "Name" text box and paste your personal access token into the "Value" text box.
 
-    
+In general, the first time the Travis CI builds can take about 15-25 minutes but subsequent builds take about 5-6 minutes.
+
 ## Contributing
 
 If you are interested in contributing to the course material, please refer to the guidelines in [CONTRIBUTING.md](https://github.com/UofTCoders/rcourse/blob/master/CONTRIBUTING.md). 
