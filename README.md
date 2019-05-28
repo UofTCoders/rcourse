@@ -56,7 +56,7 @@ If you are interested in using or modifying this content and repository for your
 own course, there are a few steps you need to take:
 
 1. Create a fork of this repository.
-1. Create a [personal access token](http://bit.ly/2cEBYWB) for your account on GitHub (make sure to enable the "repo" scope so that using this token will enable writing to your GitHub repos) and copy the token to your clipboard.
+1. Create a [personal access token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) for your account on GitHub (make sure to enable the "repo" scope so that using this token will enable writing to your GitHub repos) and copy the token to your clipboard.
 1. Go to https://travis-ci.org/USER/REPO/settings replacing `USER` with your GitHub ID and `REPO` with the name of the forked repository.
 1. Under the section "Environment Variables", type `GITHUB_TOKEN` in the "Name" text box and paste your personal access token into the "Value" text box.
 
