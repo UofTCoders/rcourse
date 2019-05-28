@@ -11,6 +11,7 @@ Based on [RQM](https://cbahlai.github.io/rqm-template/). Draw much inspiration a
 - Madeleine Bonsma-Fisher (Physics)
 - Lindsay Coome (Psychology)
 - Luke Johnston (Nutritional Sciences)
+- Sara Mahallati (IBBME)
 - Joel Östblom (IBBME)
 - Elliott Sales de Andrade (Physics)
 - Lina Tran (Physiology)
