@@ -55,7 +55,7 @@ date: 15 January 2019
 bibliography: paper.bib
 ---
 
-# Description and eligibility
+# Introduction
 
 We present an open source learning module suitable for a semester long course
 and designed to leverage participatory live-coding techniques to teach both
