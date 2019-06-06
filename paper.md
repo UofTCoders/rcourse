@@ -71,8 +71,7 @@ R language. Our material is licensed under CC-BY 4.0 while the code is under the
 MIT License. Our course is a response to the growing need for programmatic
 training emphasizing sound data analysis practices among researchers. We believe
 the included lesson topics, open accessibility, and modularity of our course
-makes it an ideal resource for instructors and an excellent contribution to
-JOSE.
+makes it an ideal resource for instructors.
 
 # Statement of Need
 
