@@ -1,7 +1,7 @@
 Type: Website
 Package: rcourse
 Title: Reproducible Quantitative Methods in R Course in Ecology and Evolutionary Biology
-Version: 2.1.0
+Version: 2.2.0
 Maintainer: Luke Johnston <lwjohnst@gmail.com>
 Author: Luke Johnston <lwjohnst@gmail.com>
 Authors@R: c(
