@@ -230,7 +230,7 @@ science, and additional theoretical ecology topics.
 Following a successful pilot term, we modified our lesson material further again
 to include more generally applicable statistical concepts and far fewer
 theoretical ecological concepts. We also renamed the course to "Quantitative
-Methods in R for Biology" [@rcourse] to reflect this change. On both occasions,
+Methods in R for Biology" to reflect this change. On both occasions,
 the course received excellent feedback from the students and the supervising
 professors and has been incorporated into the long-term curriculum as a third
 year level course.
