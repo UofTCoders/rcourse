@@ -55,7 +55,7 @@ date: 15 January 2019
 bibliography: paper.bib
 ---
 
-# Description and eligibility
+# Introduction
 
 We present an open source learning module suitable for a semester long course
 and designed to leverage participatory live-coding techniques to teach both
@@ -71,8 +71,7 @@ R language. Our material is licensed under CC-BY 4.0 while the code is under the
 MIT License. Our course is a response to the growing need for programmatic
 training emphasizing sound data analysis practices among researchers. We believe
 the included lesson topics, open accessibility, and modularity of our course
-makes it an ideal resource for instructors and an excellent contribution to
-JOSE.
+makes it an ideal resource for instructors.
 
 # Statement of Need
 
@@ -230,7 +229,7 @@ science, and additional theoretical ecology topics.
 Following a successful pilot term, we modified our lesson material further again
 to include more generally applicable statistical concepts and far fewer
 theoretical ecological concepts. We also renamed the course to "Quantitative
-Methods in R for Biology" [@rcourse] to reflect this change. On both occasions,
+Methods in R for Biology" to reflect this change. On both occasions,
 the course received excellent feedback from the students and the supervising
 professors and has been incorporated into the long-term curriculum as a third
 year level course.
