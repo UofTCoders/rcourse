@@ -56,10 +56,10 @@ bash interpreters are natively available on Mac and Linux operating systems,
 Windows users may have to externally install a bash shell.
 
 To install Git on a **Mac**, you will have to install
-[XCode](https://itunes.apple.com/ca/app/xcode/id497799835?mt=12), which can be
-downloaded from the Mac App store. Be warned: XCode is a very large download
-(approximately 6 GB)! Install XCode and Git should be ready for use. (_Note:
-most students will have already installed XCode already for some R packages we
+[Xcode](https://itunes.apple.com/ca/app/xcode/id497799835?mt=12), which can be
+downloaded from the Mac App Store. Be warned: Xcode is a very large download
+(approximately 6 GB)! Install Xcode and Git should be ready for use. (_Note:
+most students will have already installed Xcode already for some R packages we
 used earlier in the course. If you're not sure whether this is the case, run
 the `git --version` command described below_)
 
@@ -155,7 +155,7 @@ begin with `git`, followed by more specific subcommands.
 
 ```
 git config --global user.name "My Name"
-git config --global user.email "myemail@email.com"
+git config --global user.email "myemail@example.com"
 ```
 
 Next, we have to set a default text editor for Git. 
@@ -166,7 +166,7 @@ git config --global core.editor "nano"
 ```
 
 If you would like to set up a different text editor as your default, see
-[here](http://swcarpentry.github.io/git-novice/02-setup/index.html).
+[here](https://swcarpentry.github.io/git-novice/02-setup/index.html).
 
 Finally, the following command can be used to review Git configurations:
 
