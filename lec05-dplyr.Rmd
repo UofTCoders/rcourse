@@ -423,7 +423,7 @@ For this section, you will apply your data wrangling and plotting skills to
 reproduce a couple of figures from a study on the yearly change in biomass of
 plants in the Abisko national park in northern Sweden. This paper is publish
 under an open license and the [figures can be accessed via this
-link](http://rstb.royalsocietypublishing.org/content/368/1624/20120486.figures-only).
+link](https://royalsocietypublishing.org/doi/10.1098/rstb.2012.0486).
 
 You will be working with this dataset in assignment 3, so we have prepared the
 data for you in a format that is easier to work with. [Download the
@@ -455,6 +455,7 @@ plant_biomass %>%
 ```
 
 ### 3. Reproduce figure 4 from the paper
+
 Use the `plant_biomass` data set and reproduce figure 4 from the paper.
 
 Hints:
