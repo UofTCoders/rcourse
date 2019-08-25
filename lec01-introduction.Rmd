@@ -349,9 +349,9 @@ asterisk or underscore to *emphasize* text (`*emphasis*`) and two asterisks or
 underscores to **strongly emphasize** text (`**strong emphasis**`). When we
 convert our R Markdown text to HTML or PDF, these will show up as italics and
 bold typeface, respectively. If you have been writing on online forums, or
-popular chat services, such as whatsapp, you might already be familiar with
+popular chat services, such as WhatsApp, you might already be familiar with
 this style of writing. In case you haven't seen it before, you have just learnt
-something about whatsapp in your theoretical ecology class...
+something about WhatsApp in your quantitative methods class...
 
 To get more familiar with the Markdown syntax, let's open a new R Notebook.
 RStudio already includes a template when you create new documents that gives
@@ -414,13 +414,13 @@ RStudio and [RStudio Markdown reference
 online](https://rmarkdown.rstudio.com/authoring_basics.html).
 
 ## Background experience survey
+
 Hopefully, this has given you an idea of how powerful and time-saving R can be
 for your data analysis, and how we will work with it in this class using the
 R Notebook. The first assignment will be available on Quercus today, and it
 includes a few questions about RStudio and R Markdown. 1 / 4 marks on this
 assignment is to fill in a survey about your background knowledge. This is so
 that we can adjust the pace and content of the lectures and to divide you into
-groups accordingly for the class project later this fall. Please take 10 min to
-do so now by going to this page (send page to everyone's computer via the
-teaching software), or if you have to run, you can complete it at home.
+groups accordingly for the class project later this fall. The link to the survey
+will be posted on Quercus; please take 10 minutes to fill it out now.
 

@@ -44,19 +44,16 @@ part of these open source projects.
 > - Define our own functions
 > - Inspect the content of vectors and manipulate their content.
 > - Create for-loops
-> - Describe what a data frame is.
-> - Load external data from a .csv file into a data frame in R.
-> - Summarize the contents of a data frame in R.
 >
 > ### Lecture outline
 >
-> - Setting up the R Notebook (5 min)
+> - Setting up the R Notebook (10 min)
 > - Creating objects/variables in R (10 min)
-> - Using and writing functions (20 min)
+> - Using and writing functions (15 min)
 > - Vectors and data types (15 min)
-> - Loops and vectorization (10 min)
-> - Dataset background (10 min)
-> - What are data frames (15 min)
+> - Subsetting vectors (15 min)
+> - Missing data (10 min)
+> - Loops and vectorization (20 min)
 >
 
 -----
@@ -77,12 +74,12 @@ detail in another class. For now, we just care about including the lecture title
 here. For now, let's type out a note:
 
 > This lecture covers fundamental R usage, such as assigning values to a
-> variable, using functions, and commenting code, as well as some data analysis.
+> variable, using functions, and commenting code, and more.
 
 Under this sentence, we will insert our first code chunk. Remember that you insert a code
-chunk by either clicking the "Insert" button or pressing <kbd>Ctrl</kbd> +
+chunk by either clicking the "Insert" button or pressing <kbd>Ctrl/Cmd</kbd> +
 <kbd>Alt</kbd> + <kbd>i</kbd> simultaneously. To run a code chunk, you
-press the green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+press the green arrow, or <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 
 ## Creating objects in R
@@ -137,7 +134,7 @@ important to be consistent in the styling of your code (where you put spaces,
 how you name variables, etc.). Using a consistent coding style[^coding_style]
 makes your code clearer to read for your future self and your collaborators.
 RStudio will format code for you if you highlight a section of code and press
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.
+<kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.
 
 [^coding_style]: Refer to the [class resources
 page](https://uoftcoders.github.io/rcourse/resources.html) for which style to
@@ -204,9 +201,9 @@ script will be ignored by R.
 
 RStudio makes it easy to comment or uncomment a paragraph: after selecting the
 lines you want to comment, press at the same time on your keyboard
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment
+<kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment
 out one line, you can put the cursor at any location of that line (i.e. no need
-to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+to select the whole line), then press <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> +
 <kbd>C</kbd>.
 
 ```{r}
@@ -230,8 +227,8 @@ mass_index <- mass/age  # mass_index?
 
 Functions can be thought of as recipes. You give a few ingredients as input to a
 function, and it will generate an output based on these ingredients. Just as
-when baking, both the ingredients and the actual recipe will influence what
-comes out of the recipe in the end, will it be a cake or a loaf of bread? In R,
+with baking, both the ingredients and the actual recipe will influence what
+comes out of the recipe in the end: will it be a cake or a loaf of bread? In R,
 the inputs to a function are not called ingredients, but rather *arguments*, and
 the output is called the *return value* of the function. A function does not
 technically have to return a value, but often does so. Functions are used to
@@ -284,8 +281,8 @@ formatted in this nice list. There are *many* suggestions here, so let's be a
 bit more specific and append a `q`, to find what we want. If we press enter or
 tab again, R will insert the selected option.
 
-You can see that R inserts a pair of parenthesis together with the name of the
-functions. This is how the function syntax looks for R and many other
+You can see that R inserts a pair of parentheses together with the name of the
+function. This is how the function syntax looks for R and many other
 programming languages, and it means that within these parentheses, we will
 specify all the arguments (the ingredients) that we want to pass to this
 function.
@@ -299,8 +296,8 @@ sqrt(<tab>
 ```
 
 There are many things in this list, but only one of them is marked in purple.
-Purple here means that it is parameter we can use for the function and yellow
-means that it is a variable that we defined earlier.[^R-symbols]
+Purple here means that this list item is a parameter we can use for the function, 
+while yellow means that it is a variable that we defined earlier.[^R-symbols]
 
 [^R-symbols]: There are a few other symbols as well, all of which can be viewed
 at the end of [this post about RStudio code
@@ -314,9 +311,9 @@ directly into the help document browser.
 ```
 
 As you can see, `sqrt()` takes only one argument, `x`, which needs to be a
-*numerical vector*. Don't worry too much about that is says *vector* here, I
-will talk more about that later. Briefly, a numerical vector is one or more
-numbers. Every number is a vector, so you don't have to do anything special to
+*numerical vector*. Don't worry too much about the fact that it says *vector* here;
+we will talk more about that later. Briefly, a numerical vector is one or more
+numbers. In R, every number is a vector, so you don't have to do anything special to
 create a vector. More on vectors later.
 
 Let's try a function that can take multiple arguments: `round()`.
@@ -512,7 +509,7 @@ char_logical <- c('a', 'b', 'c', TRUE)
 tricky <- c(1, 2, 3, '4')
 ```
 
-```{r}
+```{r, include=FALSE}
 # Answer
 class(num_char)
 class(num_logical)
@@ -532,10 +529,113 @@ These conversions happen according to a hierarchy, whereby some types get
 preferentially coerced into other types. Can you draw a diagram that represents
 the hierarchy of how these data types are coerced?
 
-```{r}
+```{r, include=FALSE}
 # Answer:
 # logical -> numeric -> character <- logical
 ```
+
+## Subsetting vectors
+
+If we want to extract one or several values from a vector, we must provide one
+or several indices in square brackets. For instance:
+
+```{r}
+animals <- c("mouse", "rat", "dog", "cat")
+animals[2]
+animals[c(3, 2)]
+```
+
+We can also repeat the indices to create an object with more elements than the
+original one:
+
+```{r}
+more_animals <- animals[c(1, 2, 3, 2, 1, 4)]
+more_animals
+```
+
+R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R
+start counting at 1, because that's what human beings typically do. Languages in
+the C family (including C++, Java, Perl, and Python) count from 0 because that
+was historically simpler for computers and can allow for more elegant code.
+
+### Conditional subsetting
+
+Another common way of subsetting is by using a logical vector. `TRUE` will
+select the element with the same index, while `FALSE` will not:
+
+```{r}
+weight_g <- c(21, 34, 39, 54, 55)
+weight_g[c(TRUE, FALSE, TRUE, TRUE, FALSE)]
+```
+
+Typically, these logical vectors are not typed by hand, but are the output of
+other functions or logical tests. For instance, if you wanted to select only the
+values above 50:
+
+```{r}
+weight_g > 50    # will return logicals with TRUE for the indices that meet the condition
+## so we can use this to select only the values above 50
+weight_g[weight_g > 50]
+```
+
+We will consider conditions in more detail in the next few lectures. 
+
+## Missing data
+
+As R was designed to analyze datasets, it includes the concept of missing data
+(which is uncommon in other programming languages). Missing data are represented
+in vectors as `NA`.
+
+When doing operations on numbers, most functions will return `NA` if the data
+you are working with include missing values. This feature makes it harder to 
+overlook the cases where you are dealing with missing data.
+You can add the argument `na.rm = TRUE` to calculate the result while ignoring
+the missing values.
+
+```{r}
+heights <- c(2, 4, 4, NA, 6)
+mean(heights)
+max(heights)
+mean(heights, na.rm = TRUE)
+max(heights, na.rm = TRUE)
+```
+
+
+```{r}
+## Extract those elements which are not missing values.
+heights[!is.na(heights)]
+
+## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
+na.omit(heights)
+
+## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
+heights[complete.cases(heights)]
+```
+
+Recall that you can use the `class()` function to find the type of your atomic vector.
+
+#### Challenge
+
+1. Using this vector of length measurements, create a new vector with the NAs
+removed.
+
+```{r}
+lengths <- c(10, 24, NA, 18, NA, 20)
+```
+
+```{r, include=FALSE}
+# Answer
+na.omit(lengths)
+```
+
+
+2. Use the function `median()` to calculate the median of the `lengths` vector.
+
+```{r, include=FALSE}
+# Answer
+median(lengths, na.rm = TRUE)
+```
+
 
 ## Loops and vectorization
 
@@ -594,287 +694,11 @@ referring to, is that you should not write for loops in R and instead use the
 ready-made functions that are much more efficient in working with vectors and
 essentially performs operations on entire vector at once instead of
 one number at a time. If anyone is interested in more details about how this
-works, please ask me after class, but conceptually loops operate on one element
+works, please ask after class, but conceptually loops operate on one element
 at a time while vectorized code operates on all elements of a vector at once.
 
+In our next lecture, we'll dive into working with real data using
+all that we've learned today.
+
 <!-- break -->
-
-## Working with real data - dataset background
-
-Today, we will begin examining real data from a longitudinal study of the
-species abundance in the Chihuahuan desert ecosystem near Portal, Arizona, USA.
-This study includes observations of plants, ants, and rodents from 1977 - 2002,
-and has been used in over 100 publications. More information is available in
-[the abstract of this paper from 2009](
-https://onlinelibrary.wiley.com/doi/10.1890/08-1222.1/full).
-
-We will be working with this dataset over the next few lectures.
-There are several datasets available related to this study, and we will be working with datasets
-that have been preprocessed by the [Data
-Carpentry](https://www.datacarpentry.org) to facilitate teaching. These are made
-available online as _The Portal Project Teaching Database_, both at the [Data
-Carpentry website](https://datacarpentry.org/ecology-workshop/data/), and on
-[Figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459/6).
-Figshare is a great place to publish data, code, figures, and more openly to
-make them available for other researchers and to communicate findings that are
-not part of a longer paper.
-
-
-### Presentation of the survey data
-
-We are studying the species and weight of animals caught in plots in our study
-area. The dataset is stored as a comma separated value (CSV) file. Each row
-holds information for a single animal, and the columns represent:
-
-| Column           | Description                        |
-|------------------|------------------------------------|
-| record_id        | unique id for the observation      |
-| month            | month of observation               |
-| day              | day of observation                 |
-| year             | year of observation                |
-| plot_id          | ID of a particular plot            |
-| species_id       | 2-letter code                      |
-| sex              | sex of animal ("M", "F")           |
-| hindfoot_length  | length of the hindfoot in mm       |
-| weight           | weight of the animal in grams      |
-| genus            | genus of animal                    |
-| species          | species of animal                  |
-| taxa             | e.g. rodent, reptile, bird, rabbit |
-| plot_type        | type of plot                       |
-
-To read the data into R, we are going to use a function called `read_csv`. This
-function is contained in an R-package called
-[`readr`](https://readr.tidyverse.org/). R-packages are a bit like browser
-extensions; they are not essential, but can provide nifty functionality. We will
-go through R-packages in general and which ones are good for data analyses in
-detail later in this lecture. Now, let's install `readr`:
-
-```{r, eval=FALSE}
-install.packages('readr') # You only need to install a package once
-```
-
-Now we can use the `read_csv` function. One useful option that `read_csv`
-includes, is the ability to read a CSV file directly from a URL, without
-downloading it in a separate step:
-
-```{r, eval=FALSE}
-surveys <- readr::read_csv('https://ndownloader.figshare.com/files/2292169')
-```
-
-However, it is often a good idea to download the data first, so you have a copy
-stored locally on your computer in case you want to do some offline analyses, or
-the online version of the file changes or the file is taken down. You can either
-download the data manually or from within R:
-
-```{r, eval=FALSE}
-download.file("https://ndownloader.figshare.com/files/2292169",
-              "portal_data.csv") # Saves this name in the current directory
-```
-
-The data is read in by specifying its local path.
-
-```{r, eval=FALSE}
-surveys <- readr::read_csv('portal_data.csv')
-```
-
-```{r, echo=FALSE}
-surveys <- readr::read_csv('data/portal_data.csv')
-```
-
-This statement produces some output regarding which data type it found in each
-column. If we want to check this in more detail, we can print the variable's
-value: `surveys`.
-
-```{r}
-surveys
-```
-
-In the online html-version of this lecture, you only see the first few rows of
-the data frame. Running the code chunk above in the R Notebook would display a
-nice tabular view of the data, which also includes pagination when there are
-many rows and we can click the green arrow to view all the columns. Technically,
-this object actually a `tibble` rather than a data frame, as indicated in the
-output. The reason for this is that `read_csv` automatically converts the data
-into to a `tibble` when loading it. Since a `tibble` is just a data frame with
-some convenient extra functionality, we will use these words interchangeably
-from now on.
-
-If we just want to glance at how the data frame looks, it is sufficient to display only the
-top (the first 6 lines) using the function `head()`:
-
-```{r}
-head(surveys)
-```
-
-## What are data frames?
-
-Data frames are the _de facto_ data structure for most tabular data, and what we
-use for statistics and plotting. A data frame can be created by hand, but most
-commonly they are generated by the function `read_csv()`. In other words, when
-importing spreadsheets from your hard drive (or the web).
-
-A data frame is the representation of data in the format of a table where the
-columns are vectors that all have the same length. Because the columns are
-vectors, they all contain the same type of data as we discussed before the break
-(e.g., characters, integers, factors). We can see this when inspecting the
-structure of a data frame with the function `str()`:
-
-```{r}
-str(surveys)
-```
-
-Integer refers to a whole number, such as 1, 2, 3, 4, etc. Numbers with
-decimals, 1.0, 2.4, 3.333, are referred to as floats. Factors are used to
-represent categorical data. Factors can be ordered or unordered, and
-understanding them is necessary for statistical analysis and for plotting.
-Factors are stored as integers, and have labels (text) associated with these
-unique integers. While factors look (and often behave) like character vectors,
-they are actually integers under the hood, and you need to be careful when
-treating them like strings.
-
-
-### Inspecting `data.frame` objects
-
-We already saw how the functions `head()` and `str()` can be useful to check the
-content and the structure of a data frame. Here is a non-exhaustive list of
-functions to get a sense of the content/structure of the data. Let's try them
-out!
-
-* Size:
-    * `dim(surveys)` - returns a vector with the number of rows in the first element
-      and the number of columns as the second element (the dimensions of the object)
-    * `nrow(surveys)` - returns the number of rows
-    * `ncol(surveys)` - returns the number of columns
-
-* Content:
-    * `head(surveys)` - shows the first 6 rows
-    * `tail(surveys)` - shows the last 6 rows
-
-* Names:
-    * `names(surveys)` - returns the column names (synonym of `colnames()` for `data.frame`
-      objects)
-    * `rownames(surveys)` - returns the row names
-
-* Summary:
-    * `str(surveys)` - structure of the object and information about the class,
-      length, and content of each column
-    * `summary(surveys)` - summary statistics for each column
-
-Note: most of these functions are "generic", they can be used on other types of
-objects besides `data.frame`.
-
-#### Challenge
-
-Based on the output of `str(surveys)`, can you answer the following questions?
-
-* What is the class of the object `surveys`?
-* How many rows and how many columns are in this object?
-* How many species have been recorded during these surveys?
-
-```{r}
-## Answers
-##
-## * class: data frame
-## * how many rows: 34786,  how many columns: 13
-## * how many species: 48
-```
-
-### Indexing and subsetting data frames
-
-Our survey data frame has rows and columns (it has 2 dimensions), if we want to
-extract some specific data from it, we need to specify the "coordinates" we want
-from it. Row numbers come first, followed by column numbers. Base R data frames,
-would return a different format depending on how we index the data (i.e. either
-a vector or a data frame), but with enhanced data frames, `tibbles`, the
-returned object is almost always a data frame.
-
-R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R
-start counting at 1, because that's what human beings typically do. Languages in
-the C family (including C++, Java, Perl, and Python) count from 0 because that
-was historically simpler for computers and can allow for more elegant code.
-
-```{r}
-surveys[1, 1]   # first element in the first column of the data frame
-surveys[1, 6]   # first element in the 6th column
-surveys[, 1]    # first column in the data frame
-surveys[1]      # first column in the data frame
-surveys[1:3, 7] # first three elements in the 7th
-surveys[3, ]    # the 3rd element for all columns
-surveys[1:6, ]  # equivalent to head(surveys)
-```
-
-`:` is a special function that creates numeric vectors of integers in increasing
-or decreasing order, test `1:10` and `10:1` for instance. This works similar to
-`seq`, which we looked at earlier in class:
-
-```{r}
-0:10
-seq(0, 10)
-
-# We can test if all elements are the same
-0:10 == seq(0,10)
-all(0:10 == seq(0,10))
-```
-
-You can also exclude certain parts of a data frame using the "`-`" sign:
-
-```{r}
-surveys[,-1]    # All columns, except the first
-surveys[-c(7:34786),] # Equivalent to head(surveys)
-```
-
-As well as using numeric values to subset a `data.frame` (or `matrix`), columns
-can be called by name, using one of the four following notations: <!-- Note sure how important it is to learn these difference vs just teaching the preferred way with the footnote that there are other ways also. -->
-
-```{r}
-surveys["species_id"]       # Result is a data.frame
-surveys[, "species_id"]     # Result is a data.frame
-```
-
-For our purposes, these notations are equivalent. RStudio knows about
-the columns in your data frame, so you can take advantage of the autocompletion
-feature to get the full and correct column name.
-
-Another syntax that is often used to specify column names is `$`. In this case,
-the returned object is actually a vector. We will not go into detail about this,
-but since it is such common usage, it is good to be aware of this.
-
-```{r}
-# We use `head()` since the output from vectors are not automatically cut off
-# and we don't want to clutter the screen with all the `species_id` values
-head(surveys$species_id)          # Result is a vector
-```
-
-#### Challenge
-
-1. Create a `data.frame` (`surveys_200`) containing only the observations from
-   row 200 of the `surveys` dataset.
-
-2. Notice how `nrow()` gave you the number of rows in a `data.frame`?
-
-     * Use that number to pull out just that last row in the data frame.
-     * Compare that with what you see as the last row using `tail()` to make
-       sure it's meeting expectations.
-     * Pull out that last row using `nrow()` instead of the row number.
-     * Create a new data frame object (`surveys_last`) from that last row.
-
-3. Use `nrow()` to extract the row that is in the middle of the data
-   frame. Store the content of this row in an object named `surveys_middle`.
-
-4. Combine `nrow()` with the `-` notation above to reproduce the behaviour of
-   `head(surveys)` keeping just the first through 6th rows of the surveys
-   dataset.
-
-```{r}
-## Answers
-surveys_200 <- surveys[200, ]
-surveys_last <- surveys[nrow(surveys), ]
-surveys_middle <- surveys[nrow(surveys)/2, ]
-surveys_head <- surveys[-c(7:nrow(surveys)),]
-```
-
-
-In our next lecture, we will dive into wrangling our `surveys` dataset using `dplyr`.
-
-
 

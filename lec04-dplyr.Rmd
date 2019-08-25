@@ -140,7 +140,7 @@ length for each species.
 2. What was the heaviest animal measured in each year? Return the columns `year`,
 `genus`, `species`, and `weight`.
 
-```{r}
+```{r, include=FALSE}
 ## Answer 1
 surveys %>%
     filter(!is.na(hindfoot_length)) %>%
@@ -239,11 +239,11 @@ combination of `group_by()` and `tally()`. How could you get the same result
 using `group_by()` and `summarize()`? Hint: see `?n`.
 
 
-```{r}
+```{r, include=FALSE}
 ## Answer 1
 surveys %>%
     group_by(plot_type) %>%
-    tally
+    tally()
 
 ## Answer 2
 surveys %>%
@@ -484,7 +484,7 @@ ggplot(surveys_abun_species, aes(x = weight, y = hindfoot_length, color = specie
 Create a scatter plot of `hindfoot_length` over `species` with the `weight` showing in different colors.
 Is there any problem with this plot? *Hint: think about how many observations there are*
 
-```{r}
+```{r, include=FALSE}
 ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_length)) +
     geom_point(size = 0.1, position = 'jitter')
 ```
@@ -665,8 +665,7 @@ a. Which year was the average weight of the animals the highest?
 b. Is the yearly trend the same for all species?
 
 
-
-```{r}
+```{r, include=FALSE}
 # Answers
 # 1
 ggplot(yearly_counts, aes(x = n, fill = species)) +
@@ -674,7 +673,7 @@ ggplot(yearly_counts, aes(x = n, fill = species)) +
     facet_wrap(~ species)
 ```
 
-```{r}
+```{r, include=FALSE}
 # 2.a
 surveys_abun_species %>%
     filter(!is.na(weight)) %>%
@@ -684,7 +683,7 @@ surveys_abun_species %>%
         geom_line()
 ```
 
-```{r}
+```{r, include=FALSE}
 # 2.b
 surveys_abun_species %>%
     filter(!is.na(weight)) %>%
