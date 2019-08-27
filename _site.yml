@@ -13,67 +13,67 @@ navbar:
   - text: Lectures
     icon: fa-book
     menu:
-    - text: 'Sept. 6: Intro to course, programming, RStudio, and R Markdown'
+    - text: 'Sept. 10: Intro to course, programming, RStudio, and R Markdown'
       href: lec01-introduction.html
-    - text: 'Sept. 11: Assignment, vectors, functions'
+    - text: 'Sept. 12: Assignment, vectors, functions'
       href: lec02-basic-r.html
-    - text: 'Sept. 13: Data frames, intro to dplyr'
+    - text: 'Sept. 17: Data frames, intro to dplyr'
       href: lec03-basic-r.html
-    - text: 'Sept. 18: Data wrangling in dplyr, ggplot, tidy data'
+    - text: 'Sept. 19: Data wrangling in dplyr, ggplot, tidy data'
       href: lec04-dplyr.html
-    - text: 'Sept. 20: More dplyr and ggplot'
+    - text: 'Sept. 24: More dplyr and ggplot'
       href: lec05-dplyr.html
-    - text: 'Sept. 25: Exploratory data analysis'
-      href: lec06-exploratory-data-analysis.html
-    - text: 'Sept. 27: Linear models and statistical modelling'
-      href: lec07-linear-modelling.html
-    - text: 'Oct. 02: Mixed effects models'
-      href: lec08-linear-mixed-effects-models.html
-    - text: 'Oct. 04: Simulating data: Randomization tests'
-      href: lec09-Randomization-tests.html
-    - text: 'Oct. 09: Multivariate stats'
-      href: lec10-multivariate-stats.html
-    - text: 'Oct. 11: Model selection'
-      href: lec11-model-selection.html
-    - text: 'Oct. 16: Numerically solving population models'
-      href: lec12-numerical-models.html
-    - text: 'Oct. 18: Time series analysis'
-      href: lec13-time-series.html
-    - text: 'Oct. 23: Datasets, hypothesis, begin projects'
-      href: lec14-datasets.html
-    - text: 'Oct. 25: Reproducible science'
-      href: lec15-git-projects.html
-    - text: 'Oct. 30: Reproducible science'
-      href: lec16-rmarkdown.html
-    - text: 'Nov. 01: Project work (no lesson)'
-    - text: 'Nov. 13: Project work (no lesson)'
-    - text: 'Nov. 15: Project work (no lesson)'
-    - text: 'Nov. 20: Project work (no lesson)'
-    - text: 'Nov. 22: Project work (no lesson)'
-    - text: 'Nov. 27: Project work (no lesson)'
-    - text: 'Nov. 29: Project work (no lesson)'
-    - text: 'Dec. 04: Project work (no lesson)'
+    - text: 'Sept. 26: Exploratory data analysis'
+      # href: lec06-exploratory-data-analysis.html
+    - text: 'Oct. 01: Linear models and statistical modelling'
+      # href: lec07-linear-modelling.html
+    - text: 'Oct. 03: Mixed effects models'
+      # href: lec08-linear-mixed-effects-models.html
+    - text: 'Oct. 08: Simulating data: Randomization tests'
+      # href: lec09-Randomization-tests.html
+    - text: 'Oct. 10: Multivariate stats'
+      # href: lec10-multivariate-stats.html
+    - text: 'Oct. 15: Model selection'
+      # href: lec11-model-selection.html
+    - text: 'Oct. 17: Numerically solving population models'
+      # href: lec12-numerical-models.html
+    - text: 'Oct. 22: Time series analysis'
+      # href: lec13-time-series.html
+    - text: 'Oct. 24: Datasets, hypothesis, begin projects'
+      # href: lec14-datasets.html
+    - text: 'Oct. 29: Reproducible science'
+      # href: lec15-git-projects.html
+    - text: 'Oct. 31: Reproducible science'
+      # href: lec16-rmarkdown.html
+    - text: 'Nov. 12: Project work (no lesson)'
+    - text: 'Nov. 14: Project work (no lesson)'
+    - text: 'Nov. 19: Project work (no lesson)'
+    - text: 'Nov. 21: Project work (no lesson)'
+    - text: 'Nov. 26: Project work (no lesson)'
+    - text: 'Nov. 28: Project work (no lesson)'
+    - text: 'Dec. 03: Project work (no lesson)'
+    - text: 'Dec. 05: Group presentations (no lesson)'
   - text: Assignments
     icon: fa-book
     menu:
     - text: Assignment 1
-      href: assignment-01.html
+      # href: assignment-01.html
     - text: Assignment 2
-      href: assignment-02.html
+      # href: assignment-02.html
     - text: Assignment 3
-      href: assignment-03.html
+      # href: assignment-03.html
     - text: Assignment 4
-      href: assignment-04.html
+      # href: assignment-04.html
     - text: Assignment 5
-      href: assignment-05.html
+      # href: assignment-05.html
     - text: Assignment 6
-      href: assignment-06.html
+      # href: assignment-06.html
     - text: Assignment 7
-      href: assignment-07.html
+      # href: assignment-07.html
     - text: Assignment 8
-      href: assignment-08.html
+      # href: assignment-08.html
     - text: Final project
-      href: assignment-final.html
+      # href: assignment-final.html
   - text: Resources and FAQ
     icon: fa-question
     href: resources.html

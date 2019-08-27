@@ -11,14 +11,16 @@ Authors@R: c(
     person("Joel", "Ostblom", email = "joel.ostblom@gmail.com", role = c("aut")),
     person("Elliott", "Sales de Andrade", email = "esalesde@physics.utoronto.ca", role = c("aut")),
     person("Lina", "Tran", email = "lina.mntran@gmail.com", role = c("aut")),
-    person("Sara", "Mahallati", email = "sara.mahallati@gmail.com", role = c("ctb")),
-    person("James", "Santangelo", email = "james.santangelo37@gmail.com", role = c("ctb")),
-    person("Ahmed", "Hasan", email = "ahmed.hasan@mail.utoronto.ca", role = c("ctb"))
+    person("Sara", "Mahallati", email = "sara.mahallati@gmail.com", role = c("aut")),
+    person("James", "Santangelo", email = "james.santangelo37@gmail.com", role = c("aut")),
+    person("Ahmed", "Hasan", email = "ahmed.hasan@mail.utoronto.ca", role = c("aut")),
+    person("Gigi", "Hoi", email = "amber.hoi@mail.utoronto.ca", role = c("ctb")),
+    person("Zoe", "Humphries", email = "zoe.humphries@mail.utoronto.ca", role = c("ctb"))
     )
 Depends: R (>= 3.4.0)
 License: CC-BY
 Encoding: UTF-8
-Imports: 
+Imports:
     rmarkdown,
     knitr,
     tidyverse,

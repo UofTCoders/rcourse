@@ -21,16 +21,16 @@ Office hours are in RW 107, right next to RW 109.
 The lecture hall has access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
 ## Contact info
-Quercus is the preferred communication channel. If you need to use email instead, please address all general course-related issues to ahmed.hasan@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
+Quercus is the preferred communication channel. If you need to use email instead, please address all general course-related issues to james.santangelo@mail.utoronto.ca, and project specific communication to the respective TA of your group. Prefix the subject matter with "EEB313". If you do not receive a reply within 48 hours (excluding week-ends), please send a reminder.
 
 ### Course Instructors
 - James Santangelo, james.santangelo@mail.utoronto.ca
-- Lindsay Coome, lindsay.coome@mail.utoronto.ca
-- Madeleine Bonsma-Fisher, m.bonsma@mail.utoronto.ca
 - Ahmed Hasan, ahmed.hasan@mail.utoronto.ca
+- Zo&euml Humphries, zoe.humphries@mail.utoronto.ca
+- Gigi Hoi, amber.hoi@mail.utoronto.ca
 
 ### Supervising professor
-Prof. Asher Cutter, asher.cutter@utoronto.ca, 416-978-4602, ESC2052
+Prof. Benjamin Gilbert, benjamin.gilbert@utoronto.ca , 416-978-4065, ES3035
 
 ## Course Website and Quercus
 All course information is accessible [on its own website](https://uoftcoders.github.io/rcourse/) and on [Quercus](https://q.utoronto.ca), including the syllabus, assessments, and lecture slides. If you have any problem accessing the material, let us know via email right away so we can fix the problem.
@@ -60,46 +60,45 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 ## Lecture schedule
 | Week | Date   | Topic                                      | Instructor                |
 |------|--------|--------------------------------------------|---------------------------|
-| 1    | Sep 06 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
-| 2    | Sep 11 | Assignment, vectors, functions                      | Ahmed          |
-| 2    | Sep 13 | Data frames, intro to dplyr                         | Ahmed          |
-| 3    | Sep 18 | Data wrangling in dplyr, ggplot, tidy data          | Ahmed          |
-| 3    | Sep 20 | More dplyr and ggplot                               | Ahmed          |
-| 4    | Sep 25 | Exploratory data analysis                           | Lindsay        |
-| 4    | Sep 27 | Linear models and statistical modelling             | Lindsay        |
-| 5    | Oct 02 | Mixed effects models                                | James          |
-| 5    | Oct 04 | Simulating data                                     | James          |
-| 6    | Oct 09 | Multivariate stats                                  | Lindsay        |
-| 6    | Oct 11 | Model selection                                     | James          |
-| 7    | Oct 16 | Numerically solving population models               | Madeleine      |
-| 7    | Oct 18 | Time series analysis                                | Madeleine      |
-| 8    | Oct 23 | Datasets, hypothesis, begin projects                | Everyone       |
-| 8    | Oct 25 | Reproducible science                                | Lina or Sara   |
-| 9    | Oct 30 | Reproducible science                                | Lina or Sara   |
-| 9    | Nov 01 | Project work                                        | 1 TA/group     |
-| -    | Nov 06 | Fall break                                          | -              |
-| -    | Nov 08 | Fall break                                          | -              |
-| 10   | Nov 13 | Project work                                        | 1 TA/group     |
-| 10   | Nov 15 | Project work                                        | 1 TA/group     |
-| 11   | Nov 20 | Project work                                        | 1 TA/group     |
-| 11   | Nov 22 | Project work                                        | 1 TA/group     |
-| 12   | Nov 27 | Project work                                        | 1 TA/group     |
-| 12   | Nov 29 | Project work                                        | Everyone       |
-| 13   | Dec 04 | Group presentations                                 | Everyone       |
+| 1    | Sep 10 | Intro to course, programming, RStudio, R Markdown   | Everyone       |
+| 1    | Sep 12 | Assignment, vectors, functions                      | Ahmed          |
+| 2    | Sep 17 | Data frames, intro to dplyr                         | Ahmed          |
+| 2    | Sep 19 | Data wrangling in dplyr, ggplot, tidy data          | Ahmed          |
+| 3    | Sep 24 | More dplyr and ggplot                               | Ahmed          |
+| 3    | Sep 26 | Exploratory data analysis                           | Zo&euml        |
+| 4    | Oct 01 | Linear models and statistical modelling             | Zo&euml        |
+| 4    | Oct 03 | Mixed effects models                                | James          |
+| 5    | Oct 08 | Simulating data                                     | James          |
+| 5    | Oct 10 | Multivariate stats                                  | Zo&euml        |
+| 6    | Oct 15 | Model selection                                     | James          |
+| 6    | Oct 17 | Numerically solving population models               | GiGi           |
+| 7    | Oct 22 | Time series analysis                                | GiGi           |
+| 7    | Oct 24 | Datasets, hypothesis, begin projects                | Everyone       |
+| 8    | Oct 29 | Reproducible science                                | Lina or Sara   |
+| 8    | Oct 31 | Reproducible science                                | Lina or Sara   |
+| -    | Nov 05 | Fall break                                          | 1 TA/group     |
+| -    | Nov 07 | Fall break                                          | -              |
+| 9    | Nov 12 | Project work                                        | -              |
+| 9    | Nov 14 | Project work                                        | 1 TA/group     |
+| 10   | Nov 19 | Project work                                        | 1 TA/group     |
+| 10   | Nov 21 | Project work                                        | 1 TA/group     |
+| 11   | Nov 26 | Project work                                        | 1 TA/group     |
+| 11   | Nov 28 | Project work                                        | 1 TA/group     |
+| 12   | Dec 03 | Project work                                        | Everyone       |
+| 12   | Dec 05 | Group presentations                                 | Everyone       |
 
 ## Assessment schedule
 | Assignment                       | Type                | Due date   | Marks |
 |----------------------------------|---------------------|------------|-------|
-| Getting set up                   | Individual          | Sep 18     | 4     |
-| Basic R and dplyr                | Individual          | Sep 25     | 8     |
-| dplyr and tidy data              | Individual          | Oct 02     | 8     |
-| Linear models                    | Individual          | Oct 09     | 8     |
-| LMEMs and randomization tests    | Individual          | Oct 16     | 8     |
-| Multivariate stats and model selection | Individual    | Oct 23     | 8     |
-| Population modelling             | Individual          | Oct 30     | 8     |
-| Project setup                    | Project, Individual | Nov 13     | 8     |
+| Getting set up                   | Individual          | Sep 19     | 4     |
+| Basic R and dplyr                | Individual          | Sep 26     | 8     |
+| dplyr and tidy data              | Individual          | Oct 03     | 8     |
+| Linear models                    | Individual          | Oct 10     | 8     |
+| LMEMs and randomization tests    | Individual          | Oct 17     | 8     |
+| Multivariate stats and model selection | Individual    | Oct 24     | 8     |
+| Population modelling             | Individual          | Oct 31     | 8     |
+| Mid-project report and update    | Project, Individual | Nov 21     | 16    |
 | Final project work               | Project, Group      | Dec 05     | 32    |
-| Weekly project updates           | Individual          | -          | 8     |
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
