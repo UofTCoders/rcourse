@@ -16,7 +16,7 @@ Tue and Thu 2:10 - 4:00 pm. Office hours are Tue 4:00 - 5:00 pm.
 | Tue | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) |
 | Thu | [Ramsay Wright](http://map.utoronto.ca/utsg/building/072) (RW 109) |
 
-Office hours are in RW 107, right next to RW 109.
+Office hours are on Tuesdays from 4 to 5 PM in RW 109.
 
 The lecture hall has access to individual computers for the students. To use the computer workstations, students can login with their UTORid and password. Programs and packages that you install, and files that you save, will be deleted from these computers daily. Please bring a USB key to save files onto or email them to yourself. Students can use any of the lecture halls when there are no classes scheduled. Lecture halls are usually open 9 am - 5 pm, see the [online schedules](http://lab.chass.utoronto.ca/carr.php) for available times.
 
@@ -26,8 +26,8 @@ Quercus is the preferred communication channel. If you need to use email instead
 ### Course Instructors
 - James Santangelo, james.santangelo@mail.utoronto.ca
 - Ahmed Hasan, ahmed.hasan@mail.utoronto.ca
-- Zo&euml Humphries, zoe.humphries@mail.utoronto.ca
-- Gigi Hoi, amber.hoi@mail.utoronto.ca
+- Zoe Humphries, zoe.humphries@mail.utoronto.ca
+- Amber Hoi, amber.hoi@mail.utoronto.ca
 
 ### Supervising professor
 Prof. Benjamin Gilbert, benjamin.gilbert@utoronto.ca , 416-978-4065, ES3035
@@ -65,27 +65,26 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 2    | Sep 17 | Data frames, intro to dplyr                         | Ahmed          |
 | 2    | Sep 19 | Data wrangling in dplyr, ggplot, tidy data          | Ahmed          |
 | 3    | Sep 24 | More dplyr and ggplot                               | Ahmed          |
-| 3    | Sep 26 | Exploratory data analysis                           | Zo&euml        |
-| 4    | Oct 01 | Linear models and statistical modelling             | Zo&euml        |
+| 3    | Sep 26 | Exploratory data analysis                           | Zoe            |
+| 4    | Oct 01 | Linear models and statistical modelling             | Zoe            |
 | 4    | Oct 03 | Mixed effects models                                | James          |
 | 5    | Oct 08 | Simulating data                                     | James          |
-| 5    | Oct 10 | Multivariate stats                                  | Zo&euml        |
+| 5    | Oct 10 | Multivariate stats                                  | Zoe            |
 | 6    | Oct 15 | Model selection                                     | James          |
-| 6    | Oct 17 | Numerically solving population models               | GiGi           |
-| 7    | Oct 22 | Time series analysis                                | GiGi           |
+| 6    | Oct 17 | Numerically solving population models               | Amber          |
+| 7    | Oct 22 | Time series analysis                                | Amber          |
 | 7    | Oct 24 | Datasets, hypothesis, begin projects                | Everyone       |
-| 8    | Oct 29 | Reproducible science                                | Lina or Sara   |
-| 8    | Oct 31 | Reproducible science                                | Lina or Sara   |
-| -    | Nov 05 | Fall break                                          | 1 TA/group     |
+| 8    | Oct 29 | Reproducible science                                | Everyone       |
+| 8    | Oct 31 | Reproducible science                                | Everyone       |
+| -    | Nov 05 | Fall break                                          |                |
 | -    | Nov 07 | Fall break                                          | -              |
-| 9    | Nov 12 | Project work                                        | -              |
-| 9    | Nov 14 | Project work                                        | 1 TA/group     |
-| 10   | Nov 19 | Project work                                        | 1 TA/group     |
-| 10   | Nov 21 | Project work                                        | 1 TA/group     |
-| 11   | Nov 26 | Project work                                        | 1 TA/group     |
-| 11   | Nov 28 | Project work                                        | 1 TA/group     |
-| 12   | Dec 03 | Project work                                        | Everyone       |
-| 12   | Dec 05 | Group presentations                                 | Everyone       |
+| 9    | Nov 12 | Project work                                        | Everyone       |
+| 9    | Nov 14 | Project work                                        | Everyone       |
+| 10   | Nov 19 | Project work                                        | Everyone       |
+| 10   | Nov 21 | Project work                                        | Everyone       |
+| 11   | Nov 26 | Project work                                        | Everyone       |
+| 11   | Nov 28 | Project work                                        | Everyone       |
+| 12   | Dec 03 | Group presentations                                 | Everyone       |
 
 ## Assessment schedule
 | Assignment                       | Type                | Due date   | Marks |
@@ -97,12 +96,13 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | LMEMs and randomization tests    | Individual          | Oct 17     | 8     |
 | Multivariate stats and model selection | Individual    | Oct 24     | 8     |
 | Population modelling             | Individual          | Oct 31     | 8     |
-| Mid-project report and update    | Project, Individual | Nov 21     | 16    |
-| Final project work               | Project, Group      | Dec 05     | 32    |
+| Challenge assignment             | Individual          | Nov 21     | 16    |
+| Mid-project update               | Project, Group      | Nov 21     | 10    |
+| Final report, presentation       | Project, Group      | Dec 03     | 22    |
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
 
-Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Thursdays and are due 11:59 pm on the Tuesday eight weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions_.
+Assignments will be distributed and submitted in the R Markdown format via Quercus. Assignments will be handed out on Tuesdays and are due 11:59 pm on the Thursday seven weekdays later. _There will be a penalty of 5% per day (including week-ends) for late submissions_.
 
 
 ### Final project grading rubric

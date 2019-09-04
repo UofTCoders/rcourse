@@ -5,7 +5,7 @@
 #   Rscript _commands/build-pdf.R
 
 # Convert all Rmd files into PDF files
-rmd_files <- list.files(pattern = "^(assignment|index).*.Rmd$")
+rmd_files <- list.files(pattern = "^index.Rmd$")
 sapply(
     rmd_files,
     rmarkdown::render,
