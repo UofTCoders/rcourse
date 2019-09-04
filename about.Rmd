@@ -15,8 +15,8 @@ Based on [RQM](https://cbahlai.github.io/rqm-template/). Draw much inspiration a
 - Joel Östblom (IBBME)
 - Elliott Sales de Andrade (Physics)
 - Lina Tran (Physiology)
-- James Santangelo (Biology)
-- Ahmed Hasan (Biology)
+- James Santangelo (EEB)
+- Ahmed Hasan (CSB)
 - Zoe Humphries (EEB)
 - Amber Hoi (EEB)
 
