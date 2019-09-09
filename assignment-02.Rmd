@@ -21,13 +21,15 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
     b.  Assign the result of `10/3` to the variable `b`. Display `b`.
         (0.25 marks)
 
-    c.  Assign the product of `a` and `b` to `product`. Display `product`. (0.25
-        marks)
-
-    d.  Write a function that adds two numbers and returns their sum.
+    c.  Write a function that adds two numbers and returns their sum.
         Use it to assign the sum of `a` and `b` to `result`. Display `result`.
         (In practice, there is already a more sophisticated built-in
         function for this: `result <- sum(a, b)`) (0.25 marks)
+
+    d.  Write a function that multiplies two numbers and returns their product.
+        Use it to assign the product of `a` and `b` to `product`. Display `product`.
+        (In practice, there is already a more sophisticated built-in
+        function for this: `product <- prod(a, b)`) (0.25 marks)
 
 2.  Vectors (1 mark)
 
@@ -51,9 +53,13 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
         In R, TRUE = 1, and FALSE = 0, so you can use simple arithmetic
         to find this out.* (0.5 marks)
 
+    b.  Display the output of `v[TRUE]`. Explain why you think R outputs this.
+        (0.25 marks) _(Note: this is not really something you would ever need 
+        to do in practice!)_
+
     b.  Use the variable `v_bool` as an index to extract the elements
         from `v` that are bigger than 20. What are the min and max
-        values of this new vector? (0.5 marks)
+        values of this new vector? (0.25 marks)
 
 4.  Data frames (2 marks)
 
@@ -64,8 +70,8 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
         How many observations (rows) and variables (columns) are there?
         (0.5 marks)
 
-    b.  How can you view the first 5 rows of this data frame? How can
-        you view the last 5 rows? (0.5 marks)
+    b.  Display both the first 6 and last 6 rows of this data frame.
+        Show how to do so with both indexing as well as specialized functions. (0.5 marks)
 
     c.  What is the min, mean, and max body temperature in this data set?
         *Hint: Remember that each column in a data frame is a vector, so
@@ -73,14 +79,28 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
         vectors.* (0.5 marks)
 
     d.  Use the `summary` function to display an overview of the `temp`
-        column. (0.5 marks)
+        column. (0.25 marks)
+
+    e.  Use a single instance of the `summary` function to display an overview 
+        of the `time` and `temp` columns. (0.25 marks)
 
 5.  Data frames with dplyr (3 marks)
 
-    a.  Use dplyr to calculate the mean temperature in the dataset.
-        (0.25 marks)
+    a.  Say we're attempting to calculate mean temperature in the `beaver1` dataset.
+        What is wrong with the following chain of dplyr commands? (0.5 marks)
+        ```
+        beaver1 %>%
+            filter(is.na(temp)) %>%
+            summarise(mean_temp = mean(temp))
+        ```
 
-    b.  Calculate the mean temperature for day 346. (0.5 marks)
+    b.  Use dplyr to randomly sample 20 rows from `beaver1`. Calculate
+        mean temperature from this subsetted dataset. (0.5 marks)
+        _Hint: you may want to refer to the dplyr cheatsheet for this_
+
+    b.  Using the full `beaver1` dataset, calculate the mean temperature 
+        for day 346. (0.25 marks) 
+        _Note: use the full dataset for parts c-f below as well._
 
     c.  Rather than using `filter()` to calculate the mean for each day
         separately, the more convenient `group_by()` can be used to
@@ -101,9 +121,6 @@ you assignment as a knitted `.pdf` (preferred) or `.html` file.*
     f.  How many observations are there per day when the beaver is
         active outside the retreat? (0.25 marks)
 
-    g.  Was the body temperature higher when the beaver was active or
-        inactive? Is this what you would expect? (0.5 marks)
-
-    h.  Grouping by activity level *and* the day of the observation.
+    g.  Grouping by activity level *and* the day of the observation.
         Which variable seems to be more related to high body
         temperature: activity level or day of measurement? (0.5 marks)
