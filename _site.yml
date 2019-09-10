@@ -57,7 +57,7 @@ navbar:
     icon: fa-book
     menu:
     - text: Assignment 1
-      # href: assignment-01.html
+      href: assignment-01.html
     - text: Assignment 2
       # href: assignment-02.html
     - text: Assignment 3

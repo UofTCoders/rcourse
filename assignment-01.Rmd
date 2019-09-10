@@ -9,11 +9,11 @@ output:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-*To submit this assignment, upload the full document on blackboard,
+*To submit this assignment, upload the full document on Quercus,
 including the original questions, your code, and the output. Submit
-you assignment as a knitted `.pdf` (prefered) or `.html` file.*
+your assignment as a knitted `.pdf` (prefered) or `.html` file.*
 
-1.  Get setup at home (or on a lab computer after hours). (1.5 marks)
+1.  Get set up at home (or on a lab computer after hours). (1.5 marks)
     -   Install [R](https://cran.rstudio.com/) and
         [RStudio](https://www.rstudio.com/products/rstudio/download/)
         (already installed on the lab computers).
@@ -65,10 +65,8 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     -   Which key combination would you use to execute a code chunk?
 
 3.  Provide a few reasons as to why it is beneficial to create documents
-    like the R Notebooks rather than using a spreadsheet software for
-    exploratory data analyses? (1 mark)
+    like R Notebooks rather than using spreadsheet software for
+    exploratory data analyses. (1 mark)
 
-4.  Fill out the [pre-course
-    survey](https://goo.gl/forms/v2psrg0gGnqbxr6F3).
-    Type your student number below to confirm that you are done. (0.5
-    marks)
+4.  Fill out the pre-course survey posted on Quercus. Type your student number 
+    below to confirm that you are done. (0.5 marks)
