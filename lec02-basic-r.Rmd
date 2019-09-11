@@ -1,5 +1,5 @@
 ---
-title: 'Introduction to R: Vectors, functions, data frames'
+title: 'Introduction to R: Assignment, vectors, functions'
 author: "Joel Östblom & Ahmed Hasan"
 ---
 
@@ -643,8 +643,8 @@ median(lengths, na.rm = TRUE)
 
 ## Loops and vectorization
 
-Loop, or for-loops, are essential to programming in general. However, in R, you
-should avoid them as often as possible because there are more efficient ways of
+Loops, specifically for-loops, are essential to programming in general. However, in R, 
+you should avoid them as often as possible because there are more efficient ways of
 doing things that you should use instead. It is still important that you
 understand the concept of loops and you might also use them in some of your own
 functions if there is no vectorized way of going about what you want to do.
