@@ -167,7 +167,7 @@ truly long dataset where we have a key column called `measurement` and a
 `weight`. Hint: Remember, you only need to specify the key and value
 columns for `spread`.
 
-```{r}
+```{r, include=FALSE}
 ## Answer 1
 rich_time <- surveys %>%
   group_by(plot_id, year) %>%
