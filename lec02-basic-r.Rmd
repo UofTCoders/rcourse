@@ -58,6 +58,10 @@ part of these open source projects.
 
 -----
 
+```{r, echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 ## Setting up the R Notebook
 
 Let's remove the template RStudio gives us, and add a title of our own.
@@ -110,7 +114,7 @@ joel + 5
 
 So far, we have created two variables, `joel` and `x`. What is the sum of these variables?
 
-```{r}
+```{r, include=FALSE}
 joel + x
 ```
 
@@ -179,11 +183,11 @@ and then change `weight_kg` to 100.
 weight_kg <- 100
 ```
 
-#### Challenge
+#### Challenge 
 
 What do you think is the current content of the object `weight_lb`? 126.5 or 220?
 
-```{r}
+```{r, eval=FALSE}
 weight_lb
 ```
 
@@ -214,7 +218,7 @@ weight_lb <- 2.2 * weight_kg # Actually, 1 kg = 2.204623 lbs
 
 What are the values after each statement in the following?
 
-```{r}
+```{r, eval=FALSE}
 mass <- 47.5
 age  <- 122
 mass <- mass * 2.0      # mass?
@@ -393,7 +397,7 @@ add_two_numbers(4, 5)
 
 Can you write a function that calculates the mean of 3 numbers?
 
-```{r}
+```{r, include=FALSE}
 mean_of_three_numbers <- function(num1, num2, num3) {
    my_sum <- num1 + num2 + num3
    my_mean <- my_sum / 3
