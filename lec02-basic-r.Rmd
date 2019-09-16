@@ -58,10 +58,6 @@ part of these open source projects.
 
 -----
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
 ## Setting up the R Notebook
 
 Let's remove the template RStudio gives us, and add a title of our own.
