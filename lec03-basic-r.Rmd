@@ -67,7 +67,7 @@ holds information for a single animal, and the columns represent:
 To read the data into R, we are going to use a function called `read_csv`. This
 function is contained in an R-package called
 [`readr`](https://readr.tidyverse.org/). R-packages are a bit like browser
-extensions, they are not essential, but can provide nifty functionality. We will
+extensions; they are not essential, but can provide nifty functionality. We will
 go through R-packages in general and which ones are good for data analyses in
 detail later in this lecture. Now, let's install `readr`:
 
@@ -114,15 +114,15 @@ surveys
 In the online html-version of this lecture, you only see the first few rows of
 the data frame. Running the code chunk above in the R Notebook would display a
 nice tabular view of the data, which also includes pagination when there are
-many rows and we can click the green arrow to view all the columns. Technically,
-this object actually a `tibble` rather than a data frame, as indicated in the
-output. The reason for this is that `read_csv` automatically converts the data
-into to a `tibble` when loading it. Since a `tibble` is just a data frame with
-some convenient extra functionality, we will use these words interchangeably
-from now on.
+many rows and we can click the green arrow to view all the columns.
+Technically, this object is actually a `tibble` rather than a data frame, as
+indicated in the output. The reason for this is that `read_csv` automatically
+converts the data into to a `tibble` when loading it. Since a `tibble` is just
+a data frame with some convenient extra functionality, we will use these words
+interchangeably from now on.
 
-If we just want to glance at how the data frame looks, it is sufficient to display only the
-top (the first 6 lines) using the function `head()`:
+If we just want to glance at how the data frame looks, it is sufficient to
+display only the top (the first 6 lines) using the function `head()`:
 
 ```{r}
 head(surveys)
@@ -203,12 +203,12 @@ Based on the output of `str(surveys)`, can you answer the following questions?
 
 ### Indexing and subsetting data frames
 
-Our survey data frame has rows and columns (it has 2 dimensions), if we want to
-extract some specific data from it, we need to specify the "coordinates" we want
-from it. Row numbers come first, followed by column numbers. Base R data frames,
-would return a different format depending on how we index the data (i.e. either
-a vector or a data frame), but with enhanced data frames, `tibbles`, the
-returned object is almost always a data frame.
+Our survey data frame has rows and columns (it has 2 dimensions). If we want to
+extract some specific data from it, we need to specify the "coordinates" we
+want from it. Row numbers come first, followed by column numbers. When
+indexing, base R data frames return a different format depending on how we
+index the data (i.e. either a vector or a data frame), but with enhanced data
+frames, `tibbles`, the returned object is almost always a data frame.
 
 ```{r}
 surveys[1, 1]   # first element in the first column of the data frame
@@ -220,9 +220,9 @@ surveys[3, ]    # the 3rd element for all columns
 surveys[1:6, ]  # equivalent to head(surveys)
 ```
 
-`:` is a special function that creates numeric vectors of integers in increasing
-or decreasing order, test `1:10` and `10:1` for instance. This works similar to
-`seq`, which we looked at earlier in class:
+`:` is a special operator that creates numeric vectors of integers in
+increasing or decreasing order; test `1:10` and `10:1` for instance. This works
+similarly to `seq`, which we looked at earlier in class:
 
 ```{r}
 0:10
