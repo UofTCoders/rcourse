@@ -5,10 +5,6 @@ output:
         toc: false
 ---
 
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
 *To submit this assignment, upload the full document on Quercus,
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (prefered) or `.html` file.*
@@ -43,7 +39,7 @@ your assignment as a knitted `.pdf` (prefered) or `.html` file.*
         computer. You might receive warnings that functions from other
         packages are masked when you load `tidyverse`, this is fine.
 
-        ```{r, eval=FALSE}
+        ```{r}
         install.packages("tidyverse")
         install.packages("rmarkdown")
     
