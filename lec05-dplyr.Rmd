@@ -1,5 +1,5 @@
 ---
-title: "Tidying and exporting data, reproducing figures"
+title: "More dplyr and ggplot, tidying and exporting data"
 author: Joel Östblom
 ---
 
@@ -7,18 +7,17 @@ author: Joel Östblom
 
 > ### Lecture objectives
 >
+> - Understand how to combine dplyr and ggplot.
+> - Understand and apply faceting in ggplot.
 > - Learn about tidy data.
 > - Transform data from the long to wide format.
-> - Reproduce existing figures from raw data.
-> - Understand which raw data is underlying a figure.
-> - Understand which types of figures are suitable to create from raw data.
-> - Explore scientific questions using dplyr and ggplot.
 >
 > ### Lecture outline
 >
-> - Reshaping with gather and spread (25 min)
+> - Split-apply-combine... plot! (30 min)
+> - Faceting (10 min)
+> - Reshaping with gather and spread (30 min)
 > - Exporting data (15 min)
-> - Reproducing figures (50 min)
 
 -----
 
@@ -43,6 +42,210 @@ surveys <- read_csv('portal_data.csv')
 
 ```{r, echo=FALSE}
 surveys <- read_csv('data/portal_data.csv')
+```
+
+### Split-apply-combine... plot!
+
+In this section, we will learn how to work with `**dplyr**` and `**ggplot**`
+together. Aided by the pipes (`%>%`), we can create a powerful data exploration
+workflow using these two packages.
+
+Let's calculate number of counts per year for each species. First we need
+to group the data and count records within each group:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, genus) %>%
+    tally() %>%
+    arrange(desc(n)) # Adding arrange just to compare with histogram
+```
+
+We could assign this table to a variable, and then pass that variable to
+`ggplot()`.
+
+```{r}
+yearly_counts <- surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally()
+
+ggplot(yearly_counts, aes(x = n)) +
+    geom_histogram()
+```
+
+Creating an intermediate variable would be preferable for time consuming
+calculations, because you would not want to do that operation every time you
+change the plot aesthetics.
+
+If it is not a time consuming calculation or you would like the flexibility of
+changing the data summary and the plotting options in the same code chunk, you
+can pipe the output of your split-apply-combine operation to the plotting
+command:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = n)) +
+        geom_histogram()
+```
+
+We can perform a quick check that the plot corresponds to the table by coloring
+the histogram by species:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = n, fill = species)) + # `fill` is specific for histograms
+        geom_histogram()
+```
+
+
+Let's explore how the number of each genus varies over time. Longitudinal data
+can be visualized as a line plot with years on the x axis and counts on the y
+axis:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n)) +
+        geom_line()
+```
+
+Unfortunately, this does not work because we plotted data for all the species
+together. We need to tell ggplot to draw a line for each species by modifying
+the aesthetic function to include `group = species`:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, group = species)) +
+        geom_line()
+```
+
+We will be able to distinguish species in the plot if we add colors (using
+`color` also automatically groups the data):
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, color = species)) + # `color` groups automatically
+        geom_line() # try adding `size = 2`
+```
+
+### Faceting
+
+ggplot has a special technique called *faceting* that allows the user to split
+one plot into multiple subplots based on a variable included in the dataset. We
+will use it to make a time series plot for each species:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n)) + #
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+Now we would like to split the line in each plot by the sex of each individual
+measured. To do that we need to make counts in the data frame grouped by `year`,
+`species`, and `sex`:
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species, sex) %>%
+    tally()
+```
+
+We can make the faceted plot by splitting further by sex using `color` (within a
+single plot):
+
+```{r}
+surveys_abun_species %>%
+    group_by(year, species, sex) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+There are several observations where no sex was recorded. In this case, we are
+not really interested in the observations of unknown sex, so we can filter out
+those values.
+
+```{r}
+surveys_abun_species %>%
+    filter(!is.na(sex)) %>%
+    group_by(year, species, sex) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line() +
+        facet_wrap(~ species)
+```
+
+It is possible to specify exactly which colors to use, to avoid those that are
+hard to distinguish. We can also change the thickness of the lines, and adjust
+the x labels so that they don't overlap. 
+
+```{r}
+color_names <- c('black', 'orange')
+
+surveys_abun_species %>%
+    filter(!is.na(sex)) %>%
+    group_by(year, species, sex) %>%
+    tally() %>%
+    ggplot(aes(x = year, y = n, color = sex)) +
+        geom_line(size = 1) +
+        scale_color_manual(values = color_names) +
+        facet_wrap(~ species) +
+        theme_bw() +
+        theme(text = element_text(size=12),
+               axis.text.x = element_text(angle=30, hjust=1))
+```
+
+
+#### Challenge
+
+Use the filtered data frame for all of these questions.
+
+1. Remember the histogram colored according to each species? Starting from that
+code, how could we separate each species into its own subplot?
+2.
+a. Which year was the average weight of the animals the highest?
+b. Is the yearly trend the same for all species?
+
+
+```{r, include=FALSE}
+# Answers
+# 1
+ggplot(yearly_counts, aes(x = n, fill = species)) +
+    geom_histogram() +
+    facet_wrap(~ species)
+```
+
+```{r, include=FALSE}
+# 2.a
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    summarize(mean_weight = mean(weight)) %>%
+    ggplot(aes(x = year, y = mean_weight)) +
+        geom_line()
+```
+
+```{r, include=FALSE}
+# 2.b
+surveys_abun_species %>%
+    filter(!is.na(weight)) %>%
+    group_by(year, species) %>%
+    summarize(mean_weight = mean(weight)) %>%
+    ggplot(aes(x = year, y = mean_weight, color = species)) +
+        geom_line() +
+        facet_wrap(~ species)
 ```
 
 ## Reshaping with gather and spread
@@ -270,250 +473,6 @@ folder.
 ```{r, eval=FALSE}
 write_csv(surveys_complete, path = "data-processed/surveys_complete.csv")
 ```
-
-
-## Team Challenges
-
-These are four exercises in exploratory data analyses, which will train you to
-think about data and to use the tools you have been learning about in this class
-to solve scientific questions and to reproduce figures from the literature. To
-solve these challenges, you will need to understand what data underlies a
-figure and how you need to manipulate it to recreate the figure.
-
-### Setting up
-
-Start by loading the required packages. Both **`ggplot2`** and **`dplyr`** are
-included in the **`tidyverse`** package collection.
-
-```{r}
-# Install if needed
-# install.packages('tidyverse')
-library(tidyverse)
-```
-
-### 1. Explore the weight and hindfoot trends further
-
-Load the data we saved in the previous lesson.
-
-```{r, eval=FALSE}
-# Download if needed
-# download.file("https://ndownloader.figshare.com/files/2292169", "data/portal_data.csv")
-surveys <- read_csv('portal_data.csv')
-```
-
-```{r}
-surveys
-```
-
-Let's recreate the survey data set we used in lecture 4, only containing the most abundant species (those with > 800 observations).
-
-```{r}
-abundant_species <- surveys %>%
-    filter(!is.na(hindfoot_length) & !is.na(weight)) %>%
-    group_by(species) %>%
-    tally() %>%
-    arrange(desc(n)) %>%
-    filter(n > 800) %>%
-    select(species)
-
-surveys_abun_species <- surveys %>%
-    filter(!is.na(hindfoot_length) &
-        !is.na(weight) &
-        species %in% abundant_species$species)
-
-
-# If everything loaded correctly, the dimensions of your data set should be
-# 30,320 rows x 13 columns. We could check this by displaying the entire data
-# set with `surveys_abun_species`, but also more directly by comparing the
-# dimensions of the data set to those listed above.
-dim(surveys_abun_species) == c(30320, 13)
-# Remember that `==` is for comparisons, and `=` is for assigning arguments in
-# function calls.
-
-```
-
-In the second question in the last challenge of lecture 4, we saw that the
-average weight of all the animals decreased over time, while the average weight
-for each species remained constant. Here are those plots again.
-
-```{r}
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year) %>%
-    summarize(mean_weight = mean(weight)) %>%
-    ggplot(aes(x = year, y = mean_weight)) +
-        geom_line()
-```
-
-```{r}
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(mean_weight = mean(weight)) %>%
-    ggplot(aes(x = year, y = mean_weight, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-If you were to look at the average hindfoot length over time, you would find
-that the trends are similar to those of the average weight. Can you find an
-explanation for why both the average hindfoot length and the average weight
-decrease over time for all animals' average weight, but remain constant when
-looking at individual species? Phrased another way: since each species displays
-constant weight and hindfoot_length measures over time, what could be the cause
-of the notable decrease over time for the average weight of all species pooled
-together?
-
-```{r, eval=FALSE, echo=FALSE}
-# 3.a
-# Answer: Since the average hindfoot length and average weight has remained
-# relatively constant for each individual species, the explaining variable is
-# likely the number of species captured has shifted towards capturing more of
-# the smaller rodents. By plotting the result of tallying by species, we can see
-# that this is indeed the case.
-
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-       
-# Average weight over time
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(mean_weight = mean(weight)) %>%
-    ggplot(aes(x = year, y = mean_weight, color = species)) +
-        geom_line()
-       
-# Total weight over time
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(total_weight = sum(weight)) %>%
-    ggplot(aes(x = year, y = total_weight, color = species)) +
-        geom_line()
-
-
-# 3 supplementary
-# All species hindfoot length trend
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year) %>%
-    summarize(mean_hinfood_length = mean(hindfoot_length)) %>%
-    ggplot(aes(x = year, y = mean_hinfood_length)) +
-        geom_line()
-
-# Per species hindfoot length trend
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(mean_weight = mean(hindfoot_length)) %>%
-    ggplot(aes(x = year, y = mean_weight, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-
-### 2. Reproduce figure 3 from the paper
-
-For this section, you will apply your data wrangling and plotting skills to
-reproduce a couple of figures from a study on the yearly change in biomass of
-plants in the Abisko national park in northern Sweden. This paper is publish
-under an open license and the [figures can be accessed via this
-link](https://royalsocietypublishing.org/doi/10.1098/rstb.2012.0486).
-
-You will be working with this dataset in assignment 3, so we have prepared the
-data for you in a format that is easier to work with. [Download the
-data](data/plant-biomass-preprocess.csv)
-and read it into a dataframe called `plant_biomass`. Confirm that the data
-frame is 180 rows by 10 columns
-
-```{r, echo=FALSE, eval=FALSE}
-plant_biomass <- read_csv('data/plant-biomass-preprocess.csv')
-dim(plant_biomass) == c(180, 10)
-```
-
-Reproduce figure 3 from the paper. Focus on the overall message on the plot,
-i.e. two panels for different habitats of the plant biomass over the year in
-grazed controls vs rodent exclosures. You do not need to get the figure
-aesthetics to look exactly the same as in the published figures (i.e. no need
-for the exact colors and shapes, axis styles, or to include the small dots
-around the main lines).
-
-```{r, eval=FALSE, echo=FALSE}
-plant_biomass %>%
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
-    group_by(habitat, treatment, year) %>%
-    summarize(mean_biomass = mean(biomass)) %>%
-    ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
-        geom_line() +
-        geom_point() +
-        facet_grid(~ habitat)
-```
-
-### 3. Reproduce figure 4 from the paper
-
-Use the `plant_biomass` data set and reproduce figure 4 from the paper.
-
-Hints:
-
-- To get the right dimensions of the subplots, explore how to use the function
-  `facet_grid` instead of `facet_wrap`.
-- Remember to search online for help, e.g. "How do I change the figure size in R
-  markdown?"
-- You will also need to search online or in the R documentation to find out how
-  you change the y-scale to be constant within a species, but not between
-  species (as in the paper figure).
-
-```{r, eval=FALSE, echo=FALSE, fig.height=9, fig.width=7}
-plant_biomass %>%
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
-    group_by(habitat, species, treatment, year) %>%
-    summarize(mean_biomass = mean(biomass)) %>%
-    ggplot(aes(x = year, y = mean_biomass, color = treatment)) +
-        geom_line() +
-        geom_point() +
-        facet_grid(species ~ habitat, scales = 'free_y')
-```
-
-### 4. Make figure 3 perfect
-
-Let's try to bring figure 3 closer to the paper version. Use the R documentation
-and search online to find out how to:
-
-- Change the size of markers in your plots and adjust them appropriately.
-- Slightly adjust the thickness of the lines.
-- Change the colors of the lines to match those online.
-- Apply a ggplot theme to make the figure background white and the overall
-  figure appearance more like the paper version.
-- Change the x and y label to match the paper figure.
-
-```{r, eval=FALSE, echo=FALSE, fig.height=4, fig.width=10}
-# There are some additional customizatios in the answer that
-# I think are too much to ask for but can be nice to show
-color_names <- c('red', 'blue')
-
-plant_biomass %>%
-    gather(species, biomass, betula_nana:vaccinium_vitis_idaea) %>%
-    group_by(habitat, treatment, year) %>%
-    summarize(mean_biomass = mean(biomass)) %>%
-    ggplot(aes(x = year, y = mean_biomass, color = treatment, shape = treatment)) +
-        geom_line(size = 0.8) +
-        geom_point(size = 3) +
-        scale_color_manual(values = color_names) +
-        facet_grid(~ habitat) +
-        ylab('plant biomass') +
-        xlab('') +
-        theme_classic() +
-        theme(
-            strip.background = element_blank(),
-            strip.text.x = element_blank())
-
-```
-
 
 *Parts of this lesson material were taken and modified from [Data
 Carpentry](https://datacarpentry.org) under their CC-BY copyright license. See

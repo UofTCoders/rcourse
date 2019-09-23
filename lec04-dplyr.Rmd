@@ -13,16 +13,13 @@ author: Joel Östblom
 > the results.
 > - Produce scatter plots, line plots, and histograms using ggplot.
 > - Set universal plot settings.
-> - Understand and apply faceting in ggplot.
 > 
 > ### Lesson outline
 >
-> - Split-apply-combine techniques in **`dplyr`** (20 min)
-> - Using `tally` to summarize categorical data (10 min)
-> - Plotting with **`ggplot2`** (15 min)
-> - Building plots iteratively (15 min)
-> - Split-apply-combine... plot! (20 min)
-> - Faceting (10 min)
+> - Split-apply-combine techniques in **`dplyr`** (25 min)
+> - Using `tally` to summarize categorical data (15 min)
+> - Plotting with **`ggplot2`** (20 min)
+> - Building plots iteratively (25 min)
 
 -----
 
@@ -54,7 +51,7 @@ surveys
 ```
 
 
-## Split-apply-combine technique in dplyr
+## Split-apply-combine techniques in dplyr
 
 Many data analysis tasks can be approached using the *split-apply-combine*
 paradigm: split the data into groups, apply some analysis to each group, and
@@ -489,210 +486,6 @@ ggplot(surveys_abun_species, aes(x = weight, y = species, color = hindfoot_lengt
     geom_point(size = 0.1, position = 'jitter')
 ```
 
-
-### Split-apply-combine... plot!
-
-In this section, we will learn how to work with `**dplyr**` and `**ggplot**`
-together. Aided by the pipes (`%>%`), we can create a powerful data exploration
-workflow using these two packages.
-
-Let's calculate number of counts per year for each species. First we need
-to group the data and count records within each group:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, genus) %>%
-    tally() %>%
-    arrange(desc(n)) # Adding arrange just to compare with histogram
-```
-
-We could assign this table to a variable, and then pass that variable to
-`ggplot()`.
-
-```{r}
-yearly_counts <- surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally()
-
-ggplot(yearly_counts, aes(x = n)) +
-    geom_histogram()
-```
-
-Creating an intermediate variable would be preferable for time consuming
-calculations, because you would not want to do that operation every time you
-change the plot aesthetics.
-
-If it is not a time consuming calculation or you would like the flexibility of
-changing the data summary and the plotting options in the same code chunk, you
-can pipe the output of your split-apply-combine operation to the plotting
-command:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = n)) +
-        geom_histogram()
-```
-
-We can perform a quick check that the plot corresponds to the table by coloring
-the histogram by species:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = n, fill = species)) + # `fill` is specific for histograms
-        geom_histogram()
-```
-
-
-Let's explore how the number of each genus varies over time. Longitudinal data
-can be visualized as a line plot with years on the x axis and counts on the y
-axis:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n)) +
-        geom_line()
-```
-
-Unfortunately, this does not work because we plotted data for all the species
-together. We need to tell ggplot to draw a line for each species by modifying
-the aesthetic function to include `group = species`:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, group = species)) +
-        geom_line()
-```
-
-We will be able to distinguish species in the plot if we add colors (using
-`color` also automatically groups the data):
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = species)) + # `color` groups automatically
-        geom_line() # try adding `size = 2`
-```
-
-### Faceting
-
-ggplot has a special technique called *faceting* that allows the user to split
-one plot into multiple subplots based on a variable included in the dataset. We
-will use it to make a time series plot for each species:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n)) + #
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-Now we would like to split the line in each plot by the sex of each individual
-measured. To do that we need to make counts in the data frame grouped by `year`,
-`species`, and `sex`:
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species, sex) %>%
-    tally()
-```
-
-We can make the faceted plot by splitting further by sex using `color` (within a
-single plot):
-
-```{r}
-surveys_abun_species %>%
-    group_by(year, species, sex) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = sex)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-There are several observations where no sex was recorded. In this case, we are
-not really interested in the observations of unknown sex, so we can filter out
-those values.
-
-```{r}
-surveys_abun_species %>%
-    filter(!is.na(sex)) %>%
-    group_by(year, species, sex) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = sex)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
-
-It is possible to specify exactly which colors to use, to avoid those that are
-hard to distinguish. We can also change the thickness of the lines, and adjust
-the x labels so that they don't overlap. 
-
-```{r}
-color_names <- c('black', 'orange')
-
-surveys_abun_species %>%
-    filter(!is.na(sex)) %>%
-    group_by(year, species, sex) %>%
-    tally() %>%
-    ggplot(aes(x = year, y = n, color = sex)) +
-        geom_line(size = 1) +
-        scale_color_manual(values = color_names) +
-        facet_wrap(~ species) +
-        theme_bw() +
-        theme(text = element_text(size=12),
-               axis.text.x = element_text(angle=30, hjust=1))
-```
-
-
-#### Challenge
-
-Use the filtered data frame for all of these questions.
-
-1. Remember the histogram colored according to each species? Starting from that
-code, how could we separate each species into its own subplot?
-2.
-a. Which year was the average weight of the animals the highest?
-b. Is the yearly trend the same for all species?
-
-
-```{r, include=FALSE}
-# Answers
-# 1
-ggplot(yearly_counts, aes(x = n, fill = species)) +
-    geom_histogram() +
-    facet_wrap(~ species)
-```
-
-```{r, include=FALSE}
-# 2.a
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year) %>%
-    summarize(mean_weight = mean(weight)) %>%
-    ggplot(aes(x = year, y = mean_weight)) +
-        geom_line()
-```
-
-```{r, include=FALSE}
-# 2.b
-surveys_abun_species %>%
-    filter(!is.na(weight)) %>%
-    group_by(year, species) %>%
-    summarize(mean_weight = mean(weight)) %>%
-    ggplot(aes(x = year, y = mean_weight, color = species)) +
-        geom_line() +
-        facet_wrap(~ species)
-```
 
 *Parts of this lesson material were taken and modified from [Data
 Carpentry](https://datacarpentry.org) under their CC-BY copyright license. See
