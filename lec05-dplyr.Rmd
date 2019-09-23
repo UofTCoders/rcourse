@@ -32,16 +32,29 @@ included in the **`tidyverse`** package collection.
 library(tidyverse)
 ```
 
-Load the data we saved in the previous lesson.
+Load the data we saved in the previous lesson, and prepare the filtered abundant species
+dataset from the end of lecture 4.
 
 ```{r, eval=FALSE}
 # Download if needed
 # download.file("https://ndownloader.figshare.com/files/2292169", "portal_data.csv")
 surveys <- read_csv('portal_data.csv')
+surveys_abun_species <- surveys %>%
+    filter(!is.na(hindfoot_length) & !is.na(weight)) %>%
+    group_by(species) %>%
+    mutate(n = n()) %>% # add count value to each row
+    filter(n > 800) %>%
+    select(-n)
 ```
 
 ```{r, echo=FALSE}
 surveys <- read_csv('data/portal_data.csv')
+surveys_abun_species <- surveys %>%
+    filter(!is.na(hindfoot_length) & !is.na(weight)) %>%
+    group_by(species) %>%
+    mutate(n = n()) %>% # add count value to each row
+    filter(n > 800) %>%
+    select(-n)
 ```
 
 ### Split-apply-combine... plot!
