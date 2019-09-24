@@ -37,6 +37,6 @@ Imports:
     car,
     psych,
     multcomp,
-    MuMIn
-    ggforce
+    MuMIn,
+    ggforce,
     concaveman
