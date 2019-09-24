@@ -255,6 +255,10 @@ The first part of the output breaks down which terms are part of which models an
 2. The parameter estimates and predictions arising from the "best" model or set of best models should be biologically meaningful. 
 3. Need to decide whether to use model selection or common inferential statistics (e.g. based on _P_-values). Techniques that rely on both approaches are possible (e.g. backward variable selection followed by averaging of top models), such as the example provided above. 
 
+### Formal test between two models
+
+Throughout the early parts of the lecture, we made qualitative decisions on which model was best based on model AIC scores. However, it is also possible to statistically test whether one model fits the data better using a _likelihood ratio test_. This test compares the goodness of fit of two models by testing the ratio of their log-likelihoods against a Chi-squared distribution. Importantly, this approach requires that the two models be nested (i.e., one model must be a subset of the other). This can be implemented in R using the `anova(model1, model2)` syntax. 
+
 ## Additional reading
 
 1. Johnson, J. and Omland, K. 2004. Model selection in ecology and evolution. _Trends in Ecology and Evolution_ **19**: 101-108.
