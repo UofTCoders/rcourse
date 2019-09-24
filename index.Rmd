@@ -68,15 +68,15 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | 3    | Sep 26 | Exploratory data analysis                           | Zoe            |
 | 4    | Oct 01 | Linear models and statistical modelling             | Zoe            |
 | 4    | Oct 03 | Mixed effects models                                | James          |
-| 5    | Oct 08 | Multivariate stats                                  | Amber          |
-| 5    | Oct 10 | Spatial stats                                       | Amber          |
-| 6    | Oct 15 | Simulating data                                     | James          |
-| 6    | Oct 17 | Model selection                                     | James          |
+| 5    | Oct 08 | Model selection                                     | James          |
+| 5    | Oct 10 | Multivariate stats                                  | Amber          |
+| 6    | Oct 15 | Spatial stats                                       | Amber          |
+| 6    | Oct 17 | Simulating data                                     | James          |
 | 7    | Oct 22 | Ecological modelling                                | Amber          |
 | 7    | Oct 24 | Evolutionary modelling                              | Zoe            |
 | 8    | Oct 29 | Reproducible science                                | Everyone       |
 | 8    | Oct 31 | Datasets, hypotheses, begin projects                | Everyone       |
-| -    | Nov 05 | Fall break                                          |                |
+| -    | Nov 05 | Fall break                                          | -              |
 | -    | Nov 07 | Fall break                                          | -              |
 | 9    | Nov 12 | Project work                                        | Everyone       |
 | 9    | Nov 14 | Project work                                        | Everyone       |
@@ -93,8 +93,8 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Basic R and dplyr                | Individual          | Sep 26     | 8     |
 | dplyr and tidy data              | Individual          | Oct 03     | 8     |
 | Linear models                    | Individual          | Oct 10     | 8     |
-| LMEMs and multivariate stats     | Individual          | Oct 17     | 8     |
-| Spatial stats and simulating data| Individual          | Oct 24     | 8     |
+| LMEMs and model selection        | Individual          | Oct 17     | 8     |
+| Multivar, Spatial stats and simulating data| Individual          | Oct 24     | 8     |
 | Modelling                        | Individual          | Oct 31     | 8     |
 | Challenge assignment             | Individual          | Nov 21     | 16    |
 | Mid-project update               | Project, Group      | Nov 21     | 10    |
