@@ -36,6 +36,4 @@ Imports:
     psych,
     multcomp,
     MuMIn,
-    V8,
     ggforce,
-    concaveman
