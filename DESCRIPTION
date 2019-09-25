@@ -26,8 +26,6 @@ Imports:
     tidyverse,
     GGally,
     broom,
-    deSolve,
-    phaseR,
     lattice,
     lme4,
     lmerTest,
@@ -38,5 +36,6 @@ Imports:
     psych,
     multcomp,
     MuMIn,
+    V8,
     ggforce,
     concaveman
