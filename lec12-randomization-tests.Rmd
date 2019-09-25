@@ -265,7 +265,7 @@ ggplot() +
 
 ```
 
-Finally, to get out *P*-value, we calculate the number of times  the simulated mean difference exceeded the observed mean difference from our data. Because we are performing a two-tailed test, this amounts to determining the number of times the simulated mean difference is **either greater or lesser than the observed difference**. We can do this by asking how many times the absolute value of the simulated mean difference is greater or equal to the absolute value of the observed mean difference.
+Finally, to get our *P*-value, we calculate the number of times the simulated mean difference exceeded the observed mean difference from our data. Because we are performing a two-tailed test, this amounts to determining the number of times the simulated mean difference is **either greater or lesser than the observed difference**. We can do this by asking how many times the absolute value of the simulated mean difference is greater or equal to the absolute value of the observed mean difference.
 
 ```{r}
 abs_simulated_means <- abs(simulated_means)
