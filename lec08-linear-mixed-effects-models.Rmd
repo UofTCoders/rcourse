@@ -132,16 +132,19 @@ Nonetheless, for the analyses in this section, we will ignore violations of thes
 Remember, the species richness data come from multiple sites within multiple beaches. While each beach may be independent, sites within a beach are likely to have similar species richness due simply to their proximity within the same beach. In other words, observations among sites within a beach are **not independent**. Another way of saying this is that the data are **nested**. Nesting in this sense is a product of the experimental design (i.e. we chose to sample 5 sites within each beach) and not necessarily of the data itself. Other types of nested data include: sampling the same individual pre- and post-treatment or sampling them multiple times (i.e. repeated measures), or sampling multiple tissues from the same individuals. We can visualize the non-independence of observation within the same beach by producing a figure similar to the one above but clustered by beach (each beach is a different colour).
 
 ```{r Richness against NAP, message=FALSE}
-library(ggforce)
-
+library(plyr)
+# Function to find polygons
+find_hull <- function(df) df[chull(df$Richness, df$NAP), ] 
+# Identify polygons in data
+hulls <- ddply(rikz_data, "Beach", find_hull) 
 # Plot
 ggplot(rikz_data, aes(x = NAP, y = Richness, colour = Beach)) +
     geom_point(size = 3) +
+    theme_classic() +
+    theme(legend.position = "none") +
     scale_colour_brewer(palette="Set1") +
     scale_fill_brewer(palette="Set1") +
-    geom_mark_hull(aes(fill = Beach), expand = unit(2.5, "mm")) +
-    theme_classic() +
-    theme(legend.position = "none")
+    geom_polygon(data=hulls, aes(fill = Beach), alpha = 0.2)
 ```
 
 As you can see, observations from the same beach tend to cluster together. If the observations were independent, all of the clusters would overlap. Instead, observations from one beach are one average more similar to those within the same beach than to those from other beaches. We need to account for this non-independence in our modelling. 

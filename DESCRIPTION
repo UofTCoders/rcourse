@@ -36,7 +36,5 @@ Imports:
     psych,
     multcomp,
     MuMIn,
-    ggforce,
-    concaveman,
     phaseR,
     deSolve
