@@ -1,324 +1,695 @@
 ---
 title: "Exploratory Data Analysis"
-author: "Lindsay Coome"
+author: "Zoe Humphries"
+output: pdf_document
 ---
-### Lesson objectives:
 
-- Exploring and asking questions about our data with graphing/visualization
-- Using insights from exploratory analysis to clean up data:
-  + Dealing with unusual values/outliers
-  + Dealing with missing values (NAs)
+## Lesson preamble: 
 
-### Lesson outline:
-Total lesson time: 2 hours
+> ### Lesson objectives:
+>
+> - Implications of (not) understanding your data
+>   - How did you collect your data?
+>   - What are the properties of your data?
+> - Exploring and asking questions about your data with graphing/visualization
+> - Using insights from exploratory analysis to clean up data:
+>   - Dealing with unusual values/outliers
+>   - Dealing with missing values (NAs)
+>
+> ### Lesson outline:
+> Total lesson time: 2 hours
+>
+> - Data properties, initial hypotheses (15 min)
+> - Plotting and exploring data (30 min)
+> - Generating hypotheses (15 min)
+> - Dealing with unusual values (30 min)
+> - Dealing with missing values (15 min)
 
-- Plotting and exploring data ({{20-30}} min)
-- Dealing with unusual values ({{20-30}} min)
-- Dealing with missing values and multiple imputation ({{40-50}} min)
+---
 
-# Introduction
-Exploratory data analysis is the process of visualizing and transforming your data in a systematic way. It's goals are:
+## Introduction
 
-1. Generate questions about your data.
+Exploratory data analysis is your exciting first look at your data! This is usually a somewhat disheartening experience: you slowly realize yet again that nothing is ever perfect, so you'll be spending the next several days massaging your data into a format that you can actually use to answer your questions. But THEN you'll get to answer your questions! Yay!!
 
-2. Search for answers by visualising, transforming, and modelling your data.
+You *need* to understand your data you before you analyze it.
 
-3. Use what you learn to refine your questions and/or generate new questions.
+1. What kind of data is it?
 
-Even in cases where data analysis may seem straightforward, exploratory data analysis is important as it allows you to investigate the quality of your data. Data that doesn't meet expectations may need to be subjected to "data cleaning", using all the tools of exploratory data analysis - visualisation, transformation, and modelling. 
+2. What variation is present in my data?
+
+3. Are there any data points with values beyond the limits I anticipated?
+
+4. Do you notice any patterns?
+
+The patterns you see can lead you to exciting new questions you may not have anticipated! 
 
 # Setup
-Today we’ll combine what you’ve learned about dplyr and ggplot2 to interactively ask questions and answer them with data.
+
+We'll use what you've learned about summarizing and visualizing data with dplyr and ggplot to get to know some data!
+
 ```{r message=FALSE, warning=FALSE}
-#install.packages("mice")  #please install this package!
 library(tidyverse)
-library(mice)
 ```
 
-```{r, include=FALSE}
-survey <- read_csv("data/survey.csv.gz")
+Hopefully you've already downloaded the data sets we provided. 
+
+```{r eval=FALSE}
+download.file("https://uoftcoders.github.io/rcourse/data/pseudo.ara.busco", 
+              "pseudo.ara.busco")
+download.file("https://uoftcoders.github.io/rcourse/data/pseudo.LTRs", 
+              "pseudo.LTRs")
+download.file("https://uoftcoders.github.io/rcourse/data/pseudoMol_Kdist.txt",
+              "pseudoMol_Kdist.txt")
 ```
 
-```{r, eval=FALSE}
-# If you need to re-download the survey
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
-survey <- read_csv("survey.csv")
+We're going to load the genomic data we have on the density of genes, the density of a type of repetitive element, and the approximate evolutionary age of those repetitive elements.
+
+```{r message=FALSE, warning=FALSE}
+geneDensity <- read_tsv("pseudo.ara.busco", 
+                        col_names=c("chromosome", "start", "end", "winNum", 
+                                    "numElements", "numBases", "winSize", 
+                                    "density"))
+
+ltrDensity <- read_tsv("pseudo.LTRs", 
+                        col_names=c("chromosome", "start", "end", "winNum", 
+                                    "numElements", "numBases", "winSize", 
+                                    "density"))
+
+ltrAge <- read_tsv("pseudoMol_Kdist.txt", col_names=TRUE)
 ```
 
-# Questions
-Your goal during exploratory data analysis is to develop an understanding of your data. The easiest way to do this is to use questions as tools to guide your investigation. A common questions might be:
+We're using "read_tsv" instead of "read_csv" because the columns in this file are separated by tabs instead of commas.
 
-1. What type of variation occurs within my variables?
+# What is my data, actually?
 
-Variation is the tendency of the values of a variable to change from measurement to measurement. Every variable has its own pattern of variation, which can reveal interesting information. The best way to understand that pattern is to visualise the distribution of the variable’s values.
+Before we do anything else, we have to think about where this came from & the kinds of questions we can answer with it.
 
-# Visualizing Distributions
-How you visualise the distribution of a variable will depend on whether the variable is categorical or continuous. A variable is categorical if it can only take one of a small set of values. In R, categorical variables are usually saved as factors or character vectors. To examine the distribution of a categorical variable, use a bar chart:
+This data describes what kind of genetic things live in one plant genome. The chromosomes have been broken down into 1Mb pieces ("windows") and the contents of each window have been averaged. We've got information on the density of conserved genes and one type of transposon for each window. Additionally, we have the evolutionary age for those transposons.
+
+## Predictions
+
+It's always good to lay out your hypotheses first. It can help you figure out how you need to assemble your data in order to test those predictions effectively.
+
+1. In areas where gene density is high, LTR density is low
+    + LTRs are a type of **transposable element**, aka "genomic parasite"
+        - They make copies of themselves at the expense of their host genome
+        - They make up a large portion of plant genomes (can be >40%!)
+        - The host genome wants to prevent them from replicating
+    + Certain regions of a chromosome are more tightly wound up with histones
+        - This makes them less accessible to molecular machinery
+        - If polymerases aren't likely to access a region, the region can't be expressed
+        - If a region is unexpressed, you don't want genes there!!
+        - LTRs tend to accumulate in these regions
+    + More accessible, active regions of a chromosome have higher gene content
+        - These regions can be expressed effectively!
+        - LTRs that insert into these regions have a worse impact on the host
+    + Other factors like recombination rate and methylation also support this pattern
+
+2. In areas where gene density is high, LTR age will be high (old, not transposing anymore)
+    + There won't be many new deleterious LTR insertions
+        - Few young LTRs
+    + The LTRs that are present in those regions can't have lethal effects
+        - If they're there, their effects are unlikely to have terrible effects on fitness
+        - Some transposable elements have been "domesticated" by their hosts
+        - This all contributes to the likelihood that LTRs present can/have persisted
+        - LTRs present are more likley to be older
+
+3. The sex chromosome (LG_X) will have higher LTR density
+    + Larger proportions of sex chromosomes are less accessible
+    + Sex chromosomes experience lower rates of recombination
+        - Also correlated with higher transposon density and lower gene density
+    + These trends are more true for non-recombining Y chromosomes than X chromosomes
+        - Recombination can occur between the two X chromosomes in females
+
+
+## First Peek
+
+First, let's just take a quick look at the gene density data set and ask ourselves what we're dealing with. On a very basic level, what kind of variables do we have?
+
+```{r message=FALSE, warning=FALSE}
+as_tibble(geneDensity) # prints the first 10 rows & the col types
+```
+
+What are your first impressions of the data?
+
+Which variables will be relevant for testing our predictions?
+
+## Basic Variable Categories
+
+Common variable types: 
+
+  * Independent vs dependent
+  * Continuous vs discrete
+  * Qualitative: categorical/nominal, ranked/ordinal, dichotomous
+  * Quantitative: interval, ratio
+
+This matters because the type of data tells us the appropriate way to visualize it: 
+
+  * Qualitative data: pie charts or bar charts
+  * Quantitative data: histograms, box plots
+
+# Visualizing Your Data
+
+## Describing patterns
+
+For a given variable, you're generally looking at the range of values and where the majority of the data lies. This gives you an idea of the **distribution** of your data. As you're aware, many statistical tests make assumptions about the distribution of your input data - it's very important to make note of the shapely properties of your data.
+
+  * Average (mean, median, mode)
+  * Range (max, min)
+  * Skewness: how symmetrical is your data around the average?
+      + Classic bell curve has a skew of zero
+      + If your data isn't symmetrical, that can give you important info!
+      + Skewed distributions aren't likely to be normally distributed
+  * Kurtosis: how sharp is your central peak?
+      + If your distribution is basically flat, its kurtosis is negative
+      + If your distribution has a huge spike, its kurtosis will be positive
+
+## Histograms
+
+### Qualitative Data
+
+Histograms are great for qualitative data because they visualize the number of times a given value appears in your data. 
+
+### Quantitative Data
+
+Histograms can also provide a glimpse into continuous data, providing that you tell ggplot how to group your data into discrete bins. Here, we can look at our data's values for gene density. This density is a measurement of the number of base pairs in a 1Mb window that are part of a gene divided by the total number of base pairs in the window (1 000 000).
+
 ```{r}
-# Note: diamonds is a dataset that comes along with loading the ggplot2 and/or tidyverse packages
-ggplot(data = diamonds, aes(x = cut)) +
-  geom_bar()
+ggplot(geneDensity, aes(density)) +
+  geom_histogram(binwidth=0.01) + 
+  labs(title="Distribution of gene density values",
+       x="Gene density", y="Count (bin size = 0.01)") # Adding labels helps!
 ```
-The height of the bars displays how many observations occurred with each x value. You can compute these values manually with dplyr's `count()`:
+
+What do you notice about this distribution? 
+
+Why do you think it looks this way?
+
+When you're subsetting continuous data into discrete bin widths, it's important to try out different values because different bin sizes can give different impressions of your data's distribution.
 
 ```{r}
-diamonds %>% 
-  count(cut) #same as tally() but has an option to add variables to group by
+ggplot(geneDensity, aes(density)) +
+  geom_histogram(binwidth=0.001) +  # Teeny tiny bins
+  labs(title="Distribution of gene density values",
+       x="Gene density", y="Count (bin size = 0.001)")
+
+ggplot(geneDensity, aes(density)) +
+  geom_histogram(binwidth=0.1) +  # Huge bins! (for this data)
+  labs(title="Distribution of gene density values",
+       x="Gene density", y="Count (bin size = 0.1)")
 ```
 
-A variable is continuous if it can take any of an infinite set of ordered values. To examine the distribution of a continuous variable, use a histogram:
-```{r}
-ggplot(data = diamonds, aes(x = carat)) +
-  geom_histogram(binwidth = 0.5) #graphing the distribution of diamonds by carat
-```
+It's also interesting to see whether your data's distribution is different for any of the categories you're looking at. Is there greater variation in height among women vs humans as a whole?
 
-You can compute this by hand by combining dplyr's `count()` and ggplot2's `cut_width()`:
-```{r}
-diamonds %>% 
-  count(cut_width(carat, 0.5)) # cut_width is a function that makes groups of a specified bin width
-```
+### Histogram of subset
 
-A histogram divides the x-axis into equally spaced bins and then uses the height of a bar to display the number of observations that fall in each bin. 
+Let's see whether the gene density on one of the chromosomes (how about LG_2) fits the general pattern.
 
-You can set the width of the intervals in a histogram with the binwidth argument, which is measured in the units of the x variable. You should always explore a variety of binwidths when working with histograms, as different binwidths can reveal different patterns. For example, here is how the graph above looks when we zoom into just the diamonds with a size of less than three carats and choose a smaller binwidth.
-```{r}
-smaller <- diamonds %>% 
-  filter(carat < 3) # Make a dataset with only diamonds smaller than 3 carats
-  
-ggplot(data = smaller, aes(x = carat)) +
-  geom_histogram(binwidth = 0.1) # Zoomed in dataset with smaller bin widths
-```
+Based on our initial hypotheses, would you predict that it would?
 
-If you wish to overlay multiple histograms in the same plot, I recommend using `geom_freqpoly()` instead of `geom_histogram()`. `geom_freqpoly()` performs the same calculation as `geom_histogram()`, but instead of displaying the counts with bars, it uses lines instead. It’s much easier to understand overlapping lines than bars.
-```{r}
-ggplot(data = smaller, aes(x = carat, colour = cut)) +
-  geom_freqpoly(binwidth = 0.1)
-```
-
-Now that you can visualise variation, what should you look for in your plots? And what type of follow-up questions should you ask?
-
-# Typical Values
-In both bar charts and histograms, tall bars show the common values of a variable, and shorter bars show less-common values. Places that do not have bars reveal values that were not seen in your data. To turn this information into useful questions, look for anything unexpected:
-
-1. Which values are the most common? Why?
-
-2. Which values are rare? Why? Does that match your expectations?
-
-3. Can you see any unusual patterns? What might explain them?
-
-As an example, the histogram below suggests several interesting questions:
-
-As an example, the histogram below suggests an interesting question:
-
-* Why are there more diamonds at whole carats and common fractions of carats?
+It is important to consider how your hypotheses may affect the way you filter your data, so be mindful about tweaking parameters (like bin width) to fit the output you expect! 
 
 ```{r}
-ggplot(data = smaller, aes(x = carat)) +
-  geom_histogram(binwidth = 0.01) 
+LG2genes <- filter(geneDensity, chromosome == "LG_2")
+
+ggplot(LG2genes, aes(density)) +
+  geom_histogram(binwidth=0.01) +
+  labs(title="Distribution of gene density values on LG_2",
+       x="Gene density", y="Count")
 ```
 
-Clusters of similar values suggest that subgroups exist in your data. To understand the subgroups, ask:
+The range for the x axis is much smaller! The maximum gene density here is much smaller than the highest value in the full genome data set.
 
-1. How are the observations within each cluster similar to each other?
+Why might this be?
 
-2. How are the observations in separate clusters different from each other?
+One of the aspects of your data that you can't visualize well with a histogram is whether there are any values that exceed the limits you expected for your data.
 
-3. How can you explain or describe the clusters?
+## Scatterplots & Box plots
 
-4. Why might the appearance of clusters be misleading?
+### More info! Less bias!
 
-The histogram below shows the length (in minutes) of 272 eruptions of the Old Faithful Geyser in Yellowstone National Park. Eruption times appear to be clustered into two groups: there are short eruptions (of around 2 minutes) and long eruptions (4-5 minutes), but little in between.
+With quantitative data, we can get more information by looking at scatterplots and box plots. Not only are they immune to bin size bias, they can help us find outliers and let us make initial visual comparisons of averages across categories. 
+
+### Visualize raw data as a scatterplot
+
+We know that "chromosome" is a categorical, independent variable appropriate for our X axis and that "density" is a continuous, dependent variable that will be appropriate for the Y.
+
 ```{r}
-ggplot(data = faithful, aes(x = eruptions)) + 
-  geom_histogram(binwidth = 0.25)
+ggplot(geneDensity, aes(x=chromosome, y=density)) +
+  geom_point() +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosome", y="Gene density")
 ```
 
-# Unusual Values
-Outliers are observations that are unusual; data points that don’t seem to fit the pattern. Sometimes outliers are data entry errors; other times outliers suggest important new science. When you have a lot of data, outliers are sometimes difficult to see in a histogram. For example, take the distribution of the y variable from the diamonds dataset. The only evidence of outliers is the unusually wide limits on the x-axis.
+Already, we can see that there different maximum gene density values on each chromosome. Because the points are likely overlapping it's hard to evaluate what the average or skewness might be for any of the categories.
+
+### Boxplots for better comparisons
+
+Because boxplots display the median and quartile limits, it's much easier to evaluate the properties of the distribution.
+
 ```{r}
-ggplot(diamonds, aes(x = y)) + 
-  geom_histogram(binwidth = 0.5)
+ggplot(geneDensity, aes(x=chromosome, y=density)) +
+  geom_boxplot() +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosome", y="Gene density")
 ```
 
-There are so many observations in the common bins that the rare bins are so short that you can’t see them. To make it easy to see the unusual values, we need to zoom to small values of the y-axis with `coord_cartesian()`:
+There's definitely a value that jumps out immediately. It's stretching the scale of the Y axis so that it's hard to effectively compare the medians of each of the chromosomes. 
+
+### Axis scaling
+
+Before we officially decide what to do with this outlier, we'll set it aside for now (re-scaling our Y axis) to look at our typical values.
+
 ```{r}
-ggplot(diamonds, aes(x = y)) + 
-  geom_histogram(binwidth = 0.5) +
-  coord_cartesian(ylim = c(0, 50)) # Zoom in so the y-axis goes from 0 to 50
+ggplot(geneDensity, aes(x=chromosome, y=density)) +
+  geom_boxplot() +
+  ylim(0,0.125) +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosome", y="Gene density")
 ```
 
-`coord_cartesian()` also has an `xlim()` argument for when you need to zoom into the x-axis. ggplot2 also has `xlim()` and `ylim()` functions that work slightly differently: they change the values displayed on your graph's axes, throwing away the data outside the limits.
+Look at that handy warning! It lets us know that one value was thrown out: "removed 1 rows". This view helps us to get a better general understanding of how this categorical "chromosome" value might relate to gene density. However! It's important not to throw out data unless you have good reason to believe it doesn't belong in the data set.
 
-This allows us to see that there are three unusual values: 0, ~30, and ~60. We pluck them out with dplyr:
 ```{r}
-unusual <- diamonds %>% 
-  filter(y < 3 | y > 20) %>% # Select rows with the unusual values we've found
-  select(price, x, y, z) %>% # Select relevant columns
-  arrange(y) # Arrange in ascending order
-unusual
+ggplot(geneDensity, aes(x=chromosome, y=density)) +
+  geom_boxplot() +
+  coord_cartesian( ylim=c(0,0.125) ) +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosome", y="Gene density")
 ```
 
-The y variable measures one of the three dimensions of these diamonds, in mm. We know that diamonds can’t have a width of 0mm, so these values must be incorrect. We might also suspect that measurements of 32mm and 59mm are implausible: those diamonds are over an inch long, but don’t cost hundreds of thousands of dollars!
+The coord_cartesian function _only_ rescales, without removing any values.
 
-It’s good practice to repeat your analysis with and without the unusual values. If they have minimal effect on the results, and you can’t figure out why they’re there, it’s reasonable to replace them with missing values, and move on. However, if they have a substantial effect on your results, you shouldn’t drop them without justification. You’ll need to figure out what caused them (e.g. a data entry error) and disclose that you removed them in your write-up.
+### Separate by category
 
-## Exercises
-1. Explore the distribution of price. Do you discover anything unusual or surprising? (Hint: Carefully think about the binwidth and make sure you try a wide range of values.)
-2. Compare and contrast coord_cartesian() vs xlim() or ylim() when zooming in on a histogram. What happens if you leave binwidth unset? What happens if you try and zoom so only half a bar shows?
+Definitely more interesting to compare across the categories built into our data (here, chromosomes) to see how the gene density looks in each one separately. We can see whether the global pattern is present in each category. But how can we get all that info in one graph??
 
-# Unusual Values Continued
-If you’ve encountered unusual values in your dataset, and simply want to move on to the rest of your analysis, you have two options.
+First step is to ask ourselves what we currently have in our data. If our category for comparison is chromosome, what independent variables are shared among them that could facilitate comparison of the dependent gene density variable?
 
-Drop the entire row with the strange values:
 ```{r}
-diamonds2 <- diamonds %>% 
-  filter(between(y, 3, 20)) # between() selects only values between 3 and 20
+as_tibble(geneDensity)
 ```
 
-I don’t recommend this option because just because one measurement is invalid, doesn’t mean all the measurements are. Additionally, if you have low quality data, by time that you’ve applied this approach to every variable you might find that you don’t have any data left!
+Start, end, and winNum would all be reasonable proxies for chromosomal position, but start will be the most true-to-reality choice.
 
-Instead, I recommend replacing the unusual values with missing values. The easiest way to do this is to use mutate() to replace the variable with a modified copy. You can use the `ifelse()` function to replace unusual values with NA:
 ```{r}
-diamonds2 <- diamonds %>% 
-  mutate(y = ifelse(y < 3 | y > 20, NA, y))
+ggplot(LG2genes, aes(x=start, y=density)) +
+  geom_point() +
+  labs(title="Comparison of gene density along LG_2",
+       x="Chromosomal position (bp)", y="Gene density")
 ```
-  
-`ifelse()` has three arguments. The first argument test should be a logical vector. The result will contain the value of the second argument, yes, when test is TRUE, and the value of the third argument, no, when it is false. Alternatively to ifelse, use dplyr's `case_when()`. `case_when()` is particularly useful inside mutate when you want to create a new variable that relies on a complex combination of existing variables.
+
+This gives us an overview of how many of the conserved genes are found in which region of this LG_2 chromosome.
+
+To be able to compare all the chromosomes at the same time, we can split our graph into "facets" so there's one per chromosome. There's a handy-dandy ggplot feature for that!
+
+```{r}
+ggplot(geneDensity, aes(x=start, y=density)) +
+  geom_point() +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosomal position (bp)", y="Gene density") +
+  facet_wrap( vars(chromosome) )
+```
+
+Because not all of the chromosomes are the same length, the data appears more squished in some of the panels. We can adjust that by telling facet wrap to scale the X axis per-panel instead of globally. 
+
+If we want to be able to visually compare the densities across chromosomes, we should _not_ allow the Y axis to scale freely. We can, however, set a limit for the Y axis values, as we've done before.
+
+```{r}
+ggplot(geneDensity, aes(x=start, y=density)) +
+  geom_point() +
+  coord_cartesian( ylim=c(0,0.13) ) +
+  labs(title="Comparison of gene density across chromosomes",
+       x="Chromosomal position (bp)", y="Gene density") +
+  facet_wrap( vars(chromosome), scales="free_x" )
+```
+
+Cool, eh?? The chromosomes have very different patterns! The range and distribution of values differs considerably! 
+
+What are some reasons for gene density to change along a chromosome?
+  * Centromeres are mostly made up of repeats - very low gene content
+      + Centromeres can be in the middle or near one end of a chromosome
+      + Where do you think the centromeres are in these chromosomes?
+  * Certain regions of a chromosome are more tightly wound up with histones
+      + Makes them less accessible to molecular machinery
+      + If polymerases don't reach a region, that region can't be expressed
+      + If a region is unexpressed, you don't want genes there!
+      + Centromeres are generally one of these 'inactive' regions
+  * More accessible, active regions of a chromosome have higher gene content
+      + These regions are generally along chromosome arms
+
+### Boxplot augmentations
+
+There are a few additional things we can do that might make boxplots even more informative for our data. 
+
+  * Violin plots - boxplots but with curves instead of boxes
+  * Adding a scatterplot behind the boxplot 
+  * Adding "jitter" to scatterplots so the points are offset
+      + Alternatively, you can make the points more transparent
+  * You can also add a line that follows the trend of the data
+      
+```{r}
+ggplot(LG2genes, aes(x=winNum, y=density)) +
+  geom_violin() + 
+  geom_point(alpha=0.1) +  # alpha changes the transparency
+  labs(title="Comparison of gene density along LG_2",
+       x="Chromosomal position", y="Gene density")
+```
+
+A violin plot doesn't seem appropriate for this data, but making the points more transparent gives us a better idea of what density values are most common.
+
+
+
+Now it's time to start thinking about what to do with rebellious outliers!
+
 
 # Outliers
-We just learned a bit about checking for unusual values in your dataset, but there are several ways of dealing with outliers beyond replacing them with missing values. What are our other options and under what circumstances should we use them?
 
-1. Transform the data:
-  + Outliers tend to skew the distribution and this skew (and, therefore, the impact of the outliers) can sometimes be reduced by applying transformations to the data.
-2. If transformation fails, then you can consider replacing the score:
-  + Convert back from a z-score. To look for outliers we could convert our variable to z-scores and then count how many fall within certain important limits. If we take the absolute value (i.e., we ignore whether the z-score is positive or negative) then in a normal distribution we’d expect about 5% to have absolute values greater than 1.96, and 1% to have absolute values greater than 2.58, and none to be greater than about 3.29. A z-score of 3.29 therefore constitutes an outlier. We can remove it or replace it with a value that correponds to a z-score of 3.29.
-  + The mean plus two standard deviations: A variation on the above method is to use the mean plus two times the standard deviation (rather than three times the standard deviation).
+## But why are you like this?
+
+There could be many reasons why your data has values that exceed the limits you predicted it would have.
+
+  * Classic experimental error
+      + Important to take notes while collecting your data so you know
+      + Can't just throw out a point because you _can_ (ascribe it to error)
+  * Bias in data collection methods
+      + Are some of your samples not collected independently?
+      + What assumptions did you make about your sample sites or methods?
+      + Genomics - your gene annotation can be biased by repetitive elements
+      + Lab work - one of the machines you use has a history of intermittently producing bizarre values, so you know to take multiple measurements
+  * Error in your previous analyses
+      + What steps did you take to go from raw measurement to your dat frame?
+      + This (exploratory data analysis) is a great time to look for this!
+      + Genomics - error in code that produced your LTR ages, for example
+  * Incorrect prediction of what the limits should be
+      + Maybe your study system has different qualities than literature spp.
+      
+IMPORTANT NOTE: if you do end up removing _any_ data, you **MUST disclose the removal** and your justification for the removal. Your reasons could be great, but you need to make sure your audience has access to those reasons.
+      
+This consideration of weird values brings up an interesting point: you're doing these checks because your values are _different_ than what you expected. It's important to think about analytical 'controls' to look for potential errors even when your data looks the way you _expect_ it to! Steps towards this can be as simple as sharing your code publicly.
+
+## Let's take a look!
+
+We had that weird really high gene density value on the LG_X chromosome. Let's look at what's happening there.
+
+```{r}
+filter(geneDensity, density > 0.13)
+```
+
+What do the other variables tell us about this data point? 
+
+This data point has a really high winNum, so it's likely located near the end of the chromosome. But importantly, our windows are supposed to be 1Mb in size (1 000 000 value in the winSize column). The winSize value for this outlier is tiny in comparison!!
+
+## Wholesome thoughts about your data
+
+That last look showed us that it's definitely very important to consider our data as a whole: to think not only about the variables relevant to our hypotheses, but the way in which it was collected (how that was reflected in the other properties of  the data).
+
+So. Let's try to understand more about the interaction between gene density and window size in the rest of our data. Visualization time!
+
+```{r}
+ggplot(geneDensity, aes(x=start,y=winSize, colour=chromosome)) +
+  geom_point() +
+  labs(title="Window sizes along the chromosome",
+       x="Chromosomal position (bp)", y="Window size (bp)")
+```
+
+It looks like _all_ of the chromosomes get this trail-off in window size near their ends.
+
+Let's look at only the window sizes less than what we expect (1 000 000) and make sure that the pattern really is the same among the chromosomes. 
+
+Why do we want to do this?
+
+```{r}
+smallWindows <- filter(geneDensity, winSize < 1000000)
+
+ggplot(smallWindows, aes(x=chromosome, y=winSize, colour=chromosome)) +
+  geom_violin() +
+  geom_point(position="jitter") +
+  labs(title="Comparing small windows among chromosomes",
+       x="Chromosome", y="Window Size")
+
+ggplot(smallWindows, aes(x=chromosome, y=density, colour=chromosome)) +
+  geom_violin() +
+  geom_point(position="jitter") +
+  labs(title="Comparing small windows among chromosomes",
+       x="Chromosome", y="Window Size")
+```
+
+It looks like the pattern is approximately equal across all chromosomes.
+
+What does that mean for us? How should we handle these values?
+
+## BONUS: Compare density with and without outliers
+
+How does this winSize variable impact gene density? What do we predict based on what we know thus far?
+
+It's much esier to compare when everything is in the same plot. This will be somewhat tricky with the data the way it is. We will need to label each density as either belonging in a "small window" or a "normal window". We can create a new "winCategory" variable using mutate() and assign the value of "small" to windows with winSize less than 1Mb and "normal" to all the other windows (which we expect will have a value of 1Mb).
+
+```{r}
+geneDensity2 <- geneDensity %>%
+  mutate( winCategory = case_when(winSize<1000000 ~ "small",
+                                  TRUE ~ "normal") ) %>%
+  group_by(winCategory, chromosome)
+
+summarise(geneDensity2,
+          mean=mean(density), median=median(density), n=n(), 
+          max=max(density), sd=sd(density))
+```
+
+What can we take away from this table?
+
+The n values are considerably larger for the normal-sized windows group. LG_4 and LG_N had 0 gene density in their small windows but have some of the highest median gene densities in the normal-sized windows. 
+
+The standard deviation of the small windows is much higher. Is that what we would expect for that data category?
+
+Perhaps most importantly for our purposes, the **mean** and **median** are quite different. These smaller windows have considerably different values. 
+
+What does this look like in an actual plot? This is going to take a bit of black magic in the form of two separate calls to geom_boxplot(). The first will use all the windows (setting it to colour values by 'all') and the second will actually create (and colour) different box plots based on their winCategory value.
+
+```{r}
+ggplot(geneDensity2, aes(x=chromosome, y=density, colour=winCategory)) +
+  geom_boxplot( aes(x=chromosome, y=density, colour="all") ) + 
+  geom_boxplot() +
+  coord_cartesian(ylim=c(0,0.125)) +
+  labs(title="Visualizing gene density across window size and chromosome",
+       x="Chromosome", y="Gene density", colour="Window\nCategory")
+```
+
+The small window values seem quite different than the global gene density results!
+
+Why do you think this might be? Looking back on the summaries, we can see that there aren't many data points in the 'small' window category. 
+
+In conclusion!!
+
+These small windows do seem to contain interesting information, but they are over-weighted given the amount of information they're based on. Based on the analysis conducted to create the windows, it _might_ be appropriate to discard the small windows on the ends of the chromosomes. Each windowed data point is weighted equally, even though these smaller windows contain less information, which creates a bias.
+
+What do **you** think is the most appropriate way to deal with this data?
+
+Is there a way to weight the gene density by window size? 
+
+
+
+# So what does this mean for our predictions?
+
+Right. The reason we collected this data in the first place!
+
+  1. In areas where gene density is high, LTR density is low
+  2. In areas where gene density is high, LTR age will be high
+  3. The sex chromosome (LG_X) will have higher LTR density
+
+Note: _preparing_ data for analysis is generally the most time-consuming part of any project. Establishing what you need to do with your data in order to test your hypotheses & thoroughly exploring your data and its properties are _extremely_ useful steps in this process.
+
+## How do we explore these questions?
+
+We need to relate gene density, LTR density, and LTR age. Do we have this data?
+
+Is it currently in a form where we can make comparisons?
+
+Based on the properties of our gene and LTR density data sets, what are the shared "units"? Essentially, what are we trying to compare within and among each chromosome?
+
+```{r}
+as_tibble(geneDensity)
+
+as_tibble(ltrDensity)
+```
+
+The basic "unit" in this data is the 1Mb window. Because this is shared across the two data sets, we can use it to join them together. Excellent!
+
+What about the LTR age data set?
+
+```{r}
+as_tibble(ltrAge)
+```
+
+This data was prepared differently, so it doesn't have the same 'window' units. It does contain chromosomal position information, however, which we can use to make some preliminary comparisons.
+
+## Data wrangling
+
+In order to ask whether gene density is high when LTR density is low, we're going to have to **join** the geneDensity and ltrDensity data. Praise Hadley, there's a dplyr function for just that!
+
+One consideration we might have is just the sheer _size_ of genomic data. When you're potentially looking at billions of base pairs of information, it can be useful (for your CPU's fan) to filter out extraneous variables _after_ you've looked at properties of the data as a whole.
+
+```{r}
+simpleGeneDensity <- geneDensity %>%
+  mutate(elementType = "gene") %>%
+  select(chromosome,start,elementType,density)
+```
+
+Why do we want to mutate the name of the density variable before we join the gene and LTR density data sets?
+
+```{r}
+simpleLTRdensity <- ltrDensity %>%
+  mutate(elementType = "LTR") %>%
+  select(chromosome,start,elementType,density)
+```
+
+Are these data "long" or "wide"? (Hint: https://github.com/rstudio/cheatsheets/blob/master/data-import.pdf is a great reference)
+
+When you join data sets, it's important to think about what columns you're joining the tables "by". Basically, what columns are shared?
+
+As a bonus, we can change the _start_ variable so that it's measured in 10kb increments instad of 1bp so our X axis labels are easier to interpret.
+
+```{r}
+densities <- full_join(simpleLTRdensity,simpleGeneDensity,
+                       by=c("chromosome","start","elementType","density")) %>%
+  mutate(start=start/10000) %>%
+  group_by(chromosome,elementType)
   
-Let's try #2 (using removal) with the diamonds dataset:
-```{r}
-diamonds2 <- diamonds
-diamonds2$xZscore <- scale(diamonds2$x, center=TRUE, scale=TRUE) # Transform into z-scores
-diamonds2$xZscore <- as.numeric(diamonds2$xZscore) 
-diamonds2 <- diamonds2 %>% 
-  mutate(xZscore = ifelse(xZscore < -3.29 | xZscore > 3.29, NA, xZscore)) # Create new dataset with only z-score values between -3.29 and 3.29
-#diamonds2 %>% 
-#  arrange(desc(xZscore)) %>% 
-#  View()
+as_tibble(densities)
+
+rm(simpleGeneDensity,simpleLTRdensity)
 ```
 
-# Missing Values
-Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. Missing data can occur for a variety of reasons. However, just because we have missed out on some data for a participant doesn’t mean that we have to ignore the data we do have (although it sometimes creates statistical difficulties). Nevertheless, we do need to tell R that a value is missing for a particular case.
+We've got two indepdendent categorical variables, an indepdent numerical variable, and a dependent numerical variable. It's beautiful.
 
-Like R, ggplot2 subscribes to the philosophy that missing values should never silently go missing. It’s not obvious where you should plot missing values, so ggplot2 doesn’t include them in the plot, but it does warn that they’ve been removed:
+
+## Is gene density high when LTR density is low?
+
+What variables do we want to plot?
+  * Chromosome
+  * Start position (bp)
+  * Element type
+  * Element density
+
+Of the plot types we've used so far, what's appropriate for this situation? Let's figure it out!
+
+### Histogram
+
 ```{r}
-ggplot(data = diamonds2, aes(x = x, y = y)) + 
-  geom_point()
+ggplot(densities, aes(x=density, fill=elementType)) +
+  geom_histogram( binwidth=0.03 ) +
+  facet_wrap( vars(chromosome), scales="free_y" ) +
+  coord_cartesian(xlim=c(0,0.6)) +
+  labs(x="Element Density", y="Count", fill="Element\nType",
+       title="Element densities among chromosomes")
 ```
 
-To suppress that warning, set `na.rm = TRUE`:
+Poking at the histogram shows us some interesting things about differences in the frequencies of LTRs and genes. Gene values have extremely high kurtosis near 0. LG_4 may have the highest median/mode LTR density.
 
-## Exercises
-1. What happens to missing values in a histogram? What happens to missing values in a bar chart? Why is there a difference?
+The Y axis can be free-scaled here because all of the counts are based on the size of their chromosome. We don't want one chromosome to seem like it has a much higher LTR count just because it has more windows (greater n) than the other chromosomes.
 
-2. What does na.rm = TRUE do in mean() and sum()?
+This was an interesting plot, but it **compares densities across chromosomes** more than it looks at **differences in LTR/gene patterns within chromosomes**. 
 
-## Methods for Handling Missing Data
-### In the past:
-* Listwise deletion (usually the default)
-* Mean imputaton
+With this in mind, is it likely that a scatterplot or a box plot will help us more with our comparison?
 
-The choice of method to impute missing values largely influences the model’s predictive ability. In most statistical analysis methods, listwise deletion is the default method used to deal with missing values. But, it not as good since it leads to information loss.
+### Scatterplot
 
-While some quick fixes such as mean-substitution may be fine in some cases, such simple approaches usually introduce bias into the data, for instance, applying mean substitution leaves the mean unchanged (which is desirable) but decreases variance, which may be undesirable.
+Let's look at what happens with geom_point: 
 
-### Two cutting edge alternatives:
-* Maxiumum likelihood
-* Multiple imputation
-
-Both of these techniques rely on the assumption that your data are missing at random (MAR). Multiple imputation is preferred because it has a wider range of applications.
-
-In essence, multiple imputation uses information from other variables in your data to come up with plausible values.
-
-# Multiple Imputation
-MICE (Multivariate Imputation via Chained Equations) is one of the most commonly used packages by R users. The MICE package in R helps you by imputing missing values with plausible data values. These plausible values are drawn from a distribution specifically designed for each missing datapoint.
-
-By default, linear regression is used to predict continuous missing values. Logistic regression is used for categorical missing values. Then, missing values will be replaced with predicted values.
-
-Let's call the MICE package now. The code below is standard and you don't need to change anything besides the dataset name. By default, MICE uses predictive mean matching as its imputation method. You may look at the MICE documentation if you want to explore using different imputation methods or change the default parameters.
 ```{r}
-init <- mice(survey, maxit=0)
-meth <- init$method
-predM <- init$predictorMatrix
+ggplot(densities, aes(x=start,y=density,colour=elementType)) +
+  geom_point(alpha=0.3) +
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  coord_cartesian(ylim=c(0,0.5)) +
+  labs(title="Element densities along chromosomes",
+       x="Chromosomal position (10kb)", y="Element density",
+       colour="Element\nType")
 ```
 
-To impute the missing values, MICE package uses an algorithm in a such a way that information from all the other variables in the dataset is used to predict and impute the missing values. Therefore, you may not want to use a certain variable as a predictor. For example, the ID variable does not have any predictive value, so we want to remove it. 
+This looks like the kind of information we want! If we squint, we can almost see that increases in gene density seem to correlate with decreases in LTR density.
 
-The code below will remove a variable as a predictor in imputing missing values, but will not stop MICE from imputing values for that variable itself.
+
+## Is gene density high when LTR age is high?
+
+Let's take a look at the LTR age data.
+
 ```{r}
-predM[, c("record_id")] <- 0
+as_tibble(ltrAge)
 ```
 
-By default mice() includes all the variables in the data; it is suggested that we use as many variables as possible. Do not exclude a variable as predictor from the imputation model if that variable is going be included in your final analysis model.
+Some of the variable names are different (K2P is our measure of age) but are really familiar to the other data we've been analyzing (chrom instead of chromosome). 
 
+We know that our scatterplots have been useful for looking at patterns _along_ chromosomes. Let's see if the LTR age data looks anything like our density data.
 
-If you want to skip a variable from imputation itself use the code below. This variable will still be used for prediction. Let's exclude all the variables where we aren't missing data or where imputation isn't of interest:
 ```{r}
-meth[c("year", "day", "month", "plot_id", "species_id", "plot_type", "genus", "species", "taxa")] <- ""
+ggplot(ltrAge, aes(x=start,y=K2P)) +
+  geom_point(alpha=0.1) +
+  facet_wrap( vars(chrom), scales="free_x" ) +
+  labs(title="LTR age along chromosomes",
+       x="Chromosomal position", y="LTR age (K2P)")
 ```
 
-Now let specify the methods for imputing the missing values. There are specific methods for continuous, binary and ordinal variables. We will now set different methods for each variable. You can add more than one variable in each method. The default for continuous data is pmm. pmm stands for predictive mean matching, the default method of `mice()` for imputation of continous incomplete variables; for each missing value, pmm *finds a set of observed values with the closest predicted mean as the missing one and imputes the missing values by a random draw from that set*. Therefore, pmm is restricted to the observed values, and might do fine even for categorical data (though not recommended).
+These clouds of points are really hard to understand. Thankfully, there's a ggplot feature we can use to better visualize trends in our scatterplot data: geom_smooth. It's essentially a trendline that we can plot on top of our scatterplot. The one argument we'll make note of right now is _n_, which tells geom_smooth how many points along the x it should be using to make its average. Because of how big our data is, we'll give it a smaller value so it doesn't take forever to plot.
 
-`mice()` automatically decides on the imputation model for each incomplete variable which method will be used for your data as default. The way to check how `mice()` actually decided to impute values is as follows:
 ```{r}
-init$meth
+ggplot(ltrAge, aes(x=start,y=K2P)) +
+  geom_point(alpha=0.1) +
+  geom_smooth(n=50) + # try different values (think histogram bin widths)
+  facet_wrap( vars(chrom), scales="free_x" ) +
+  labs(title="LTR age along chromosomes",
+       x="Chromosomal position", y="LTR age (K2P)")
 ```
 
-The variables `hindfoot_length` and `weight` are already set to pmm, so we will leave it like that. However, if we wanted to directly specify the method, we could use the following code:
+Well, what can we take away from this visualization? Not much. But-but... we can't stop here!!
+
+What do we notice about this plot? There are still just _so_ many points. What if we separate TE ages into different categories? This wouldn't be appropriate for a statistical test because we can lose a lot of information when we go from a numerical variable to a categorical variable, but it might help us with visually understanding patterns in our data.
+
 ```{r}
-meth[c("hindfoot_length")] <- "pmm"
+ggplot(ltrAge, aes( x=start/10000,
+                    y=K2P,4,
+                    colour=cut(K2P,4,
+                               labels=c("oldest","old","young","youngest")) )) +
+  geom_point(alpha=0.5) +
+  facet_wrap( vars(chrom), scales="free_x" ) +
+  labs(title="LTR age along chromosomes",
+       x="Chromosomal position (10Mb)", y="LTR age (K2P)",
+       colour="Age Class")
 ```
 
-Now it is time to run the multiple (m=5; this is generally standard) imputation.
+Wow. There are a _lot_ of old LTRs. There are few young LTRs, but their positions match with the pattern of our overall TE density plot. The positions of the young LTRs aren't close to gene-dense regions on the autosomes, though interestingly there are a few on the right-hand side of LG_X, which was the most gene-dense region of our sex chormosome!
+
+That was cool. Definitely **not** a statistical test of correlations between LTR age and gene density, but the fact that sub-sections of this data behave quite differently is really interesting to see! 
+
+## Does the sex chromosomme (LG_X) have higher LTR density?
+
+Let's make a box plot of the LTR densities among chromosomes
+
 ```{r}
-set.seed(103)
-imputed <- mice(survey, method=meth, predictorMatrix=predM, m=5)
+ggplot(ltrDensity, aes(x=chromosome,y=density)) +
+  geom_boxplot() +
+  labs(title="LTR densities among chromosomes",
+       x="Chromosome", y="LTR density")
 ```
 
-Reminder:
-m  – Refers to 5 imputed data sets
-maxit – Refers to no. of iterations taken to impute missing values
-method – Refers to method used in imputation. We used predictive mean matching.
+There doesn't seem to be any real indication that this prediction might be true!
+  
+There is one extreme outlier on LG_4 again - let's see what happens if we colour the data based on the value of the window size (actually a super-cool feature).
 
-Then, using these 5 imputed datasets, mice creates a dataset after imputation with the following code:
 ```{r}
-imputed <- complete(imputed)
+ggplot(data=ltrDensity, aes(x=chromosome,y=density,
+                            colour=winSize==1000000)) +
+  geom_boxplot() +
+  coord_cartesian(ylim=c(0,0.6)) +
+  labs(title="LTR densities among chromosomes",
+       x="Chromosome", y="LTR density", colour="Normal\nWindow")
 ```
 
-Now let's double check for missing values:
-```{r}
-imputed %>%
-  select(hindfoot_length, weight) %>%
-  map(~sum(is.na(.))) #taken from tidyverse library purr; note requirement to include . in the function
-```
+There are fewer outliers, but the pattern remains the same.
 
-OK, we've successfully imputed values for `hindfoot_length` and `weight` using multiple imputation! How can we check the accuracy of our imputation? One way is to compare our imputed means to our actual means (i.e. with missing data included). If the variables are meaningfully correlated to one another, the averages of the imputed variables should be close to the averages of our original variables.
-```{r}
-actual <- survey$hindfoot_length
-predicted <- imputed$hindfoot_length
-mean(actual, na.rm=TRUE)
-mean(predicted)
 
-actual <- survey$weight
-predicted <- imputed$weight
-mean(actual, na.rm=TRUE)
-mean(predicted)
-```
-
-## Challenge
-Let's add some NA's to the iris (native to R) dataset (copy the code below). Then use the MICE package to run multiple imputation on our new dataset. 
-```{r}
-iris2 <- iris
-set.seed(10)
-iris2[sample(1:nrow(iris2), 20), "Sepal.Length"] <- NA
-iris2[sample(1:nrow(iris2), 20), "Petal.Length"] <- NA
-```
+ 
+ 
+ 
+  
+  
+  
