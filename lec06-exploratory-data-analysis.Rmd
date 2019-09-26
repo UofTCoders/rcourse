@@ -838,19 +838,124 @@ have _some windows without any age data_. Do you think that setting LTR age to 0
 would be a good way to handle the windows with missing age data?
 
 ```{r}
-windowedAges <- 
+windowedAges <- ltrAge %>%
+  mutate(chromosome = chrom,            # get the "chromosome" col name to match
+         age = K2P,                     # might as well give a better name
+         winNum = floor(start/20000)) %>% # bin the start (20Mb) & round 
+  select(chromosome,winNum,age)
+  
+genesPlusAges <- geneDensity %>%
+  select("chromosome","winNum","density") %>%
+  full_join(windowedAges, by=c("chromosome","winNum") )
 
-ggplot(ltrAge, aes( x=start/10000,
-                    y=K2P,4,
-                    colour=cut(K2P,4,
-                               labels=c("oldest","old","young","youngest")) )) +
-  geom_point(alpha=0.5) +
-  facet_wrap( vars(chrom), scales="free_x" ) +
-  labs(title="LTR age along chromosomes",
-       x="Chromosomal position (10Mb)", y="LTR age (K2P)",
+as_tibble(genesPlusAges)
+```
+
+Just for the record, this is not a great way to window data.
+
+But! Look what happens when you change the join method! Got more missing data...
+Maybe it'll be easier to understand if we plot it.
+
+```{r}
+findMissing <- genesPlusAges %>%
+  mutate(noDense = is.na(density),
+         noAges = is.na(age))
+
+ggplot(findMissing) +
+  geom_point( aes(x=winNum,y=density,colour=noAges) ) +
+  coord_cartesian( ylim=c(0,0.15) ) +
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  labs(title="Missing gene density data",
+       x="Window number",y="Gene density",colour="Missing ages!")
+
+ggplot(findMissing) +
+  geom_point( aes(x=winNum,y=age,colour=noDense) ) +
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  labs(title="Missing LTR age data",
+       x="Window number",y="LTR age",colour="Missing densitiy!")
+```
+
+Ooph. We're only mising gene density data for 3 windows, but we're missing out
+on LTR age data for around 15k windows... Is there anything we can do about it?
+
+Assigning a value of 0 to our LTR ages is asserting we have different data than
+we actually have: that we know there's an LTR in that position and that it's an
+incredibly recent insertion. But what if we replace the missing age points with
+the mean LTR age?
+
+```{r}
+findMissing <- genesPlusAges %>%
+  mutate(noDense = is.na(density),
+         noAges = is.na(age),
+         rplAge = replace_na( age,mean(age,na.rm=TRUE) ),
+         rplDensity = replace_na( density,mean(density,na.rm=TRUE) ))
+
+sum( is.na(findMissing$rplDensity) )
+sum( is.na(findMissing$rplAge) )
+
+ggplot(findMissing) +
+  geom_point(alpha=0.5,
+             aes(x=winNum,y=rplAge,
+                 colour=cut(rplAge,3,labels=c("oldest","middle","youngest")))) +
+  geom_col(aes(x=winNum,y=rplDensity)) +
+  coord_cartesian( ylim=c(0,0.2) ) +
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  labs(title="Gene density and LTR age along chromosomes",
+       x="Chromosomal position (window number)", y="Altered ages",
        colour="Age Class")
 ```
 
+No more warnings about missing data! Woo! We can feel whole again! On the other 
+hand, replacing these values didn't actually help us improve our understanding
+of our age-density prediction...
+
+We should actually plot a window's LTR age against its gene density! First, 
+let's look at the general pattern with the adjusted ages (when we replaced NA 
+with the mean value for the variable).
+
+```{r}
+ggplot(findMissing) +
+  geom_point(alpha=0.5,
+             aes(x=rplDensity,y=rplAge,
+                 colour=cut(rplAge,3,labels=c("oldest","middle","youngest")))) +
+  coord_cartesian( xlim=c(0,0.13) ) +    # being mindful of our outlier
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  labs(title="Gene density vs LTR age post-adjustment",
+       x="Gene density (adjusted)", y="LTR age (adjusted)",
+       colour="Age Class")
+```
+
+That's pretty dang cool! We do see a general downward trend - as gene density
+increases (going right along the X axis), LTR age tends to decrease! We can even
+see some interesting differences among the chromosomes. 
+
+LG_7 is our biggest chromosome and it seems to have a lot of the young (blue) 
+LTRs. Why do you think that might be? _Generally_, as chromosome length
+increases, recombination rate decreases. Recombination rate is one of the 
+properties we know correlates with the accessibility of genomic regions. So, we
+might predict that longer chromosomes have a larger proporiton of 'inactive'
+regions and a greater number of TEs.
+
+Moving on!
+
+Let's judge our past selves! Let's see the effects of our decision to replace 
+the missing age data with an average. Was it foolish or as wise as the time we
+joined a dragon boat team?
+
+```{r}
+ggplot(findMissing) +
+  # This time, we'll colour the points based on whether the age should be NA
+  geom_point(alpha=0.5, aes(x=rplDensity,y=rplAge, colour=noAges)) +
+  coord_cartesian( xlim=c(0,0.13) ) +    # being mindful of our outlier
+  facet_wrap( vars(chromosome), scales="free_x" ) +
+  labs(title="Gene density vs LTR age post-adjustment",
+       x="Gene density (adjusted)", y="LTR age (adjusted)",
+       colour="Agelessss")
+```
+
+Not too bad! Not mechanistically motivated, but it does show that replacing 
+missing data with the value we would expect (basically the definition of the 
+mean) can have fewer consequences than replacing it with 0 in some contexts.
 
 ## Does the sex chromosome (LG_X) have higher LTR density?
 
