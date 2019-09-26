@@ -24,7 +24,7 @@ navbar:
     - text: 'Sept. 24: More dplyr and ggplot'
       href: lec05-dplyr.html
     - text: 'Sept. 26: Exploratory data analysis'
-      # href: lec06-exploratory-data-analysis.html
+      href: lec06-exploratory-data-analysis.html
     - text: 'Oct. 01: Linear models and statistical modelling'
       # href: lec07-linear-modelling.html
     - text: 'Oct. 03: Mixed effects models'
@@ -59,9 +59,9 @@ navbar:
     - text: Assignment 1
       href: assignment-01.html
     - text: Assignment 2
-      # href: assignment-02.html
+      href: assignment-02.html
     - text: Assignment 3
-      # href: assignment-03.html
+      href: assignment-03.html
     - text: Assignment 4
       # href: assignment-04.html
     - text: Assignment 5
