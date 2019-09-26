@@ -26,8 +26,6 @@ Imports:
     tidyverse,
     GGally,
     broom,
-    deSolve,
-    phaseR,
     lattice,
     lme4,
     lmerTest,
@@ -37,4 +35,6 @@ Imports:
     car,
     psych,
     multcomp,
-    MuMIn
+    MuMIn,
+    phaseR,
+    deSolve
