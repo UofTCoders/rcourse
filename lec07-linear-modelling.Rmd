@@ -26,6 +26,7 @@ Load appropriate libraries
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(car)
+library(multcomp)
 ```
 
 If you need to re-download the survey data
