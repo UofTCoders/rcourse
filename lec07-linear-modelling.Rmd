@@ -1,8 +1,8 @@
 ---
 title: "Linear models and statistical modelling"
-author: 'Lindsay Coome'
+author: 'Lindsay Coome and Zoe Humphries'
 ---
-## Lesson preamble
+# Lesson preamble
 
 > ### Lesson objectives
 > 
@@ -20,41 +20,40 @@ author: 'Lindsay Coome'
 >     - Logistic regression
 >
 
-## Setup
+# Setup
 
-
+Load appropriate libraries
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(car)
-library(psych)
 library(multcomp)
 ```
 
-```{r, include=FALSE}
-survey <- read_csv("data/survey.csv.gz")
-```
-
+If you need to re-download the survey data
 ```{r, eval=FALSE}
-# If you need to re-download the survey:
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv")
-survey <- read_csv("survey.csv")
+# download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv")
+# survey <- read_csv("survey.csv")
 ```
 
+Load the data and change all character vectors into factors
 ```{r}
-# uses dplyr function to change all character vectors to factors
+survey <- read_csv("data/survey.csv.gz")
+
+# mutate_if is a very handy function!
 survey <- survey %>% 
     mutate_if(is.character, as.factor) 
 ```
 
-## Statistics and probability
-Theoretical models are powerful tools for explaining and understanding the world.
-However, they are limited in that the real-world often doesn't perfectly fit
-these models. The real world is messy and noisy. We can't always blindly trust our data
-as there are inherent biases and errors in it. Measuring it, collecting it,
-recording it, and inputting it are some of the possible sources of error and
-bias.  We use statistics and probability to determine whether the way we
-understand and conceptualize the world (as models) matches reality (even with
-the error and bias).
+# Statistics and probability
+
+Theoretical models are powerful tools for explaining and understanding the
+world. However, they are limited in that the real-world often doesn't perfectly
+fit these models. The real world is messy and noisy. We can't always blindly
+trust our data as there are inherent biases and errors in it. Measuring it,
+collecting it, recording it, and inputting it are some of the possible sources
+of error and bias.  We use statistics and probability to determine whether the
+way we understand and conceptualize the world (as models) matches reality (even
+with the error and bias).
 
 A reason we use statistical methods in R compared to writing up the formulas and
 equations ourselves is that we can focus on answering questions without worrying
@@ -63,62 +62,333 @@ dependent on the type of research questions you may be interested in (e.g. for
 more theoretical questions, doing the math and computation yourself is probably
 a goal!) and on the type of data you are using/collecting. There is a lot of
 complexity that has already been taken care of in the available R packages and
-functions. For example, the function `lm` that we will use in this lesson uses the ordinary least squares (OLS) method, which is a common method for determining fit for linear models. That way, you can answer your research questions and not worry too much about the exact math involved and instead worry about the specifics of your field (e.g. Are you measuring the right thing? Are you collecting the right data? Are you asking the right questions? Is there an ecological or biological aspect you are missing in your analysis?)
+functions. For example, the function `lm` that we will use in this lesson uses
+the ordinary least squares (OLS) method, which is a common method for
+determining fit for linear models. That way, you can answer your research
+questions and not worry too much about the exact math involved and instead worry
+about the specifics of your field (e.g. Are you measuring the right thing? Are
+you collecting the right data? Are you asking the right questions? Is there an
+ecological or biological aspect you are missing in your analysis?).
 
-## Descriptive statistics
-### Frequencies with ``table()``:
-The ``table()`` function displays counts of identical observations for either a single data vector or a dataframe.
+# Descriptive statistics
+
+This is simply a way to numerically describe patterns in data, very similar to
+the visual descriptions we made last lecture. It summarises information and can
+facilitate comparisons among and within experimental conditions. The
+distribution properties we discussed (averages, spread, skew, kurtosis) fall
+under this umbrella.
+
+Often, the dplyr function `summarise()` is very helpful for creating these
+descriptions.
+
+## Count occurrences
+
+Base R's `table()` function displays counts of identical observations for either
+a single data vector or a dataframe. With the survey data, we can see how many
+records there are for a given genus (such as Dipodomys). This is the 'single 
+data vector' case.
 ```{r}
-#table
+# Count records for all genera
 table(survey$genus)
-#cross tabulate
-#note: first variable is set as the rows
-table(survey$genus, survey$taxa)
+
+# Count the number of records for Dipodomys
+sum( survey$genus=="Dipodomys" ) #most straightforward
 ```
 
-### ``describe()`` from the ``psych`` package:
-``describe()`` provides item name, item number, nvalid, mean, sd, median, mad (median absolute deviation from the median), min, max, skew, kurtosis, se.
-```{r}
-describe(survey$hindfoot_length)
-```
-
-### ``describeBy()`` from the ``psych`` package:
-``describeBy()`` is simple way of generating summary statistics by grouping variable.
+We can also provide two different variables from the same data set to _cross_
+_tabulate_ the number of records that have each value. Looking for the
+intersection of values: how many records have the genus "Baiomys" and also are
+labelled with the taxa "rodent"?
 
 ```{r}
-describeBy(survey$hindfoot_length, survey$sex) #summary variable is the first argument, grouping variable is the second argument
+table(survey$genus, survey$taxa) # note: first variable is set as the rows
 ```
 
-## Inferential statistics
-### One-sample t-test:
-Compare single set of scores (sample) to a population score.
+### Check your understanding
+
+1. Would you expect to see one genus with counts in two different taxa columns?
+Why or why not?
+
+2. Create a plot that shows the number of records for each genus.
+
+3. There are some unexpected genus values in the table: what are they?
+
+4. How can you count the number of records for each genus using `dplyr()`?
+
+```{r, include=FALSE}
+## Answer 1
+#No, 
+
+## Answer 2
+ggplot(survey, aes(x=genus)) +
+  geom_bar()
+
+## Answer 3 
+#some of them do not correspond to actual genus names: "lizard", "sparrow",
+#"rodent"
+
+## Answer 4
+survey %>% count(genus)
+
+survey %>% group_by(genus) %>%
+  tally()
+```
+
+## Averages 
+
+The dplyr `summarise()` function is extremely customizable. You can use it to
+summarise the averages (mean, median, and mode), standard deviation, inter-
+quartile range, and counts of a data set. It can also provide you with the min
+and max value. Its documentation page lists is many outputs:
+https://dplyr.tidyverse.org/reference/summarise.html
+
+Several of these summary functions (mean, sd, etc. that you can apply within
+your call to summarise) will not work as you expect if there are any missing 
+values. You may need to pass "na.rm=TRUE" in order to obtain the summary value.
+
 ```{r}
-t.test(survey$weight, mu=40)
+survey %>%
+  summarise(mean=mean(hindfoot_length, na.rm=TRUE), 
+            count=n(), 
+            unqiue=n_distinct(hindfoot_length),
+            median=median(hindfoot_length, na.rm=TRUE), 
+            min=min(hindfoot_length, na.rm=TRUE),
+            max=max(hindfoot_length, na.rm=TRUE), 
+            sd=sd(hindfoot_length, na.rm=TRUE),
+            IQR=IQR(hindfoot_length, na.rm=TRUE))
 ```
 
-### Two sample t-test:
-Compare two independent sets of scores to each other.
+When you think that categorical factors (such as sex, genus) will have an impact
+on your dependent variable, it's important to `group_by()` those factors so you
+can compare the variable's value among each of the categories.
+
 ```{r}
-#one way to compare groups:
-#t.test(object1, object1)
-#or use sex as the grouping variable:
-t.test(survey$weight~survey$sex) #note (data~grouping variable) format
+# To avoid na.rm calls, let's temporarily ignore any missing weight data 
+weightHere <- survey %>%
+  filter(!is.na(weight))
+
+weightHere %>%
+  group_by(genus) %>%
+  summarise(mean=mean(weight),
+            count=n(),
+            sd=sd(weight))
 ```
 
-### Paired samples t-test:
-Compare two matched sets (e.g., pre- and post-) of scores to each other.
+### Check your understanding
+
+1. Create a plot that visualizes the median and IQR of the summarised weightHere
+data (grouped by genus).
+
+2. Recall another way we dealt with missing values. Use this method to create a 
+newWeightHere table and compare the values.
+
+3. Create another version of Q1's plot with the newWeightHere data and compare.
+Explain why the plots differ. Hint: try incorporating taxa into your plot.
+
+4. Based on Q3, what kinds of predictions can you make with this data?
+
+```{r, include=FALSE}
+## Answer 1
+ggplot(weightHere, aes(x=genus, y=weight)) +
+  geom_boxplot()
+
+## Answer 2
+newWeightHere <- survey %>%
+  mutate(adjWeight = 
+           if_else(is.na(weight), median(weight, na.rm=TRUE), weight))
+
+## Answer 3
+ggplot(newWeightHere, aes(x=genus, y=adjWeight, colour=taxa)) +
+  geom_boxplot()
+#Only the rodents have weight values, so all of the other genera just = median.
+
+## Answer 4
+#can't ask any weight-based questions about differences among taxa. Only within
+#the rodent taxa! Can ask about sex/genus/species differences in this category.
+```
+
+# Inferential statistics
+
+Descriptive statistics is describing the data you collected from a 
+**representative sample** of your **true population**. If you want to ask 
+questions about weight differences between _Perognathus flavus_ males and 
+females, you can't just stop at the point where you've generated medians for the
+two groups. This is just a statement about the samples you've taken.
+
+## Classic t-test
+
+You've indubitably learned about t-tests in your past stats class(es). 
+Hopefully, the _extreme importance_ of validating the **assumptions** of a given
+statistical test has been etched upon your brain in indelible ink. Because 
+t-tests are parametric, it's important that your data is normally distributed.
+
+### One-sample t-test
+
+With a one-sample t-test, you're asking whether the mean of your sample differs
+significantly from a mean value that you expect it to have. You might want to
+use this if you have an expected population mean value from the literature. You
+may have even amassed your own dataset that you think is representative of a
+population's true mean & you want to compare a newly collected sample.
+
+With our survey data, we might want to test whether the 2002 mean weight of 
+_Perognathus flavus_ differs from what we believe the true population mean to 
+be. Our null hypothesis is that the 2002 mean does not differ significantly from
+the population mean. Our alternative hypothesis is that it is significantly
+different.
+
+```{r}
+# Filter the survey data for only the Perognathus flavus data
+flavusOnly <- survey %>% 
+  filter(species=="flavus") %>%
+  # create an adjusted weight variable that will hold the calculated median
+  # weight if the unadjusted weight == NA & the original weight value otherwise
+  mutate(adjWeight = 
+           if_else(is.na(weight), median(weight, na.rm=TRUE), weight))
+#verify that you didn't get a different genus with the same species name
+table(flavusOnly$genus) #remember you can use table() to view unique values
+
+# Test whether the weight data is normally distributed
+#quick visual check using a histogram
+ggplot(flavusOnly, aes(x=adjWeight)) +
+  geom_histogram()
+# Shapiro-Wilk's test: does the distribution differ significantly from normal
+shapiro.test(flavusOnly$adjWeight)
+shapiro.test(flavusOnly$weight)
+```
+
+With a p-value << 0.05 can reject the null hypothesis of the Shapiro-Wilk's
+test, so our weight data is not normally distributed. We're going to ignore that
+for the purposes of instruction, but _do not do this at home_!!
+
+```{r}
+# Calculate the estimated true population mean (from the years before 2002)
+flavusOnly %>%
+  filter(year<2002) %>%
+  summarise(mean=mean(adjWeight)) #evaluates to 7.9 (sig figs!)
+
+# Extract the measurements taken during 2002 and put in a new data frame
+newest <- flavusOnly %>%
+  filter(year==2002)
+
+# Test 
+t.test(newest$adjWeight, mu=7.9)   #note it's not a double ==
+```
+
+Based on a p-value of 0.05, we _fail to reject_ the null hypothesis. It is 
+important to report your results with appropriate notation so your readers can
+understand how much credence to lend to your conclusions.
+
+The weight of _Perognathus flavus_ individuals sampled in 2002 does not differ 
+significantly from the general population one-sample t~17~ = -1.89, p=0.075.
+
+#### Check your understanding
+
+1. What are the assumptions of a one-sample t-test? Recall from past classes or
+ask the almighty Google.
+
+2. How can you extract the year==2002 weight values and perform a t.test using
+one line of code?
+
+3. Test whether the flavus hindfoot_length data from 2001 differs from your 
+calculated population mean (be sure to test for normality!). Report your results
+using appropriate notation.
+
+```{r, include=FALSE}
+## Answer 2
+t.test( subset(flavusOnly,year==2002)$adjWeight, mu=7.9 )
+t.test( flavusOnly$adjWeight[flavusOnly$year==2002], mu=7.9 )
+
+## Answer 3
+flavusOnly <- survey %>% 
+  filter(species=="flavus") %>%
+  mutate(foot = if_else(is.na(hindfoot_length), 
+                        median(hindfoot_length, na.rm=TRUE), 
+                        hindfoot_length))
+shapiro.test(flavusOnly$foot)
+shapiro.test(flavusOnly$hindfoot_length)
+#reject the null - it's not normally distributed
+estMean = mean( filter(flavusOnly, year<2002)$foot)
+t.test( subset(flavusOnly,year==2002)$foot, estMean=7.9 )
+#The hind foot length of _Perognathus flavus_ individuals sampled in 2002 is
+#significantly different from the general population one-sample t(17) = 36.3,
+#p<0.05.
+```
+
+
+### Unpaired two-sample t-test
+
+Compare two _independent_ sample means against each other. With our survey data,
+we might want to test whether males have a significantly different mean weight
+than females.
+
+There are two assumptions we have to test now (once we've determined that the
+two samples we're looking at are independent): 
+
+1. The dependent variable must be normally distributed in both samples
+
+2. The variance of the dependent variable must be approximately equal between
+the two samples
+
+```{r}
+shapiro.test( subset(flavusOnly, sex=="M")$weight ) #test male weight
+shapiro.test( subset(flavusOnly, sex=="F")$weight ) #test female weight
+
+# F-test to test for homogeneity in variances
+var.test(weight ~ sex, data=survey) 
+```
+
+Our data fails both of these tests, but we're going to pretend everything is
+fine... again, do NOT do this at home!!
+
+```{r}
+t.test(weight~sex, data=survey)
+```
+
+#### Check your understanding
+
+1. Would you want to compare the sample rodent mean weight against the mean 
+sample weight of _Perognathus flavus_? What about rodent mean weight against
+rodent mean hindfoot_length?
+
+2. Repeat this t-test between males and females, but compare mean hind foot
+length instead of mean weight (be sure to test for normality!). Report your
+results using appropriate notation.
+
+```{r, include=FALSE}
+## Answer 2
+#NO! Not independent!! 
+
+## Answer 3
+#do the thing
+```
+
+### Paired sample t-test
+
+Compare the mean values of a dependent variable between two categories that were
+paired _by design_. You can't do this for males and females in our survey data
+set because the measurements weren't taken at the same time, in the same place,
+from one male and one female that were ostensibly similar in all other respects.
+
+However, this test would be appropriate if you wanted to compare the mean 
+reaction time of the right and left hands from a sample of undergrads.
+
 ```{r}
 #t.test(object1, object1, paired=TRUE)
 ```
 
-### Correlations:
-Bivariate correlation (``r``) gives us the strength and direction of relationship between two variables (linear). Say we find that the correlation ($r$) between hindfoot length and weight is $r$ = .609. This means that .6092 = .371 of the variance in $y$ (hindfoot length) is common to the variance in $x$ (weight). Alternatively, we can say that these two variables share 37.1% of the variance in common. In the case of the Pearson correlation, this will be true whether we consider weight or hindfoot length to be the dependent variable. 
+## Correlations
+
+Bivariate correlation (``r``) gives us the strength and direction of relationship between two variables (linear). Say we find that the correlation ($r$) between hindfoot length and weight is $r$ = .609. This means that .6092^2 = .371 of the variance in $y$ (hindfoot length) is common to the variance in $x$ (weight). Alternatively, we can say that these two variables share 37.1% of the variance in common. In the case of the Pearson correlation, this will be true whether we consider weight or hindfoot length to be the dependent variable. 
+
 ```{r}
 cor.test(survey$weight, survey$hindfoot_length)
 ```
 
-### General linear model (i.e., with a normally-distributed dependent variable):
-A version of GLM that uses continuous $y$ values is called linear regression, which I'm going to focus on. The formula for linear regression (or GLM in general) is:
+## General linear model
+
+A version of GLM that uses continuous $y$ values is called linear regression,
+which I'm going to focus on. The formula for linear regression (or GLM in
+general) is:
 
 $$ Y = \alpha + X\beta + \varepsilon $$
 
@@ -126,16 +396,36 @@ Or, a simplified, alphabetized version is:
 
 $$ y = a + Xb + e $$
 
-Where $a$ is the intercept (where the line crosses the vertical, i.e. y, axis of the graph), $X$ is the predictor variable, $b$ is the slope/coefficient, and $e$ is the error term.
+Where $a$ is the intercept (where the line crosses the vertical, i.e. y, axis of
+the graph), $X$ is the predictor variable, $b$ is the slope/coefficient, and $e$
+is the error term.
 
-We construct these regression models for several reasons. Sometimes we want to infer how some variables ($x$) cause or influence another variable ($y$). Or maybe we know that $y$ has a lot of error in the measurement or is difficult to measure, so we want to derive a formula in order to predict $y$ based on more accurately measured variables. In R we can run linear regression either
-using `lm` or using `glm()`. `lm()` assumes a Gaussian (normal) distribution of your data. On the other hand, when you use ``glm()`` in R, you can specifiy the data's distribution with the parameter ``model =``. This allows you to construct a linear model when your data don't follow a Gaussian distribution.
+We construct these regression models for several reasons. Sometimes we want to
+infer how some variables ($x$) cause or influence another variable ($y$). Or
+maybe we know that $y$ has a lot of error in the measurement or is difficult to
+measure, so we want to derive a formula in order to predict $y$ based on more
+accurately measured variables. In R we can run linear regression either using
+`lm` or using `glm()`. `lm()` assumes a Gaussian (normal) distribution of your
+data. On the other hand, when you use ``glm()`` in R, you can specifiy the
+data's distribution with the parameter ``model =``. This allows you to construct
+a linear model when your data don't follow a Gaussian distribution.
 
-Regression requires a predictor (independent) variable and a predicted (dependent) variable. Changing which variable is the predictor/predicted gives you a different regression line with a different regression equation. The function we are going to use today, ``lm``, uses the OLS method by default, as mentioned above. The least squares line is the line chosen by ``lm`` to fit your data. The goal of OLS is to choose a line that minimizes prediction error. With any other line, errors of prediction would be greater. Note, the best fitting model given your data (i.e. OLS) does 
-*not* equal the best model period. We must pay attention to fit statistics like R2, the amount (%) of variance in the outcome explained by our predictor (i.e., model), to determine how well our model is doing.
+Regression requires a predictor (independent) variable and a predicted
+(dependent) variable. Changing which variable is the predictor/predicted gives
+you a different regression line with a different regression equation. The
+function we are going to use today, ``lm``, uses the OLS method by default, as
+mentioned above. The least squares line is the line chosen by ``lm`` to fit your
+data. The goal of OLS is to choose a line that minimizes prediction error. With
+any other line, errors of prediction would be greater. Note, the best fitting
+model given your data (i.e. OLS) does *not* equal the best model period. We must
+pay attention to fit statistics like R^2, the amount (%) of variance in the
+outcome explained by our predictor (i.e., model), to determine how well our
+model is doing.
 
-So how do we use these functions? In R, dependent variables are predicted by a tilde $~$.
+So how do we use these functions? In R, dependent variables are predicted by a
+tilde $~$.
 The formula to regress $y$ on $x$ is ``y ~ x``:
+
 ```{r}
 result <- lm(weight~sex, data=survey)
 summary(result)
@@ -153,20 +443,30 @@ result <- lm(weight~sex + hindfoot_length, data=survey)
 summary(result)
 ```
 
-### Analysis of Variance:
-ANOVA is simply a different way of evaluating explained variance in linear modelling. Anova is a special case of linear modelling You must always wrap the ``anova()`` function around a ``lm()`` function.
+## Analysis of Variance
+
+ANOVA is simply a different way of evaluating explained variance in linear
+modelling. Anova is a special case of linear modelling. You must always wrap the
+``anova()`` function around a ``lm()`` function.
+
 ```{r}
 anova(lm(weight~sex*genus, data=survey))
 ```
 
-However, R uses type II sums of squares by default. ``Anova()`` from the ``car`` package can give you “Type III Sums of Squares”. This matters when you have more than one predictor (e.g. taxa x sex). Asking for type III sums of squares will match what you get from SPSS or SAS.
+However, R uses type II sums of squares by default. ``Anova()`` from the ``car``
+package can give you “Type III Sums of Squares”. This matters when you have more
+than one predictor (e.g. taxa x sex). Asking for type III sums of squares will
+match what you get from SPSS or SAS.
+
 ```{r}
 result <- lm(weight~sex*genus, data=survey)
 Anova(result, type=3)
 ```
 
-### Post hoc tests:
+## Post hoc tests
+
 R comes with a default pairwise t-test (``pairwise.t.test()``). However, ``multcomp`` offers more posthoc options than base R:
+
 ```{r}
 result <- lm(weight~genus, data=survey)
 postHocs<-glht(result, linfct = mcp(genus = "Tukey"))
@@ -174,8 +474,10 @@ postHocs<-glht(result, linfct = mcp(genus = "Tukey"))
 summary(postHocs)
 ```
 
-### Logistic regression:
+## Logistic regression
+
 Normally-distributed dependent variable assumption is violated in logistic regression, where we want to predict a binary outcome. So, you must use the ``glm()`` function rather than ``lm()``. We only have one binary variable in our dataset: sex.
+
 ```{r}
 summary(glm(survey$sex ~ survey$weight*survey$hindfoot_length, family=binomial))
 ```

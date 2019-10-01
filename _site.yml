@@ -26,7 +26,7 @@ navbar:
     - text: 'Sept. 26: Exploratory data analysis'
       href: lec06-exploratory-data-analysis.html
     - text: 'Oct. 01: Linear models and statistical modelling'
-      # href: lec07-linear-modelling.html
+      href: lec07-linear-modelling.html
     - text: 'Oct. 03: Mixed effects models'
       href: lec08-linear-mixed-effects-models.html
     - text: 'Oct. 08: Model Selection'
