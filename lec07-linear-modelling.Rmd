@@ -30,12 +30,12 @@ library(car)
 
 If you need to re-download the survey data
 ```{r, eval=FALSE}
-download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv")
-survey <- read_csv("survey.csv")
+# download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv")
+# survey <- read_csv("survey.csv")
 ```
 
 Load the data and change all character vectors into factors
-```{r, eval=FALSE}
+```{r}
 survey <- read_csv("data/survey.csv.gz")
 
 # mutate_if is a very handy function!
