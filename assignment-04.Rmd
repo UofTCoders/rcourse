@@ -5,40 +5,54 @@ output:
         toc: false
 ---
 
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 you assignment as a knitted `.pdf` (prefered) or `.html` file.*
 
-1. Visualization (2 marks)
+1. Visualization (3 marks)
 
-    Import the tidyverse library. We will be using the same beaver1 dataset that we used in last week's assignment. 
+    Import the tidyverse library. We will be using the same beaver1 dataset that
+    we used in last week's assignment.
 
     ```{r message=FALSE, warning=FALSE}
     library(tidyverse)
     ```
 
-    a. Using what you learned during your last assignment, turn the "activ" column into a categorical variable (factor). Then, create a plot with body temperature on the x-axis. Visualize body temperature separately by whether the beaver is active on the same graph. Hint: we learned about a new useful function that does this during our exploratory data lesson. (1 mark)
+    a. Create a histogram to visualize the distribution of the beavers' body
+    temperatures, separating the temperature data based on the beaver's activity level.
+    (after transforming it into a categorical variable the way you did for your
+    last assignment). Describe the properties of the distribution. When
+    creating this plot for the purpose of evaluating temp temperature, what
+    argument did you adjust and why? (1 mark)
 
-    b. Create a dataframe (summary table) that counts the number of temperature recordings that fall into bins with a width of 0.1. Group by day. (1 mark)
+    b. What type of variables are temperature and time of day? With this in
+    mind, create a visualization that will help you get a better understanding
+    of the relationship between these variables. (0.5 mark)
 
-2. Outliers and Missing Values (2.5 marks)
-
-    a. Identify any temperature scores that are two standard deviations away from the mean. Replace them with NA's (missing values). (1 mark)
-
-    b. Run the following code:
+    c. Create a single box plot that to simultaneously visualise temperature,
+     activity, and day. (0.5 mark)
     
-        ```{r}
-        set.seed(10)
-        beaver1[sample(1:nrow(beaver1), 20), "temp"] <- NA
-        ```
+    d. What is one prediction you might make about the relationships among your
+    variables (based on the patterns you observed)? Create a visualization that
+    illustrates your prediction, improving on your other plots in at least one
+    way. State why this plot is an improvement. (1 mark)
 
-        Run multiple imputation (set a seed of 100) to replace the missing values. Exclude columns as predictors if necessary. Compare the means of the imputed and original values. (1.5 marks)
+2. Outliers (2 marks)
 
-3. Generalized Linear Models (3 marks)
+    a. In the beaver1 dataset, there are some particularly high/low body
+    temperature measurements. Give an example of a systematic or random error
+    (state which) that could have influenced these values. (0.5 marks)
+
+    b. Consider whether these values would affect your ability to test whether
+    temperature varies by activity level. You should generate plots and/or
+    perform statistical tests with and without these points, and make an
+    informed decision about whether they should be kept or dropped (Hint: you
+    may want to either create a second data set or get creative with colour.)
+    State whether you would remove the points and why. (1.5 marks)
+    
+3. Linear models (3 marks)
+
+Run the following code to load the CO2 dataset.
 
     ```{r}
     co2_df <- as_data_frame(as.matrix(CO2)) %>% 
@@ -46,42 +60,34 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
                uptake = as.numeric(uptake))
     ```
 
-    a. Look through the help documentation (?CO2) to understand what each variable means. Which variable(s) do you think would be the $y$ in the GLM model? Which variable(s) would be the $x$? Briefly defend these choices. (1 mark)
+    a. Look through the help documentation (?CO2) to understand what each
+    variable means. Which variable(s) do you think would be the $y$ in the GLM
+    model? Which variable(s) would be the $x$? Briefly defend these choices. (1
+    mark)
 
-    b. How much does `uptake` change if `conc` goes up by 10 mL/L? (*Note:* it is intentional that there is no mention of the other variables in the model.) Write out the interpretation as a simple statement of this contribution of `conc` on `uptake`, when the other variables are also in the model. (2 marks)
-
-    c. Run the following code if you need to download our survey data.
-    
-        ```{r message=FALSE, warning=FALSE}
-        download.file("https://ndownloader.figshare.com/files/2292169", 
-            "survey.csv") #if you need to re-download the survey
-        survey <- read_csv("survey.csv")
-        ```
-
-        Use logistic regression to see if weight significantly predicts sex. Make a concluding statement as to indicate whether the model is significant and create a plot to visualize the linear model. Run the following code to ensure sex is treated as a factor variable:
-
-        ```{r}
-        survey$sex <- as.factor(survey$sex)
-        ```
-
-        Hint: you need to make sure there are only two levels to this variable: `"F"` and `"M"`. (0.5 marks)
+    b. How much does `uptake` change if `conc` goes up by 10 mL/L? (*Note:* it
+    is intentional that there is no mention of the other variables in the
+    model.) Write out the interpretation as a simple statement of this
+    contribution of `conc` on `uptake`, when the other variables are also in the
+    model. How much CO2 would you predict plants to uptake if atmospheric
+    concentrations were 2,450 mL/L?. Show your work. (2 marks)
         
-4. Linear mixed-effects models (4 marks).
+3. Linear mixed-effects models (4 marks).
 
     Santangelo _et al._ (2018) were interested in understanding how plant
-    defenses, herbivores, and pollinators influence the expression of plant floral
-    traits (e.g. flower size). Their experiment had 3 treatments, each with 2
-    levels: Plant defense (2 levels: defended vs. undefended), herbivory (2 levels:
-    reduced vs. ambient) and pollination (2 levels: open vs. supplemental). These
-    treatments were fully crossed for a total of 8 treatment combinations. In each
-    treatment combination, they grew 4 individuals from each of 25 plant genotypes
-    for a total of 800 plants (8 treatment combinations x 25 genotypes x 4
-    individuals per genotype). Plants were grown in a common garden at the Koffler
-    Scientific Reserve (UofTs field research station) and 6 floral traits were
-    measured on all plants throughout the summer. We will analyze how the treatments
-    influenced one of these traits in this exercise. Run the code chunk below to
-    download the data, which includes only a subset of the columns from the full
-    dataset:
+    defenses, herbivores, and pollinators influence the expression of plant
+    floral traits (e.g. flower size). Their experiment had 3 treatments, each
+    with 2 levels: Plant defense (2 levels: defended vs. undefended), herbivory
+    (2 levels: reduced vs. ambient) and pollination (2 levels: open vs.
+    supplemental). These treatments were fully crossed for a total of 8
+    treatment combinations. In each treatment combination, they grew 4
+    individuals from each of 25 plant genotypes for a total of 800 plants (8
+    treatment combinations x 25 genotypes x 4 individuals per genotype). Plants
+    were grown in a common garden at the Koffler Scientific Reserve (UofTs field
+    research station) and 6 floral traits were measured on all plants throughout
+    the summer. We will analyze how the treatments influenced one of these
+    traits in this exercise. Run the code chunk below to download the data,
+    which includes only a subset of the columns from the full dataset:
     
     ```{r}
     library(tidyverse)
@@ -94,94 +100,56 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     head(plant_data)
     ```
 
-    You can see that the data contain 792 observations (i.e. plants, 8 died during
-    the experiment). There are 50 genotypes across 3 treatments: Herbivory,
-    Pollination, and HCN (i.e. hydrogen cyanide, a plant defense). There are 6 plant
-    floral traits: Number of days to first flower, banner petal length, banner petal
-    width, plant biomass, number of flowers, and number of inflorescences. Finally,
-    since plants that are closer in space in the common garden may have similar
-    trait expression due to more similar environments, the authors included 6
-    spatial "blocks" to account for this environmental variation (i.e. Plant from
-    block A "share" an environment and those from block B "share" an environment,
-    etc.). Also keep in mind that each treatment combination contains 4 individuals
-    of each genotype, which are likely to have similar trait expression due simply
-    to shared genetics.
+    You can see that the data contain 792 observations (i.e. plants, 8 died
+    during the experiment). There are 50 genotypes across 3 treatments:
+    Herbivory, Pollination, and HCN (i.e. hydrogen cyanide, a plant defense).
+    There are 6 plant floral traits: Number of days to first flower, banner
+    petal length, banner petal width, plant biomass, number of flowers, and
+    number of inflorescences. Finally, since plants that are closer in space in
+    the common garden may have similar trait expression due to more similar
+    environments, the authors included 6 spatial "blocks" to account for this
+    environmental variation (i.e. Plant from block A "share" an environment and
+    those from block B "share" an environment, etc.). Also keep in mind that
+    each treatment combination contains 4 individuals of each genotype, which
+    are likely to have similar trait expression due simply to shared genetics.
     
-    a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model
-    examining how herbivores (`Herbivory`), Pollinators (`Pollination`), plant
-    defenses (`HCN`) _and all interactions_ influences the length of banner petals
-    (`Avg.Bnr.Wdth`) produced by plants while accounting for variation due to spatial
-    block and plant genotype. Also allow the intercept for `Genotype` to vary across
-    the levels of the herbivory treatment. (1 mark: 0.5 for correct fixed effects
-    specification and 0.5 for correct random effects structure). You only need to
-    specify the model for this part of the question.
-    
-```{r}
-library(lme4)
-library(lmerTest)
-
-model <- lmer(Avg.Bnr.Wdth ~ HCN*Herbivory*Pollination + 
-                  (1|Block) + (1|Genotype) + (1|Genotype:Herbivory),
-              data = plant_data)
-```
-    
+    a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects
+    model examining how herbivores (`Herbivory`), Pollinators (`Pollination`),
+    plant defenses (`HCN`) _and all interactions_ influences the length of
+    banner petals (`Avg.Bnr.Wdth`) produced by plants while accounting for
+    variation due to spatial block and plant genotype. Also allow the intercept
+    for `Genotype` to vary across the levels of the herbivory treatment. (1
+    mark: 0.5 for correct fixed effects specification and 0.5 for correct random
+    effects structure). You only need to specify the model for this part of the
+    question.
 
     b. Summarize (i.e. get the output) the model that you ran in part (a). Did
     any of the treatments have a significant effect on banner petal length? If
     so, which ones? Based on your examination of the model output, how can you
     tell which level of the significant treatments resulted in longer or shorter
-    mean banner petal widths? Make a statement for each significant **main** effects in
-    the model (i.e. not interactions) (0.5 marks).
-    
-```{r}
-summary(model)
-
-# Answer: Supplemental pollination resulted in a reduction in banner petal width.
-```
-
+    mean banner petal widths? Make a statement for each significant **main**
+    effects in the model (i.e. not interactions) (0.5 marks).
 
     c. Using `dplyr` and `gglot2`, plot the mean banner width for one of the
     significant interactions in the model above (whichever you choose). The idea
     is to show how both treatments interact to influence the mean length of
-    banner petals using a combination of different colours, linetypes, shapes, etc. 
-    Feel free to use whatever kind of plot that is appropriate to this 
-    kind of data. Also include 1 standard error around the mean. As a reminder, I have 
-    included the formula to calculate the standard error of the mean below. (1.5 marks).
-    **Bonus**: Avoid overlap in the points in the figure (0.25 marks).
+    banner petals using a combination of different colours, linetypes, shapes,
+    etc. Feel free to use whatever kind of plot that is appropriate to this kind
+    of data. Avoid overlapping points in the figure. Also include 1 standard
+    error around the mean. As a reminder, I have included the formula to
+    calculate the standard error of the mean below. (1.5 marks).
     
-```{r}
-plant_data %>% 
-    group_by(Herbivory, HCN) %>% 
-    summarise(mean = mean(Avg.Bnr.Wdth, na.rm = TRUE),
-              sd = sd(Avg.Bnr.Wdth, na.rm = TRUE),
-              n = sum(!is.na(Avg.Bnr.Wdth)), # Tough!! Half marks for using n()
-              se = sd / sqrt(n)) %>% 
-    ggplot(., aes(x = HCN, y = mean, shape = Herbivory, color = Herbivory)) +
-    geom_errorbar(aes(ymax = mean + se, ymin = mean - se), width = 0.15,
-                  position = position_dodge(width = 0.15)) +
-    geom_point(position = position_dodge(width = 0.15)) +
-    theme_classic()
-```
-    
-
     $$ SE = \frac{sd}{\sqrt{n}}  $$
 
-    d. After accounting for the fixed effects, how much of the variation in
-    banner petal length was explained by each of the random effects in the
-    model? Show your work (0.5 marks).
-    
-```{r}
-total_var = 0.003088 + 0.067091 + 0.003231 + 0.044998
-Genotype = 0.067091 / total_var
-Genotype_herb = 0.003088 / total_var
-Block = 0.003231 / total_var
-
-Genotype
-Genotype_herb
-Block
-```
-    
+    d. After accounting for the fixed effects, what percentage of the variation
+    in banner petal width was explained by each of the random effects in the
+    model? (0.5 marks).
 
     e. Descibe the pattern you see in the figure generated in part (c). Why do
-    you think the interaction you plotted was significant in the model? Suggest
-    one plausible ecological explanation for the observed pattern. (0.5 marks)
+    you think the interaction you plotted was significant in the model? (0.5 marks)
+
+
+
+
+
+
