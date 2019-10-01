@@ -29,7 +29,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     mind, create a visualization that will help you get a better understanding
     of the relationship between these variables. (0.5 mark)
 
-    c. Create a single box plot that to simultaneously visualise temperature,
+    c. Create a single box plot to simultaneously visualise temperature,
      activity, and day. (0.5 mark)
     
     d. What is one prediction you might make about the relationships among your
