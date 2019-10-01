@@ -61,9 +61,11 @@ Run the following code to load the CO2 dataset.
     ```
 
     a. Look through the help documentation (?CO2) to understand what each
-    variable means. Which variable(s) do you think would be the $y$ in the GLM
-    model? Which variable(s) would be the $x$? Briefly defend these choices. (1
-    mark)
+    variable means. Imagine you were running a statistical model to assess the
+    effects of chilling on plant CO2 uptake. What would the $y$ and $x$
+    variables be in such a model? What about if you were trying to assess the
+    relationship between ambient CO~2~ concentrations and plant uptake? Briefly
+    defend these choices. (1 mark)
 
     b. How much does `uptake` change if `conc` goes up by 10 mL/L? Write out the
     interpretation as a simple statement of this contribution of `conc` on
