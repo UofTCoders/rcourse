@@ -22,7 +22,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     temperatures, separating the temperature data based on the beaver's activity level.
     (after transforming it into a categorical variable the way you did for your
     last assignment). Describe the properties of the distribution. When
-    creating this plot for the purpose of evaluating temp temperature, what
+    creating this plot for the purpose of evaluating temperature, what
     argument did you adjust and why? (1 mark)
 
     b. What type of variables are temperature and time of day? With this in
@@ -34,7 +34,7 @@ you assignment as a knitted `.pdf` (prefered) or `.html` file.*
     
     d. What is one prediction you might make about the relationships among your
     variables (based on the patterns you observed)? Create a visualization that
-    illustrates your prediction, improving on your other plots in at least one
+    illustrates your prediction, improving on your previous plots in at least one
     way. State why this plot is an improvement. (1 mark)
 
 2. Outliers (2 marks)
@@ -83,7 +83,7 @@ Run the following code to load the CO2 dataset.
     treatment combinations. In each treatment combination, they grew 4
     individuals from each of 25 plant genotypes for a total of 800 plants (8
     treatment combinations x 25 genotypes x 4 individuals per genotype). Plants
-    were grown in a common garden at the Koffler Scientific Reserve (UofTs field
+    were grown in a common garden at the Koffler Scientific Reserve (UofT's field
     research station) and 6 floral traits were measured on all plants throughout
     the summer. We will analyze how the treatments influenced one of these
     traits in this exercise. Run the code chunk below to download the data,
@@ -135,15 +135,16 @@ Run the following code to load the CO2 dataset.
     is to show how both treatments interact to influence the mean length of
     banner petals using a combination of different colours, linetypes, shapes,
     etc. Feel free to use whatever kind of plot that is appropriate to this kind
-    of data. Avoid overlapping points in the figure. Also include 1 standard
-    error around the mean. As a reminder, I have included the formula to
-    calculate the standard error of the mean below. (1.5 marks).
+    of data. Avoid overlapping points in the figure. Also include error
+    bars/bands with one standard error around the mean. As a reminder, I have
+    included the formula to calculate the standard error of the mean below. (1.5
+    marks).
     
     $$ SE = \frac{sd}{\sqrt{n}}  $$
 
     d. After accounting for the fixed effects, what percentage of the variation
     in banner petal width was explained by each of the random effects in the
-    model? (0.5 marks).
+    model? Show yor work. (0.5 marks).
 
     e. Descibe the pattern you see in the figure generated in part (c). Why do
     you think the interaction you plotted was significant in the model? (0.5 marks)
