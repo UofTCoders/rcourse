@@ -13,113 +13,132 @@ knitr::opts_chunk$set(eval = FALSE)
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
-1. Linear mixed-effects models (4 marks).
-
-    Santangelo _et al._ (In press) were interested in understanding how plant
-    defenses, herbivores, and pollinators influence the expression of plant floral
-    traits (e.g. flower size). Their experiment had 3 treatments, each with 2
-    levels: Plant defense (2 levels: defended vs. undefended), herbivory (2 levels:
-    reduced vs. ambient) and pollination (2 levels: open vs. supplemental). These
-    treatments were fully crossed for a total of 8 treatment combinations. In each
-    treatment combination, they grew 4 individuals from each of 25 plant genotypes
-    for a total of 800 plants (8 treatment combinations x 25 genotypes x 4
-    individuals per genotype). Plants were grown in a common garden at the Koffler
-    Scientific Reserve (UofTs field research station) and 6 floral traits were
-    measured on all plants throughout the summer. We will analyze how the treatments
-    influenced one of these traits in this exercise. Run the code chunk below to
-    download the data, which includes only a subset of the columns from the full
-    dataset:
-    
-    ```{r}
-    library(tidyverse)
-    
-    plant_data <- "https://uoftcoders.github.io/rcourse/data/Santangelo_JEB_2018.csv"
-    download.file(plant_data, "Santangelo_JEB_2018.csv")
-    plant_data <- read_csv("Santangelo_JEB_2018.csv", 
-                           col_names = TRUE)
-    glimpse(plant_data)
-    head(plant_data)
-    ```
-
-    You can see that the data contain 792 observations (i.e. plants, 8 died during
-    the experiment). There are 50 genotypes across 3 treatments: Herbivory,
-    Pollination, and HCN (i.e. hydrogen cyanide, a plant defense). There are 6 plant
-    floral traits: Number of days to first flower, banner petal length, banner petal
-    width, plant biomass, number of flowers, and number of inflorescences. Finally,
-    since plants that are closer in space in the common garden may have similar
-    trait expression due to more similar environments, the authors included 6
-    spatial "blocks" to account for this environmental variation (i.e. Plant from
-    block A "share" an environment and those from block B "share" an environment,
-    etc.). Also keep in mind that each treatment combination contains 4 individuals
-    of each genotype, which are likely to have similar trait expression due simply
-    to shared genetics.
-    
-    a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects model
-    examining how herbivores (`Herbivory`), Pollinators (`Pollination`), plant
-    defenses (`HCN`) _and all interactions_ influences the length of banner petals
-    (`Avg.Bnr.Ht`) produced by plants while accounting for variation due to spatial
-    block and plant genotype. Also allow the intercept for `Genotype` to vary across
-    the levels of the herbivory treatment. (1 mark: 0.5 for correct fixed effects
-    specification and 0.5 for correct random effects structure). You only need to
-    specify the model for this part of the question.
-
-    b. Summarize (i.e. get the output) the model that you ran in part (a). Did
-    any of the treatments have a significant effect on banner petal length? If
-    so, which ones? Based on your examination of the model output, how can you
-    tell which level of the significant treatments resulted in longer or shorter
-    mean banner petal lengths? Make a statement for each significant effect in
-    the model (1 mark).
-
-    c. Using `dplyr` and `gglot2`, plot the mean banner length for one of the
-    significant interactions in the model above (whichever you choose). The idea
-    is to show how both treatments interact to influence the mean length of
-    banner petals (**Hint** use different shapes, colours, linetypes, etc. in
-    `ggplot()`). Feel free to use whatever kind of plot you would that is
-    appropriate to this kind of data. Also include 1 standard error around the
-    mean. **Hint:** you should summarize the data in `dplyr` prior to plotting
-    with `ggplot()`. As a reminder, I have included the formula to calculate
-    the standard error of the mean below. (1 mark).
-
-    $$ SE = \frac{sd}{\sqrt{n}}  $$
-
-    d. After accounting for the fixed effects, how much of the variation in
-    banner petal length was explained by each of the random effects in the
-    model? Show your work (0.5 marks).
-
-    e. Descibe the pattern you see in the figure generated in part (c). Why do
-    you think the interaction you plotted was significant in the model? Suggest
-    one plausible ecological explanation for the observed pattern. (0.5 marks)
-
-2. Simulating data (2 marks)
-
-    a. Generate a gamma distribution by randomly sampling 30 points from a distribution with shape parameter equal to 1.25 and rate parameter equal to 0.5. Plot this distribution. Set a seed of 42. (0.5 mark).
-
-    b. Plot the distribution of sample means obtained by generating 5000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 5000 means, each from a different simulated gamma distribution. Set a seed of 43. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
-
-    c. In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model, while holding the other variables constant. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. Set a seed of 44. (1 mark).
-
-        1. `x1` is an explanatory variable with _sequence_ from 41 to 60 with 1 unit intervals between each value (i.e. 20 values total).
-        2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 62 and standard deviation equal to 2.7.
-        2. `x3` is an explanatory variable of length 20 randomly drawn for a gamma distribution with shape equal to 5 and rate equal to 0.5.
-        3. the `y_intercept` is 20
-        4. The beta associated with `x1` is 0.62.
-        5. The beta associated with `x2` is 0.047`
-        6. The beta associated with `x3` is 0.175
-        6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.65.
-        7. `y` is a linear combination of `x1`, `x2` and `x3`. There are no interations. Don't forget about the error. 
-
-3. Randomization test (2 marks)
-
-    Run the code chunk below to load the data that will be used in this exercise.
+1. In this exercise, we will once again use the data of Santangelo _et al._ (2019) that you used in assignment 4. Let's go ahead and load in the data. See assignment 4 if you need a refresher on the details of the experiment and the dataset. (4.25 marks total)
 
     ```{r message=FALSE, warning=FALSE}
-    df <- "https://uoftcoders.github.io/rcourse/data/Assign05_Question3.csv"
-    download.file(df, "Assign05_Question3.csv")
-    df <- read_csv("Assign05_Question3.csv", 
-                           col_names = TRUE)
-    glimpse(df)
+    library(tidyverse)
+    library(lme4)
+    library(lmerTest)
+    
+    
+    Santangelo_data <- "https://uoftcoders.github.io/rcourse/data/Santangelo_JEB_2018.csv"
+    download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
+    Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
+                                col_names = TRUE)
+    glimpse(Santangelo_data)
+    head(Santangelo_data)
     ```
 
-    a. Generate a histogram showing the null distribution of t-statistics between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed t-statistic as a dashed vertical line. Set a seed of 46. **Hint:** You'll need to extract the t stat from a t-test saved as an object.
 
-    b. Perform a permutation test testing whether the observed t statistic between groups one and two is different than what would be expected by chance. Include a statement about whether there is a significant difference between groups based on your permutation test and be sure to include the P-value. How does this P-value compare to one obtained from a simple t-test? Why? (1 mark)
+    a. Model selection works best when there are no missing values in your dataset. We will be identifying the best model that predict variation in flowering time (`Flower.date`) across plants. Create a dataset that excludes rows where there is missing flowering date data. (0.25 marks)
+    
+```{r}
+Santangelo_data <- Santangelo_data %>% 
+    filter(!is.na(Flower.date))
+```
+    
+    b. Create a mixed-effects model with Flowering date (`Flower.date`) as the response variable and HCN, Herbivory, and Pollination as main effect, fixed-effect predictors. Also include the HCN x Herbivory and HCN x Pollination treatment interactions as fixed-effect. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Herbivory` interactions by including these terms as random effects. This will be our saturated model. (0.5 marks)
+    
+```{r}
+fullModel <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data)
+```
+    
+    
+    c. We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
+    
+```{r}
+# Can use AIC
+nrow(Santangelo_data) / 3
+```
+    
+    
+    d. Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. (0.5 marks)
+    
+```{r}
+fullModel <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data,
+                  REML = TRUE)
+
+model_noRandInteraction <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block), data = Santangelo_data,
+                  REML = TRUE)
+
+model_noBlock <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
+                  REML = TRUE)
+
+model_noBlockOrInteraction <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = TRUE)
+
+AIC(fullModel, model_noRandInteraction, model_noBlock, model_noBlockOrInteraction)
+
+# The model that includes only genotype is the best supported model based on AIC
+```
+
+    
+    e. Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to show all the models and their AIC/AIC~c~ scores. (1.5 mark)
+    
+```{r}
+fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_HCNOnly <- lmer(Flower.date ~ HCN + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_HerbOnly <- lmer(Flower.date ~ Herbivory + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_PollOnly <- lmer(Flower.date ~ Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_HerbHCNnoInter <- lmer(Flower.date ~ HCN + Herbivory + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_PollHCNnoInter <- lmer(Flower.date ~ HCN + Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_HerbHCN <- lmer(Flower.date ~ HCN + Herbivory + HCN:Herbivory + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_PollHCN <- lmer(Flower.date ~ HCN + Pollination + HCN:Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_HerbPoll <- lmer(Flower.date ~ Herbivory + Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_noHCNPollInter <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_noHCNHerbInter <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_noInters <- lmer(Flower.date ~ HCN + Herbivory + Pollination + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+model_noFix <- lmer(Flower.date ~ 1 + (1|Genotype), data = Santangelo_data,
+                  REML = FALSE)
+
+
+
+AIC(fullModel, model_HCNOnly, model_HerbOnly, model_PollOnly, model_HerbHCNnoInter, model_PollHCNnoInter, model_HerbHCN, 
+    model_PollHCN, model_HerbPoll, model_noHCNPollInter, model_noHCNHerbInter, model_noInters, model_noFix)
+
+# The most supported model is one with herbivory only.
+summary(fullModel)
+
+# There should be 13 models total
+options(na.action = "na.fail")
+allModels <- MuMIn::dredge(fullModel, evaluate = TRUE, rank = "AIC")
+options(na.action = "na.omit")
+```
+    
+    
+    f. Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction. Make a statement about the significant treatments' effect on flowering date. Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
+    
+    g. Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
+    
+```{r}
+# Model averaging since many models are within 2 AIC points
+```
+
+    h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). (0.25 marks)
+    
+
+
