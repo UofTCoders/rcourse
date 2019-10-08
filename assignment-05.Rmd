@@ -42,9 +42,7 @@ your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
     h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). If there are no significant effects in the model, simply write "There are no significant effects!". (0.25 marks)
     
-2. During the multivariate statistics lecture, we made use of vector community and malaria survey data collected by Mbogo _et al._ (2003) to disentangle the effects of vector abundance, species richness, and composition, on malaria prevalence. In this exercise, we will complete the analysis of the strucutral equation model we began building in class. (1.5 marks total)
-
-![Figure 1. Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Paths are labeled with letters to facilitate discussion.](image/SEMfig.png)
+2. During the multivariate statistics lecture, we made use of vector community and malaria survey data collected by Mbogo _et al._ (2003) to disentangle the effects of vector abundance, species richness, and composition, on malaria prevalence (see path diagram in lecture 10 for a reminder of these relationships). In this exercise, we will complete the analysis of the strucutral equation model we began building in class. (1.5 marks total)
 
 Here are some relevant snippets of code taken from the lecture notes to get you started on this exercise.
 
