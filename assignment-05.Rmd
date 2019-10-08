@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 5: Linear mixed-effects models and randomization tests (8 marks)'
+title: 'Assignment 5: Model selection and multivariate statistics'
 output:
     html_document:
         toc: false
