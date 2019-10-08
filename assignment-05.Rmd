@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 5: Model selection and multivariate statistics'
+title: 'Assignment 5: Model selection and multivariate statistics (9 marks)'
 output:
     html_document:
         toc: false
@@ -85,7 +85,7 @@ total.abun := b + (a*d) + (d*e*c)
     b. Evaluate the model, bootstrapping confidence intervals for path coefficients with seed #778. Which predictor had the largest _direct_ effect on malaria prevalence? How about _total_ effect? Briefly explain these effects in plain english (1 sentence each). (1 mark)
 
 
-3. In this exercise, we will be investigating the relationship between vector community structure and another commonly used metric of disease risk -- entomoligcal innoculation rate (EIR). EIR is a measure of the number of bites by infectious mosquitoes per person per unit time. We will be making use of the same data from Mbogo _et al._ (2003) as before, only this time, we will start with the long form data. (2 marks)
+3. In this exercise, we will be investigating the relationship between vector community structure and another commonly used metric of disease risk -- entomoligcal innoculation rate (EIR). EIR is a measure of the number of bites by infectious mosquitoes per person per unit time. We will be making use of the same data from Mbogo _et al._ (2003) as before, only this time, we will start with the long form data. (2.5 marks total)
 
 ```{r eval=FALSE}
 
