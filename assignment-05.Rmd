@@ -13,7 +13,7 @@ knitr::opts_chunk$set(eval = FALSE)
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
-1. In this exercise, we will once again use the data of Santangelo _et al._ (2019) that you used in assignment 4. Let's go ahead and load in the data. See assignment 4 if you need a refresher on the details of the experiment and the dataset. (4.25 marks total)
+1. In this exercise, we will once again use the data of Santangelo _et al._ (2019) that you used in assignment 4. Let's go ahead and load in the data. See assignment 4 if you need a refresher on the details of the experiment and the dataset. (5 marks total)
 
     ```{r message=FALSE, warning=FALSE}
     library(tidyverse)
@@ -37,10 +37,10 @@ Santangelo_data <- Santangelo_data %>%
     filter(!is.na(Flower.date))
 ```
     
-    b. Create a mixed-effects model with Flowering date (`Flower.date`) as the response variable and HCN, Herbivory, and Pollination as main effect, fixed-effect predictors. Also include the HCN x Herbivory and HCN x Pollination treatment interactions as fixed-effect. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Herbivory` interactions by including these terms as random effects. This will be our saturated model. (0.5 marks)
+    b. We want to know how HCN, herbivores, and pollinators influence flowering date. We also think that the effect of herbivores and pollinators on flowering data might depend on whether the plant is producing HCN. Create a model that includes fixed-effects that test these predictions. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Herbivory` interactions by including these terms as random effects. This will be our saturated model. You can ignore `boundary (singular) fit` warnings that may arise. (1 marks)
     
 ```{r}
-fullModel <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data)
+fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data)
 ```
     
     
@@ -55,16 +55,16 @@ nrow(Santangelo_data) / 3
     d. Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. (0.5 marks)
     
 ```{r}
-fullModel <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data,
+fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Block) + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
                   REML = TRUE)
 
-model_noRandInteraction <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Block), data = Santangelo_data,
+model_noRandInteraction <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Block), data = Santangelo_data,
                   REML = TRUE)
 
-model_noBlock <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
+model_noBlock <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
                   REML = TRUE)
 
-model_noBlockOrInteraction <- lmer(Flower.date ~ HCN*Herbivory*Pollination + (1|Genotype), data = Santangelo_data,
+model_noBlockOrInteraction <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype), data = Santangelo_data,
                   REML = TRUE)
 
 AIC(fullModel, model_noRandInteraction, model_noBlock, model_noBlockOrInteraction)
@@ -130,7 +130,7 @@ options(na.action = "na.omit")
 ```
     
     
-    f. Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction. Make a statement about the significant treatments' effect on flowering date. Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
+    f. Based on the AIC/AIC~c~ output from (d), generate your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction. Make a statement about the significant treatments' effects on flowering date. Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.75 marks)
     
     g. Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
     
@@ -138,7 +138,7 @@ options(na.action = "na.omit")
 # Model averaging since many models are within 2 AIC points
 ```
 
-    h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). (0.25 marks)
+    h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). If there are no significant effects in the model, simply write "There are no significant effects!". (0.25 marks)
     
 
 
