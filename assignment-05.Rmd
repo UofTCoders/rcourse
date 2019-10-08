@@ -5,10 +5,6 @@ output:
         toc: false
 ---
 
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (preferred) or `.html` file.*
@@ -48,7 +44,7 @@ your assignment as a knitted `.pdf` (preferred) or `.html` file.*
     
 2. During the multivariate statistics lecture, we made use of vector community and malaria survey data collected by Mbogo _et al._ (2003) to disentangle the effects of vector abundance, species richness, and composition, on malaria prevalence. In this exercise, we will complete the analysis of the strucutral equation model we began building in class. (1.5 marks total)
 
-![Figure 1. Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Paths are labeled with letters to facilitate discussion.](/Users/amb/Dropbox/PhD stuff/Courses/EEB 313 Quantitative methods for biology in R/SEM figure.png)
+![Figure 1. Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Paths are labeled with letters to facilitate discussion.](image/SEMfig.png)
 
 Here are some relevant snippets of code taken from the lecture notes to get you started on this exercise.
 
@@ -84,9 +80,9 @@ total.abun := b + (a*d) + (d*e*c)
 
 ```
 
-  a. Complete the structural equation model by adding in calculations for the indirect and total effects of species richness (SR) and composition (PC2) on malaria prevalence (PfPR). (0.5 marks)
+    a. Complete the structural equation model by adding in calculations for the indirect and total effects of species richness (SR) and composition (PC2) on malaria prevalence (PfPR). (0.5 marks)
   
-  b. Evaluate the model, bootstrapping confidence intervals for path coefficients with seed #778. Which predictor had the largest _direct_ effect on malaria prevalence? How about _total_ effect? Briefly explain these effects in plain english (1 sentence each). (1 mark)
+    b. Evaluate the model, bootstrapping confidence intervals for path coefficients with seed #778. Which predictor had the largest _direct_ effect on malaria prevalence? How about _total_ effect? Briefly explain these effects in plain english (1 sentence each). (1 mark)
 
 
 3. In this exercise, we will be investigating the relationship between vector community structure and another commonly used metric of disease risk -- entomoligcal innoculation rate (EIR). EIR is a measure of the number of bites by infectious mosquitoes per person per unit time. We will be making use of the same data from Mbogo _et al._ (2003) as before, only this time, we will start with the long form data. (2 marks)
@@ -99,11 +95,11 @@ kenya.long <- read.csv("kenya.long.csv", header=TRUE, sep=",")
 
 This dataset consists of the same information as kenya.wide, with the addition of one new columns for "EIR".
 
-  a. Convert this dataset to the wide format. Fill cells in the wide dataset with the **relative abundance** of each species, and include the columns "total abundance" and "EIR" in the final product. (Hint: use xxxx_join to add the desired columns to the wide dataset after you spread it) (Hint2: pivot_wider() may be easier to use than spread()) (0.5 marks)
+    a. Convert this dataset to the wide format. Fill cells in the wide dataset with the **relative abundance** of each species, and include the columns "total abundance" and "EIR" in the final product. (Hint: use xxxx_join to add the desired columns to the wide dataset after you spread it) (Hint2: pivot_wider() may be easier to use than spread()) (0.5 marks)
 
-  b. Construct a series of linear models to investigate the relationship between EIR and i) total mosquito abundance and ii) the abundance of each species. Interpret the results of these models. (Hint: is EIR a simple function of total mosquito abundance, or is there a particular species that is contributing disproportionately to it?) (1 mark)
+    b. Construct a series of linear models to investigate the relationship between EIR and i) total mosquito abundance and ii) the abundance of each species. Interpret the results of these models. (Hint: is EIR a simple function of total mosquito abundance, or is there a particular species that is contributing disproportionately to it?) (1 mark)
   
-  c. Investigate the influence of total abundance and community structure (use the first two PC axes) on EIR with a strcutural equation model. Include only direct effects only in this model, and pretend we have reason to believe total abundance is associated with community composition.
-    i. Briefly explain the correlation structure you have chosen for your predictors, total abundance, PC1, and PC2. (0.5 marks)
-    ii. Evaluate the model. Are these results congruent with your findings from part (a)? (0.5 marks)
+    c. Investigate the influence of total abundance and community structure (use the first two PC axes) on EIR with a strcutural equation model. Include only direct effects only in this model, and pretend we have reason to believe total abundance is associated with community composition.
+        i. Briefly explain the correlation structure you have chosen for your predictors, total abundance, PC1, and PC2. (0.5 marks)
+        ii. Evaluate the model. Are these results congruent with your findings from part (a)? (0.5 marks)
 
