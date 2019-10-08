@@ -95,9 +95,9 @@ kenya.long <- read.csv("kenya.long.csv", header=TRUE, sep=",")
 
 This dataset consists of the same information as kenya.wide, with the addition of one new columns for "EIR".
 
-    a. Convert this dataset to the wide format. Fill cells in the wide dataset with the **relative abundance** of each species, and include the columns "total abundance" and "EIR" in the final product. (Hint: use xxxx_join to add the desired columns to the wide dataset after you spread it) (Hint2: pivot_wider() may be easier to use than spread()) (0.5 marks)
+    a. Convert this dataset to the wide format. Fill cells in the wide dataset with the **relative abundance** of each species, and include the columns "total abundance" and "EIR" in the final product. (Hint: use xxxx_join to add the desired columns to the wide dataset after you spread it) (Hint2: pivot_wider() may be easier to use than spread()) (1 marks)
 
-    b. Construct a series of linear models to investigate the relationship between EIR and i) total mosquito abundance and ii) the abundance of each species. Interpret the results of these models. (Hint: is EIR a simple function of total mosquito abundance, or is there a particular species that is contributing disproportionately to it?) (1 mark)
+    b. Construct a series of linear models to investigate the relationship between EIR and i) total mosquito abundance and ii) the abundance of each species. Interpret the results of these models. (Hint: is EIR a simple function of total mosquito abundance, or is there a particular species that is contributing disproportionately to it?) (0.5 mark)
   
     c. Investigate the influence of total abundance and community structure (use the first two PC axes) on EIR with a strcutural equation model. Include only direct effects only in this model, and pretend we have reason to believe total abundance is associated with community composition.
         i. Briefly explain the correlation structure you have chosen for your predictors, total abundance, PC1, and PC2. (0.5 marks)
