@@ -32,113 +32,78 @@ your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
     a. Model selection works best when there are no missing values in your dataset. We will be identifying the best model that predict variation in flowering time (`Flower.date`) across plants. Create a dataset that excludes rows where there is missing flowering date data. (0.25 marks)
     
-```{r}
-Santangelo_data <- Santangelo_data %>% 
-    filter(!is.na(Flower.date))
-```
-    
     b. We want to know how HCN, herbivores, and pollinators influence flowering date. We also think that the effect of herbivores and pollinators on flowering data might depend on whether the plant is producing HCN. Create a model that includes fixed-effects that test these predictions. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Herbivory` interactions by including these terms as random effects. This will be our saturated model. You can ignore `boundary (singular) fit` warnings that may arise. (1 marks)
-    
-```{r}
-fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Block) + (1|Genotype:Herbivory), data = Santangelo_data)
-```
-    
     
     c. We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
     
-```{r}
-# Can use AIC
-nrow(Santangelo_data) / 3
-```
-    
-    
     d. Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. (0.5 marks)
     
-```{r}
-fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Block) + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
-                  REML = TRUE)
-
-model_noRandInteraction <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Block), data = Santangelo_data,
-                  REML = TRUE)
-
-model_noBlock <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype) + (1|Genotype:Herbivory), data = Santangelo_data,
-                  REML = TRUE)
-
-model_noBlockOrInteraction <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = TRUE)
-
-AIC(fullModel, model_noRandInteraction, model_noBlock, model_noBlockOrInteraction)
-
-# The model that includes only genotype is the best supported model based on AIC
-```
-
-    
     e. Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to show all the models and their AIC/AIC~c~ scores. (1.5 mark)
-    
-```{r}
-fullModel <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + HCN:Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_HCNOnly <- lmer(Flower.date ~ HCN + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_HerbOnly <- lmer(Flower.date ~ Herbivory + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_PollOnly <- lmer(Flower.date ~ Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_HerbHCNnoInter <- lmer(Flower.date ~ HCN + Herbivory + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_PollHCNnoInter <- lmer(Flower.date ~ HCN + Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_HerbHCN <- lmer(Flower.date ~ HCN + Herbivory + HCN:Herbivory + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_PollHCN <- lmer(Flower.date ~ HCN + Pollination + HCN:Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_HerbPoll <- lmer(Flower.date ~ Herbivory + Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_noHCNPollInter <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Herbivory + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_noHCNHerbInter <- lmer(Flower.date ~ HCN + Herbivory + Pollination + HCN:Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_noInters <- lmer(Flower.date ~ HCN + Herbivory + Pollination + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-model_noFix <- lmer(Flower.date ~ 1 + (1|Genotype), data = Santangelo_data,
-                  REML = FALSE)
-
-
-
-AIC(fullModel, model_HCNOnly, model_HerbOnly, model_PollOnly, model_HerbHCNnoInter, model_PollHCNnoInter, model_HerbHCN, 
-    model_PollHCN, model_HerbPoll, model_noHCNPollInter, model_noHCNHerbInter, model_noInters, model_noFix)
-
-# The most supported model is one with herbivory only.
-summary(fullModel)
-
-# There should be 13 models total
-options(na.action = "na.fail")
-allModels <- MuMIn::dredge(fullModel, evaluate = TRUE, rank = "AIC")
-options(na.action = "na.omit")
-```
-    
     
     f. Based on the AIC/AIC~c~ output from (d), generate your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction. Make a statement about the significant treatments' effects on flowering date. Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.75 marks)
     
     g. Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
-    
-```{r}
-# Model averaging since many models are within 2 AIC points
-```
 
     h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). If there are no significant effects in the model, simply write "There are no significant effects!". (0.25 marks)
     
+2. During the multivariate statistics lecture, we made use of vector community and malaria survey data collected by Mbogo _et al._ (2003) to disentangle the effects of vector abundance, species richness, and composition, on malaria prevalence. In this exercise, we will complete the analysis of the strucutral equation model we began building in class. (1.5 marks total)
 
+![Figure 1. Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Paths are labeled with letters to facilitate discussion.](/Users/amb/Dropbox/PhD stuff/Courses/EEB 313 Quantitative methods for biology in R/SEM figure.png)
+
+Here are some relevant snippets of code taken from the lecture notes to get you started on this exercise.
+
+```{r eval=FALSE}
+
+library(lavaan)
+
+kenya.wide <- read.csv("kenya.wide.csv", header=TRUE, sep=",")
+
+kenya.pca <- kenya.wide %>% 
+  dplyr::select(arabiensis, gambiae, funestus, merus) %>% #choose relevant columns
+  mutate_all(sqrt) %>% #this is the Hellinger transformation 
+  prcomp(.) #pipe directly into baseR function for PCA
+
+axes <- data.frame(kenya.pca$x)
+kenya.wide <- bind_cols(kenya.wide, axes) 
+
+kenya.wide$s.abun <- log(kenya.wide$total.abundance) 
+kenya.wide$s.sr <- log(kenya.wide$SR) 
+kenya.wide$s.pfpr <- log(kenya.wide$PfPR) 
+
+sem02 <- '
+# regressions
+l.pfpr ~ a*l.sr + b*l.abun + c*PC2
+# correlations
+l.sr ~~ d*l.abun
+PC2 ~~ e*l.sr
+# defined parameters
+indirect.abun := (a*d) #indirect effect of abundance via SR
+indirect.abun2 := (d*e*c) #indirect effect of abundance via PC2
+total.abun := b + (a*d) + (d*e*c) 
+'
+
+```
+
+  a. Complete the structural equation model by adding in calculations for the indirect and total effects of species richness (SR) and composition (PC2) on malaria prevalence (PfPR). (0.5 marks)
+  
+  b. Evaluate the model, bootstrapping confidence intervals for path coefficients with seed #778. Which predictor had the largest _direct_ effect on malaria prevalence? How about _total_ effect? Briefly explain these effects in plain english (1 sentence each). (1 mark)
+
+
+3. In this exercise, we will be investigating the relationship between vector community structure and another commonly used metric of disease risk -- entomoligcal innoculation rate (EIR). EIR is a measure of the number of bites by infectious mosquitoes per person per unit time. We will be making use of the same data from Mbogo _et al._ (2003) as before, only this time, we will start with the long form data. (2 marks)
+
+```{r eval=FALSE}
+
+kenya.long <- read.csv("kenya.long.csv", header=TRUE, sep=",")
+
+```
+
+This dataset consists of the same information as kenya.wide, with the addition of one new columns for "EIR".
+
+  a. Convert this dataset to the wide format. Fill cells in the wide dataset with the **relative abundance** of each species, and include the columns "total abundance" and "EIR" in the final product. (Hint: use xxxx_join to add the desired columns to the wide dataset after you spread it) (Hint2: pivot_wider() may be easier to use than spread()) (0.5 marks)
+
+  b. Construct a series of linear models to investigate the relationship between EIR and i) total mosquito abundance and ii) the abundance of each species. Interpret the results of these models. (Hint: is EIR a simple function of total mosquito abundance, or is there a particular species that is contributing disproportionately to it?) (1 mark)
+  
+  c. Investigate the influence of total abundance and community structure (use the first two PC axes) on EIR with a strcutural equation model. Include only direct effects only in this model, and pretend we have reason to believe total abundance is associated with community composition.
+    i. Briefly explain the correlation structure you have chosen for your predictors, total abundance, PC1, and PC2. (0.5 marks)
+    ii. Evaluate the model. Are these results congruent with your findings from part (a)? (0.5 marks)
 
