@@ -87,7 +87,7 @@ al._ (2009). The full reference can be found at the end of this document.
 
 ```{r}
 
-source("http://highstat.com/Books/BGS/GAMM/RCodeP2/HighstatLibV6.R")
+source("resources/HighstatLibV6.R")
 
 ```
 
