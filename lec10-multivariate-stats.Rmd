@@ -104,7 +104,7 @@ download.file("https://uoftcoders.github.io/rcourse/data/kenya.wide",
 
 ```{r message=FALSE, warning=FALSE}
 
-kenya.wide <- read_csv("kenya.wide.csv")
+kenya.wide <- read_csv("data/kenya.wide.csv")
 
 ```
 
