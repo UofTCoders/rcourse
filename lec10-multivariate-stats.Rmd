@@ -1,179 +1,788 @@
 ---
-title: "Multivariate Statistics"
-author: "Lindsay Coome"
+title: "Multivariate statistics"
+author: Amber Gigi Hoi
+output: pdf_document
 ---
-## Lesson preamble
 
-> ### Lesson objectives
-> 
-> - Learn how to apply and interpret multivariate statistics for a variety of data
-> - Understand the difference between MANOVA and univariate statistical techniques
-> - Learn how to use eigenvalues and scree plots to determine factors in principal components 
->   analysis
-> - Understand how to interpret the results of PCA
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+require(knitr)
+```
+
+# Lesson preamble: 
+
+> ### Lesson objectives:
 >
-> ### Lesson outline
-> 
-> - Principal Components Analysis (50-60 min)
-> - MANOVA (50 min)
+> - Most things in EEB are correlated - what does that do to our analyses?
+> - Use multivariate techniques to reduce complex situtations into more manageable ones
+> - Run multivariate multiple regressions with structural equation models 
+> - Understand that a **very** long list of caveats come with using each of these techniques
+> - Bottomline: integrity is the number one virtue to being a good researcher
+>
+> ### Lesson outline:
+> Total lesson time: 2 hours
+>
+> - Introduction to dataset and hypotheses (10 min)
+> - Performing ordination on species data (30 min)
+> - Inspect multicollinearity  (20 min)
+> - A very brief introduction to structural equation models (40 min)
+
+---
+
+# Introduction
+
+## Correlations - a double edge sword
+
+Ecologists are obsessed with patterns in nature. It is thus great news that
+most things in nature _are_ correlated with one another - that's why we all
+still have jobs. However, this is also bad news, because when things are
+correlated, it becomes difficult to tease part which effects came from where. 
+
+Take this simple example of something we can all relate to -- food. 
+
+You love spicy food. To satisfy your craving, you made this very spicy dish
+with five different kinds of chili peppers. It was a very delicious dish! It
+has this real depth of flavor, and needless to say, spicy! Then you find
+yourselves wondering where is the heat actually coming from anyway? Was it the
+habanero? The Scotch bonnet? There was a little bit of smokiness, perhaps that
+was chipotle? That was a difficult question because all of the ingredients you
+put in have a similar flavor profile – spicy. 
+
+In today’s lecture, we’ll be working through a real-life –- read: it’s gonna be
+messy –- example of how different multivariate techniques can be used to
+~~distinguish between the flavor profile of different chili peppers~~
+disentangle the effects of highly correlated variables.
+
 
 ## Setup
 
+The overarching question we will be tackling today is whether vector diversity
+mattered to malaria transmission. Did you know that malaria parasites,
+_Plasmodium spp._, can infect up to 70 mosquito species? These vector species
+were not created equal in terms of their capacity to transmit disease as they
+often differ in traits such as life history, phenology, and feeding preference.
+Thus, neglected details of vector diversity can have important consequences for
+disease dynamics. There are many ways in which "diversity" can be measured:
+abundance, species richness, and composition. Which one of these axes of
+diversity really mattered, and how much does it matter?
+
+Here are the packages we will be using today:
+
+
 ```{r message=FALSE, warning=FALSE}
-library(car)
-library(psych)
-library(multcomp)
+
 library(tidyverse)
+library(MASS)
+library(PerformanceAnalytics)
+library(MuMIn)
+library(ggfortify)
+library(lavaan)
+library(viridis)
 
-download.file("http://www.lindsaycoome.com/jellfish.csv", "jellyfish.csv")
-jellyfish <- read_csv("jellyfish.csv")
-jellyfish <- jellyfish %>% 
-    # uses dplyr function to change all character vectors to factors
-    mutate_if(is.character, as.factor)
 ```
 
-## Multivariate vs. univariate statistics
-Over the past few weeks, we have seen how the general linear model (GLM) can be used to detect group differences on a single dependent variable (e.g. t-tests, linear regression, ANOVAs, mixed-effects models). However, there may be circumstances in which we are interested in several dependent variables, and in these cases the simple ANOVA model is inadequate. Instead, we can use an extension of this technique known as multivariate analysis of variance (or MANOVA). MANOVA can be thought of as ANOVA for situations in which there are several dependent variables. The principles of ANOVA extend to MANOVA in that we can use MANOVA when there is only one independent variable or when there are several, we can look at interactions between independent variables, and we can even do contrasts to see which groups differ from each other. ANOVA can be used only in situations in which there is one dependent variable (or outcome) and so is known as a univariate test (univariate quite obviously means ‘one variable’); MANOVA is designed to look at several dependent variables (outcomes) simultaneously and so is a multivariate test (multivariate means ‘many variables’).
 
-If we have collected data about several dependent variables then we could simply conduct a separate ANOVA for each dependent variable (and if you read research articles you’ll find that it is not unusual for researchers to do this). The reason why MANOVA is used instead of multiple ANOVAs is this: the more tests we conduct on the same data, the more we inflate the familywise error rate. The more dependent variables we have measured, the more ANOVAs we would need to conduct and the greater the chance of making a Type I error.
+In addition, we will also be _sourcing_ some functions provided by Zuur _et
+al._ (2009). The full reference can be found at the end of this document. 
 
-However, there are other reasons for preferring MANOVA to several ANOVAs. For one thing, there is important additional information that is gained from a MANOVA. If separate ANOVAs are conducted on each dependent variable, then any relationship between dependent variables is ignored. As such, we lose information about any correlations that might exist between the dependent variables. MANOVA, by including all dependent variables in the same analysis, takes account of the relationship between outcome variables. Related to this point, ANOVA can tell us only whether groups differ along a single dimension, whereas MANOVA has the power to detect whether groups differ along a combination of dimensions. For example, ANOVA tells us how scores on a single dependent variable distinguish groups of measurements (so, for example, we might be able to distinguish animals who are aquatic, semi-aquatic, terrestrial, etc).
-
-For the univariate F-test (e.g., ANOVA) we calculated the ratio of systematic variance to unsystematic variance for a single dependent variable. In MANOVA, the test statistic is derived by comparing the ratio of systematic to unsystematic variance for several dependent variables. 
-
-To sum up, the test statistic in both ANOVA and MANOVA represents the ratio of the effect of the systematic variance to the unsystematic variance; in ANOVA these variances are single values, but in MANOVA each is a matrix containing many variances and covariances.
-
-A caveat: it is not a good idea to lump all of your dependent variables together in a MANOVA unless you have a good theoretical or empirical basis for doing so. In our example, we will try to examine the outcome variables of Jellyfish width and length by the location the specimen was found.
 
 ```{r}
-head(jellyfish)
+
+source("resources/HighstatLibV6.R")
+
 ```
 
-# Practical issues and assumptions of MANOVA
-- Independence: Observations should be statistically independent.
-- Random sampling: Data should be randomly sampled from the population of interest and measured at an interval level.
-- Multivariate normality: In ANOVA, we assume that our dependent variable is normally distributed within each group. In the case of MANOVA, we assume that the dependent variables (collectively) have multivariate normality within groups.
-- Homogeneity of covariance matrices: In ANOVA, it is assumed that the variances in each group are roughly equal (homogeneity of variance). In MANOVA we must assume that this is true for each dependent variable, but also that the correlation between any two dependent variables is the same in all groups. This assumption is examined by testing whether the population variance–covariance matrices of the different groups in the analysis are equal.
-- One final issue pertinent to test power is that of sample size and the number of dependent variables. Stevens (1980) recommends using fewer than 10 dependent variables unless sample sizes are large.
 
-# Exploring the data
-```{r}
-str(jellyfish$Location)
-describeBy(jellyfish$Width, jellyfish$Location)
-describeBy(jellyfish$Length, jellyfish$Location)
+And here is the data we will be working with:
+
+
+```{r eval=FALSE}
+
+download.file("https://uoftcoders.github.io/rcourse/data/kenya.wide", 
+              "kenya.wide")
+
 ```
 
-# Running the MANOVA
-To create a MANOVA model we use the manova() function, which is just the lm() function in disguise. The function takes exactly the same form as aov()and has the general form:
-```{r}
-#newModel<-manova(outcome ~ predictor(s), data = dataFrameName, na.action = na.exclude))
+```{r message=FALSE, warning=FALSE}
+
+kenya.wide <- read_csv("data/kenya.wide.csv")
+
 ```
 
-So, as with univariate regression/ANOVA, we specify a model in the function of the form ‘outcome ~ predictor(s)’. In the case of MANOVA there are several outcomes, so the model becomes ‘outcomes ~ predictor(s)’. To put multiple outcomes into the model, we have to bind the variables together into a single entity using the cbind() function. In the current example, we want to combine jellyfish length and width, so we can create a single outcome object by executing:
-```{r}
-outcome<-cbind(jellyfish$Width, jellyfish$Length)
-```
 
-This command creates an object called outcome, which contains the length and width variables of the jellyfish dataframe pasted together in columns. We use this new object as the outcome in our model, and specify any predictors as we have previously. Therefore, for this example, we could estimate the model by executing:
-```{r}
-newModel<-manova(outcome ~ Location, data = jellyfish)
-```
+The data used in this analysis was collected by Mbogo and colleagues in 1998
+and published in their 2003 manuscript. In brief, these researchers conducted
+entomological and epidemiological surveys at 30 villages along the eastern
+Kenyan coast in 1998. Overnight human-landing catches were performed in ten
+huts per village every two months over the course of the year-long study.
+Mosquito species were identified via molecular methods, and their abundances
+were recorded. At the end of the vector survey period (May 1998), 76-100 school
+children (ages 6-12) were sampled for malaria at each village. Malaria
+prevalence was estimated as the proportion of samples that showed blood-stage
+parasites in stained blood smears. _P. falciparum_ was found to be responsible
+for more than 95% of the malaria cases in this region, and thus is the only
+parasite species considered here. The longitudinal mosquito diversity data was
+aggregated to match the cross-sectional nature of the malaria prevalence data.
 
-To see the output of the model we use the summary command; by default, R produces Pillai’s trace (which is a sensible choice), but we can see the other test statistics by including the test = option. For example, to see the Wilks and Hotelling test statistics in addition we would need to execute:
-```{r}
-summary(newModel, intercept = TRUE)
-summary(newModel, intercept = TRUE, test = "Wilks")
-summary(newModel, intercept = TRUE, test = "Hotelling")
-```
+The data relevant to our analysis thus consisted of the following: 
 
-At any rate, it appears as though location does significantly predict our outcome variables.
+  1.	Malaria prevalence (number positive divided by number sampled at each village), 
+  2.	Mosquitoes observed at each village (relative and total abundance of each species),
+  3.	Latitudinal location of each village as a proxy for unavailable climate variables,
+  4.	Distance to closest big city in the region (Mombasa) as a proxy for access to health care. 
+  
+The unit of replication in this study, i.e. the smallest scale at which
+information on variation is available, is “village”, bringing the total sample
+size to 30.  
 
-As with other times we have used the lm() function, or some variant of it, R will, by default, produce Type I sums of squares but it is usually preferable in (M)ANOVA to look at Type II or Type III sums of squares. When you have one predictor in the model, as we have in the current example, Type I, II and III sums of squares will give the same results so it doesn’t matter (this is also true for univariate models). However, with two or more predictors in the model you might prefer Type III sums of squares because it does not depend upon the order in which you enter variables into the model. In which case we can use the Anova() function from the car package, as we have in previous lectures, to obtain these sums of squares. In the current example, having created a model, newModel, we could display the Type III sums of squares by executing:
-```{r}
-Anova(newModel, type = "III")
-```
+Let's have a look at the data, and start to organize our analysis. 
 
-# Follow-up analysis
-```{r}
-summary.aov(newModel)
-```
-
-The important parts of this table are the columns labelled F value and Pr(>F) in which the F-ratios for each univariate ANOVA and their significance values are listed. The values associated with the univariate ANOVAs conducted after the MANOVA are identical to those obtained if one-way ANOVA was conducted on each dependent variable. This fact illustrates that MANOVA offers only hypothetical protection of inflated Type I error rates: there is no real-life adjustment made to the values obtained.
-
-The multivariate test, on the other hand, takes account of the correlation between dependent variables, and so it has more power to detect group differences. With this knowledge in mind, the univariate tests are not particularly useful for interpretation, because the groups differ along a combination of the dependent variables. To see how the dependent variables interact we need to carry out a discriminant function analysis. However, we can start by looking at individual contrasts:
-```{r}
-widthModel<-lm(Width ~ Location, data = jellyfish)
-lengthModel<-lm(Length ~ Location, data = jellyfish)
-```
-
-The first command creates a model, widthModel, based on predicting the variable width from location (Width ~ Location) and the second command does much the same but predicting length. We can ask for contrasts comparing each group to each other using a Tukey correction with our `multcomp` package.
-```{r}
-postHocs<-glht(widthModel, linfct = mcp(Location = "Tukey"))
-summary(postHocs) #summary function gives results of multiple comparisons
-
-postHocs<-glht(lengthModel, linfct = mcp(Location = "Tukey"))
-summary(postHocs) 
-```
-
-A significant MANOVA could be followed up using either univariate ANOVA and post hoc tests or discriminant analysis (sometimes called discriminant function analysis or DFA for short). In our example, the univariate ANOVAs were not a useful way of looking at what the multivariate test showed because the relationship between dependent variables is obviously having an effect. Discriminant analysis is a good way to analyze this. Discriminant analysis is often used alongside clustering techniques and principal components analysis. For today, we are going to move on to principcal components anlysis (PCA), a very powerful tool for finding hidden or latent groups within your data.
-
-## Principal components analysis
-Factor analysis is a method of determining whether a group of variables are related in such a way that they define a fewser number of subgroups or clusters. Variables within a cluster would all be highly intercorrelated (positively and negatively), whereas variables from different clusters would not be correlated.
-
-The clusters would then be evaluated to try to determine what the common factor underlying those variables is (e.g. a common cause, perhaps). Although the clustering of the variables is empirically determined by factor analysis, the determination of those factors underlying the clusters is mostly subjective, as we shall see. 
-
-There are many different types of factor analysis, such as exploratory vs. confirmatory (discovering unknown factors versus testing for hypothesized factors). There are also many analytic techniques whithin each type. We will focus on something called the Principal Components analysis method. 
-
-Principal components analysis works in a very similar way to MANOVA. We begin with a matrix representing the relationships between variables. The linear components (also called variates, or factors) of that matrix are then calculated by determining the eigenvalues of the matrix. These eigenvalues are used to calculate eigenvectors, the elements of which provide the loading of a particular variable on a particular factor (i.e., they are the b-values in equation. The eigenvalue is also a measure of the substantive importance of the eigenvector with which it is associated.
 
 ```{r}
-bfi_data <- bfi[,1:25]
-# View(bfi_data)
-bfi_data=bfi_data[complete.cases(bfi_data),] #selects only complete cases for analysis
-bfi_cor <- cor(bfi_data) #creates a correlation matrix to be used in PCA
+
+head(kenya.wide)
+
 ```
 
-Next, we want to find the "determinant" of our correlation matrix. Don't worry too much about this conceptually - we want to see that our determinant is greater than the necessary value of 0.00001.
+
+  * The **response** variable is "PfPR" which stands for _Plasmodium
+    falciparum_ parasite rate. 
+  * The **predictor** variables are "total.abundance", "SR" which stands for
+    species richness, and the four columns "arabiensis", "funestus", "gambiae",
+and "merus", which recorded relative abundances of each of the vector species
+of the genus _Anopheles_ found in this area. 
+  * We will also be considering "lat" and "distance" (to closest big city) as
+    potential **confounders**. 
+
+
+## Creating a proxy for community structure 
+
+At the moment, we have four predictors that relate to "vector community
+structure" (i.e., those four columns containing species relative abundance
+info), and that is a lot! How can we reduce this to something simpler to use in
+our regressions? 
+
+The first multivariate technique we are going to work with today is ordination.
+As the name may suggest, ordination is a way of organizing things into a
+particular order, typically based on how similar things are in some aspect. In
+this case, we will be organizing our sites based on how similar they are in
+vector species composition. 
+
+One of the most common ordination techniques used by ecologists is the
+Principle Components Analysis (PCA). A PCA seeks to find a new coordinate
+system (PC axes) that best accounts for the variation in multivariate data
+space, thus reducing dimensionality in the process. 
+
+The procedure to conduct a PCA is as follows:
+
+  1. Imagine a 4-dimensional object with each of our species relative
+     abundances as an axis (k=4). 
+  2. Plot our sites (n=30) in this 4-D space, and then find the distance
+     between those points (do not despair, R will do the actual calculations
+for us).
+  3. After you have the distances between points, we can use processes that are
+     similar (in concept) to least squares to find a "best-fit line" through
+our data points. This will be our first PC axes and it explains the most
+variance in our data.
+  4. Find another best-fit line through the remainder of the data under the
+     condition that it has to be orthogonal to the first axes (i.e., at a
+90&deg; angle, meaning that these two axes are as unrelated to each other as
+possible). 
+  5. This process continues until we have k PC axes.
+
+Easy peasy, right? PCA _is_ in fact a fairly straightforward and automatic
+analysis in R. We just have to give R the appropriate object, do a little of
+bit of transformation to ensure our results are not disproportionately affected
+by any outliers (i.e., rare species), and we are good to go!
+
+
 ```{r}
-det(bfi_cor)
-```
 
-Principal components analysis can be carried out using the `principal` function from the `psych` package. This command creates a principal components model, by specifying either a dataframe of raw data or a correlation matrix.
+kenya.pca <- kenya.wide %>% 
+  dplyr::select(arabiensis, gambiae, funestus, merus) %>% # Choose relevant columns
+  mutate_all(sqrt) %>% # Hellinger transformation 
+  prcomp(.) # Pipe directly into base R function for PCA
 
-Our starting point is to create a principal components model that has the same number of factors as there are variables in the data: by doing this we are just reducing the data set down to its underlying factors. By extracting as many factors as there are variables we can inspect their eigenvalues and make decisions about which factors to extract. A final thing to note is that we have set the rotation method to “none”, which means that we won’t carry out factor rotation because we don’t need to at this stage.
+``` 
 
-The code below shows the results of the first principal components model. The first part of this is to create a factor loading matrix (using the unrotated loadings). Currently these standardized loadings are not interesting, but they represent the loading from each factor or component to each variable.
+
+These lines of code returns the result of our simple PCA. Use _str()_ and _summary()_ for a quick initial inspection of this object.
+
+
 ```{r}
-pc1 <- principal(bfi_cor, nfactors =25, rotate = "none")
-pc1
+
+summary(kenya.pca)
+
 ```
 
-The next thing to look at after the factor loading matrix are the eigenvalues. The eigenvalues associated with each factor represent the variance explained by that particular linear component. R calls these SS loadings (sums of squared loadings), because they are the sum of the squared loadings. (You can also find them in a variable associated with the model called values, so in our case we could access this variable using pc1$values). The eigenvalues show us that four components (or factors) have eigenvalues greater than 1, suggesting that we extract four components if we use something called Kaiser’s criterion. However, we can also plot our eigenvalues and evaluate a "scree" plot to help us determine how many factors to extract.
 
-Below, we will simply plot the eigenvalues (y) against the factor number (x). This is called a scree plot. Here, we want to look at the break in the curve. The number of factors we want to extract will be to the left of the break. 
+This gives us a table _summary_ of variance explained by each axes. R even did
+the math for us and showed cumulative variance explained as we move to the
+higher dimensions, so convenient! We see that the first two PC axes already
+explained close to 90% of the variation of the data, that's pretty good! We
+will therefore only be using these two axes in subsequent analyses, and have
+successfully reduced our community composition measure from four variables to
+two! 
+
+
 ```{r}
-plot(pc1$values, type = "b")
+
+str(kenya.pca) 
+
 ```
 
 
-The evidence from the scree plot and from the eigenvalues suggests a five-component solution may be the best.
+We see that this object is *str*uctured as a five-item list. We mostly care
+about two of these items:
+
+1. Species loadings - appropriately named _rotation_.
+2. Site scores - lazily named _x_.
+
+To inspect these items, use the $ notation.
+
+
 ```{r}
-pc2 <- principal(bfi_cor, nfactors = 5, rotate = "none")
-pc2
+
+kenya.pca$rotation
+
 ```
 
-This output shows the second principal components model. Again, the output contains the unrotated factor loadings, but only for the first four factors. Notice that these are unchanged from the previous factor loading matrix. To actually perform PCA, however, we need to rotate our factors. All rotation does is  maximize the loading of each variable on one of the extracted factors while minimizing the loading on all other factors. This process makes it much clearer which variables relate to which factors. There are several ways of rotating our factors, however we are going to use something called orthogonal, or "varimax", rotation, which R actually defaults to if no rotation method is specified. 
+
+Basically, species loadings show how much of the original species info
+contributed to each new axes. For example, we see that the species _An.
+funestus_ loaded the most strongly on to PC1, followed by _An. arabiensis_ and
+_An. gambiae_ in the opposite direction. This means that sites with relatively
+more _An. funestus_ will tend to have relatively few _An. arabiensis_ and _An.
+gambiae_, but this antagonism is not balanced (due to weaker loading of
+_arabiensis_ and _gambiae_ onto this axes). As a mini challenge, interpret PC2
+loadings.
+
+
 ```{r}
-pc3 <- principal(bfi_cor, nfactors = 5, rotate = "varimax")
-pc3
+
+kenya.pca$x
+
 ```
 
-Interpreting the factor loading matrix is a little complex, and we can make it easier by using the print.psych() function. This does two things: first, it removes loadings that are below a certain value that we specify (by using the cut option); and second, it reorders the items to try to put them into their factors, which we request using the sort option. Generally you should be very careful with the cut-off value – if you think that a loading of .4 will be interesting, you should use a lower cut-off (say, .3), because you don’t want to miss a loading that was .39. Execute this command:
+
+Site scores, on the other hand, tells us the coordinates of each site following
+projection onto our newly made PC axes.
+
+The best way to understand what all of that meant is by visualizing the PCA
+results in a _biplot_. This type of graph is called a *bi*plot because we will
+be plotting the species loadings and site scores simultaneously. Just like our
+PCA, R has made it extremely easy for us to make biplots, and there are many
+options available in terms of packages and functions. We will be using a new
+function -- _autoplot()_ -- from a new package, _ggfortify_. This package (and
+function) takes the convenience afforded by ggplot to the next level (hence
+"fortify") -- we don't even have to tell it which type of plot or give it any
+aesthetics! 
+
 ```{r}
-print.psych(pc3, cut = 0.3, sort = TRUE)
+
+autoplot(kenya.pca)
+
 ```
 
-The rotation of the factor structure has clarified things considerably: there are five factors and variables load very highly onto different factors. The suppression of loadings less than .3 and ordering variables by loading size also make interpretation considerably easier (because you don’t have to scan the matrix to identify substantive loadings).
 
-The next step is to look at the content of questions that load onto the same factor to try to identify common themes. If the mathematical factor produced by the analysis represents some real-world construct then common themes among highly loading questions can help us identify what the construct might be. As we can see, the structure of our dataset seems to fit into the five personality dimensions nicely. We already have names for our factors, but if we didn't, we would try to find out what our latent variables have in common and name them appropriately.
+But wait, that's not a biplot though!? Turns out _autoplot()_ isn't that auto
+after all...
+
+
+```{r}
+
+autoplot(kenya.pca, loadings=TRUE, loadings.label=TRUE)
+
+```
+
+
+Some notes on interpreting this biplot:
+
+  * PC1 is typically plotted on the x-axis, and PC2 on the y-axis. The percent
+    variance explain by these axes have been included in the labels
+automatically for our convenience.
+  * The arrows (rotations = species loadings) remind us what the axes mean --
+    _An. funestus_ loaded strong onto PC1 whereas PC2 mainly represent the
+antagoism between _An. arabiensis_ and _An. gambiae_.
+  * The clustering of sites along the axes (and rotations) tell us which sites
+    are similar in terms of their species composition and how they are similar.
+For example, sites 1, 9, 11, and 17 were all similar in that they are dominated
+by _An. funestus_.
+
+We can add some simple modifications to include more information on the plot,
+such as other community attributes.  
+
+```{r tidy=FALSE}
+
+autoplot(kenya.pca, loadings=TRUE, loadings.label=TRUE, data=kenya.wide, colour="total.abundance") 
+# Remember to tell R where the original data is coming from! 
+# Also, ggplot will refuse to understand you if you spell colour the non-Canadian way
+
+```
+
+
+To make the scale more readable, we can manually change the colour bar to other
+colors, or, we could use a pre-made colour palette -- brace yourselves for the
+package _viridis_ because it is the BEST. PACKAGE. EVERRRRRRRRR.
+
+
+```{r}
+
+autoplot(kenya.pca, loadings=TRUE, loadings.label=TRUE, 
+         data=kenya.wide, colour="total.abundance", size=3) +
+  scale_colour_viridis(option="D", direction=-1) + 
+  theme_classic()
+# Setting direction = -1 flips the colour scale
+  
+```
+
+
+Lastly, we'll add our PC axes to the main dataframe for subsequent analyses.
+
+
+```{r}
+
+axes <- data.frame(kenya.pca$x)
+kenya.wide <- bind_cols(kenya.wide, axes) # Note order of rows!
+
+```
+
+
+_Sidebar:_ there are many ways to run ordinations, PCA is but one of them, and
+even then there are a couple of ways you can run a PCA. It will take this
+entire course and some more to walk you through all of the ordination
+techniques so we will refrain. Before you ordinate, you should always consult
+textbooks and and/or experts to make sure you are chosing the best method for
+your case.
+
+
+# Investigating the contributions of different axes of vector diversity to malaria prevalence
+
+## Initial data exploration
+
+Before we actually do our analysis, let's have another look at our data.
+Specifically, let's inspect the relationships between predictors using this
+tool called a correlation chart:
+
+
+```{r}
+
+kenya.wide %>% 
+  dplyr::select(c(total.abundance, SR, PC1, PC2, distance, lat)) %>% 
+  chart.Correlation(.)
+
+```
+
+
+We see that there is fairly good correlation between almost all of our
+predictors. This is bad news -- remember chili peppers? This phenomena is
+termed _multicollinearity_, and we can investigate this in a more objective and
+quantitative manner with the help of variance inflation factors (VIF). VIFs are
+so called because correlations amongst predictors inflates standard errors in
+parameter estimates, which means the p-value will also be inflated, making it
+difficult to detect an effect. The function we will use to calculate VIFs was
+sourced from Zuur _et al._ (2009).
+
+
+```{r}
+
+kenya.wide %>% 
+  dplyr::select(c(total.abundance, SR, PC1, PC2, distance, lat)) %>% 
+  corvif(.) 
+
+```
+
+
+A general rule of thumb is that VIFs over 3 will cause problems to your
+regressions, and we should sequentially drop the variable with the highest VIF,
+and recalculate VIFs until all are less than 3. If this is the case in your
+analysis, you **must** report which variables were dropped **and why**, ideally
+including the before and after VIF values. Of course, sometimes there are
+variables that are important to include and we cannot just drop them (e.g.,
+kind of important to keep mosquito abundance in our model). We will learn about
+methods to handle those situations in just a sec. 
+
+Back to our VIF analysis. We see that both *lat*itude and _distance_ to closest
+big city both have VIFs higher than 3. Check out Figure 1 in the original Mbogo
+_et al._ (2003) publication. We see that the closest big city in the area,
+Mombasa, is situated close to the south. No wonder latitude and distance were
+so highly correlated! Here, we make the executive decision to drop latitude,
+because we are not actually asking any climate-related question at the moment,
+and also because we have means to obtain climate variables directly (next
+lecture) and thus there is no need to use a proxy for that.
+
+Calculate VIFs again, this time without latitude.
+
+```{r}
+
+kenya.wide %>% 
+  dplyr::select(c(total.abundance, SR, PC1, PC2, distance)) %>% 
+  corvif(.) 
+
+```
+
+
+There, much better!
+
+Another thing we should inspect before running our linear models is the
+assmption of normality. Remember how the correlation chart we were working with
+earlier showed us histograms alongside correlations?
+
+```{r warning=FALSE}
+
+kenya.wide %>% 
+  dplyr::select(c(total.abundance, SR, PC1, PC2, distance)) %>% 
+  chart.Correlation(.) # Not very normal
+
+kenya.wide %>% 
+  dplyr::select(c(total.abundance, SR, PC1, PC2, distance)) %>% 
+  mutate_all(log) %>% # Natural-log transformation. For regular log, use log10()
+  chart.Correlation(., histogram=TRUE, pch=19) # Looks better
+
+```
+
+
+We make our second executive decision of the day - we will be fitting our linear models in log-log space.
+
+
+## Finally, we are going to fit our models! 
+
+We should be quite familiar with the syntax of linear models by now. Let's go
+ahead and write out one model each for our three predictors of interest,
+mosquito abundance (total.abundance), species richness (SR), and composition
+(PC1 and PC2).
+
+
+```{r}
+
+mod01 <- lm(log(PfPR)~log(total.abundance), data=kenya.wide); summary(mod01)
+mod02 <- lm(log(PfPR)~log(SR), data=kenya.wide); summary(mod02)
+mod03 <- lm(log(PfPR)~PC1+PC2, data=kenya.wide); summary(mod03)
+
+```
+
+
+Basically, we see that both mosquito abundance and species richness have strong
+positive effects, whereas PCs 1&2 were not statistically significant. What
+about our confounder, distance?
+
+
+```{r}
+
+mod04 <- lm(log(PfPR)~log(total.abundance)+log(distance), data=kenya.wide); summary(mod04)
+mod05 <- lm(log(PfPR)~log(SR)+log(distance), data=kenya.wide); summary(mod05)
+
+```
+
+
+From these models, we see the effects of total abundance and species richness
+on malaria prevalence differed _quantitatively_ from the previous models
+without the confounder, but not _qualitatively_ (i.e., the interpretation of
+the effect is the same -- significant positive association). We can thus make
+yet another executive decision to drop distance from subsequent analyses.
+Again, you **must** disclose this to your readers, ideally providing a table
+showing regression coefficients from both models with and without the
+confounder.
+
+Let's inspect the effects of abundance and species richness more closely. We
+can regress them against malaria prevalence simltaneously in a multiple
+regression...
+
+```{r}
+
+mod06 <- lm(log(PfPR)~log(total.abundance)+log(SR), data=kenya.wide); summary(mod06)
+
+```
+
+
+...but then the whole thing flatlined. What is going on? Did the effect just disappear?
+
+
+```{r}
+
+ggplot(kenya.wide, aes(x=SR, y=PfPR, colour=total.abundance)) +
+  geom_point(size=3) +
+  scale_colour_viridis(option="D", direction=-1) +
+  labs(y="Malaria prevalence", x="Number of mosquito species", fill="Mosquito\nabundance") +
+  theme_classic()
+
+```
+
+
+From this plot, we can see clearly that the effects did not in fact disappear
+(I mean, how _could_ it? Silly me...). The positive associations between
+abundance, species richness, and malaria prevalence are very pronounced. Could
+multicollinearity _still_ be obscuring our ability to find the "truth", even
+though we ensured VIFs looked good? To add even more confusion to the
+situation, when we compete all four predictors together in the model, we see
+that all of a sudden PC2 came back as significant...??!? 
+
+
+```{r}
+
+mod07 <- lm(log(PfPR)~log(total.abundance)+log(SR)+PC1+PC2, data=kenya.wide); summary(mod07)
+
+```
+
+
+**Disclaimer: Don't do this at home!** This exercise felt a lot like data
+mining -- it probably was! We showed you this in class only to demonstrate what
+multicollinearity can do to your regressions.
+
+
+## Structural equation models to the rescue 
+
+Structural equation models (SEM) is a scientific framework for the modelling
+and interpretation of complex networks of relationships as a whole system. SEMs
+are particularly well-suited for disentangling processess that operate
+simultaneously in systems, due to its focus on the many direct and indirect
+pathways through which a predictor may influence an outcome. This is acheived
+by explicitly modelling the relationships _between_ predictors (those darn
+correlations!) in addition to their associations with the focal response. This
+also means that SEMs have the capacity to become multivariate multiple
+regressions with great flexibility, where variables can be simultaneously
+predictors and responses. 
+
+The first and absolute most important step in constructing an SEM is model
+specification. It is absolutely crucial that this step is done appropriately.
+There are a couple types of relationships (i.e., paths) between variables one
+can specify:
+
+  1. Direct causal effect -- strong words!
+  2. Correlation -- less strong words
+  3. No relationship -- also strong words!!!
+  4. Latent variable -- represents abstract theoretical ideas unmeasured or
+     unmeasurable, these are uncommon in ecology and won't be discussed further
+
+We totally sound like broken records at this point, but you **must** have solid
+rationale for the inclusion of each variable and for the specification of each
+path. 
+
+The model we will be working with today takes the following form. 
+
+![Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Double-headed arrows represent correlations between the pair of variables. Paths are labeled with letters to facilitate discussion.](image/SEM-figure.png)
+
+Once you are satisfied with the specification of your model, we can then evaluate the model and inspect model fit. 
+
+There are many ways one can evaluate SEMs, and the R package _lavaan_ is
+perhaps the most popular amongst ecologists. _Lavaan_ stands for *la*tent
+*va*riable *an*alysis. As the name suggests, this package is particularly
+suited to handling SEMs with latent variables. Inspite of the fact that latent
+variable analyses (a.k.a. factor analyses) are not that common in ecology,
+_lavaan_ is popular because it is still powerful for non-factor-analyses, and
+also because it is extremely well documented. 
+
+We need to do a little data preparation before we can specify the model in R.
+Specifically, we need to create the natural-log-transformed predictors (total
+abundance and species richness) and response (malaria prevalence) before hand,
+because _lavaan_ does not like it when we do it in the equations itself.
+
+
+```{r}
+
+kenya.wide <- kenya.wide %>% 
+  mutate(l.abun = log(total.abundance), 
+         l.sr = log(SR),
+         l.pfpr = log(PfPR))
+
+```
+
+
+The _lavaan_ model specification syntax is slightly different from the linear
+models we are familiar with. The biggest difference is perhaps that, because we
+are dealing with multiple pathways in a system, we have to specify each path
+individuals and then include all of them as part of our model in a pair of
+quotations. Direct casual relationships are specified with the good old ~, as
+we do in regressions, and correlations are specified with ~~.
+
+
+```{r}
+
+sem01 <- '
+# Regressions
+l.pfpr ~ l.sr + l.abun + PC2
+# Correlations
+l.sr ~~ l.abun
+PC2 ~~ l.sr
+'
+
+```
+
+
+We will then call the _sem()_ function to evaluate this model. Remember to give
+it data! Given that each path in this model is expected to conform to
+assumptions of normality, and we can already foresee that this will not always
+be the case, we will use bootstrapping to obtain more robust standard error and
+p-value estimates. Since bootstrapping is a randomization procedure, we will
+set a seed for the random number generator to ensure that we can reproduce the
+same results when we rerun this code or share this with a collaborator. 
+
+
+```{r results="hide"}
+
+set.seed(42)
+sem01.fit <- sem(sem01, data=kenya.wide, se="boot", bootstrap=1000, verbose=TRUE) 
+# verbose is unnecessary, but it makes you look cool
+
+```
+
+
+It is always tempting to jump straight to results (those darn p-values!) -- BUT
+-- let's refrain for now and instead inspect model fit. Depending on how you
+chose to evaluate your SEM (e.g., which package you used), there will be
+different ways to inspect model fit. _Lavaan_ provides a whole suite of model
+fit indices, and we will focus on the Chi-sq test as it is often considered to
+be the gold standard. 
+
+To understand how the Chi-sq test works, we need to back track a little bit and
+think about how SEMs are evaluated. Basically, _lavaan_ calculates a matrix of
+covariances based on the observed data, and compares this to one generated from
+your hypothesized model structure. The null hypothesis of the Chi-sq test is
+that these two sets of values are not different from each other -- which is a
+great thing because that means your hypothesized model _is consistent with_ the
+observed data. In other words, a large p-value in the Chi-sq test for goodness
+of fit of an SEM is desirable. This is in contrast to traditional hypotheses
+testing approaches (e.g., in linear models) where the researcher hopes to find
+a large difference between the observed data and the null model which is a
+zero-effect model.
+
+**Disclaimer 2: A model that fits well doesn't mean that it is correct _per
+se_, or that it reflects the "truth" or the "reality"!** Whether an SEM is
+"good" is determined by the robustness of the theory that went into constucting
+it. We can never guarantee that we have found the "global best model", and we
+must never claim that we have found "the truth". The appropriate phrase to use
+is (and the correct way to think about SEM model fit) is whether "the data is
+consistent with what we’ve hypothesized/proposed". You **must** report model
+fit statistics when you work with SEMs. 
+
+To inspect model fit statistics, we can call our best friend _summary()_. This
+generates a very long summary, most are irrelevant at this point.
+Alternatively, we can use the self-explanatory function _fitMeasures()_.
+
+
+```{r}
+
+fitMeasures(sem01.fit, c("df", "pvalue")) # Retrieves a subset of indices
+
+```
+
+
+Significant p-value! Yay! ... WAIT, we are working with SEMs, this is not good! 
+
+So our hypothesized model structure is inconsistent with the observed data.
+Bummer! There are actually very good theoretical reasons why this model
+structure is inadequate, however, for the purposes of this lecture, we will
+pretend that this is not an issue and continue with our analysis. 
+
+We can use another self-explanatory function to pull path coefficients.
+
+
+```{r}
+
+parameterEstimates(sem01.fit, boot.ci.type="bca.simple", standardized = TRUE)
+
+```
+
+
+  * The first three rows gave the results of the hypothesized direct causal relationships. These results are congurent with the last linear model (mod07) we ran in that species richness and PC2 both have significant positive associations with malaria prevalence, but not total abundance. 
+  * The next two rows gave the results of hypoethesized correlations between species richness and total abundance and PC2, and as suspected, they were indeed correlated.
+  * The last four rows showed relationships we did not specify, and they were very strange ones as well -- what does the correlation between malaria prevalence and malaria prevalence mean? Turns out, this represents the residual variance in this variable. In other words, 1 minus this value gives the R^2^ value we are familiar with from working with linear models. This only works for direct causual relationships and not correlations, however, so you see that the last three gave estimates of 1, which means none of the variation is explained.
+
+_Note:_ Standardizing path coefficients (i.e., expressed in units of standard
+deviation) allow us to compare the effect of different predictors in a model,
+whereas raw path coefficients should be used when comparing the effect of that
+same predictor across different models.
+
+So we see that the code used to specify, evulate, and inspect elements of SEMs
+is pretty straight forward. To visualize SEM, however, is quite another story.
+There is an R package, _semPlot_, that can be used to draw path diagrams such
+as the one shown in Figure 1. Figures generated with this package is quite
+difficult to customize, though, so it is often recommended that you make your
+path diagrams in your favorite imaging processing software such as MS Paint,
+Inkscape, or even Powerpoint.  
+
+Lastly, one simply cannot work with SEMs without calculating indirect and total effects:
+  
+  * An indirect effect of predictor A to response B can be obtained by
+    multiplying all of the path coefficients that are in the way of A and B in
+one straight path. For instance, there are two ways in which total abundance is
+exerting indirect effects on malaria prevalence: through species richness and
+through PC2. The former is obtained with a$\times$d and the latter,
+d$\times$e$\times$c.
+  * Summing all the direct and indirect effects from A to B gives the total
+    effect A has on B.
+  
+We will add indirect and total effects of total abundance to our models first
+by labelling each path according to Figure 1, and using the symbol ":=".
+
+
+```{r results="hide"}
+
+sem02 <- '
+# regressions
+l.pfpr ~ a*l.sr + b*l.abun + c*PC2
+# correlations
+l.sr ~~ d*l.abun
+PC2 ~~ e*l.sr
+# defined parameters
+indirect.abun := (a*d) #indirect effect of abundance via SR
+indirect.abun2 := (d*e*c) #indirect effect of abundance via PC2
+total.abun := b + (a*d) + (d*e*c) 
+'
+
+set.seed(42)
+sem02.fit <- sem(sem02, data=kenya.wide, se="boot", bootstrap=1000, verbose=TRUE)
+
+```
+```{r}
+parameterEstimates(sem02.fit, boot.ci.type="bca.simple", standardized = TRUE)
+
+```
+
+
+The total effect of total abundance was statistically significant, but none of
+the rest of the compenents are. Think about what these results mean, especially
+in relation to what our linear model results suggested.
+
+
+
+## Bottomline
+
+*	SEM has the potential to provide much greater insight regarding how systems
+	work, and thus also our ability to predict its behavior under perturbation,
+than traditional univariate regression approaches **but only when applied
+appropriately**. Specifically, it can reveal pathways and mechanisms that are
+not apparent (and often impossible to find) via classic univariate approaches
+**but only when applied appropriately**.
+
+*	We write this again here because this is extremely important: A model that
+	fits well doesn’t necessarily mean that it is a good model, or that it
+reflects truth or reality. The theory behind the model is the most crucial to
+deciding whether or not a model is any good. For any given set of variables,
+there can be many different models that fit well, and they may even contradict
+each other or suggest nonsensical relationships. Thus, the model needs to be
+solid theoretically before you evaluate it and get too excited over the
+results. 
+
+* To ensure transparency and accountability, always provide a table summary of
+  pre-hoc rationale for the specification of each path, and a post-hoc
+interpretation of the results of model fit. Know that there is absolutely
+nothing wrong with "getting it wrong" the first time, in fact, those case often
+turn out to be the most interesting! There is also nothing wrong with adjusting
+your hypotheses as you work through your data and gain better understanding of
+it -- we’d all be out of jobs if the world always work exactly the way we
+thought it would. Again, transparency is key!
+
+
+
+## Additional readings
+
+Grace, J. B., Anderson, T. M., Olff, H. & Scheiner, S. M. (2010). On the specification of structural equation models for ecological systems. Ecol. Monogr. 80, 67-87.
+
+Mbogo, C. M. et al (2003). Spatial and temporal heterogeneity of Anopheles mosquitoes and Plasmodium falciparum transmission along the Kenyan coast. Am. J. Trop. Med. Hyg. 68, 734–742.
+
+Shipley, B. (2000). Cause and correlation in biology: a user’s guide to path analysis, structural equations, and causal inference. Cambridge University Press, London, UK.
+
+Zuur, A. F., Ieno, E. N., Walker, N., Saveliev, A. A. & Smith, G. M. (2009). Mixed effects models and extensions in ecology with R. Springer, New York, USA.
+
+Zuur, A. F., Ieno, E. N. & Elphick, C. S. (2010). A protocol for data exploration to avoid common statistical problems. Methods Ecol. Evol. 1, 3–14.
 

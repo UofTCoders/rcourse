@@ -32,7 +32,7 @@ navbar:
     - text: 'Oct. 08: Model Selection'
       href: lec09-model-selection.html
     - text: 'Oct. 10: Multivariate stats'
-      # href: lec10-multivariate-stats.html
+      href: lec10-multivariate-stats.html
     - text: 'Oct. 15: Spatial stats'
       # href: lec11-spatial-stats.html
     - text: 'Oct. 17: Simulating data: Randomization tests'

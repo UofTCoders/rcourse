@@ -37,4 +37,8 @@ Imports:
     multcomp,
     MuMIn,
     phaseR,
-    deSolve
+    deSolve,
+    PerformanceAnalytics,
+    viridis,
+    lavaan,
+    ggfortify
