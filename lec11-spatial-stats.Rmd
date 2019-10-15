@@ -79,10 +79,10 @@ download.file("https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_12",
 
 ```{r message=FALSE, warning=FALSE}
 
-kenya.wide <- read_csv("kenya.wide.csv")
-africa.wide <- read_csv("africa.wide.csv")
-temp <- raster::stack("wc2.0_bio_10m_01.tif") # Note special function for reading in raster files
-rain <- raster::stack("wc2.0_bio_10m_12.tif")
+kenya.wide <- read_csv("data/kenya.wide.csv")
+africa.wide <- read_csv("data/africa.wide.csv")
+temp <- raster::stack("data/wc2.0_bio_10m_01.tif") # Note special function for reading in raster files
+rain <- raster::stack("data/wc2.0_bio_10m_12.tif")
 
 ```
 
@@ -191,8 +191,8 @@ We could further add environmental data from _rasters_ we pull from the interweb
 
 ```{r eval=FALSE}
 
-temp <- raster::stack("wc2.0_bio_10m_01.tif")
-rain <- raster::stack("wc2.0_bio_10m_12.tif")
+temp <- raster::stack("data/wc2.0_bio_10m_01.tif")
+rain <- raster::stack("data/wc2.0_bio_10m_12.tif")
 
 ```
 
