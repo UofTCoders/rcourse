@@ -76,9 +76,8 @@ download.file("https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_12",
               "wc2.0_bio_2.5m_12.tif")
 
 ```
-```{r message=FALSE, warning=FALSE}
 
-setwd("~/Dropbox/PhD stuff/Courses/EEB 313 Quantitative methods for biology in R")
+```{r message=FALSE, warning=FALSE}
 
 kenya.wide <- read_csv("kenya.wide.csv")
 africa.wide <- read_csv("africa.wide.csv")
