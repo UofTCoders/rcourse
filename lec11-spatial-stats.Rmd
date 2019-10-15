@@ -30,21 +30,40 @@ output:
 
 ## Why do we care about space? 
 
-Everything in ecology plays out in space. How heterogeneity in abiotic factors across space drive ecological processes (e.g., species interactions) and patterns (e.g., species distributions) has been of interest to ecologists for a long time. 
+Everything in ecology plays out in space. How heterogeneity in abiotic factors
+across space drive ecological processes (e.g., species interactions) and
+patterns (e.g., species distributions) has been of interest to ecologists for a
+long time.
 
-From an implicit perspective, the consideration of space is important to us all. Whenever we have data collected across space, e.g., any sort of field survey, the independence assumption is typically not valid, as sites closer in space will tend to exhibit similar properties. This correlation in space can occur for two reasons (not mutually exclusive):
+From an implicit perspective, the consideration of space is important to us all.
+Whenever we have data collected across space, e.g., any sort of field survey,
+the independence assumption is typically not valid, as sites closer in space
+will tend to exhibit similar properties. This correlation in space can occur for
+two reasons (not mutually exclusive):
 
-1. Endogeneous mechanisms: processes inherent to the organism being considered, such as low dispersal capacity or social behaviour (e.g., schooling and herding).
-2. Exogeneous mechanisms: processes unrelated to the organism being considered, such aggregation of resources or climate gradients. 
+1. Endogeneous mechanisms: processes inherent to the organism being considered,
+such as low dispersal capacity or social behaviour (e.g., schooling and
+herding). 
+2. Exogeneous mechanisms: processes unrelated to the organism being
+considered, such aggregation of resources or climate gradients.
 
-Spatial autocorrelation may be classified as either positive or negative. A positive correlation means similar values appear together, while a negative case has dissimilar values appearing nearby. 
+Spatial autocorrelation may be classified as either positive or negative. A
+positive correlation means similar values appear together, while a negative case
+has dissimilar values appearing nearby.
 
-Recall the mixed model lecture. When there is non-independence in regressions that were not properly accounted for, we increase our Type I error (false positive) rates, and risk inferring patterns that don't in fact exist. Checking for spatial autocorrelation is therefore a crucial step in any regression involving spatial data.
+Recall the mixed model lecture. When there is non-independence in regressions
+that were not properly accounted for, we increase our Type I error (false
+positive) rates, and risk inferring patterns that don't in fact exist. Checking
+for spatial autocorrelation is therefore a crucial step in any regression
+involving spatial data.
 
 
 ## Set up 
 
-In this lecture, we will continue our quest into vector ecology, only this time asking a much simpler question: what is the effect of mosquito abundance on malaria prevalence? We will explicitly consider the role of space when we answer this question.
+In this lecture, we will continue our quest into vector ecology, only this time
+asking a much simpler question: what is the effect of mosquito abundance on
+malaria prevalence? We will explicitly consider the role of space when we answer
+this question.
 
 Here are the packages we will be using today:
 
@@ -90,7 +109,17 @@ rain <- raster::stack("data/wc2.0_bio_10m_12.tif")
 ```
 
 
-The _kenya.wide_ data was introduced in the multivariate statistics lecture, and we will revisit it briefly to illustrate working with spatial data at different scales (regional vs. continental). The _africa.wide_ data was originally obtained from the Malaria Atlas Project, an open-access, everything-malaria, database created and maintained by an international consortium of Malaria experts. In brief, data for global vector occurrence and malaria prevalence were extracted, matched in space (within 1$\times$1 km^2^ of each other) and time (overlapped in study duration), and validated against original sources. Additional data (e.g., climate, GDP, vector abundance) were sourced via diverse means. For the purposes of this lecture, we will be focusing on a subset of sites located in Africa. 
+The _kenya.wide_ data was introduced in the multivariate statistics lecture, and
+we will revisit it briefly to illustrate working with spatial data at different
+scales (regional vs. continental). The _africa.wide_ data was originally
+obtained from the Malaria Atlas Project, an open-access, everything-malaria,
+database created and maintained by an international consortium of Malaria
+experts. In brief, data for global vector occurrence and malaria prevalence were
+extracted, matched in space (within 1$\times$1 km^2^ of each other) and time
+(overlapped in study duration), and validated against original sources.
+Additional data (e.g., climate, GDP, vector abundance) were sourced via diverse
+means. For the purposes of this lecture, we will be focusing on a subset of
+sites located in Africa.
 
 
 # A _very_ brief introduction to spatial data
@@ -104,24 +133,59 @@ Vectors are more "free-formed" in the information they store:
 * Lines -- connects vertices, such as a road or a river
 * Polygon -- connects vertices into a closed area, such as a park perimeter or provincial boundaries
 
-Rasters, a.k.a. grids, on the other hand, are much more rigid, as the name suggests. This data type divide the landscape into identical and regularly-spaced pixels, and stores values in each of these pixels. Rasters can be fine or course, and doesn't have to be squares or rectangles. The pixels can even be so fine that they are essentially a continuous scale, representing gradual change. 
+Rasters, a.k.a. grids, on the other hand, are much more rigid, as the name
+suggests. This data type divide the landscape into identical and
+regularly-spaced pixels, and stores values in each of these pixels. Rasters can
+be fine or course, and doesn't have to be squares or rectangles. The pixels can
+even be so fine that they are essentially a continuous scale, representing
+gradual change.
 
 
 ## Coordinate reference systems (CRS)
 
 
-The fundamental goal of encoding spatial data is to convey where the data was collected. These are typically given as _coordinates_, as in the latitude and longitude we are all familiar with. In reality, however, it is a lot more complex to describe geographic locations. There are two broad classes of coordinate systems: 
+The fundamental goal of encoding spatial data is to convey where the data was
+collected. These are typically given as _coordinates_, as in the latitude and
+longitude we are all familiar with. In reality, however, it is a lot more
+complex to describe geographic locations. There are two broad classes of
+coordinate systems:
 
 1. Unprojected (aka geographic): Latitude and Longitude locations on the ellipsoid Earth
 2. Projected: location on 2D representations of Earth (e.g., maps). 
 
-_Projection_ refers to the process of projecting latitude and longitude from Earth the earth's surface (which is a ellipse) onto a flat surface by some standard formula known as a map projection. The main problem here is that it is not possible to flatten a round object without distortion. This results in trade-offs between area, direction, shape, and distance, because these features cannot be simultaneously perserved when projecting from 3D to 2D. Unprojected data is therefore always perferred, but alas, globes are inconvenient to use (e.g., the distance described by one unit changes depending on where on earth you are), so maps still predominate. There are many projections available -- there is no _best_ projection, but we can prioritize which features are important to perserve in each case. 
+_Projection_ refers to the process of projecting latitude and longitude from
+Earth the earth's surface (which is a ellipse) onto a flat surface by some
+standard formula known as a map projection. The main problem here is that it is
+not possible to flatten a round object without distortion. This results in
+trade-offs between area, direction, shape, and distance, because these features
+cannot be simultaneously perserved when projecting from 3D to 2D. Unprojected
+data is therefore always perferred, but alas, globes are inconvenient to use
+(e.g., the distance described by one unit changes depending on where on earth
+you are), so maps still predominate. There are many projections available --
+there is no _best_ projection, but we can prioritize which features are
+important to perserve in each case.
 
-The Universal Transverse Mercator (UTM) projection is commonly used in research because it is more accurate at smaller scales, especially in distance estimations. The UTM projection divides the Earth into 60 zones and uses a different transverse Mercator projection in each zone to reduce distance distortions. That said, one of the major disadvantage of UTM is that it is not suitable for use over large areas.
+The Universal Transverse Mercator (UTM) projection is commonly used in research
+because it is more accurate at smaller scales, especially in distance
+estimations. The UTM projection divides the Earth into 60 zones and uses a
+different transverse Mercator projection in each zone to reduce distance
+distortions. That said, one of the major disadvantage of UTM is that it is not
+suitable for use over large areas.
 
-For any projections, we need a model of the shape of the earth to work off of, or, in geography lingo, a _datum_. The most commonly used datum is the World Geodesic System 1984 (WGS84). There are, again, many datums available, including a selection of local datum often does a better job at recording locations for single country or region. 
+For any projections, we need a model of the shape of the earth to work off of,
+or, in geography lingo, a _datum_. The most commonly used datum is the World
+Geodesic System 1984 (WGS84). There are, again, many datums available, including
+a selection of local datum often does a better job at recording locations for
+single country or region.
 
-The most basic way to record spatial data is therefore a pair of coordinates and the reference datum. More sophisticated means involve a complete coordinate reference system a (CRS). CRSs are central to how software such as R and ArcGIS read locations, however, it is not trivial to code a CRS as any number of parameters (other than coordinates and datum) may be require to properly specify a CRS. Thankfully, a lot of commonly used CRSs have been assigned simplied EPSG (European Petroleum Survey Group) codes, which are unique IDs that identifies a CRS. For example, the CRS for Kenya can be specified as either 
+The most basic way to record spatial data is therefore a pair of coordinates and
+the reference datum. More sophisticated means involve a complete coordinate
+reference system a (CRS). CRSs are central to how software such as R and ArcGIS
+read locations, however, it is not trivial to code a CRS as any number of
+parameters (other than coordinates and datum) may be require to properly specify
+a CRS. Thankfully, a lot of commonly used CRSs have been assigned simplied EPSG
+(European Petroleum Survey Group) codes, which are unique IDs that identifies a
+CRS. For example, the CRS for Kenya can be specified as either
 
 
 ```{r eval=FALSE} 
@@ -139,17 +203,26 @@ CRS("+proj=utm +zone=37 +south +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towg
 ```
 
 
-Note that CRSs in R follow a very rigid format. Each piece of information (a tag) is entered as a string, indicated by +, and each tag is separated by a single space. Spacing within each tag is not allowed. 
+Note that CRSs in R follow a very rigid format. Each piece of information (a
+tag) is entered as a string, indicated by +, and each tag is separated by a
+single space. Spacing within each tag is not allowed.
 
 
 ## Spatial data in practice 
 
 
-The data we will be using today were not created as spatial objects, which means they don't come with defined coordinate systems (in other words, R or ArcGIS won't know that they refer to locations). The first thing we need to do is therefore to assign a CRS. 
+The data we will be using today were not created as spatial objects, which means
+they don't come with defined coordinate systems (in other words, R or ArcGIS
+won't know that they refer to locations). The first thing we need to do is
+therefore to assign a CRS.
 
 _CAUTION_: only do this if you know what the CRS should be!
 
-First, we need to make our numeric points into spatial points, and then transform it from geographic coordinates (latitude and longitude) to map projections for more accurate calculations later on. As a exmaple, we will use the UTM projection for the Kenya data we previously worked with, because all of those points fitted nicely into a single UTM zone. 
+First, we need to make our numeric points into spatial points, and then
+transform it from geographic coordinates (latitude and longitude) to map
+projections for more accurate calculations later on. As a exmaple, we will use
+the UTM projection for the Kenya data we previously worked with, because all of
+those points fitted nicely into a single UTM zone.
 
 
 ```{r}
@@ -164,7 +237,11 @@ UTM.kenya <- spTransform(coord.kenya,
 ```
 
 
-For the Africa data, however, the UTM projection is no longer appropriate as the data now span a much larger geographic area. We will be using the _sinusoidal_ projection instead. This is an equal-area projection and does a reasonable job at perserving distance as well, especially well for locations near the equator, so it appropriate for our case.
+For the Africa data, however, the UTM projection is no longer appropriate as the
+data now span a much larger geographic area. We will be using the _sinusoidal_
+projection instead. This is an equal-area projection and does a reasonable job
+at perserving distance as well, especially well for locations near the equator,
+so it appropriate for our case.
 
 
 ```{r}
@@ -189,7 +266,10 @@ africa.wide <- bind_cols(africa.wide, as.data.frame(sinu.africa)) # Note order o
 ```
 
 
-We could further add environmental data from _rasters_ we pull from the interwebs. Here, we extract annual temperature and annual rainfall for our sites from a historic climate data repository, WorldClim2 (accessed Oct 2019). Again, note the special function _stack()_ used to load raster files.
+We could further add environmental data from _rasters_ we pull from the
+interwebs. Here, we extract annual temperature and annual rainfall for our sites
+from a historic climate data repository, WorldClim2 (accessed Oct 2019). Again,
+note the special function _stack()_ used to load raster files.
 
 
 ```{r eval=FALSE}
@@ -214,7 +294,8 @@ points(coord.africa)
 ```
 
 
-We can extract data from raster files for our sites with a simple and appropriately named function _extract_.
+We can extract data from raster files for our sites with a simple and
+appropriately named function _extract_.
 
 
 ```{r}
@@ -225,7 +306,9 @@ extractions.r <- raster::extract(rain, coord.africa, df = TRUE, method="bilinear
 ```
 
 
-The _df_ argument tells R to return a data frame. In case there is a missing value in our raster file, _method="bilinear"_ will interpolate from the four nearest raster cells.
+The _df_ argument tells R to return a data frame. In case there is a missing
+value in our raster file, _method="bilinear"_ will interpolate from the four
+nearest raster cells.
 
 Since the resulting object is a data frame, we can easily bind this new data to our main data file.
 
@@ -243,15 +326,25 @@ africa.wide <- as.data.frame(cbind(africa.wide, extractions)) # Note order of ro
 ```
 
 
-_Sidebar_: WorldClim2 is a one-stop shop for a bunch of climate variables. There are other open-source data repositories out there, such as WorldPop for demographics, World Bank for economics data. There are lots of opportunities out there for you to build custom datasets and ask lots of interesting questions. For this lecture, however, we will focus on vector ecology, and therefore, not consider these environmental variables further.
+_Sidebar_: WorldClim2 is a one-stop shop for a bunch of climate variables. There
+are other open-source data repositories out there, such as WorldPop for
+demographics, World Bank for economics data. There are lots of opportunities out
+there for you to build custom datasets and ask lots of interesting questions.
+For this lecture, however, we will focus on vector ecology, and therefore, not
+consider these environmental variables further.
 
 
 # A _very_ brief introduction to spatial statistics
 
 
-In this section, we will learn the basics of spatial statistics, including how to assess and correct for spatial autocorrelation in our analyses.
+In this section, we will learn the basics of spatial statistics, including how
+to assess and correct for spatial autocorrelation in our analyses.
 
-We'll assess for spatial autocorrelation with Moran's autocorrelation coefficient, a.k.a Moran's I. To calculate Moran's I, we first need to create a matrix of _inverse distance weights_, which describes how close together each site is. It is very easy to do with three simple steps in base R (sorry, this is just so much cleaner in base!).
+We'll assess for spatial autocorrelation with Moran's autocorrelation
+coefficient, a.k.a Moran's I. To calculate Moran's I, we first need to create a
+matrix of _inverse distance weights_, which describes how close together each
+site is. It is very easy to do with three simple steps in base R (sorry, this is
+just so much cleaner in base!).
 
 
 ```{r warning=FALSE}
@@ -282,7 +375,10 @@ Moran.I(africa.wide$PfPR, inv.dist, alternative="two.sided")
 ```
 
 
-The null hypothesis is zero spatial autocorrelation present in the variable. A significant p-value therefore means that sites that are closer together have more similar prevalence in malaria. Let's repeat this analysis for our predictor variable.
+The null hypothesis is zero spatial autocorrelation present in the variable. A
+significant p-value therefore means that sites that are closer together have
+more similar prevalence in malaria. Let's repeat this analysis for our predictor
+variable.
 
 
 ```{r eval=FALSE}
@@ -298,31 +394,62 @@ Turns out, sites close to one another also have similar mosquito abundances.
 ## Visualizing spatial autocorrelation with semivariograms
 
 
-Another way to explore spatial autocorrelation is to calculate semivariance. Semivariance is a measure of the degree of similarity between pairs of points separated by a specific distance. If the data are spatial autocorrelated, then sampling units that are closer together in space might be expected to yield similar responses and thus similar residuals. The _semivariogram_ (used interchangebly with variogram) displays the variances within groups of observations, plotted as a function of distance between the observations.
+Another way to explore spatial autocorrelation is to calculate semivariance.
+Semivariance is a measure of the degree of similarity between pairs of points
+separated by a specific distance. If the data are spatial autocorrelated, then
+sampling units that are closer together in space might be expected to yield
+similar responses and thus similar residuals. The _semivariogram_ (used
+interchangebly with variogram) displays the variances within groups of
+observations, plotted as a function of distance between the observations.
 
-To make a semivariogram, first we fit a null model without any spatial sturcture. We will be fitting this model with the function _gls()_ instead of _lm()_ to facilitate future comparisons. These two differ in their method of parameter estimation (ordinary least square vs. maximum likelihood) but otherwise achieve the same thing.
+To make a semivariogram, first we fit a null model without any spatial
+sturcture. We will be fitting this model with the function _gls()_ instead of
+_lm()_ to facilitate future comparisons. These two differ in their method of
+parameter estimation (ordinary least square vs. maximum likelihood) but
+otherwise achieve the same thing.
 
 
 ```{r}
 
 mod <- gls(log(PfPR)~log(total.abundance), data=africa.wide, method="ML") # ML for max likelihood
 
-plot(Variogram(mod, form = ~coords.x1+coords.x2, resType = "normalized"))
+# plot(Variogram(mod, form = ~coords.x1+coords.x2, resType = "normalized"))
 
 ```
 
 
-_Note_: This **V**ariogram() function comes from _nlme_ package, and should not be confused with **v**ariogram() from package _gstat_. Although they perform the same semivariance analysis, these functions take different arguments, so R will get confused if we are not careful. 
+_Note_: This **V**ariogram() function comes from _nlme_ package, and should not
+be confused with **v**ariogram() from package _gstat_. Although they perform the
+same semivariance analysis, these functions take different arguments, so R will
+get confused if we are not careful.
 
-In spatially correlated data, semivariance typically increases with increasing distance up to a point (the sill). The span of distances over which points are correlated is called the range. In the above variogram, the range is approximately "2e+06". The sinusoidal projection we used on our geographic data presents distance in meters, therefore, we can conclude that sites within 200 km of each other tend to have similar mosquito abundances. Note that semivariance does not always plateau, but may exhibit forms of cycling. This can be indicative of the underlying environment conditions (e.g., types of vegetation) showing similar patterns across a landscape.
+In spatially correlated data, semivariance typically increases with increasing
+distance up to a point (the sill). The span of distances over which points are
+correlated is called the range. In the above variogram, the range is
+approximately "2e+06". The sinusoidal projection we used on our geographic data
+presents distance in meters, therefore, we can conclude that sites within 200 km
+of each other tend to have similar mosquito abundances. Note that semivariance
+does not always plateau, but may exhibit forms of cycling. This can be
+indicative of the underlying environment conditions (e.g., types of vegetation)
+showing similar patterns across a landscape.
 
 
 ## Accounting for spatial autocorrelation in statistical models
 
 
-There are -- you guessed it! -- many ways to incorporate spatial autocorrelation structure into regression analyses. One of the most stragihtfoward ways to do so is to think of it as a random effect. The _gls()_ function we used above allows us to do just that. This method is simple and works really well if normality assumptions are met. 
+There are -- you guessed it! -- many ways to incorporate spatial autocorrelation
+structure into regression analyses. One of the most stragihtfoward ways to do so
+is to think of it as a random effect. The _gls()_ function we used above allows
+us to do just that. This method is simple and works really well if normality
+assumptions are met.
 
-There are -- you guessed it again! -- five autoregressive correlation structures we can model. They all describe the degrading of correlation between samples as you move away in space, with the different functional forms dictates the rate of decay as you move away. These different functions are necessary because the cause and consequences of spatial autocorrelation can differ across datasets. For instance, the way that the sites are clustered (or not clustered) can have an impact on how autocorrelation should be modelled. The five options are:
+There are -- you guessed it again! -- five autoregressive correlation structures
+we can model. They all describe the degrading of correlation between samples as
+you move away in space, with the different functional forms dictates the rate of
+decay as you move away. These different functions are necessary because the
+cause and consequences of spatial autocorrelation can differ across datasets.
+For instance, the way that the sites are clustered (or not clustered) can have
+an impact on how autocorrelation should be modelled. The five options are:
 
 1. Exponential
 2. Gaussian
@@ -330,9 +457,15 @@ There are -- you guessed it again! -- five autoregressive correlation structures
 4. Rational quadratic
 5. Spherial
 
-_Note:_ all of these assume _isotropy_, which means data are uniform (or uniformly different) in all directions. We can imagine situations where that may not be the case, for example, a river carrying substrate downstream, or when wind consistently blow in one direction. We can actually check for those assumptions with variograms, but that is beyond the scope of this lecture.
+_Note:_ all of these assume _isotropy_, which means data are uniform (or
+uniformly different) in all directions. We can imagine situations where that may
+not be the case, for example, a river carrying substrate downstream, or when
+wind consistently blow in one direction. We can actually check for those
+assumptions with variograms, but that is beyond the scope of this lecture.
 
-While sometimes you can tell from the variogram which structure is most suitable, it is very common practice to fit all the alternative models and then chose the one with the lowest AIC.
+While sometimes you can tell from the variogram which structure is most
+suitable, it is very common practice to fit all the alternative models and then
+chose the one with the lowest AIC.
 
 So here we go, the grand finale where we input the spatial structure into our model. 
 
@@ -381,16 +514,31 @@ summary(mod.exp)
 ```
 
 
-Oh no! After accounting for spatial autocorrelation, the relationship between total abundance and malaria prevalence went away! Now, that doesn't mean that mosquito abundance doesn't have any effect on disease. This means that, across such large spatial scale, other processes become more important in determining malaria prevalence. The interpretation of these results are indeed the same as a mixed model.
+Oh no! After accounting for spatial autocorrelation, the relationship between
+total abundance and malaria prevalence went away! Now, that doesn't mean that
+mosquito abundance doesn't have any effect on disease. This means that, across
+such large spatial scale, other processes become more important in determining
+malaria prevalence. The interpretation of these results are indeed the same as a
+mixed model.
 
 
 ## Appendix: A _very very very_ brief intorduction to making maps with ggplot 
 
-There are so many ways one can make maps in both base R and ggplot and beyond. In this example, we will be making use of maps taken from the _maps_ package and customizing them in ggplot. The issue with this pacakge is that you always have to start with a world map and then subset by country. This means that when you want to plot Africa, you have to sit there and subset all day. 
+There are so many ways one can make maps in both base R and ggplot and beyond.
+In this example, we will be making use of maps taken from the _maps_ package and
+customizing them in ggplot. The issue with this pacakge is that you always have
+to start with a world map and then subset by country. This means that when you
+want to plot Africa, you have to sit there and subset all day.
 
-There is a more _pure_ ggplot way of making maps, called _ggmap_. This package extracts maps from Google maps, which is awesome because it gives you assess to high quality maps from all over the world, and you can zoom in on whichever region you want. However, you do have to register with Google to use it, and Google asks for your credit card number when you register. So, not great. 
+There is a more _pure_ ggplot way of making maps, called _ggmap_. This package
+extracts maps from Google maps, which is awesome because it gives you assess to
+high quality maps from all over the world, and you can zoom in on whichever
+region you want. However, you do have to register with Google to use it, and
+Google asks for your credit card number when you register. So, not great.
 
-We will therefore go with the free-all-the-way route, and use _maps_. Instead of subseting the map officially, we'll cheat a little and just crop the graph to show Africa. We'll also do an example of plotting a single country -- Kenya. 
+We will therefore go with the free-all-the-way route, and use _maps_. Instead of
+subseting the map officially, we'll cheat a little and just crop the graph to
+show Africa. We'll also do an example of plotting a single country -- Kenya.
 
 ```{r}
 
@@ -419,8 +567,11 @@ ggplot() +
 ## Additional readings
 
 
-Fick, S.E. and R.J. Hijmans, 2017. WorldClim 2: new 1‐km spatial resolution climate surfaces for global land areas. Int J Climatol 37: 4302-4315.
+Fick, S.E. and R.J. Hijmans, 2017. WorldClim 2: new 1‐km spatial resolution
+climate surfaces for global land areas. Int J Climatol 37: 4302-4315.
 
-Fletcher, R. & Fortin, M.-J. (2018). Spatial Ecology and Conservation Modeling. Springer, Switzerland.
+Fletcher, R. & Fortin, M.-J. (2018). Spatial Ecology and Conservation Modeling.
+Springer, Switzerland.
 
-Hay, S. & Snow, R. (2006). The Malaria Atlas Project: Developing global maps of malaria risk. PLoS Med 3: e473.
+Hay, S. & Snow, R. (2006). The Malaria Atlas Project: Developing global maps of
+malaria risk. PLoS Med 3: e473.
