@@ -1,7 +1,10 @@
 ---
 title: "Spatial statistics"
-author: Amber Gigi Hoi
-output: pdf_document
+author: "Amber Gigi Hoi"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 # Lesson preamble: 
@@ -234,7 +237,8 @@ Since the resulting object is a data frame, we can easily bind this new data to 
 colnames(extractions.t)[2] <- "ann.temp"
 colnames(extractions.r)[2] <- "ann.rain" 
 
-africa.wide <- as.data.frame(cbind(africa.wide, extractions.t, extractions.r)) # Note order of rows!
+extractions <- left_join(extractions.t, extractions.r, by = "ID")
+africa.wide <- as.data.frame(cbind(africa.wide, extractions)) # Note order of rows!
 
 ```
 
@@ -358,6 +362,7 @@ mod.sp <- gls(log(PfPR)~log(total.abundance), data=africa.wide, method="ML",
               corr=corSpatial(form=~coords.x1+coords.x2, type ="spherical"))
 
 ```
+
 ```{r}
 
 AIC(mod, mod.exp, mod.gau, mod.lin, mod.rat, mod.sp)
