@@ -115,7 +115,7 @@ scales (regional vs. continental). The _africa.wide_ data was originally
 obtained from the Malaria Atlas Project, an open-access, everything-malaria,
 database created and maintained by an international consortium of Malaria
 experts. In brief, data for global vector occurrence and malaria prevalence were
-extracted, matched in space (within 1$\times$1 km^2^ of each other) and time
+extracted, matched in space (within 1 km^2^ of each other) and time
 (overlapped in study duration), and validated against original sources.
 Additional data (e.g., climate, GDP, vector abundance) were sourced via diverse
 means. For the purposes of this lecture, we will be focusing on a subset of
