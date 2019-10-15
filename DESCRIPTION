@@ -41,4 +41,10 @@ Imports:
     PerformanceAnalytics,
     viridis,
     lavaan,
-    ggfortify
+    ggfortify,
+    nlme,
+    sp,
+    ape,
+    rgdal,
+    raster,
+    maps
