@@ -1,73 +1,56 @@
 ---
-title: 'Assignment 6: Multivariate stats and model selection'
+title: 'Assignment 6: Spatial statistics, simulating data, and randomization tests (8 marks)'
 output:
     html_document:
         toc: false
 ---
-
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
 
 <!-- keep this part -->
 *To submit this assignment, upload the full document on blackboard,
 including the original questions, your code, and the output. Submit
 your assignment as a knitted `.pdf` (preferred) or `.html` file.*
 
-1. In this exercise, we will once again use the data of Santangelo _et al._ (In press) that you used in assignment 5. Let's go ahead and load in the data.
+1. In this exercise, we will continue to use the vector community and malaria survey data collected by Mbogo _et al._ (2003) (i.e., `kenya.wide.csv`). We will inspect whether spatial autocorrelation affects our inference of the effects of vector abundance, species richness, and composition, on malaria prevalence. We will also investigate which environmental factors underpin the distribution of mosquitoes, all in the context of space. (4 marks).
+
+    a. Compute Moran's autocorrelation statistic to assess whether mosquito abundance and species richness, and malaria prevalence are correlated in space. (1 mark)
+
+    b. Extract annual average temperature and rainfall data from WorldClim2 using the raster files provided in class. Create maps (see appendix to lecture notes) to show the variation in these climatic factors across the sites. (1 mark)
+
+    c. Investigate whether rainfall influence mosquito abundance across sites. Your complete analysis should include formally testing whether the temperature and rainfall patterns across sites are correlated in space (construct a variogram and interpret when neccessary), regression models with the appropriate autocorrelation structure, and an interpretation of your model outputs. Feel free to make use of additional plots to help explain your findings (2 mark)
+
+
+2. Simulating data (2 marks)
+
+    a. Generate a gamma distribution by randomly sampling 30 points from a distribution with shape parameter equal to 1.35 and rate parameter equal to 0.5. Plot this distribution. Set a seed of 42. (0.5 mark).
+
+    b. Plot the distribution of sample means obtained by generating 5000 gamma distributions with the same parameters as in (a). In other words, the distribution should be made up of 5000 means, each from a different simulated gamma distribution. Set a seed of 43. What do you notice about this distribution when compared to the original distribution in (a)? Why would we expect this? (0.5 marks)
+
+    c. In this exercise you will simulate a multiple regression. Remember, multiple regression means that there is more than one explanatory (aka predictor, independent) variable for a given response variable. Multiple regression thus estimates a separate effect (i.e. _beta_) for each explanatory variable in the model, while holding the other variables constant. This exercise is only a slight extension of the model that we simulated in lecture. Simulate a model that satisfies the conditions below and show the model output using `summary()`. Set a seed of 44. (1 mark).
+
+        1. `x1` is an explanatory variable with _sequence_ from 51 to 70 with 1 unit intervals between each value (i.e. 20 values total).
+        2. `x2` is an explanatory variable of length 20 randomly drawn for a normal distribution with mean equal to 62 and standard deviation equal to 2.7.
+        2. `x3` is an explanatory variable of length 20 randomly drawn for a gamma distribution with shape equal to 5 and rate equal to 0.5.
+        3. the `y_intercept` is 22
+        4. The beta associated with `x1` is 0.62.
+        5. The beta associated with `x2` is 0.047`
+        6. The beta associated with `x3` is 0.185
+        6. The error is drawn from a normal distribution with mean equal to 0 and standard deviation equal to 1.65.
+        7. `y` is a linear combination of `x1`, `x2` and `x3`. There are no interations.
+
+3. Randomization test (2 marks)
+
+    Run the code chunk below to load the data that will be used in this exercise.
 
     ```{r message=FALSE, warning=FALSE}
     library(tidyverse)
-    library(lme4)
-    library(lmerTest)
-    
-    Santangelo_data <- "https://uoftcoders.github.io/rcourse/data/Santangelo_JEB_2018.csv"
-    download.file(Santangelo_data, "Santangelo_JEB_2018.csv")
-    Santangelo_data <- read_csv("Santangelo_JEB_2018.csv", 
-                                col_names = TRUE)
-    glimpse(Santangelo_data)
-    head(Santangelo_data)
+    df <- "https://uoftcoders.github.io/rcourse/data/Assign05_Question3.csv"
+    download.file(df, "Assign05_Question3.csv")
+    df <- read_csv("data/Assign05_Question3.csv", 
+                           col_names = TRUE)
+    glimpse(df)
     ```
 
-    a. Create a mixed-effects model with banner petal length (`Avg.Bnr.Ht`) as the response variable and HCN, Pollination, and their interaction as fixed-effect predictors. Be sure to account for variation due to `Genotype`, `Block` and the `Genotype` by `Pollination` interactions by including these terms as random effects. This will be our saturated model. **Hint:** Take a look at lecture 8 for a reminder on how to code random effects using `lmer()`, especially how interation (i.e. crossed) random-effects are coded. (0.5 marks)
-    
-    b. We will generate a reduced model from the saturated model in (a). Should we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
-    
-    c. Using the approach described in lecture 11, optimize the random effect structure of this model. Show the AIC/AIC~c~ output for each model of varying random effect strucure. Describe in one sentence what the optimal random effect structure of the model is and why. **Hint:** Think carefully about which random effects should and should not be removed from the model. See lecture 11 for the logic behind this decision and assignment 5 for a description of the dataset that will help guide this decision. (1 mark)
-    
-    d. Using the model with the optimal random-effect structure identified in (c), find the optimal fixed-effect structure. Be sure to show all the models and their AIC/AIC~c~ scores (1 mark)
-    
-    e. Based on the AIC/AIC~c~ output from (d), generate a your final model with both optimized fixed and random effects. Summarize the model and interpret its output. Is there a significant effect of any treatment? If so, which one(s) and in which direction (i.e. larger or smaller banner petals in which treatment factor level?). Use the model's output to support your answer. You only need to interpret significant main effects here (i.e. not interactions). (0.5 marks)
-    
-    f. Use `dplyr` and `ggplot2` to plot the banner petal length of plants by the _main_ effect that showed a significant effect in the optimized model above. The figure should show the mean plus and minus a single standard error of the mean. Suggest one biological interpretation of the pattern you see in the figure and in the model (i.e. why do you think this would happen). **Hint:** `geom_errorbar()`. (0.25 marks)
-    
-    g. Do you think we were justified in interpreting a single model? Why or why not? What alternative approach could we have used? (0.25 marks).
+    a. Generate a histogram showing the null distribution of t-statistics between groups one and two from the `df` dataframe that you just loaded. The null distribution should be based 5,000 reshufflings of the data. (1 mark). Overlay onto this histogram the observed t-statistic as a dashed vertical line. Set a seed of 45. **Hint:** t-tests return list objects that can be indexed using `$`
 
-2. Install the`cluster` package so we can use the dataset "animals". Use the `?animals` to look at the documentation for the dataset, and load the packages below:
-
-    ```{r}
-    # install.packages("cluster")
-    library(cluster)
-    library(psych)
-    head(animals)
-    ```
-
-    a. First, clean the data so that there are no missing values (recall: the `principal()` function does not handle NA's well). Then, create a correlation matrix and create an inital principal components matrix without rotation and with the full number of possible factors. Create a scree plot. Based on the eigenvalues and scree plot, decide on an appropriate number of components for your model and justify your decision. (1 mark)
+    b. Perform a permutation test testing whether the observed t statistic between groups one and two is different than what would be expected by chance. Include a statement about whether there is a significant difference between groups based on your permutation test and be sure to include the P-value. How does this P-value compare to one obtained from a simple t-test? Why? (1 mark)
     
-    b. Run your principal components analysis using the number of factors/components you have selected. Interpret the output using the `psych` package we used in class. Assign each variable to a component. Do the components you've come up with make sense to you? What do they have in common, if anything (1 mark)?
-    
-    c. Let's go back to our survey data. If you need to re-download it, use the code below:
-
-        ```{r}
-        # If you need to re-download the survey:
-        download.file("https://ndownloader.figshare.com/files/2292169", "survey.csv") 
-        survey <- read_csv("survey.csv")
-        survey <- survey %>% 
-            # uses dplyr function to change all character vectors to factors
-            mutate_if(is.character, as.factor) 
-        head(survey)
-        ```
-
-        Choose two appropriate variables to run MANOVA on. Choose two categorical predictor variables. Run the analysis (without follow-up analyses), interpret the results, and explain your choice of variables. (1 mark).
-
-    d. When would we prefer to use MANOVA over ANOVA? When is it not appropriate to use MANOVA? List one example each (1 mark).
