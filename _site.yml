@@ -34,7 +34,7 @@ navbar:
     - text: 'Oct. 10: Multivariate stats'
       href: lec10-multivariate-stats.html
     - text: 'Oct. 15: Spatial stats'
-      # href: lec11-spatial-stats.html
+      href: lec11-spatial-stats.html
     - text: 'Oct. 17: Simulating data: Randomization tests'
       href: lec12-randomization-tests.html
     - text: 'Oct. 22: Ecological modelling'
