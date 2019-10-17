@@ -4,6 +4,13 @@ cache: packages
 script:
 - Rscript -e "rmarkdown::render_site('.')"
 - touch _site/.nojekyll
+dist: trusty
+addons:
+  apt:
+    packages:
+      - gdal-bin
+      - libgdal1-dev
+      - libproj-dev
 deploy:
   provider: pages
   skip_cleanup: true
