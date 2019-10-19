@@ -3,8 +3,7 @@ title: "Spatial statistics"
 author: "Amber Gigi Hoi"
 output:
   pdf_document: default
-  html_document:
-    df_print: paged
+  word_document: default
 ---
 
 # Lesson preamble: 
@@ -43,9 +42,9 @@ two reasons (not mutually exclusive):
 
 1. Endogeneous mechanisms: processes inherent to the organism being considered,
 such as low dispersal capacity or social behaviour (e.g., schooling and
-herding). 
-2. Exogeneous mechanisms: processes unrelated to the organism being
-considered, such aggregation of resources or climate gradients.
+herding).
+2. Exogeneous mechanisms: processes unrelated to the organism being considered,
+such aggregation of resources or climate gradients.
 
 Spatial autocorrelation may be classified as either positive or negative. A
 positive correlation means similar values appear together, while a negative case
@@ -93,9 +92,9 @@ download.file("https://uoftcoders.github.io/rcourse/data/kenya.wide",
 download.file("https://uoftcoders.github.io/rcourse/data/africa.wide", 
               "africa.wide")
 download.file("https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_01", 
-              "wc2.0_bio_2.5m_01.tif")
+              "wc2.0_bio_10m_01.tif")
 download.file("https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_12", 
-              "wc2.0_bio_2.5m_12.tif")
+              "wc2.0_bio_10m_12.tif")
 
 ```
 
@@ -103,8 +102,6 @@ download.file("https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_12",
 
 kenya.wide <- read_csv("data/kenya.wide.csv")
 africa.wide <- read_csv("data/africa.wide.csv")
-temp <- raster::stack("data/wc2.0_bio_10m_01.tif") # Note special function for reading in raster files
-rain <- raster::stack("data/wc2.0_bio_10m_12.tif")
 
 ```
 
@@ -115,11 +112,11 @@ scales (regional vs. continental). The _africa.wide_ data was originally
 obtained from the Malaria Atlas Project, an open-access, everything-malaria,
 database created and maintained by an international consortium of Malaria
 experts. In brief, data for global vector occurrence and malaria prevalence were
-extracted, matched in space (within 1 km^2^ of each other) and time
-(overlapped in study duration), and validated against original sources.
-Additional data (e.g., climate, GDP, vector abundance) were sourced via diverse
-means. For the purposes of this lecture, we will be focusing on a subset of
-sites located in Africa.
+extracted, matched in space (within 1 km^2^ of each other) and time (overlapped
+in study duration), and validated against original sources. Additional data
+(e.g., climate, GDP, vector abundance) were sourced via diverse means. For the
+purposes of this lecture, we will be focusing on a subset of sites located in
+Africa.
 
 
 # A _very_ brief introduction to spatial data
@@ -136,7 +133,7 @@ Vectors are more "free-formed" in the information they store:
 Rasters, a.k.a. grids, on the other hand, are much more rigid, as the name
 suggests. This data type divide the landscape into identical and
 regularly-spaced pixels, and stores values in each of these pixels. Rasters can
-be fine or course, and doesn't have to be squares or rectangles. The pixels can
+be fine or coarse, and doesn't have to be squares or rectangles. The pixels can
 even be so fine that they are essentially a continuous scale, representing
 gradual change.
 
@@ -175,12 +172,12 @@ suitable for use over large areas.
 For any projections, we need a model of the shape of the earth to work off of,
 or, in geography lingo, a _datum_. The most commonly used datum is the World
 Geodesic System 1984 (WGS84). There are, again, many datums available, including
-a selection of local datum often does a better job at recording locations for
-single country or region.
+a selection of local datum which often does a better job at recording locations
+for single country or region.
 
 The most basic way to record spatial data is therefore a pair of coordinates and
 the reference datum. More sophisticated means involve a complete coordinate
-reference system a (CRS). CRSs are central to how software such as R and ArcGIS
+reference system (CRS). CRSs are central to how software such as R and ArcGIS
 read locations, however, it is not trivial to code a CRS as any number of
 parameters (other than coordinates and datum) may be require to properly specify
 a CRS. Thankfully, a lot of commonly used CRSs have been assigned simplied EPSG
@@ -251,7 +248,7 @@ coord.africa <- SpatialPoints(cbind(africa.wide$long, africa.wide$lat),
 
 sinu.africa <- spTransform(coord.africa, 
                            CRS("+proj=sinu +ellps=WGS84")) 
-# Note name of columns - x1 for latitude and x2 for longitude
+# Note name of columns - x1 for longitude and x2 for latitude
 
 ```
 
@@ -272,7 +269,7 @@ from a historic climate data repository, WorldClim2 (accessed Oct 2019). Again,
 note the special function _stack()_ used to load raster files.
 
 
-```{r eval=FALSE}
+```{r}
 
 temp <- raster::stack("data/wc2.0_bio_10m_01.tif")
 rain <- raster::stack("data/wc2.0_bio_10m_12.tif")
@@ -320,8 +317,9 @@ Since the resulting object is a data frame, we can easily bind this new data to 
 colnames(extractions.t)[2] <- "ann.temp"
 colnames(extractions.r)[2] <- "ann.rain" 
 
-extractions <- left_join(extractions.t, extractions.r, by = "ID")
-africa.wide <- as.data.frame(cbind(africa.wide, extractions)) # Note order of rows!
+extractions <- left_join(extractions.t, extractions.r, by="ID")
+
+africa.wide <- as.data.frame(bind_cols(africa.wide, extractions)) # Note order of rows!
 
 ```
 
@@ -364,13 +362,15 @@ diag(inv.dist) <- 0
 ```
 
 
-Inverse distance weights are now ready, and we can assess whether our variables of interest are correlated in space! We will be using the self-explanatory function Moran.I for this test. 
+Inverse distance weights are now ready, and we can assess whether our variables
+of interest are correlated in space! We will be using the self-explanatory
+function Moran.I for this test.
 
 
 ```{r}
 
 Moran.I(africa.wide$PfPR, inv.dist, alternative="two.sided") 
-# Two sided = both greater and less than
+# Two sided = checks for both positive and negative spatial autocorrelation
 
 ```
 
@@ -399,8 +399,9 @@ Semivariance is a measure of the degree of similarity between pairs of points
 separated by a specific distance. If the data are spatial autocorrelated, then
 sampling units that are closer together in space might be expected to yield
 similar responses and thus similar residuals. The _semivariogram_ (used
-interchangebly with variogram) displays the variances within groups of
-observations, plotted as a function of distance between the observations.
+interchangebly with variogram) is a special kind of residual plot which displays
+the variances within groups of observations, plotted as a function of distance
+between the observations.
 
 To make a semivariogram, first we fit a null model without any spatial
 sturcture. We will be fitting this model with the function _gls()_ instead of
@@ -413,7 +414,7 @@ otherwise achieve the same thing.
 
 mod <- gls(log(PfPR)~log(total.abundance), data=africa.wide, method="ML") # ML for max likelihood
 
-# plot(Variogram(mod, form = ~coords.x1+coords.x2, resType = "normalized"))
+plot(Variogram(mod, form = ~coords.x1+coords.x2, resType = "normalized"))
 
 ```
 
@@ -455,7 +456,7 @@ an impact on how autocorrelation should be modelled. The five options are:
 2. Gaussian
 3. Linear
 4. Rational quadratic
-5. Spherial
+5. Spherical
 
 _Note:_ all of these assume _isotropy_, which means data are uniform (or
 uniformly different) in all directions. We can imagine situations where that may
@@ -495,13 +496,18 @@ mod.sp <- gls(log(PfPR)~log(total.abundance), data=africa.wide, method="ML",
               corr=corSpatial(form=~coords.x1+coords.x2, type ="spherical"))
 
 ```
-
 ```{r}
 
 AIC(mod, mod.exp, mod.gau, mod.lin, mod.rat, mod.sp)
 
 ```
 
+The two things to take away from this analysis are:
+
+1. mod.exp has the lowest AIC score, and is thus our best model. The exponential
+autocorrelation strucutre was the most appropriate to use in this case.
+2. The model without any spatial autorcorrelation strucutre performed horribly.
+Good thing we thought to include space!
 
 Now, have a look at the model outputs with and without spatial structure:
 
@@ -531,14 +537,14 @@ to start with a world map and then subset by country. This means that when you
 want to plot Africa, you have to sit there and subset all day.
 
 There is a more _pure_ ggplot way of making maps, called _ggmap_. This package
-extracts maps from Google maps, which is awesome because it gives you assess to
+extracts maps from Google maps, which is awesome because it gives you access to
 high quality maps from all over the world, and you can zoom in on whichever
 region you want. However, you do have to register with Google to use it, and
 Google asks for your credit card number when you register. So, not great.
 
 We will therefore go with the free-all-the-way route, and use _maps_. Instead of
-subseting the map officially, we'll cheat a little and just crop the graph to
-show Africa. We'll also do an example of plotting a single country -- Kenya.
+subseting the map officially, we'll cheat a little and just crop the figure to
+show Africa. We'll also do an example of plotting a single country (Kenya).
 
 ```{r}
 
@@ -550,13 +556,15 @@ ggplot() +
   geom_polygon(data = map.world, aes(x=long, y=lat, group=group), fill=NA, colour="gray85") + 
   coord_fixed() + # Prevents map from being distorted 
   geom_point(data=africa.wide, aes(x=long, y=lat, colour=total.abundance)) +
-  xlim(-20,60) + # Approximate longitudinal and latitudinal locations of Africa
+  xlim(-20,60) + # Approximate longitudinal and latitudinal boundaries of Africa
   ylim(-40,40) + 
   theme_bw()
 
 map.kenya <- map_data("world", region="kenya") 
 
-ggplot() + 
+africa.wide %>% 
+  filter(country=="Kenya") %>% 
+  ggplot() + 
   geom_polygon(data=map.kenya, aes(x=long, y=lat, group=group), fill=NA, colour="gray85") + 
   coord_fixed() + 
   geom_point(data=africa.wide[africa.wide$country=="Kenya", ], aes(x=long, y=lat, colour=total.abundance)) 
