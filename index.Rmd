@@ -96,8 +96,8 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Model selection, multivar. stats | Individual          | Oct 17     | 8     |
 | Spatial stats, randomization     | Individual          | Oct 24     | 8     |
 | Modelling                        | Individual          | Oct 31     | 8     |
-| Challenge assignment             | Individual          | Nov 14     | 16    |
-| Mid-project update               | Project, Group      | Nov 21     | 10    |
+| Challenge assignment             | Individual          | Nov 21     | 16    |
+| Mid-project update               | Project, Group      | Nov 14     | 10    |
 | Final report, presentation       | Project, Group      | Dec 03     | 22    |
 
 There are 100 marks in total. Your final course mark will be the sum of your assignment scores, which will be translated to a letter grade according to the [official grading scale](http://www.artsci.utoronto.ca/faculty-staff/teacher-info/academic-handbook-for-instructors/sections-9-11#official) of the Faculty of Arts and Science.
