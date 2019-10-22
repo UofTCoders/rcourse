@@ -92,11 +92,11 @@ You should be aware of the University of Toronto Code of Behaviour on Academic M
 | Getting set up                   | Individual          | Sep 19     | 4     |
 | Basic R and dplyr                | Individual          | Sep 26     | 8     |
 | dplyr and tidy data              | Individual          | Oct 03     | 8     |
-| Linear models                    | Individual          | Oct 10     | 8     |
-| LMEMs and model selection        | Individual          | Oct 17     | 8     |
-| Multivar, Spatial stats and simulating data| Individual          | Oct 24     | 8     |
+| Data exploration, linear models  | Individual          | Oct 10     | 8     |
+| Model selection, multivar. stats | Individual          | Oct 17     | 8     |
+| Spatial stats, randomization     | Individual          | Oct 24     | 8     |
 | Modelling                        | Individual          | Oct 31     | 8     |
-| Challenge assignment             | Individual          | Nov 21     | 16    |
+| Challenge assignment             | Individual          | Nov 14     | 16    |
 | Mid-project update               | Project, Group      | Nov 21     | 10    |
 | Final report, presentation       | Project, Group      | Dec 03     | 22    |
 
