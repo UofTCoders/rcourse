@@ -33,12 +33,14 @@ marks)
 
 
 2. In this exercise, we will be working with the malaria dynamics model we
-worked with in class, and we will be thinking of ways in which we can "implement"
-various mosquito control methods in this hypothetical population. For each of
-the following mosquito control strategies, describe how you would implement them
-in terms of math. For example, you may wish to modify some parameter, add a
-parameter, or out right change the strucutre of the model. Explain your choices,
-and include any new parameters or new equations where applicable. (3 marks)
+worked with in class, and we will be thinking of ways in which we can
+"implement" various mosquito control methods in this hypothetical population.
+For each of the following mosquito control strategies, describe how you would
+implement them in terms of math. For example, you may wish to modify some
+parameter, add a parameter, or out right change the strucutre of the model.
+Explain your choices, and include any new parameters or new equations where
+applicable (e.g., include an equation to show where a new parameter would
+appear). (3 marks)
 
     a. Use of insecticide to kill off adult mosquitoes. (1 mark)
     b. Use of bednet to reduce contact between mosquito and host. (1 mark)
