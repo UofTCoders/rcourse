@@ -1,5 +1,5 @@
 ---
-title: 'Assignment 7: Modelling (8.5 marks)'
+title: 'Assignment 7: Modelling (9 marks)'
 output:
   pdf_document: default
   html_document: default
@@ -45,7 +45,7 @@ and include any new parameters or new equations where applicable. (3 marks)
     c. Provide hosts with vaccines. (1 mark)
 
 
-3.  The Allee Effect (2.5 marks)
+3.  The Allee Effect (3 marks)
 
     Generally, as population size increases, a population will
     experience a decreased growth rate due to greater competition for
@@ -63,30 +63,23 @@ and include any new parameters or new equations where applicable. (3 marks)
     carrying capacity, and $A$ is the critical population size above which 
     the total growth rate is positive.
 
-    a. Take $r=1$, $A=10$, and $K=50$. Use R to plot $\frac{dN}{dt}$ vs. $N$ for
+    a. Take $r=1$, $A=10$, and $K=50$. Plot $\frac{dN}{dt}$ vs. $N$ for
     $0 \le N \le 55$. For which values of $N$ is the growth rate
     ($\frac{dN}{dt}$) positive or negative? (0.5 marks)
 
     b. Plot the **per capita** growth rate ($\frac{1}{N}\frac{dN}{dt}$)
     vs. $N$ for this model of the Allee effect and for the logistic growth
-    model: $\frac{dN}{dt} = rN(1-\frac{N}{K})$. (1.5 marks)
+    model: $\frac{dN}{dt} = rN(1-\frac{N}{K})$. (1 marks)
 
-        -   What do you notice about the density ($N$) dependence of the per
-            capita growth rate in each case? Hint: in the logistic model,
-            the growth rate **per capita** (per organism) decreases in a
-            straight line as $N$ increases. (0.5 marks)
+    c. What do you notice about the density ($N$) dependence of the per capita
+    growth rate in each case? Hint: in the logistic model, the growth rate **per
+    capita** (per organism) decreases in a straight line as $N$ increases. (0.5
+    marks)
     
-        -   What happens to the Allee effect as $A$ decreases? Plot curves
-            for $A=0$ and a few values of $A>0$. (0.5 marks)
-    
-        -   The parameter $A$ controls the strength of the Allee effect: for
-            $A > 0$, the Allee effect is said to be strong, and for $A=0$,
-            the Allee effect is weak. What will happen to a population 
-            experiencing a strong Allee effect if the population size falls 
-            below $A$? What will happen to a population experiencing a weak 
-            Allee effect if the population size falls below $A$? (0.5 marks)
+     d. What happens to the Allee effect as $A$ decreases? Plot curves for $A=0$
+     and a few values of $A>0$. (0.5 marks)
 
-    d. Describe two biological situations in which you might expect to see an Allee
+    e. Describe two biological situations in which you might expect to see an Allee
     effect (either weak or strong). (0.5 marks)
 
 
