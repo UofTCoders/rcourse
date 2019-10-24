@@ -37,8 +37,8 @@ navbar:
       href: lec11-spatial-stats.html
     - text: 'Oct. 17: Simulating data: Randomization tests'
       href: lec12-randomization-tests.html
-    - text: 'Oct. 22: Ecological modelling'
-      href: lec13-eco-theory.html
+    - text: 'Oct. 22 & 24: Mathematical models in EEB'
+      href: lec13-theory.html
     - text: 'Oct. 24: Evolutionary modelling'
       # href: lec14-evolutionary-modelling.html
     - text: 'Oct. 29: Reproducible science'
