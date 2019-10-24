@@ -57,7 +57,7 @@ Technically, one can describe any biological phenonemon with math. At the same
 time, however, it is rarely the goal to rewrite "reality" in math. The most
 elegant models are those able to describe succinctly a system's most essential
 attributes, and the best theoreticians are those with the state-of-the-art
-knownledge of the system and the clarity of mind to know exactly what those
+knowledge of the system and the clarity of mind to know exactly what those
 important features are _given the questions being asked_. Sometimes we ask
 grand questions about driviers of macro system change, other times we would
 kill to find that devil in the details. Knowing how best to represent your
@@ -66,7 +66,7 @@ lots of trials and lots and _lots_ of errors).
 
 What models are good for: 
 
-* Guiding intuition regarding how process and mechanisms work.
+* Guiding intuition regarding how processes and mechanisms work.
 * Pointing out logical flaws in an argument when the math don't make sense.
 * Testing hypotheses that are otherwise untestable due to ethical concerns
   and/or logistical constraints.
@@ -320,10 +320,11 @@ sometimes referred to as population genetics (pop gen) models. We will work
 with a one-locus haploid model in this example.
 
 Consider a population of individuals each carrying one of two variants of a
-certain gene, let's call them alleles _A_ and _a_ because we are creative like
+certain gene; let's call them alleles _A_ and _a_ because we are creative like
 that. Similar to ecologists, evolutionary biologists are often interested in
-the relative survival abilities (denoted $W$) of individuals with different
-genotypes. The dynamics of these two sub-populations can be expressed as
+the reproductive factor (or survivability, denoted $W$) of individuals with
+different genotypes. The dynamics of these two sub-populations can be expressed
+as
 
 $$N_{A, t+1} = W_A N_{A, t}$$
 
@@ -350,8 +351,8 @@ as promised, we need to transform $N$ (the number of each type) to $p$
 
 $$p_{t+1}=\frac{W_A p_t}{W_A p_t+W_a q_t}$$
 
-Note that $N{a}$ is **not** interchangeable with $p$, the algebra just happened
-to worked out this way.
+Note that $N_A$ is **not** interchangeable with $p$; the algebra just happened
+to work out this way.
 
 Lastly, remember our good friend $p+q=1$? 
 
@@ -546,7 +547,7 @@ timevec <- seq(0, times, 1)
     not using "real" parameter values here is because the model is too simple a
 representation of "real life", and real numbers don't make sense in this
 horrible rendition of reality. For instance, mosquitoes _infected_ with the
-parasite doesn't actually become _infectious_ right away. There is a 10-14 day
+parasite don't actually become _infectious_ right away. There is a 10-14 day
 incubation period where mosquitoes do nothing but sit around and accumulate
 mortality before they can transmit malaria. Since we do not account for this
 incubation period in our model, using the "real" daily mortality rate of
@@ -746,7 +747,7 @@ $$p_{t+1}=\frac{W_A p_t}{W_A p_t+W_a (1-p_t)}$$
 
 Recall also that selection acts on relative fitness, specifically, the
 difference in relative fitness between _A_ and _a_. This is known as the
-selection coefficient, and is commonly denoted $s$. The fitness of _A_ relative
+_selection coefficient_, and is commonly denoted $s$. The fitness of _A_ relative
 to _a_ can be expressed simply as $\frac{W_A}{W_a}$. Taking $w_a$ as the
 reference (i.e., setting $w_a$ to 1), we obtain the selection coefficient
 against _A_ (i.e., assuming _A_ is at disadvantage) as follows: 
