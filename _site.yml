@@ -39,10 +39,11 @@ navbar:
       href: lec12-randomization-tests.html
     - text: 'Oct. 22 & 24: Mathematical models in EEB'
       href: lec13-theory.html
-    - text: 'Oct. 29: Reproducible science'
-      # href: lec15-git-projects.html
-    - text: 'Oct. 31: Datasets, hypotheses, and begin projects'
-      # href: lec16-datasets.html
+    - text: 'Oct. 29: Datasets, hypotheses, begin projects'
+      href: lec14-datasets.html
+    - text: 'Oct. 29 (cont.): Collaborating with GitHub'
+      href: lec15-git-projects.html
+    - text: 'Oct. 31: Project work (no lesson)'
     - text: 'Nov. 12: Project work (no lesson)'
     - text: 'Nov. 14: Project work (no lesson)'
     - text: 'Nov. 19: Project work (no lesson)'

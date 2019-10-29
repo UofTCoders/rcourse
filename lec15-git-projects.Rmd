@@ -24,6 +24,7 @@ author: Ahmed Hasan
 >       - Creating a fork + GitHub setup (5 min)
 >       - Branches and pull requests (40 min)
 >       - Issues (5 min)
+> - Appendix: Collaborating with GitHub without the command line (50 min)
 >
 -----
 
@@ -212,7 +213,7 @@ automatically *move forward* as commits are made. Divergent commits (two
 commits with the same parent) could be considered "virtual" branches. Since
 they are simply pointers, branches in Git are very lightweight.
 
-![Examples of branching](image/branches.svg)
+![Examples of branching (Source: Atlassian Bitbucket Tutorials)](image/git_lesson/branches.png)
 
 ##### Why use them?
 
@@ -289,7 +290,7 @@ branch can be created by typing in the text field. Start by making a new branch
 called `initial-edit` using said text field. GitHub will then refresh, and the
 button will now say 'Branch: initial-edit' instead.
 
-![_Pictured: the branch dropdown menu_](image/branch_dropdown.png)
+![_Pictured: the branch dropdown menu_](image/git_lesson/branch_dropdown.png)
 
 The dropdown can now be used to switch back to `master`, but let's stay in
 `initial-edit` for now. This is the place to make new changes -- either by
@@ -311,7 +312,7 @@ print('Hello, GitHub!')
 
 ````
 
-![_Pictured: editing a file on GitHub_](image/sample_rmd.png)
+![_Pictured: editing a file on GitHub_](image/git_lesson/sample_rmd.png)
 
 Once done, scroll to the bottom of the page and add a commit message 
 using the text file -- something like 'initial Rmd file creation' --
@@ -325,7 +326,7 @@ new edits. GitHub has noticed that your fork has a new branch with
 edits, and over on the right side of the prompt, GitHub presents the
 option of creating a pull request.
 
-![_Pictured: GitHub's pull request prompt_](image/yellow_prompt.png)
+![_Pictured: GitHub's pull request prompt_](image/git_lesson/yellow_prompt.png)
 
 If you don't see the yellow prompt, head to your fork and switch to the
 branch containing your edits. Underneath the green 'Clone or download' 
@@ -360,7 +361,7 @@ Once a pull request has been merged into the main repo, the branch on your fork
 isn't needed anymore. Because of this, GitHub will immediately prompt you to delete
 the `initial-edit` branch as soon as the merge has been completed. 
 
-![_Pictured: GitHub's branch deletion prompt_](image/delete_branch.png)
+![_Pictured: GitHub's branch deletion prompt_](image/git_leson/delete_branch.png)
 
 Great work -- your edits are now on the main repo!
 
@@ -476,6 +477,249 @@ The 'GitHub flow':
 6. If your group requests further edits prior to merging, make more commits in the new branch
 7. Once your edits have been merged, delete your new edits-containing branch
 8. Sync your fork to be up to date with the new changes
+
+## Collaborating with GitHub without the command line
+
+The following section is a modified version of the above section that covers
+collaboration with GitHub **without** the use of the command line.
+
+All groups have been provided with existing repositories, but a new repository
+can be made by clicking on the `+` in the top right of the page and selecting
+'New repository'. For now, however, navigate to your provided group repo.
+
+### Creating a fork
+
+The repos that have already been created can be thought of as 'main repos',
+which will contain the 'primary' version of the repo at any given point in
+time. Although we *will* in fact work within this 'main repo' in this version
+of the lesson, we will still begin by _forking_ the repo. When a given user
+forks a repo, GitHub creates a user-specific copy of the repo and all its
+files.
+
+To fork your group's repo, navigate to the repo's page and click on the 'Fork'
+button at the top right of the page. Following a brief load screen, GitHub will
+redirect you to your new, forked repo.
+
+You'll notice that on the top left of this repo page, the repo's name will be
+'[your username] / [repo name]', as opposed to 'EEB313 / [repo name]'.
+Furthermore, GitHub will indicate that this is a fork right underneath said
+repo name ('forked from eeb313-[year]/ [repo name]'). 
+
+For the duration of this lesson, we will stick to the `eeb313` version of your
+group's repo. Although the fork-based workflow (see above) is much more common
+in practice (especially since it works when collaborating on repos that one
+*doesn't* have admin access to) it is a bit more advanced and not particularly
+needed for these projects. You are of course welcome to incorporate a
+fork-based workflow on your own time -- but for the purposes of this class,
+your forks can just be used as sandboxes for you to test out things if you'd
+like. 
+
+### Branches and Pull Requests
+
+How does one collaboratively work on a single repo? The trick to that involves
+**branches**. A **branch** is a copy of the repo that will store changes
+separately from `master`, which is the default branch. The `master` branch
+should be thought of as the actual current state of your project -- branches
+are meant, by design, to be temporary, and exist only to facilitate edits and
+experimental work while avoiding any risk of breaking the original codebase. 
+
+The general collaborative workflow is as follows:
+
+1. First, create a _branch_ on the main repo. 
+
+2. Make edits in the branch. These could involve adding/deleting lines of code
+   or even adding/removing entire files. Keep in mind that the branch is
+separate from the main codebase, so don't worry too much about deleting things
+or making large changes.
+
+3. Once you have made your changes in this branch, submit what's known as a
+   _pull request_ (PR) from this edited branch to `master`. A PR neatly
+packages all the edits that have been made in your branch for review by other
+members of your group.
+
+4. Once your changes have been approved, merge the PR. It's good practice to
+   have group members merge your PRs instead of doing it yourself. 
+
+Although this process may seem a bit laborious, using this method (also known
+as the 'GitHub flow') minimizes chances of error and ensures that all code is
+reviewed by at least one other person. Understanding how and why this process
+works is key to collaborative work in software development and the like, and is
+used by all sorts of open source projects on GitHub ([including `dplyr`
+itself](https://github.com/tidyverse/dplyr)!)
+
+#### Creating a new branch
+
+In a given repo, there is a 'Branch: master' button just above the list of
+files. Clicking on this will bring up a dropdown menu containing a list of
+branches (which currently just contains `master`) and a text field.  A new
+branch can be created by typing in the text field. Start by making a new branch
+called `initial-edit` using said text field. GitHub will then refresh, and the
+button will now say 'Branch: initial-edit' instead.
+
+![_Pictured: the branch dropdown menu_](image/git_lesson/branch_dropdown.png)
+
+The dropdown can now be used to switch back to `master`, but let's stay in
+`initial-edit` for now. This is the place to make new changes -- either by
+editing existing files or creating new ones. Let's create a simple Rmd file
+with the 'Create new file' button on the right side of the repo page.
+
+````
+---
+title: "Test R Notebook"
+author: "Your Name"
+output: pdf_document
+---
+
+Hello! This is my R notebook.
+
+```{r}`r ''`
+print('Hello, GitHub!')
+```
+
+````
+
+![_Pictured: editing a file on GitHub_](image/git_lesson/sample_rmd.png)
+
+Once done, scroll to the bottom of the page to save your changes. In GitHub
+lingo, a saved change is called a **commit** -- this can be thought of more as
+a 'checkpoint'.  GitHub _requires_ that all commits have an associated commit
+message describing the change. This may seem a bit draconian, but it ensures
+that all changes have been documented, which is something that may save you and
+your group members a lot of trouble down the line! 
+
+While there is a default commit message GitHub will fill in, it's best to add a
+custom one. It's good practice to leave detailed commit messages as much as
+possible, so that both your collaborators as well as future you can understand
+what each commit did in case something goes wrong down the line. In this case,
+however, something like 'initial Rmd file creation' will do.  Click on 'Commit
+new file' to complete the process. Note that the radio button underneath
+specifically says 'Commit directly to the `initial-edit` branch'.  This means
+that your edit will only exist in `initial-edit` for now -- `master` remains
+unchanged. 
+
+#### Pull requests
+
+After a commit has been made, GitHub takes you back to the main repo page, but
+now with an attention-grabbing yellow prompt about these new edits. GitHub has
+noticed that there exists a new branch with edits and that these edits differ
+from what's in `master`. Over on the right side of the prompt, GitHub presents
+the option of creating a _pull request_ (PR). A PR is GitHub's way of neatly
+packaging one or more commits that have been made in a branch into a single
+request to merge said commits into `master`. In our case, a PR is essentially
+you telling your group members: "Here are all the edits I've made. Have a look,
+and add them to `master` if you think they're ready to go."
+
+![_Pictured: GitHub's pull request prompt_](image/git_lesson/yellow_prompt.png)
+
+If you don't see the yellow prompt, switch to the branch containing your edits.
+Notice the 'New pull request' button next to the branch dropdown -- this can be
+used to open a pull request instead. You'll also notice that the left side of
+this bar lists how many commits ahead of `master` your branch currently is.
+
+Following either method of opening a pull request, GitHub takes you to the
+'Pull requests' tab of the repo and prompts you to write about your pull
+request (i.e. describe the changes you're attempting to merge). Here, you can
+(and should) explain the changes you've made for your group members, so that
+they know what to look for and review.  Be specific and detailed to save your
+group members' time -- it's a good idea to start off your pull request message
+with an overall summary ('adding `dplyr` code to clean dataset') followed by a
+point-form list of what changes have been made, if necessary. 
+
+Once the pull request has been made, GitHub will list both your message and
+your commit messages below. Clicking on any of these commits opens up a new
+page highlighting the changes made in that specific commit. You also have the
+option of merging the pull request yourself -- but _don't do this_! When
+collaborating, always have someone else review and merge your pull request. 
+
+If all does _not_ look good, your team members can add messages below, and tag
+others using the @ symbol, similarly to most social networks. If more changes
+are needed before the pull request is ready to merge, any new commits you make
+to the branch on your fork (`initial-edit` in our case here) will automatically
+be added on to the pull request.  This way, you can incorporate any changes or
+fixes suggested by your team members simply by continuing to work in your
+fork's new branch until your changes are ready to merge. For line-specific
+edits, if a file is opened up (i.e. by clicking on one of the commits),
+clicking on the `+` button that appears when hovering over a line number will
+allow you or a group member to add a comment specifically attached to that
+line. This can be useful when pointing out typos, for instance, among other
+things. 
+
+Once a pull request has been merged into the main repo, the `initial-edit`
+branch (or whatever you have named your branch) isn't needed anymore. Because
+of this, GitHub will immediately prompt you to delete the `initial-edit` branch
+as soon as the merge has been completed right in the PR. 
+
+![_Pictured: GitHub's branch deletion prompt_](image/git_lesson/delete_branch.png)
+
+Great work -- your edits are now on `master`!
+
+#### Resolving merge conflicts
+
+Unfortunately, things aren't always as smooth as the above process. Often,
+there may exist two versions of the same file with divergent edit histories.
+Here are a few scenarios where this might happen:
+
+1. You create a branch called `update-plots`. In a file called `plots.Rmd`, you
+   add code for a bar plot. However, someone makes the mistake of working
+directly in `master`, and writes code for something else in the same file. When
+you create your PR from `update-plots`, Git has trouble merging your edits,
+since there would exist two separate blocks of code in the same part of the
+`master` file if it did. Git is not sure which one should take precedence, and
+will not make assumptions. 
+
+2. After explaining to your collaborator that editing in `master` should be
+   avoided, you create a branch called `add-models` and do some stats in a file
+called `analysis.Rmd`. However, you take the weekend off, and in the interim,
+one of your group members creates a separate branch called `do-stats` and edits
+the same file. You both start from the same file, but your final files look
+different. Both of you submit PRs. The first PR to get merged has no issues,
+but the second PR cannot be merged into `master`, because the `master` version
+of `analysis.Rmd` has now changed.
+
+To deal with issues like these, GitHub allows for _merge conflict resolution_.
+The way resolution works is that a conflicting PR can still be submitted, but
+the 'Merge pull request' button will be greyed out. Instead, there will be a
+'Resolve conflicts' button, which opens up a text editor in the browser. The
+text editor will show the file but contain *both* versions of the conflicting
+edits, essentially asking you to delete whichever version of the text you want
+removed. The offending lines should look something like this:
+
+```
+<<<<<<< test-update
+print('Hello')
+=======
+print('Goodbye')
+>>>>>>> master
+```
+
+This tells us that `print('Hello')` is what's on this line in this file in the
+`test-update` branch, while the `master` branch has `print('Goodbye')` on the
+same line. To keep the `test-update` version, all of the text here has to be
+deleted except for that line of code, including the separator (`=======`) line
+as well as the lines listing the branches. In the end, it should simply look like
+this:
+
+```
+print('Hello')
+```
+
+after which the 'Mark as resolved' button on the top right of the text editor
+will be un-greyed. Once that has been clicked, click on the new 'Commit merge'
+button to fix the issue, which will redirect back to the PR page. The PR can
+now be merged! 
+
+### To sum up
+
+The 'GitHub flow', without the command line:
+
+1. While in `master`, create a new branch
+2. Make your edits (with informative commit messages along the way)
+3. Submit a pull request
+4. Have your group members review your pull request
+5. If your group requests further edits prior to merging, make more commits in
+   the new branch
+6. Once your edits have been merged into `master`, delete your branch
+
 
 Additional resources:
 
