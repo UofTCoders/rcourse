@@ -69,8 +69,8 @@ navbar:
       href: assignment-06.html
     - text: Assignment 7
       href: assignment-07.html
-    - text: Assignment 8
-      # href: assignment-08.html
+    - text: Mid-project update
+      href: mid-project-update.html
     - text: Final project
       # href: assignment-final.html
   - text: Resources and FAQ
