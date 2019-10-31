@@ -30,19 +30,21 @@ one. Each team member should submit their *own assignment*.
 
     -   URL of *your* fork:
 
-2.  Have one of your group members create a new branch from `master` called
-    `add-conduct`. Create a `CONDUCT.md` file in this branch. Write down what
-    you as a team decided on for acceptable conduct/behaviour of team members to
-    each other (e.g. "Must be considerate and respectful"). You may reuse existing
-    Codes of Conduct, such as the UofT Coders Code of Conduct or the Contributor
-    Covenant, but make sure to both a) credit whichever you use and b) still expand
-    upon it with project-specific items (i.e. meeting frequency, PR approval
-    policy, role rotations). The designated group member needs to create a pull
-    request of this new file to the `master` branch.  Copy and paste the link to
-    the pull request below. Every team member must approve this pull request via
-    whatever means you as a team decide on ('all members must 'thumbs up' the PR
-    message', or 'all members must make a new comment saying 'good to merge'). Make
-    sure the expectations and behaviours are explicit and clear. (1.0 marks)
+2.  On the main repo (you will be working on this from here on out, unless you
+    are doing the fork-based workflow) -- have one of your group members create
+    a new branch from `master` called `add-conduct`. Create a `CONDUCT.md` file in
+    this branch. Write down what you as a team decided on for acceptable
+    conduct/behaviour of team members to each other (e.g. "Must be considerate and
+    respectful"). You may reuse existing Codes of Conduct, such as the UofT Coders
+    Code of Conduct or the Contributor Covenant, but make sure to both a) credit
+    whichever you use and b) still expand upon it with project-specific items (i.e.
+    meeting frequency, PR approval policy, role rotations). The designated group
+    member needs to create a pull request of this new file to the `master` branch.
+    Copy and paste the link to the pull request below. Every team member must
+    approve this pull request via whatever means you as a team decide on ('all
+    members must 'thumbs up' the PR message', or 'all members must make a new
+    comment saying 'good to merge'). Make sure the expectations and behaviours are
+    explicit and clear. (1.0 marks)
 
     -   URL of team member's pull request for `CONDUCT.md`:
 
@@ -86,13 +88,13 @@ one. Each team member should submit their *own assignment*.
     objectives". Create a list (`-` markdown syntax) of each of your research
     questions that you *as a team* thought of. It doesn't matter what the questions
     are, how simple, complicated or obvious they are. Just have something written
-    down, and make sure these are _explicitly_ framed as questions. In this file,
-    also list explicit predictions wherever possible; i.e. what you think a given
-    relationship might look like. Bear in mind that these research questions *will*
-    change as you do your analyses. The point is for you to get started thinking
-    about ideas. Decide on another (new) team member to create this file, record
-    it, and make a pull request of this new file. Every team member must approve
-    this pull request. (3 marks)
+    down, and make sure these are _explicitly_ framed as questions or
+    hypotheses. In this file, also list explicit predictions wherever possible;
+    i.e. what you think a given relationship might look like. Bear in mind that
+    these research questions *will* change as you do your analyses. The point is
+    for you to get started thinking about ideas. Decide on another (new) team
+    member to create this file, record it, and make a pull request of this new
+    file. Every team member must approve this pull request. (3 marks)
 
     -   URL of team member's pull request for `objectives.md`:
 
@@ -117,7 +119,7 @@ one. Each team member should submit their *own assignment*.
     -   URL of team member's pull request for `analysis-plan.md`:
 
 6. Finally, once the previous PR has been merged, have another group member
-   create a file called `plots/mock/README.md' in a new branch. This will also
+   create a file called `plots/mock/README.md` in a new branch. This will also
     create a folder called `plots` and a subfolder called `mock` within it. Add a
     few mock figures into this folder showing your predictions. These do not have
     to be 'publication-ready' plots, and can be made in any software of your
