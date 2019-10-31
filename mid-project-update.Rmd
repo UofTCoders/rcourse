@@ -1,0 +1,134 @@
+---
+title: 'EEB313 Mid-project update (12 marks)'
+output:
+    html_document:
+        toc: false
+---
+
+*To submit this assignment, upload the full document on Quercus, including the
+original questions, your code (if applicable), and the output. Submit your
+assignment as a knitted `.pdf` or `.html` file.*
+
+Prior to beginning this assignment, we suggest you take a look through [this
+link](https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html)
+on how to manage project in RStudio using Rprojects. While not a component of
+this assignment, the tutorial may prove useful as you move forward with your
+group projects. 
+
+These tasks seem like a lot of work. However, we will be doing these tasks
+already during class and during project work. The purpose of the mid-project
+update is for you to set up your repo and get something started on your final
+project. While most of these tasks are group based, please fill out each as an
+individual. In particular, the first question should be of *your* forked
+repository, not one of your team members. The remainder of the questions each
+involve a single pull request; make sure everyone in your group does at least
+one. Each team member should submit their *own assignment*.
+
+1.  A new repository has been created for your project on the
+    `EEB313-2019` GitHub organization. Paste the URL of this forked 
+    version below. (0.25 marks)
+
+    -   URL of *your* fork:
+
+2.  Have one of your group members create a new branch from `master` called
+    `add-conduct`. Create a `CONDUCT.md` file in this branch. Write down what
+    you as a team decided on for acceptable conduct/behaviour of team members to
+    each other (e.g. "Must be considerate and respectful"). You may reuse existing
+    Codes of Conduct, such as the UofT Coders Code of Conduct or the Contributor
+    Covenant, but make sure to both a) credit whichever you use and b) still expand
+    upon it with project-specific items (i.e. meeting frequency, PR approval
+    policy, role rotations). The designated group member needs to create a pull
+    request of this new file to the `master` branch.  Copy and paste the link to
+    the pull request below. Every team member must approve this pull request via
+    whatever means you as a team decide on ('all members must 'thumbs up' the PR
+    message', or 'all members must make a new comment saying 'good to merge'). Make
+    sure the expectations and behaviours are explicit and clear. (1.0 marks)
+
+    -   URL of team member's pull request for `CONDUCT.md`:
+
+3.  A `README.md` file should already exist in your project. Once the previous
+    PR has been merged into `master`, complete the following tasks in the
+    README, discussed and written up *as a team*. Decide who on your team will
+    create the branch, make these edits, and create a pull request of this file to
+    the main project repository. This person should *not* be the same person who
+    did task 2. Every team member must approve this pull request. (1.75 marks)
+
+    -   Create the following headers (make sure to use Markdown headers
+        `#`): "Introduction to the project", "Description of the data",
+        "Team description". 
+
+    -   Fill out the "Introduction to the project" section, answering
+        these questions in a paragraph form (don't include these
+        questions in the section). What is your project about? What is
+        the goal? Why are you doing it?
+
+    -   Fill out the "Description of the data" section, and briefly
+        write down what the data is about, what are the variables you
+        think you'll use, how the data was collected, and how it will
+        answer your research questions. Include a reference of the
+        dataset if one is available, for instance:
+
+            Forstmann BU, et al. (2014) Data from: Multi-modal ultra-high resolution
+            structural 7-Tesla MRI data repository. Dryad Digital Repository.
+            (https://dx.doi.org/10.5061/dryad.fb41s)
+
+    -   Fill out the "Team description" section by writing down a brief
+        biography of each member (including what their skills are and
+        what their approximate responsibilities -- which can change later --
+        are for the project) as well as how team roles will be rotated.
+
+    -   URL of team member's pull request for `README.md`:
+
+4.  Once the previous PR has been merged into `master`, have a different group member create a file called
+    `doc/objectives.md` in a new branch. Note that this will simultaneously create a new folder
+    called `doc` containing a file called `objectives.md` -- this is [how folders are created on GitHub repos](https://github.com/KirstieJane/STEMMRoleModels/wiki/Creating-new-folders-in-GitHub-repository-via-the-browser).
+    In `objectives.md`, create one header (`#` markdown header) called "Study
+    objectives". Create a list (`-` markdown syntax) of each of your research
+    questions that you *as a team* thought of. It doesn't matter what the questions
+    are, how simple, complicated or obvious they are. Just have something written
+    down, and make sure these are _explicitly_ framed as questions. In this file,
+    also list explicit predictions wherever possible; i.e. what you think a given
+    relationship might look like. Bear in mind that these research questions *will*
+    change as you do your analyses. The point is for you to get started thinking
+    about ideas. Decide on another (new) team member to create this file, record
+    it, and make a pull request of this new file. Every team member must approve
+    this pull request. (3 marks)
+
+    -   URL of team member's pull request for `objectives.md`:
+
+5.  Once the previous PR has been merged, start up another branch and create a
+    file in the `doc/` folder called `analysis-plan.md`. Create three headers
+    (`#` markdown headers): "Possible analyses", "Possible results tables", and
+    "Possible results figures". As a team, discuss and record some possible
+    analyses on the data that you could do to answer the research questions.
+    Discuss and record possible ways to present your results (possible tables, some
+    visualizations). Moreover, discuss how you anticipate getting from the raw data
+    to whatever summary data you will use to generate a given plot (i.e. explain a
+    data cleaning/transformation plan). Moreover, discuss what kinds of statistical
+    approaches you anticipate employing. Once again, these do not have to be final,
+    but you need to show that your team has thought about how to approach this.
+    Decide on another (new) team member to create this file in a new branch, record
+    it, and make a pull request of this new file. Every team member must approve
+    this pull request. *Note:* this analysis and presentation plan does **not**
+    have to be accurate, nor do you have to use this later on.  It could and will
+    (very likely) change. The point is to get you as a group thinking about how you
+    will answer the research questions. (3 marks)
+
+    -   URL of team member's pull request for `analysis-plan.md`:
+
+6. Finally, once the previous PR has been merged, have another group member
+   create a file called `plots/mock/README.md' in a new branch. This will also
+    create a folder called `plots` and a subfolder called `mock` within it. Add a
+    few mock figures into this folder showing your predictions. These do not have
+    to be 'publication-ready' plots, and can be made in any software of your
+    choosing (R, Excel, PowerPoint, etc) with or without simulated data points; the
+    important thing is that the predictions are clear and that your team can show
+    you have been thinking about how to present your data. In `README.md`, list
+    details about the mock figures in pseudo-figure caption format. Note that image
+    files (png, pdf, etc) can also be uploaded to GitHub via dragging and dropping
+    -- but make sure you are in a branch before you do this. The image files should
+    be part of the same PR as `README.md`. (3 marks) 
+
+    - URL of team member's pull request for `plots/mock/README.md` and image files:
+
+
