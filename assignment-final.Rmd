@@ -34,18 +34,11 @@ project should not be a reproduction of published analyses.
 
 The following components will be graded as part of the project:
 
-1. Weekly project updates:
-    * These will take place on Tuesdays at the beginning of class
-    * Two people will present from the group, rotating each week 
-   (each member will present 3-4 times over the course of the project)
-    * Each group update should take no more than 2 minutes
-    * These can be very informal: no slides or visuals are necessary 
-   (but you can include them if you want to)
-    * You will not be marked on correctness; you are encouraged to be open about 
-   any difficulties your group is facing so that other groups and the instructors
-   can provide helpful feedback
+1. Mid-project update (Due Nov. 14):
+    * Details for this assignment can be found [HERE](https://uoftcoders.github.io/rcourse/mid-project-update.html).
   
-2. Report styled as a journal article, with these or similar sections (more info below): 
+2. Report styled as a journal article, with these or similar sections (more info
+below) (Due. Dec. 5):
     * Abstract
     * Introduction / Background and Rationale
     * Methods (with "Data Description" and "Data Analysis" subsections)
@@ -56,11 +49,7 @@ The following components will be graded as part of the project:
    
 3. 10 minute presentation with 2 minutes for questions, styled as a conference
 presentation (assume not too much familiarity with the topic in the audience).
-The presentations will be held on the last day of class (Dec 4).
-
-4. Self-assessed contributions: maximum 1 page outlining individual contributions
-(code, writing, presenting, etc). Each group member will submit their own
-self-assessment.
+The presentations will be held on the last day of class (Dec 3).
 
 While you may not submit your work for this course for credit in another course, you
 are welcome to publish or present your work in an academic setting. Groups are
@@ -83,8 +72,19 @@ literature.
 
 The report and associated code is expected to:
 
-- Be entirely reproducible.
-- Have well documented code.
+- Be entirely reproducible: You may find
+[Rprojects](https://r4ds.had.co.nz/workflow-projects.html) helpful in making
+your projects reproducible. Rprojects can be commited to GitHub, allowing anyone
+to clone the repo and run your analyses without having to worry about the paths
+to all the files being different on their computers. [This
+lesson](https://utm-coders.github.io/studyGroup/lessons/misc/project-management-R/lesson/)
+on reproducible project management in R may also be helpful.
+- Have well documented code: A well documented project will have README files
+describing the contents of all folders in your GitHub repos. It will also
+contain effective in-line comments in your scripts that showcase the logic of
+your analyses and data-wrangling tasks. [This
+lesson](https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/)
+on best practices for writing R code is a good starting place.
 
 You are also expected to work well as a team, and use GitHub to submit and store 
 your final product (more details below).
@@ -100,13 +100,12 @@ All items (except the presentation) are due on December 5th at 11:59 pm.
 
 ## Project submission
 
-The project report and code should be submitted on GitHub as an R project 
-(more details on R projects in assignment 8) - each group will have 
-their own GitHub repository in the [EEB313-2018](https://github.com/eeb313-2018)
-organization to which you can upload your report and code. 
-You are welcome to use your GitHub repository for collaborative work 
-during the project, but feel free to use other tools such as Google Drive,
-Dropbox, Overleaf, etc. if you prefer. 
+The project report and code should be submitted on GitHub. The report should
+also be submitted on Quercus. Each group will have their own GitHub repository
+in the [EEB313-2019](https://github.com/eeb313-2019) organization to which you
+can upload your report and code. You are welcome to use your GitHub repository
+for collaborative work during the project, but feel free to use other tools such
+as Google Drive, Dropbox, Overleaf, etc. if you prefer.
 
 The self-assessment should be submitted as a pdf through Quercus.
 
