@@ -107,8 +107,6 @@ can upload your report and code. You are welcome to use your GitHub repository
 for collaborative work during the project, but feel free to use other tools such
 as Google Drive, Dropbox, Overleaf, etc. if you prefer.
 
-The self-assessment should be submitted as a pdf through Quercus.
-
 ## Project grading rubric
 
 |                                                | Inadequate (0 marks)                                                                                                                                                                                          | Adequate (4 marks)                                                                                                                                                | Excellent (8 marks)                                                                                                                                                                    |
