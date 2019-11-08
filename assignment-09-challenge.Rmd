@@ -1,8 +1,8 @@
 ---
 title: "Challenge assignment (14.5 marks)"
 output:
-  pdf_document: default
-  html_notebook: default
+    html_document:
+        toc: false
 ---
 
 *To submit this assignment, upload the full document on Quercus,
@@ -123,8 +123,8 @@ overall structure of the figure, the scale on the axes, and so on. The colors of
 the points do not need to be the exact same colors as those in the figure, but
 they should be sufficiently close. _(Note: you can ignore the SEM points, and
 the 'look' of your axes does not have to match the figure exactly. The species
-names also not have to be included in the body of the plot as long as they are
-visible in some form.)_ (1 mark)
+names also not have to be included in the body of the plot (like in the paper)
+as long as they are visible in some form_ (1 mark)
 
 3. Use the built-in R dataset `iris`, for this question. (2 marks) 
 
@@ -133,9 +133,10 @@ visible in some form.)_ (1 mark)
      length as the predictor. Output a single data frame containing the beta
      estimate and p-value associated with the predictor for each of the three
      models, and also make sure to include a column called 'species' in the
-     final data frame. Do not include the intercepts. _(Hint: You want to
-     simultaneously perform the same model on different subsets of the data with
-     only a few lines of code)_ (1 mark)
+     final data frame. Your final data frame should only have species, term,
+     estimate, and p.value as columns. Do not include the intercepts. _(Hint:
+     You want to simultaneously perform the same model on different subsets of
+     the data with only a few lines of code)_ (1 mark)
      
     b. Use `ggplot2` to plot a scatter plot of sepal width by sepal length,
     coloured by species. Plot the three linear fits as well, also coloured by
@@ -204,7 +205,7 @@ Amber think about anyway). In assignment 7, we (you) worked on ways to
 incorporate various facets of biological detail into a baseline, super simple,
 disease model. We will incorporate another level of detail in this exercise:
 host genotype. The trait that we will be working with is the sickle cell trait.
-You can read more about the sickle-cell trait on wikipedia. Basically, this is a
+You can read more about the sickle-cell trait on Wikipedia. Basically, this is a
 blood-cell-shape trait that is controlled at a single locus by two alleles: $A$
 for wildtype "normal" blood shape, and $S$ for sickle-shaped blood cells. There
 are thus three possible host genotypes with respect to the sickle cell trait:
