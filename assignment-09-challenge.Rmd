@@ -29,7 +29,7 @@ Forest from the year 2017. Run the code chunck below to read in the data if you
 do not already have it.
 
 ```{r messages = FALSE}
-
+library(tidyverse)
 neon_data <- "https://uoftcoders.github.io/rcourse/data/NEON_PlantPA_HARV_201707.csv"
 download.file(neon_data, "NEON_PlantPA_HARV_201707.csv")
 neon_data <- read_csv("NEON_PlantPA_HARV_201707.csv", 
