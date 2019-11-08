@@ -21,11 +21,6 @@ should all have the terminology required to search for solutions to the problems
 below. As with all programming problems, there are many possible ways to get the
 answer to the problems below.
 
-```{r messages = FALSE}
-library(tidyverse)
-library(reshape2)
-```
-
 1. Simpson's diversity index and bootstrapping (6 marks)
 
 In lecture 12, we used data from the National Ecological Observatory Networkd on
@@ -45,19 +40,6 @@ neon_data <- read_csv("NEON_PlantPA_HARV_201707.csv",
     as columns. The cell values should represent the abundance of each species at a
     given site. (1 mark)
 
-```{r}
-neon_filtered <- neon_data %>%
-    # We only want rows with plant species and not 'otherVariables'
-    dplyr::filter(divDataType == "plantSpecies") %>% 
-    
-    # To create a presence-absence matrix, we only need the taxonID 
-    # (i.e. species) and the plotID (i.e. Site)
-    dplyr::select(plotID, taxonID) 
-
-# Create abundance matrix
-abund_matrix <- dcast(neon_filtered, formula = taxonID ~ plotID, value.var = 'taxonID', fun.aggregate = length)
-```
-
     b. Write a function that takes a single numeric vector as an argument and
     returns Simpson's Index of Diversity for the numeric vector. Test your
     function by computing Simpson's diversity index on the `test_vector` in the
@@ -70,28 +52,6 @@ $$D = 1 - \sum_{i = 1}^{s}(p_i)^2$$
     where `s` is the species richness (i.e. number of species) and `p_i` is the
     relative abundance of species _i_. A `D` value of 0 represents no diversity,
     and a D value of 1 represent infinite diversity. (1 mark)
-
-```{r}
-test_vector <- c(0, 1, 0, 5, 0, 1, 0, 4, 3, 0, 0, 0, 0, 1, 4, 0, 5, 0, 3, 0, 11, 2, 19, 0, 11, 0, 0, 0, 0, 0)
-
-simpson_index <- function(vector){
-
-    # Total sumber of individuals
-    N <- sum(vector)
-    
-    # Squared relative abundance
-    p_squared <- (vector / N)^2
-    
-    # Calculate 1 minus Simpson's index
-    # 0 = No diversity, 1 = Infinite diversity
-    simpsons <- 1 - sum(p_squared)
-    
-    return(simpsons)
-}
-
-# Run function
-simpson_index(test_vector)
-```
 
     c. In lecture 12, we discussed how resampling techniques can be used to
     conduct hypothesis tests (i.e., permutation tests) by comparing an observed
@@ -122,73 +82,17 @@ simpson_index(test_vector)
     Set a seed of 42 and test your function on the `test_vector` from part (b).
     (1.5 marks)
 
-```{r}
-# Bootstrapping involves sampling with replacement
-
-set.seed(42)
-boot_ci_simpsons <- function(vector, nreps){
-    
-    simpsons_indices <- c()
-    
-    for(i in 1:nreps){
-        
-        reshuffled <- sample(vector, size = length(vector), replace = TRUE)
-    
-        simpsons_indices[i] <- simpson_index(reshuffled)
-    }
-    
-    quantiles <- quantile(simpsons_indices, c(0.025, 0.975))
-    
-    quantile_df <- data.frame(lower = quantiles['2.5%'], upper = quantiles['97.5%'])
-    
-    return(quantile_df)
-    
-}
-
-quantiles <- boot_ci_simpsons(test_vector, nreps = 1000)
-# hist(simpsons_indices)
-# print(c(mean(simpsons_indices), median(simpsons_indices)))
-quantiles
-```
-
     d. Use your functions defined in (b) and (c) to estimate the Simpson's
     diversity index and corresponding 95% bootstrapped confidence intervals
     around the Simpson's index for each of the sites in your dataframe from (a).
     Your answer should be a single dataframe with four columns: `site`,
     `simpson`, `lower`, and `upper`. Points are awarded for conciseness of the
     code. (**Hint:** The most concise answer will likely make use of the `purrr`
-    package, which is part of the `tidyverse`). (1.5 marks)
-
-```{r}
-set.seed(43)
-
-# One solution
-simp_df <- abund_matrix %>% 
-    select_if(is.numeric) %>% 
-    purrr::map_dfr(~data.frame(simpsons = simpson_index(.),
-                               boot_ci_simpsons(., nreps = 1000)), 
-                   .id = "site") 
-
-# Another solution
-col_list <- abund_matrix %>% 
-    select_if(is.numeric) %>% 
-    as.list()
-
-simp_df <- purrr::map_dfr(col_list, simpson_index, .id = "site") %>% 
-    gather(site, simpson) %>% 
-    left_join(purrr::map_dfr(col_list, boot_ci_simpsons, nreps = 1000, .id = "site"), by = "site")
-```
+    package, which is part of the `tidyverse`). Set a seed of 43. (1.5 marks)
 
     e. Using the dataframe from (d), plot the Simpson's index (y-axis) for each
     of the sites (x-axis) as a single point surrounded by its lower and upper
     95% CIs. Order the x-axis from lowest to highest Simpson's index. (1 mark)
-
-```{r}
-ggplot(data = simp_df, aes(x = reorder(site, simpson), y = simpson)) +
-    geom_point(size = 2, color = "black") + 
-    geom_errorbar(aes(ymax = upper, ymin = lower), width = 0.15, colour = "black") +
-    theme_classic()
-```
 
 2. In assignment 3, we explored a dataset containing changes in yearly plant
 biomass in Abisko National Park, Sweden. In this question, we will use `ggplot2` to
@@ -222,29 +126,11 @@ visible in some form.)_ (1 mark)
      simultaneously perform the same model on different subsets of the data with
      only a few lines of code)_ (1 mark)
      
-```{r}
-iris %>% 
-    split(.$Species) %>% 
-    map_dfr(
-        ~ broom::tidy(lm(Sepal.Width ~ Sepal.Length, data = .)), .id = 'species'
-    ) %>% 
-    filter(term != '(Intercept)') %>% 
-    select(species, term, estimate, p.value)
-```
-     
     b. Use `ggplot2` to plot a scatter plot of sepal width by sepal length,
     coloured by species. Plot the three linear fits as well, also coloured by
     species. Below your code, comment on how the estimate values from your
     linear models above correspond to the plotted fits. (1 mark)
     
-```{r}
-iris %>% 
-    ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
-    geom_point() +
-    geom_smooth(method = 'lm', se = FALSE) +
-    theme_classic()
-```
-
 3. The Canadian lynx population cycle (3 marks)
 
     The Canadian lynx experiences large periodic changes in its population 
@@ -262,18 +148,6 @@ iris %>%
     1934-1821$). By eye, estimate the time between peaks in the population. (0.5
     marks)
 
-```{r}
-years = seq(0, 1934-1821, by = 1)
-qplot(x = years, y = lynx) +
-  geom_line()
-
-# optional: make data frame 
-df = data.frame(lynx)
-df["time"] = years
-
-# the time between peaks is about 10 years. 
-```
-
     (b) Define a function called `sine_model` that takes 5 arguments: a vector of years
     for the x-axis and four parameters (amplitude, period, phase, and offset). 
     Recall the general formula for a sine wave:
@@ -286,18 +160,6 @@ df["time"] = years
     Use a colour other than black to plot the sine wave. 
     Note that the x axis must start at 0 in order for the offset of $2.75$
     to match the data. (1 mark)
-
-```{r}
-sine_model <- function(x, amplitude, period, phase, offset) {
-  return(amplitude*sin(2*pi/period*x + phase) + offset)
-}
-
-guess_curve <- sine_model(years, 1700, 10, -2.75, 1700)
-
-qplot(x = years, y = lynx) +
-  geom_line() +
-  geom_line(aes(x = years, y = guess_curve, colour = 'red'))
-```
 
     (c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
         - Create a numeric vector with a range of values for the period that
@@ -316,47 +178,11 @@ qplot(x = years, y = lynx) +
         what is the minimum of this curve? What value of the period gives the best fit?
         - Identify the period value that provides the best fit to the `lynx`
         data. What is your calculated length of the lynx population cycle?
-    
-```{r}
-# Make a range of b parameter values to try
-lambda_vals <- seq(9, 10, by = 0.01)
-amplitude <- 1700
-offset <- 1700
-b <- -2.75
 
-# use the function 'sapply' to loop over b_vals list
-resids_sq <- map_dbl(lambda_vals, function(lambda) {
-    prediction <- amplitude*sin(2*pi/lambda*years + b) + offset
-    residuals <- prediction - lynx
-    sum(residuals^2)
-})
-
-```
-
-```{r}
-qplot(lambda_vals, resids_sq)
-
-# by eye, the best fit is around 9.62
-```
-
-```{r}
-best_fit <- which(resids_sq == min(resids_sq))
-l_fit <- lambda_vals[best_fit] 
-l_fit
-```
-
-(d) Plot the lynx data again and plot your best fit curve on top. 
+    (d) Plot the lynx data again and plot your best fit curve on top. 
     Does your estimate of the cycle length match the literature?
     Why or why not? (Find and cite a resource that gives an estimate
     of the lynx population cycle.)
-
-```{r}
-fit_curve <- sine_model(years, 1700, l_fit, -2.75, 1700)
-
-qplot(x = years, y = lynx) +
-  geom_line() +
-  geom_line(aes(x = years, y = fit_curve, colour = 'red'))
-```
 
 4. In class, we worked with a simple one-locus haploid model
 of evolution and investigated how different forces of evolution (e.g., selection
@@ -409,12 +235,7 @@ selection (e.g., $p^2 \frac{W_{AA}}{\bar{W}}$). (2 marks)
     frequencies of $A$ and $S$ in one time step. (Hint: How do you go from genotype
     frequency to allele frequency?) (1 marks)
 
-$$ p_{t+1} = p_t^2 \frac{W_{AA}}{\bar{W}} + \frac{1}{2}(2 p_t q_t \frac{W_{AS}}{\bar{W}})$$
-
-$$ q_{t+1} = q_t^2 \frac{W_{SS}}{\bar{W}} + \frac{1}{2}(2 p_t q_t \frac{W_{AS}}{\bar{W}})$$
-
-
-    b) Simulating the trajetory of change of the A allele. Use the parameter set
+    b) Simulate the trajetory of change of the A allele. Use the parameter set
     provided, and include a graph in your answer. Explain what you see, and refer to
     the parameter values provide in your explanation. (1 mark)
 
@@ -433,35 +254,5 @@ WSS <- 0.2
 
 # Intitial condition
 p <- 0.5 # proportion of A allele
-
-```
-
-```{r}
-
-# Empty vector to store values of p over time
-freq <- c()
-
-# for loop to impose selection over time
-
-for(i in 1:times) {	
-  
-  Wbar <- (p^2)*WAA + 2*p*(1-p)*WAS + ((1-p)^2)*WSS 
-  
-  p <- ( (p^2)*(WAA/Wbar) + (p*(1-p)*(WAS/Wbar)) )
-
-  
-	# Store values in vector
-	freq[i] <- p
-	
-	}
-
-# Graph
-
-ggplot() +
-  geom_line(aes(x=timevec, y=freq)) +
-  labs(x="time", y="p") + 
-  theme_classic()
-
-# A allele doesn't fix due to balancing selection (heterozygote has massive advantage over the others as seen in W)
 
 ```
