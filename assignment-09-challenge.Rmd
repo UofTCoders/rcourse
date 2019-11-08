@@ -255,11 +255,11 @@ iris %>%
     R has a built-in dataset called `lynx` which contains annual population 
     measurements for the Canadian lynx as a time series. 
 
-(a) Plot `lynx` vs. time in years using either `ggplot` or `qplot`. 
-    Plot points (`geom_point`) and a connecting line (`geom_line`). 
-    Create a time series that starts at 0 and ends at the total number of 
-    years in the dataset (total years $= 1934-1821$).
-    By eye, estimate the time between peaks in the population. (0.5 marks)
+    (a) Plot the abundance of `lynx` vs. time in years using either `ggplot` or
+    `qplot`. Plot points and a connect them by a line . Create a time series that
+    starts at 0 and ends at the total number of years in the dataset (total years $=
+    1934-1821$). By eye, estimate the time between peaks in the population. (0.5
+    marks)
 
 ```{r}
 years = seq(0, 1934-1821, by = 1)
@@ -273,7 +273,7 @@ df["time"] = years
 # the time between peaks is about 10 years. 
 ```
 
-(b) Define a function called `sine_model` that takes 5 arguments: a vector of years
+    (b) Define a function called `sine_model` that takes 5 arguments: a vector of years
     for the x-axis and four parameters (amplitude, period, phase, and offset). 
     Recall the general formula for a sine wave:
     $$y = A \text{sin}(kx - b) + c$$
@@ -298,15 +298,23 @@ qplot(x = years, y = lynx) +
   geom_line(aes(x = years, y = guess_curve, colour = 'red'))
 ```
 
-(c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
-    - Make a range of values for the period that span your guess from part (a).
-    - Use the `sapply` function to calculate a predicted dataset using a sine model. 
-    Calculate the sum of the difference (*residuals*) between the lynx data and
-    your prediction, then return the sum of the residuals squared.
-    - Plot the sum of the residuals squared vs. the range of period values. By eye,
-    what is the minimum of this curve? What value of the period gives the best fit?
-    - Use the function `which` to extract the period value that gives the best fit. 
-    What is your calculated length of the lynx population cycle?
+    (c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
+        - Create a numeric vector with a range of values for the period that
+        span your guess from part (a).
+        - Write a function to calculate the Residual Sums of Squares (RSS) from
+        a model fitted to the `lynx` data. Models with lowest RSS fit the
+        data best.
+            - This function should alculate the sum of the difference
+            (*residuals*) between the lynx data and your prediction, then return
+            the sum of the residuals squared.
+        - Apply this function over the numeric vector of period values you
+        created. Essentially, you should be striving to obtain an RSS value for
+        models fitted using all of the different period values in your numeric
+        vector.
+        - Plot the sum of the residuals squared vs. the range of period values. By eye,
+        what is the minimum of this curve? What value of the period gives the best fit?
+        - Identify the period value that provides the best fit to the `lynx`
+        data. What is your calculated length of the lynx population cycle?
     
 ```{r}
 # Make a range of b parameter values to try
