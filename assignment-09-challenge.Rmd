@@ -115,7 +115,7 @@ simpson_index(test_vector)
         representing the number of iterations 
         2. It should return a data frame with two columns: The lower and upper
         quantiles of the distribution, representing the 2.5 and 97.5
-        percentiles, respectively.
+        percentiles, respectively (**hint:** The `quantile()` function).
         
     Write the function as described above. How does the bootstrap differ from a
     permutation test (note: you don't need code here, just tell me in words).
