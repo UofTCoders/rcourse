@@ -243,3 +243,108 @@ iris %>%
     geom_smooth(method = 'lm', se = FALSE) +
     theme_classic()
 ```
+
+3. The Canadian lynx population cycle (3 marks)
+
+    The Canadian lynx experiences large periodic changes in its population 
+    size over a timescale of several years. This is thought to be driven by 
+    oscillations in the population size of the snowshoe hare, the primary food 
+    source for the lynx. Read more about the lynx population cycle on this 
+    [Northwest Territories website](https://www.enr.gov.nt.ca/en/services/lynx/lynx-snowshoe-hare-cycle).
+    
+    R has a built-in dataset called `lynx` which contains annual population 
+    measurements for the Canadian lynx as a time series. 
+
+(a) Plot `lynx` vs. time in years using either `ggplot` or `qplot`. 
+    Plot points (`geom_point`) and a connecting line (`geom_line`). 
+    Create a time series that starts at 0 and ends at the total number of 
+    years in the dataset (total years $= 1934-1821$).
+    By eye, estimate the time between peaks in the population. (0.5 marks)
+
+```{r}
+years = seq(0, 1934-1821, by = 1)
+qplot(x = years, y = lynx) +
+  geom_line()
+
+# optional: make data frame 
+df = data.frame(lynx)
+df["time"] = years
+
+# the time between peaks is about 10 years. 
+```
+
+(b) Define a function called `sine_model` that takes 5 arguments: a vector of years
+    for the x-axis and four parameters (amplitude, period, phase, and offset). 
+    Recall the general formula for a sine wave:
+    $$y = A \text{sin}(kx - b) + c$$
+    where $k = 2\pi / T$, $T$ is the period or length of time between peaks,
+    $A$ is the amplitude, $b$ is the phase, and $c$ is the offset.
+    Using a value of $A = c = 1700$ for both the amplitude and offset and a value of 
+    $b = 2.75$ for the phase, plot the lynx data as before and add a sine curve 
+    using your guess of the timescale from part (a) for the period.
+    Use a colour other than black to plot the sine wave. 
+    Note that the x axis must start at 0 in order for the offset of $2.75$
+    to match the data. (1 mark)
+
+```{r}
+sine_model <- function(x, amplitude, period, phase, offset) {
+  return(amplitude*sin(2*pi/period*x + phase) + offset)
+}
+
+guess_curve <- sine_model(years, 1700, 10, -2.75, 1700)
+
+qplot(x = years, y = lynx) +
+  geom_line() +
+  geom_line(aes(x = years, y = guess_curve, colour = 'red'))
+```
+
+(c) Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
+    - Make a range of values for the period that span your guess from part (a).
+    - Use the `sapply` function to calculate a predicted dataset using a sine model. 
+    Calculate the sum of the difference (*residuals*) between the lynx data and
+    your prediction, then return the sum of the residuals squared.
+    - Plot the sum of the residuals squared vs. the range of period values. By eye,
+    what is the minimum of this curve? What value of the period gives the best fit?
+    - Use the function `which` to extract the period value that gives the best fit. 
+    What is your calculated length of the lynx population cycle?
+    
+```{r}
+# Make a range of b parameter values to try
+lambda_vals <- seq(9, 10, by = 0.01)
+amplitude <- 1700
+offset <- 1700
+b <- -2.75
+
+# use the function 'sapply' to loop over b_vals list
+resids_sq <- map_dbl(lambda_vals, function(lambda) {
+    prediction <- amplitude*sin(2*pi/lambda*years + b) + offset
+    residuals <- prediction - lynx
+    sum(residuals^2)
+})
+
+```
+
+```{r}
+qplot(lambda_vals, resids_sq)
+
+# by eye, the best fit is around 9.62
+```
+
+```{r}
+best_fit <- which(resids_sq == min(resids_sq))
+l_fit <- lambda_vals[best_fit] 
+l_fit
+```
+
+(d) Plot the lynx data again and plot your best fit curve on top. 
+    Does your estimate of the cycle length match the literature?
+    Why or why not? (Find and cite a resource that gives an estimate
+    of the lynx population cycle.)
+
+```{r}
+fit_curve <- sine_model(years, 1700, l_fit, -2.75, 1700)
+
+qplot(x = years, y = lynx) +
+  geom_line() +
+  geom_line(aes(x = years, y = fit_curve, colour = 'red'))
+```
