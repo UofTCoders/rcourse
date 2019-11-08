@@ -1,5 +1,5 @@
 ---
-title: "Challenge assignment"
+title: "Challenge assignment (14 marks)"
 output: html_notebook
 ---
 
@@ -356,4 +356,112 @@ fit_curve <- sine_model(years, 1700, l_fit, -2.75, 1700)
 qplot(x = years, y = lynx) +
   geom_line() +
   geom_line(aes(x = years, y = fit_curve, colour = 'red'))
+```
+
+4. In class, we worked with a simple one-locus haploid model
+of evolution and investigated how different forces of evolution (e.g., selection
+vs. drift) affect allele frequencies. In this challenge assignment, we will
+naturally upgrade to a diploid model to see how evolution work in this kind of
+system. 
+
+We will once again be considering the case of malaria (of course, what else does
+Amber think about anyway). In assignment 7, we (you) worked on ways to
+incorporate various facets of biological detail into a baseline, super simple,
+disease model. We will incorporate another level of detail in this exercise:
+host genotype. The trait that we will be working with is the sickle cell trait.
+You can read more about the sickle-cell trait on wikipedia. Basically, this is a
+blood-cell-shape trait that is controlled at a single locus by two alleles: $A$
+for wildtype "normal" blood shape, and $S$ for sickle-shaped blood cells. There
+are thus three possible host genotypes with respect to the sickle cell trait:
+homozygous "normal" blood ($AA$), heterozygous ($AS$), and homozygous sickle
+blood ($SS$). People with homozygous $SS$ suffer from debilitating illness
+(sickle-cell disease) and often result in mortality at a young age if untreated.
+Heterozygotes ($AS$), while still suffering minor illness, receives partial
+immunity against malaria. It was thus hypothesized that the deleterious $S$
+allele is maintained in the population due to **balancing selection** -- the
+strong selective pressure exerted by malaria gave heterozygotes an advantage
+over the homozygotes, thus saving the $S$ allele from being purged from the
+population.
+
+We will be using mathematical models to help us test this hypothesis. A good
+start is to first extend the framework we used in lecture and think about how to
+represent allele frequency change in a diploid population.
+
+In population genetics it is often easier to work with
+allele frequencies (proportion of a certain allele in a population) rather than
+changes to their absolute numbers. Here, we will use $p$ and $q$ to denote the
+proportions of the $A$ and $S$ alleles in the population, respectively. The
+frequencies of the three genotypes in the population are thus given by $p^2$,
+$2pq$, and $q^2$ for AA, AS, and SS individuals, respectively. $p^2$, $2pq$, and
+$q^2$ are known as Hardy-Weinberg proportions and they have the convenient
+property of summing to 1.
+
+Applying selection to this population alters the frequency of each _genotype_ by
+an amount that is proportional to their fitness. We will denote the fitness of
+each host genotype group as $W_{AA}$, $W_{AS}$, and $W_{SS}$. The frequencies of
+each genotype following selection (i.e., as weighted by its fitness) is
+therefore $p^2W_{AA}$, $2pqW_{AS}$, and $q^2W_{SS}$. Dividing these quantities
+by their sum (the mean fitness of the population, often denoted with
+${\bar{W}}$) allows us to retrieve the frequency of the three genotypes after
+selection (e.g., $p^2 \frac{W_{AA}}{\bar{W}}$). (2 marks)
+
+    a) Derive a recursion equation that describe the change in **allele**
+    frequencies of $A$ and $S$ in one time step. (Hint: How do you go from genotype
+    frequency to allele frequency?) (1 marks)
+
+$$ p_{t+1} = p_t^2 \frac{W_{AA}}{\bar{W}} + \frac{1}{2}(2 p_t q_t \frac{W_{AS}}{\bar{W}})$$
+
+$$ q_{t+1} = q_t^2 \frac{W_{SS}}{\bar{W}} + \frac{1}{2}(2 p_t q_t \frac{W_{AS}}{\bar{W}})$$
+
+
+    b) Simulating the trajetory of change of the A allele. Use the parameter set
+    provided, and include a graph in your answer. Explain what you see, and refer to
+    the parameter values provide in your explanation. (1 mark)
+
+
+```{r}
+
+# Time
+times <- 500
+timevec <- seq(1, times, 1)
+
+# Parameters
+N <- 10000 # Total population size (assume constant)
+WAA <- 0.5
+WAS <- 0.7
+WSS <- 0.2
+
+# Intitial condition
+p <- 0.5 # proportion of A allele
+
+```
+
+```{r}
+
+# Empty vector to store values of p over time
+freq <- c()
+
+# for loop to impose selection over time
+
+for(i in 1:times) {	
+  
+  Wbar <- (p^2)*WAA + 2*p*(1-p)*WAS + ((1-p)^2)*WSS 
+  
+  p <- ( (p^2)*(WAA/Wbar) + (p*(1-p)*(WAS/Wbar)) )
+
+  
+	# Store values in vector
+	freq[i] <- p
+	
+	}
+
+# Graph
+
+ggplot() +
+  geom_line(aes(x=timevec, y=freq)) +
+  labs(x="time", y="p") + 
+  theme_classic()
+
+# A allele doesn't fix due to balancing selection (heterozygote has massive advantage over the others as seen in W)
+
 ```
