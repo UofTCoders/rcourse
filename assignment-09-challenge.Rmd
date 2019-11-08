@@ -1,5 +1,5 @@
 ---
-title: "Challenge assignment (14 marks)"
+title: "Challenge assignment (14.5 marks)"
 output:
   pdf_document: default
   html_notebook: default
@@ -48,6 +48,12 @@ function by computing Simpson's diversity index on the `test_vector` in the
 code chunk below. Be sure to report the Simpson's index for `test_vector` in
 your final assignment. As a reminder, I have included the formula for
 Simpson's index below:
+
+```{r}
+test_vector <- c(0, 1, 0, 5, 0, 1, 0, 4, 3, 0, 0, 0, 0, 1, 4, 0, 5, 0, 
+                 3, 0, 11, 2, 19, 0, 11, 0, 0, 0, 0, 0)
+```
+
     
 $$D = 1 - \sum_{i = 1}^{s}(p_i)^2$$
 
@@ -136,7 +142,7 @@ visible in some form.)_ (1 mark)
     species. Below your code, comment on how the estimate values from your
     linear models above correspond to the plotted fits. (1 mark)
     
-4. The Canadian lynx population cycle (3 marks)
+4. The Canadian lynx population cycle (3.5 marks)
 
     The Canadian lynx experiences large periodic changes in its population 
     size over a timescale of several years. This is thought to be driven by 
@@ -170,9 +176,8 @@ visible in some form.)_ (1 mark)
         - Create a numeric vector with a range of values for the period that
         span your guess from part (a).
         - Write a function to calculate the Residual Sums of Squares (RSS) from
-        a model fitted to the `lynx` data. Models with lowest RSS fit the
-        data best.
-            - This function should alculate the sum of the difference
+        a model fitted to the `lynx` data. 
+            - This function should calculate the sum of the difference
             (*residuals*) between the lynx data and your prediction, then return
             the sum of the residuals squared.
         - Apply this function over the numeric vector of period values you
@@ -180,14 +185,13 @@ visible in some form.)_ (1 mark)
         models fitted using all of the different period values in your numeric
         vector.
         - Plot the sum of the residuals squared vs. the range of period values. By eye,
-        what is the minimum of this curve? What value of the period gives the best fit?
+        what is the minimum of this curve? 
         - Identify the period value that provides the best fit to the `lynx`
-        data. What is your calculated length of the lynx population cycle?
+        data. Models with lowest RSS fit the data best. What is your calculated
+        length of the lynx population cycle?
 
     (d) Plot the lynx data again and plot your best fit curve on top. 
-    Does your estimate of the cycle length match the literature?
-    Why or why not? (Find and cite a resource that gives an estimate
-    of the lynx population cycle.)
+    (0.5 marks)
 
 5. In class, we worked with a simple one-locus haploid model
 of evolution and investigated how different forces of evolution (e.g., selection
