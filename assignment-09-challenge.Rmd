@@ -209,17 +209,18 @@ the points do not need to be the exact same colors as those in the figure, but
 they should be sufficiently close. _(Note: you can ignore the SEM points, and
 the 'look' of your axes does not have to match the figure exactly. The species
 names also not have to be included in the body of the plot as long as they are
-visible in some form.)_
+visible in some form.)_ (1 mark)
 
-3. Use the built-in R dataset `iris`, for this question. 
+3. Use the built-in R dataset `iris`, for this question. (2 marks) 
 
      a. Test the relationship between sepal length and sepal width _for each
      species_ using linear models. Set sepal width as the response and sepal
      length as the predictor. Output a single data frame containing the beta
      estimate and p-value associated with the predictor for each of the three
      models, and also make sure to include a column called 'species' in the
-     final data frame. Do not include the intercepts. _(Hint: the most efficient
-     answer here will make use of the `purrr` and `broom` packages.)_
+     final data frame. Do not include the intercepts. _(Hint: You want to
+     simultaneously perform the same model on different subsets of the data with
+     only a few lines of code)_ (1 mark)
      
 ```{r}
 iris %>% 
@@ -234,7 +235,7 @@ iris %>%
     b. Use `ggplot2` to plot a scatter plot of sepal width by sepal length,
     coloured by species. Plot the three linear fits as well, also coloured by
     species. Below your code, comment on how the estimate values from your
-    linear models above correspond to the plotted fits.
+    linear models above correspond to the plotted fits. (1 mark)
     
 ```{r}
 iris %>% 
