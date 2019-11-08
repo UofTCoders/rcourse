@@ -12,7 +12,7 @@ your assignment as a knitted `.pdf` (prefered) or `.html` file.*
 
 Part of being an effective scientist involves being able to solve problems you
 have not encountered before. This is certainly true of programming as well,
-where problems are typically solved by furious bouts Googling, reading
+where problems are typically solved by furious bouts of Googling, reading
 documentation, and trial and error of proposed solutions. In this assignment,
 like previous ones, you will be evaluated on your ability to solve data
 manipulation and analysis tasks. However, unlike previous assignments, some of
