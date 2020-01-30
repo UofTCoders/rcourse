@@ -129,7 +129,9 @@ Run the following code to load the CO2 dataset.
     so, which ones? Based on your examination of the model output, how can you
     tell which level of the significant treatments resulted in longer or shorter
     mean banner petal widths? Make a statement for each significant **main**
-    effects in the model (i.e. not interactions) (0.5 marks).
+    effects in the model (i.e. not interactions). If none of the main effects
+    are significant, then simply write "there are no significant main effects in
+    the model" (0.5 marks).
 
     c. Using `dplyr` and `gglot2`, plot the mean banner width for one of the
     significant interactions in the model above (whichever you choose). The idea
