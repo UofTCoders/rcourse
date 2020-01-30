@@ -73,7 +73,7 @@ Run the following code to load the CO2 dataset.
     you predict plants to uptake if atmospheric concentrations were 2,450 mL/L?.
     Show your work. (2 marks)
         
-3. Linear mixed-effects models (4 marks).
+4. Linear mixed-effects models (4 marks).
 
     Santangelo _et al._ (2018) were interested in understanding how plant
     defenses, herbivores, and pollinators influence the expression of plant
