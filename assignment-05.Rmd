@@ -48,8 +48,11 @@ dataset. (5 marks total)
     
     d. Using the approach described in lecture 11, optimize the random effect
     structure of this model. Show the AIC/AIC~c~ output for each model of
-    varying random effect strucure. Describe in one sentence what the optimal
-    random effect structure of the model is and why. (0.5 marks)
+    varying random effect strucure. Provide a one sentence justification for
+    each random effect the model, justifying whether it is fixed (i.e., in every
+    model) or whether some models will drop this effect. Describe in one
+    sentence what the optimal random effect structure of the model is and why.
+    (0.5 marks)
     
     e. Using the model with the optimal random-effect structure identified in
     (c), find the optimal fixed-effect structure. Be sure to show all the models
