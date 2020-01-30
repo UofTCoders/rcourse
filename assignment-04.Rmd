@@ -137,11 +137,10 @@ Run the following code to load the CO2 dataset.
     significant interactions in the model above (whichever you choose). The idea
     is to show how both treatments interact to influence the mean length of
     banner petals using a combination of different colours, linetypes, shapes,
-    etc. Feel free to use whatever kind of plot that is appropriate to this kind
-    of data. Avoid overlapping points in the figure. Also include error
-    bars/bands with one standard error around the mean. As a reminder, I have
-    included the formula to calculate the standard error of the mean below. (1.5
-    marks).
+    etc. on the same plot (i.e., no faceting). Avoid overlapping points in the
+    figure. Also include error bars/bands with one standard error around the
+    mean. As a reminder, I have included the formula to calculate the standard
+    error of the mean below. (1.5 marks).
     
     $$ SE = \frac{sd}{\sqrt{n}}  $$
 
