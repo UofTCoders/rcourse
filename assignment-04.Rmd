@@ -116,7 +116,7 @@ Run the following code to load the CO2 dataset.
     
     a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects
     model examining how herbivores (`Herbivory`), Pollinators (`Pollination`),
-    plant defenses (`HCN`) _and all interactions_ influences the length of
+    plant defenses (`HCN`) _and all interactions_ influences the width of
     banner petals (`Avg.Bnr.Wdth`) produced by plants while accounting for
     variation due to spatial block and plant genotype. Also allow the intercept
     for `Genotype` to vary across the levels of the herbivory treatment. (1
