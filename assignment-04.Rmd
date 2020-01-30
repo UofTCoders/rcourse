@@ -69,9 +69,8 @@ Run the following code to load the CO2 dataset.
 
     b. How much does `uptake` change if `conc` goes up by 10 mL/L? Write out the
     interpretation as a simple statement of this contribution of `conc` on
-    `uptake`, when the other variables are also in the model. How much CO2 would
-    you predict plants to uptake if atmospheric concentrations were 2,450 mL/L?.
-    Show your work. (2 marks)
+    `uptake`. How much CO2 would you predict plants to uptake if atmospheric
+    concentrations were 2,450 mL/L?. Show your work. (2 marks)
         
 4. Linear mixed-effects models (4 marks).
 
