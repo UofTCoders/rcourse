@@ -131,7 +131,7 @@ total.abun := b + (a*d) + (d*e*c)
 
 3. In this exercise, we will be investigating the relationship between vector
 community structure and another commonly used metric of disease risk --
-entomoligcal innoculation rate (EIR). EIR is a measure of the number of bites by
+entomological inoculation rate (EIR). EIR is a measure of the number of bites by
 infectious mosquitoes per person per unit time. We will be making use of the
 same data from Mbogo _et al._ (2003) as before, only this time, we will start
 with the long form data. (2.5 marks total)
