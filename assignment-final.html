@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Final assignment: Scientific report and presentation</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Final assignment: Scientific report and presentation</h1>
+
+</div>
+
+
+<div id="project-description" class="section level2">
+<h2>Project description</h2>
+<p>The course project is a self-directed group data analysis project using real ecological data and rigorous scientific methods. Groups are expected to hypothesize about their chosen data, examine their hypotheses with reproducible and quantitative analysis techniques, visualize their results, and create scientific products in the form of a report and a presentation.</p>
+<p>You might end up with a publishable scientific product! <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210691/">This paper</a> was written by a group of graduate students as part of the first version of this course, which was created by Dr. Christie Bahlai.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>A list of recommended datasets can be found <a href="https://uoftcoders.github.io/rcourse/lec14-datasets.html#datasets_available_for_use">here</a>. You are welcome to choose a dataset not listed, or data collected as part of a research project, but keep in mind that you may not submit anything twice: any work you do as part of this course may not be submitted for credit in another course (such as a fourth-year research project) and vice versa. If choosing a dataset not listed, make sure it is well-documented, legitimate, and complex enough to support your analysis efforts. Your work should be original; your project should not be a reproduction of published analyses.</p>
+</div>
+<div id="project-deliverables" class="section level3">
+<h3>Project deliverables</h3>
+<p>The following components will be graded as part of the project:</p>
+<ol style="list-style-type: decimal">
+<li>Mid-project update (Due Nov. 14):
+<ul>
+<li>Details for this assignment can be found <a href="https://uoftcoders.github.io/rcourse/mid-project-update.html">HERE</a>.</li>
+</ul></li>
+<li>Report styled as a journal article, with these or similar sections (more info below) (Due. Dec. 5):
+<ul>
+<li>Abstract</li>
+<li>Introduction / Background and Rationale</li>
+<li>Methods (with “Data Description” and “Data Analysis” subsections)</li>
+<li>Results</li>
+<li>Discussion</li>
+<li>Conclusion</li>
+<li>Code: project results must be reproducible by someone else</li>
+</ul></li>
+<li>10 minute presentation with 2 minutes for questions, styled as a conference presentation (assume not too much familiarity with the topic in the audience). The presentations will be held on the last day of class (Dec 3).</li>
+</ol>
+<p>While you may not submit your work for this course for credit in another course, you are welcome to publish or present your work in an academic setting. Groups are encouraged to publish their work on <a href="https://figshare.com/">figshare</a>, an open, citable repository of scientific content.</p>
+</div>
+<div id="report-guidelines" class="section level3">
+<h3>Report guidelines</h3>
+<p>For the report, you are expected to:</p>
+<ul>
+<li>Search the previous research and literature on your research questions.</li>
+<li>Have clear and explicit objectives and hypotheses.</li>
+<li>Adequately describe and properly cite the data source(s) you will analyze.</li>
+<li>Describe your data analysis in sufficient detail for others to understand what you did and why.</li>
+<li>Show all the results of your pre-planned data analysis and any additional explorations you did.</li>
+<li>Discuss the meaning of your results and how they fit with the previous literature.</li>
+</ul>
+<p>The report and associated code is expected to:</p>
+<ul>
+<li>Be entirely reproducible: You may find <a href="https://r4ds.had.co.nz/workflow-projects.html">Rprojects</a> helpful in making your projects reproducible. Rprojects can be commited to GitHub, allowing anyone to clone the repo and run your analyses without having to worry about the paths to all the files being different on their computers. <a href="https://utm-coders.github.io/studyGroup/lessons/misc/project-management-R/lesson/">This lesson</a> on reproducible project management in R may also be helpful.</li>
+<li>Have well documented code: A well documented project will have README files describing the contents of all folders in your GitHub repos. It will also contain effective in-line comments in your scripts that showcase the logic of your analyses and data-wrangling tasks. <a href="https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/">This lesson</a> on best practices for writing R code is a good starting place.</li>
+</ul>
+<p>You are also expected to work well as a team, and use GitHub to submit and store your final product (more details below).</p>
+<p>As a <em>guideline</em>, aim for at least 2500 words and about 6-8 figures/tables. <em>This is <strong>not</strong> a hard criteria</em>. We are flexible in these <em>guidelines</em>, since we want you to learn to work as a team and create a scientific product. You’ll be surprised how quickly the words, figures, and tables start adding up.</p>
+<p>Your code should follow the coding style found <a href="resources.html">on our resources page</a>.</p>
+<p>All items (except the presentation) are due on December 5th at 11:59 pm.</p>
+</div>
+</div>
+<div id="project-submission" class="section level2">
+<h2>Project submission</h2>
+<p>The project report and code should be submitted on GitHub. The report should also be submitted on Quercus. Each group will have their own GitHub repository in the <a href="https://github.com/eeb313-2019">EEB313-2019</a> organization to which you can upload your report and code. You are welcome to use your GitHub repository for collaborative work during the project, but feel free to use other tools such as Google Drive, Dropbox, Overleaf, etc. if you prefer.</p>
+</div>
+<div id="project-grading-rubric" class="section level2">
+<h2>Project grading rubric</h2>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="27%" />
+<col width="27%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Inadequate (0 marks)</th>
+<th>Adequate (4 marks)</th>
+<th>Excellent (8 marks)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Contribution to group work</td>
+<td>Student contributed little to project; self-assessed contributions are low in quality and/or quantity; self-assessment is not consistent with actual contribution.</td>
+<td>Student contributed adequately to project; made some significant contributions</td>
+<td>Student substantially contributed to project to ensure success; self-assessed contributions are crucial to project; self-assessment is consistent with actual contribution.</td>
+</tr>
+<tr class="even">
+<td>Content</td>
+<td>Missing crucial information; methods and results are inconsistent, not logical, or not adequately explained; conclusions are confusing or unsupported by results; unnecessary information included as clutter</td>
+<td>Most essential information included; methods and results are adequately described; conclusions supported by results; most included material is relevant to report</td>
+<td>All essential information included; methods and results are succinct, clear, logical, and scientifically valid; conclusions are creative and meaningful; project is concise throughout</td>
+</tr>
+<tr class="odd">
+<td>Style and reproducibility</td>
+<td>Code and writing are poorly organized, poorly formatted, missing units, difficult to read, poorly documented, difficult to reproduce analyses</td>
+<td>Code and writing are well-organized, well-formatted, consistent use of units and significant figures</td>
+<td>Code and writing are precise and clear throughout, free of errors, well-organized, well-documented, easily reproducible analyses, publication-ready</td>
+</tr>
+<tr class="even">
+<td>Presentation</td>
+<td>Presentation is poorly organized; much too long or much too short; presentation is unclear; presentation is missing information; presentation is not scientific and professional; presentation uses too much jargon; not all team members participate; does not adequately address audience questions</td>
+<td>Presentation is adequately organized; timing is appropriate; most information is presented logically; presentation is scientific and professional; most jargon is avoided; all team members participate but equally; audience questions are sometimes addressed well</td>
+<td>Presentation is clearly and logically organized; presentation flows and is easy to follow; presentation includes appropriate information without jargon; presentation is well-rehearsed and high-quality; all team members participate equally; audience questions are clearly addressed</td>
+</tr>
+</tbody>
+</table>
+<p>As the final project is a team effort, all members within a group will receive the same mark in the final three categories and an individual mark for their contribution to group work. A final project that is considered to lie between two of the defined levels will be marked accordingly, e.g. between “Adequate” and “Excellent” would be 5, 6, or 7 marks.</p>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

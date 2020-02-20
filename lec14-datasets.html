@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Luke Johnston" />
+
+
+<title>Scientific method, team dynamics, and project datasets</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Scientific method, team dynamics, and project datasets</h1>
+<h4 class="author">Luke Johnston</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble:</h2>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives:</h3>
+<ul>
+<li>Learn about the scientific method and applying it</li>
+<li>Learn basics of group dynamics in a team setting</li>
+<li>Get into your groups, start your projects - Identify which dataset to use - Brainstorm possible research questions</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline:</h3>
+<ul>
+<li>What is the scientific method (20 min)</li>
+<li>Team dynamics and assigning roles and tasks (15-20 min)</li>
+<li>Getting into groups (10 min)
+<ul>
+<li>Exercise (25-30 min)</li>
+</ul></li>
+<li>Start project work (20-25 min)</li>
+<li>Datasets available for use (10-20 min)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="scientific-method" class="section level2">
+<h2>Scientific method</h2>
+<!-- What is the scientific method? -->
+<div id="simplified-diagram-of-the-scientific-method" class="section level3">
+<h3>Simplified diagram of the scientific method</h3>
+<div class="figure">
+<img src="image/fig_scientific_method.png" alt="Simplified process flow for the scientific method" />
+<p class="caption">Simplified process flow for the scientific method</p>
+</div>
+</div>
+<div id="steps-in-the-scientific-processsci_method" class="section level3">
+<h3>Steps in the scientific process<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h3>
+<ol style="list-style-type: decimal">
+<li>Identify research question(s).</li>
+<li>Look into what the previous literature shows.</li>
+<li>Create one or more hypotheses or objectives.</li>
+<li>Write up an outline or expected approach to answering those questions/objectives (analysis and presentation plan):
+<ul>
+<li>How will the data be obtained and what is the data (i.e. the source)?</li>
+<li>What statistical/mathematical techniques have previous researchers used? Will you use them? Are they appropriate (optional, may need expert)?</li>
+<li>How will the results/data be presented or visualized (possible tables/figures)?</li>
+</ul></li>
+<li>Run the planned analyses (or additional ones that come may up).</li>
+<li>Visualize or present all results from the analyses.</li>
+<li>Interpret the results and how they fit with the previous literature.</li>
+<li>Draw conclusions based on the hypotheses/objectives.</li>
+<li>Disseminate your results (in blogs, pre-print archives, journals, conferences)</li>
+</ol>
+</div>
+</div>
+<div id="team-dynamics" class="section level2">
+<h2>Team dynamics</h2>
+<div id="basics-of-succeeding-as-a-team" class="section level3">
+<h3>Basics of succeeding as a team</h3>
+<p>Final assignment is in a group and to succeed, you need to understand team dynamics:</p>
+<ul>
+<li>Communication is <strong>vital</strong> to work together and to achieve the goal</li>
+<li>Teams go through various stages</li>
+<li>Need consensus for group norms, goals, duties/responsibilities, and conduct/behaviour
+<ul>
+<li>Important that everyone has a stake in the project</li>
+</ul></li>
+<li>Rotate roles (specifically for the leader/facilitator)</li>
+</ul>
+</div>
+<div id="stages-of-group-formation" class="section level3">
+<h3>Stages of group formation</h3>
+<ul>
+<li>“Forming-Storming-Norming-Performing-Adjourning Model”<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></li>
+<li>Essentially, groups go through stages (not always all and not always in order):
+<ol style="list-style-type: decimal">
+<li>Getting to know one other</li>
+<li>Feeling comfortable and safer, testing boundaries</li>
+<li>Opening up, voicing opinions, potential for conflict (which can be good!)</li>
+<li>Stronger bonds form, cooperative</li>
+<li>Greater focus and energy on completion of project</li>
+<li>Team ends after project is successfully completed</li>
+</ol></li>
+<li>These stages can be fast-tracked by discussing norms, duties, and conduct early on</li>
+</ul>
+</div>
+<div id="roles-and-responsibilities" class="section level3">
+<h3>Roles and responsibilities</h3>
+<ul>
+<li>Leader/Facilitator’s duty:
+<ul>
+<li>Goal is to keep things running smoothly, focused on the task, and on track for time</li>
+<li>Keep everyone on topic and on task; stay aware of the time</li>
+<li>(Try to) mediate or resolve any conflicts (there will <em>always</em> be some type of conflict; how it’s dealt with is what matters)</li>
+<li>(Try to) encourage everyone to participate and allow everyone a chance at talking</li>
+</ul></li>
+<li>Recorder’s duty:
+<ul>
+<li>Goal is to write/type down main or important points raised or discussed when team is meeting</li>
+<li>Keep notes and files organized and orderly</li>
+</ul></li>
+<li>Organizer’s duty:
+<ul>
+<li>Arrange for next meeting time and location</li>
+<li>Send reminders to members a day or two before meeting</li>
+<li>Make and email a simple agenda of tasks to do or to discuss</li>
+</ul></li>
+</ul>
+</div>
+<div id="code-of-conduct" class="section level3">
+<h3>Code of conduct</h3>
+<ul>
+<li>Vital to establishing boundaries and expectations of being a team member
+<ul>
+<li>How do you want each member to treat each other?</li>
+<li>How do you deal with conflict?</li>
+<li>What is acceptable and unacceptable behaviour?</li>
+</ul></li>
+<li>These are outlined in the code of conduct</li>
+<li>Mostly its common sense (be kind and respectful)
+<ul>
+<li>But its important that you as a team write out what everyone wants and agrees to</li>
+</ul></li>
+</ul>
+<div id="example-code-of-conduct" class="section level4">
+<h4>Example Code of Conduct:</h4>
+<ul>
+<li><a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct">Contributor Covenant</a></li>
+<li><a href="https://github.com/UofTCoders/studyGroup/blob/gh-pages/codeOfConduct.md">UofT Coders Code of Conduct</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<div id="as-a-group-complete-these-tasks" class="section level3">
+<h3>As a group, complete these tasks</h3>
+<!-- show assigned groups -->
+<ul>
+<li>Get into your groups</li>
+<li>Introduce each other:
+<ul>
+<li>Find out everyone’s name and year of study</li>
+<li>Find out other things about each other (e.g. any plans for next year, etc)</li>
+</ul></li>
+<li>Create a one or two word “team name”. We’ll use this to create a shared folder for everyone to use.</li>
+<li>Assign roles to each person (these roles will be rotated in every group setting):
+<ul>
+<li>You need: facilitator, recorder, organizer</li>
+<li>Discuss how and when roles will be rotated <em>(record it)</em></li>
+</ul></li>
+<li>Discuss and brainstorm some codes of conduct you want your team to follow <em>(record it)</em></li>
+<li>Take a few minutes, think about your own skills and what you feel are most competent in
+<ul>
+<li>Then, share the top one or two of those skills <em>(record those skills)</em></li>
+</ul></li>
+<li>Discuss how responsibilities of each member will be decided on <em>(record it)</em></li>
+</ul>
+</div>
+</div>
+<div id="starting-the-projects" class="section level2">
+<h2>Starting the projects</h2>
+<div id="datasets-available-for-use" class="section level3">
+<h3>Datasets available for use</h3>
+<ul>
+<li><p><a href="https://www.gbif.org/dataset/67c54f85-7910-4cbf-8de4-6f0b136a0e34">Continuous Plankton Recorder Dataset</a></p>
+<p>Data on northern hemisphere plankton species, latitude, longitude, date. Going back to 1946. 935 Mb size, almost 2.75 million rows of data.</p></li>
+<li><p><a href="https://www.gbif.org/dataset/3e9817c1-8302-4955-87e3-a408db0ea379">Insecta of Costa Rica</a></p>
+<p>Data on insects species in Costa Rica, latitude, longitude, elevation, date. 1.4 Gb size, almost 3.25 million rows of data.</p></li>
+<li><p><a href="http://www.esapubs.org/archive/ecol/E089/051/default.htm#data">Marine predator and prey body sizes</a></p>
+<p>Data from 27 different global locations on species, body measurements, latitude, longitude, date. 21 Mb, almost 35,000 rows of data (in long format).</p></li>
+<li><p><a href="http://www.esapubs.org/archive/ecol/E084/093/default.htm">Mammalian life history</a></p>
+<p>Data about general mammalian life history with species, body size, lifespan, litter size, and other reproductive variables. 150 Kb size, 1440 rows of data.</p></li>
+<li><p><a href="https://www.pwrc.usgs.gov/BBS/?CFID=36951359&amp;CFTOKEN=5135bf261f2f1478-471B9FA3-C648-BE26-7C2176ADADE30428">North American Bird Breeding Survey</a></p>
+<p>Data about number of birds at multiple stops in North America. Many datasets of varying rows that need to be linked together. ~5.7 Gb size (can be shortened) across &gt;50 files.</p></li>
+<li><p><a href="http://data.neonscience.org/static/browse.html">National Ecological Observatory Network</a></p>
+<p>A repository of many large scale ecological datasets from a variety of systems collected over multiple years at at approximately 50 sites in the USA. Feel free to browse the datasets for ones of interest to you, but I have highlighted a few below.</p>
+<ul>
+<li><a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10022.001">Ground beetles in pitfall traps</a>: ~26 Mb .csv file with ID of ground beetle species from 40 traps arrayed in each of ~50 NEON sites since 2013.</li>
+<li><a href="http://data.neonscience.org/data-product-view?dpCode=DP1.20120.001">Macroinvertebrate collection</a>: ~9 Mb .csv file with ID’s of benthid macroinvertebrates from lakes, non-wadeable streams, and wadeable streams from sites across the NEON network dating back to 2014.</li>
+<li><a href="http://data.neonscience.org/data-product-view?dpCode=DP1.10058.001">Plant presence/absence and percent cover</a>: Presence/absence and percent cover of species in 10m<sup>2</sup>, 100m<sup>2</sup>, and 400m<sup>2</sup> quadrats from multiple plots in each of 50 NEON sites dating back to 2013. This is the dataset we worked with in lecture 9.</li>
+</ul></li>
+<li><p><a href="https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys">US EPA National Aquatic Resource Surveys</a></p>
+<p>Numerous datasets from annual surveys of aquatic habitats conducted by the US Environmental Protection Agency. Includes data relating to the physical environments (e.g. water quality, chemical properties, landscape variables, etc.) to the biotic environment (e.g. phytoplankton concentrations, benthic macroinvertebrates, etc.). Be sure to download the metadata as well, which is on the same page linked above.</p></li>
+<li><p><a href="http://www.ices.dk/marine-data/data-portals/Pages/default.aspx">International Council for the Exploration of the Sea</a></p>
+<p>Many large datasets from fish oceanic fish surveys. Includes oceanographic data in addition to biodiversity datasets, fish stomach content data, physical environmental condition and contaminants, predation, etc.</p></li>
+<li><p><a href="https://open.alberta.ca/opendata/ecological-information-systems-data">Alberta Ecological Information System</a></p>
+<p>Data on vegetation and soil plots in Alberta. Over 26 000 sites are available.</p></li>
+<li><p><a href="https://open.canada.ca/data/en/dataset/b9f21e91-d34d-4730-8195-edf051121e9d">Beaver abundance and distribution</a></p>
+<p>Aerial and ground surveys of beaver abundance, feeding, and lodge distribution in Elk Island National Park starting in 1959.</p></li>
+<li><p>Benthic invertebrate abundance in <a href="https://open.canada.ca/data/en/dataset/3bad5ce0-0b16-43ee-be32-78cc2f64843f">Ivvavik</a>, <a href="https://open.canada.ca/data/en/dataset/9046af59-81c4-4759-8979-f6185af8387d">Tuktut</a>, and <a href="https://open.canada.ca/data/en/dataset/2770949b-043c-4073-bc6c-b38b03a5f528">Aulavik</a></p>
+<p>Counts of benthic invertebrate taxa from 3 river corridors from 2009 to 2015. Recommended to use all 3 datasets.</p></li>
+<li><p><a href="https://open.canada.ca/data/en/dataset/3571474b-8d75-491d-816e-f84677b81a7c">Red-backed salamander abundance</a></p>
+<p>Abundance of red-backed salamanders from 4 sites in the Bruce Peninsula from 2004 to 2017.</p></li>
+</ul>
+<p>In addition to the datasets shown above, we encourage students to bring their own datasets for use in their group projects.</p>
+</div>
+<div id="example-hypotheses-with-figures" class="section level3">
+<h3>Example hypotheses with figures</h3>
+<blockquote>
+<p>Simple hypothesis: Bigger predators eat bigger prey.</p>
+</blockquote>
+<p>Easy to identify independent and dependent variables and visualize with plots and test with linear regression.</p>
+<blockquote>
+<p>Advanced hypothesis: Which characteristics determine prey size among marine predators?</p>
+</blockquote>
+<p>Lots of possible groupings available. Start with visualizing some good candidate variables such as predator weight and length. Realize that the relationship is more complex than this and start dividing the data set according to species, water temperature, weather, etc. Use a combination of visualization and regression analyses. Fit models to the data to determine which types of regressions are appropriate.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Read data online and fix colnames</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">pred_prey &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&#39;http://www.esapubs.org/archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt&#39;</span>)</a></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_character(),
+##   `Record number` = col_double(),
+##   `Individual ID` = col_double(),
+##   `Predator length` = col_double(),
+##   `Predator standard length` = col_double(),
+##   `Predator fork length` = col_double(),
+##   `Predator total length` = col_double(),
+##   `Standardised predator length` = col_double(),
+##   `Predator quality of length-mass conversion` = col_double(),
+##   `Predator mass` = col_double(),
+##   `Predator mass check` = col_double(),
+##   `Predator mass check diff` = col_double(),
+##   `Predator ratio mass/mass` = col_double(),
+##   `SI predator mass` = col_double(),
+##   `Prey length` = col_double(),
+##   `Prey quality of conversion to length` = col_double(),
+##   `SI prey length` = col_double(),
+##   `Prey mass` = col_double(),
+##   `Prey mass check` = col_double(),
+##   `Prey mass check diff` = col_double(),
+##   `Prey ratio mass/mass` = col_double()
+##   # ... with 7 more columns
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">colnames</span>(pred_prey) &lt;-<span class="st"> </span><span class="kw">tolower</span>(<span class="kw">gsub</span>(<span class="st">&#39; &#39;</span>, <span class="st">&#39;_&#39;</span>, <span class="kw">colnames</span>(pred_prey)))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># Only adults and some columns of interest</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">adult_pred_food &lt;-<span class="st"> </span>pred_prey <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">predator_lifestage =</span> <span class="kw">tolower</span>(predator_lifestage)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Mix of upper and lower case...</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">    </span><span class="kw">filter</span>(predator_lifestage <span class="op">==</span><span class="st"> &#39;adult&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">    </span><span class="kw">select</span>(predator_common_name, predator_length, prey_mass, predator_mass)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># Summarize data to plot</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">plot_data &lt;-<span class="st"> </span>adult_pred_food <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">    </span><span class="kw">group_by</span>(predator_common_name) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">    </span><span class="kw">summarize</span>(</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">        <span class="dt">mean_pred_mass =</span> <span class="kw">mean</span>(predator_mass),</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">        <span class="dt">mean_prey_mass =</span> <span class="kw">mean</span>(prey_mass),</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">        <span class="dt">mean_pred_length =</span> <span class="kw">mean</span>(predator_length)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">    </span><span class="kw">filter</span>(mean_pred_mass <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="co"># &quot;outliers&quot;</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co"># Plot pred weight vs prey weight</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="kw">ggplot</span>(plot_data, <span class="kw">aes</span>(<span class="dt">x =</span> mean_pred_mass, <span class="dt">y =</span> mean_prey_mass)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">    </span><span class="kw">geom_smooth</span>()</a></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="lec14-datasets_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Plot pred length vs prey weight</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">ggplot</span>(plot_data, <span class="kw">aes</span>(<span class="dt">x =</span> mean_pred_length, <span class="dt">y =</span> mean_prey_mass)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_smooth</span>()</a></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="lec14-datasets_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+</div>
+<div id="as-a-group-complete-these-tasks-1" class="section level3">
+<h3>As a group, complete these tasks</h3>
+<p>In your group, rotate roles (need a facilitator and recorder at minimum). Before the end of class, finish these:</p>
+<ul>
+<li>Choose two possible datasets (or more) your team would like to work from (can also be datasets not presented in class) <em>(record them)</em></li>
+<li>Look into the data documentation, see what type of variables there are, what published articles are available.</li>
+<li>Then, brainstorm as many research questions as possible for those two datasets <em>(record them)</em>
+<ul>
+<li>Goal is to write down as many ideas as possible</li>
+<li>No question is off limits and no question is too simple or too complex!</li>
+<li>(You might combine or split questions later, just get whatever down!)</li>
+<li>Just write what ever comes to mind, whether it is an idea or not. Just start writing!</li>
+</ul></li>
+</ul>
+<p>Make sure to <em>record</em> everything down! Many of these tasks will also be part of your mid-project update!</p>
+</div>
+<div id="set-up-github-account" class="section level3">
+<h3>Set up GitHub account</h3>
+<p>Before we finish the class, we need to prepare a bit for next class. We need to create a <a href="https://github.com">GitHub</a> account!</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>See <a href="https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology">Khan Academy on Scientific Method</a> for a brief overview and explanation on the scientific process.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>See <a href="https://open.lib.umn.edu/principlesmanagement/chapter/13-3-group-dynamics/">Principles of Group Dynamics</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

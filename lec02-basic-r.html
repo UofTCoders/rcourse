@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joel Östblom &amp; Ahmed Hasan" />
+
+
+<title>Introduction to R: Assignment, vectors, functions</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to R: Assignment, vectors, functions</h1>
+<h4 class="author">Joel Östblom &amp; Ahmed Hasan</h4>
+
+</div>
+
+
+<p><strong>Copyright (c) Data Carpentry</strong></p>
+<p><em>Note: This lecture content was originally created by voluntary contributions to <a href="https://datacarpentry.org">Data Carpentry</a> and has been modified to align with the aims of EEB313. Data Carpentry is an organization focused on data literacy, with the objective of teaching skills to researchers to enable them to retrieve, view, manipulate, analyze, and store their and other’s data in an open and reproducible way in order to extract knowledge from data. For EEB313, we are making all our content available under the same license, <a href="https://creativecommons.org/">The Creative Commons</a>, so that anyone in the future can re-use or modify our course content, without infringing on copyright licensing issues.</em></p>
+<p>The above paragraph is made explicit since it is one of the core features of working with an open language like R. Many smart people willingly and actively share their material publicly, so that others can modify and build off of the material themselves.</p>
+<p>By being open, we can “stand on the shoulders of giants” and continue to contribute for others to then stand on our shoulders. Not only does this help get work done, but it also adds to a feeling of community. In fact, there is a common saying in the open source world:</p>
+<blockquote>
+<p>I came for the language and stayed for the community.</p>
+</blockquote>
+<p>This saying captures the spirit, generosity, and fun involved in being a part of these open source projects.</p>
+<hr />
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson Preamble</h2>
+<blockquote>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Define the following terms as they relate to R: call, function, arguments, options.</li>
+<li>Use comments within code blocks.</li>
+<li>Do simple arithmetic operations in R using values and objects.</li>
+<li>Call functions and use arguments to change their default options.</li>
+<li>Define our own functions</li>
+<li>Inspect the content of vectors and manipulate their content.</li>
+<li>Create for-loops</li>
+</ul>
+<h3 id="lecture-outline">Lecture outline</h3>
+<ul>
+<li>Setting up the R Notebook (10 min)</li>
+<li>Creating objects/variables in R (10 min)</li>
+<li>Using and writing functions (15 min)</li>
+<li>Vectors and data types (15 min)</li>
+<li>Subsetting vectors (15 min)</li>
+<li>Missing data (10 min)</li>
+<li>Loops and vectorization (20 min)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="setting-up-the-r-notebook" class="section level2">
+<h2>Setting up the R Notebook</h2>
+<p>Let’s remove the template RStudio gives us, and add a title of our own.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="fu">title:</span><span class="at"> Introduction to R</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">---</span></a></code></pre></div>
+<p>This header block is called the YAML header. This is where we specify whether we want to convert this file to a HTML or PDF file. This will be discussed in more detail in another class. For now, we just care about including the lecture title here. For now, let’s type out a note:</p>
+<blockquote>
+<p>This lecture covers fundamental R usage, such as assigning values to a variable, using functions, and commenting code, and more.</p>
+</blockquote>
+<p>Under this sentence, we will insert our first code chunk. Remember that you insert a code chunk by either clicking the “Insert” button or pressing <kbd>Ctrl/Cmd</kbd> + <kbd>Alt</kbd> + <kbd>i</kbd> simultaneously. To run a code chunk, you press the green arrow, or <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+</div>
+<div id="creating-objects-in-r" class="section level2">
+<h2>Creating objects in R</h2>
+<p>As we saw in our first class, you can get output from R simply by typing math in the console:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="dv">3</span> <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="dv">12</span> <span class="op">/</span><span class="st"> </span><span class="dv">7</span></a></code></pre></div>
+<pre><code>## [1] 1.714286</code></pre>
+<p>However, to do useful and interesting things, we need to assign <em>values</em> to <em>objects</em>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">x <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p>You can name an object in R almost anything you want:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">joel &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">joel <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div id="challenge" class="section level4">
+<h4>Challenge</h4>
+<p>So far, we have created two variables, <code>joel</code> and <code>x</code>. What is the sum of these variables?</p>
+<p>Objects can be given any name such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. You want your object names to be explicit and not too long. They cannot start with a number (<code>2x</code> is not valid, but <code>x2</code> is). R is case sensitive (e.g., <code>joel</code> is different from <code>Joel</code>). There are some names that cannot be used because they are they are reserved for fundamental functions in R (<code>?Reserved</code> lists these words). In general, even if it’s allowed, it’s best to not use other function names (e.g., <code>c</code>, <code>T</code>, <code>mean</code>, <code>data</code>, <code>df</code>, <code>weights</code>). If in doubt, check the help or use tab completion to see if the name is already in use.</p>
+<p>It’s also best to avoid dots (<code>.</code>) within a variable name as in <code>my.dataset</code>. Historically, there are many functions in R with dots in their name, but since dots have a <a href="http://adv-r.had.co.nz/S3.html">special meaning</a> in R, it’s better to not use them and instead use underscores (<code>_</code>).</p>
+<p>It is also recommended to use nouns for variable names, and verbs for function names. It’s important to be consistent in the styling of your code (where you put spaces, how you name variables, etc.). Using a consistent coding style<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> makes your code clearer to read for your future self and your collaborators. RStudio will format code for you if you highlight a section of code and press <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>a</kbd>.</p>
+<p>When assigning a value to an object, R does not print anything. You can force R to print the value by using parentheses or by typing the object name:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">weight_kg &lt;-<span class="st"> </span><span class="dv">55</span>    <span class="co"># doesn&#39;t print anything</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">(weight_kg &lt;-<span class="st"> </span><span class="dv">55</span>)  <span class="co"># but putting parentheses around the call prints the value of `weight_kg`</span></a></code></pre></div>
+<pre><code>## [1] 55</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">weight_kg          <span class="co"># and so does typing the name of the object</span></a></code></pre></div>
+<pre><code>## [1] 55</code></pre>
+<p>The variable <code>weight_kg</code> is stored in the computer’s memory where R can access it, and we can start doing arithmetic with it efficiently. For instance, we may want to convert this weight into pounds (weight in pounds is 2.2 times the weight in kg):</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="fl">2.2</span> <span class="op">*</span><span class="st"> </span>weight_kg</a></code></pre></div>
+<pre><code>## [1] 121</code></pre>
+<p>We can also change a variable’s value by assigning it a new one:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">weight_kg &lt;-<span class="st"> </span><span class="fl">57.5</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="fl">2.2</span> <span class="op">*</span><span class="st"> </span>weight_kg</a></code></pre></div>
+<pre><code>## [1] 126.5</code></pre>
+<p>This means that assigning a value to one variable does not change the values of other variables. For example, let’s store the animal’s weight in pounds in a new variable, <code>weight_lb</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">weight_lb &lt;-<span class="st"> </span><span class="fl">2.2</span> <span class="op">*</span><span class="st"> </span>weight_kg</a></code></pre></div>
+<p>and then change <code>weight_kg</code> to 100.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">weight_kg &lt;-<span class="st"> </span><span class="dv">100</span></a></code></pre></div>
+</div>
+<div id="challenge-1" class="section level4">
+<h4>Challenge</h4>
+<p>What do you think is the current content of the object <code>weight_lb</code>? 126.5 or 220?</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">weight_lb</a></code></pre></div>
+</div>
+<div id="comments" class="section level3">
+<h3>Comments</h3>
+<p>A comment is piece of text in your code that will not be executed with the rest of the code, but its purpose is to be a note to the person reading the code. Traditionally, comments have been the only way to make notes alongside your code, but since we are using the R Notebook format, we can also write notes in Markdown. Therefore, comments are not as important for us, but they are still the best method of leaving short notes and explanations for specific lines of code. The comment character in R is <code>#</code>, anything to the right of a <code>#</code> in a script will be ignored by R.</p>
+<p>RStudio makes it easy to comment or uncomment a paragraph: after selecting the lines you want to comment, press at the same time on your keyboard <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment out one line, you can put the cursor at any location of that line (i.e. no need to select the whole line), then press <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">weight_lb &lt;-<span class="st"> </span><span class="fl">2.2</span> <span class="op">*</span><span class="st"> </span>weight_kg <span class="co"># Actually, 1 kg = 2.204623 lbs</span></a></code></pre></div>
+<div id="challenge-2" class="section level4">
+<h4>Challenge</h4>
+<p>What are the values after each statement in the following?</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">mass &lt;-<span class="st"> </span><span class="fl">47.5</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">age  &lt;-<span class="st"> </span><span class="dv">122</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">mass &lt;-<span class="st"> </span>mass <span class="op">*</span><span class="st"> </span><span class="fl">2.0</span>      <span class="co"># mass?</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">age  &lt;-<span class="st"> </span>age <span class="op">-</span><span class="st"> </span><span class="dv">20</span>        <span class="co"># age?</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">mass_index &lt;-<span class="st"> </span>mass<span class="op">/</span>age  <span class="co"># mass_index?</span></a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="functions-and-their-arguments" class="section level2">
+<h2>Functions and their arguments</h2>
+<p>Functions can be thought of as recipes. You give a few ingredients as input to a function, and it will generate an output based on these ingredients. Just as with baking, both the ingredients and the actual recipe will influence what comes out of the recipe in the end: will it be a cake or a loaf of bread? In R, the inputs to a function are not called ingredients, but rather <em>arguments</em>, and the output is called the <em>return value</em> of the function. A function does not technically have to return a value, but often does so. Functions are used to automate more complicated sets of commands and many of them are already predefined in R. A typical example would be the function <code>sqrt()</code>. The input (the argument) must be a number, and the return value (in fact, the output) is the square root of that number. Executing a function (‘running it’) is called <em>calling</em> the function. An example of a function call is:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">sqrt</span>(<span class="dv">9</span>)</a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>Which is the same as assigning the value to a variable and then passing that variable to the function:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">a &lt;-<span class="st"> </span><span class="dv">9</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">b &lt;-<span class="st"> </span><span class="kw">sqrt</span>(a)</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">b</a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>Here, the value of <code>a</code> is given to the <code>sqrt()</code> function, the <code>sqrt()</code> function calculates the square root, and returns the value which is then assigned to variable <code>b</code>. This function is very simple, because it takes just one argument.</p>
+<p>The return ‘value’ of a function need not be numerical (like that of <code>sqrt()</code>), and it also does not need to be a single item: it can be a set of things, or even a dataset, as we will see later on.</p>
+<p>Arguments can be anything, not only numbers or filenames, but also other objects. Exactly what each argument means differs per function, and must be looked up in the documentation (see below). Some functions take arguments which may either be specified by the user, or, if left out, take on a <em>default</em> value: these are called <em>options</em>. Options are typically used to alter the way the function operates, such as whether it ignores ‘bad values’, or what symbol to use in a plot. However, if you want something specific, you can specify a value of your choice which will be used instead of the default.</p>
+<p>To access help about <code>sqrt</code>, we are first going to learn about tab-completion. Type <code>s</code> and press <kbd>Tab</kbd>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">s<span class="op">&lt;</span>tab<span class="op">&gt;</span>q</a></code></pre></div>
+<p>You can see that R gives you suggestions of what functions and variables are available that start with the letter <code>s</code>, and thanks to RStudio they are formatted in this nice list. There are <em>many</em> suggestions here, so let’s be a bit more specific and append a <code>q</code>, to find what we want. If we press enter or tab again, R will insert the selected option.</p>
+<p>You can see that R inserts a pair of parentheses together with the name of the function. This is how the function syntax looks for R and many other programming languages, and it means that within these parentheses, we will specify all the arguments (the ingredients) that we want to pass to this function.</p>
+<p>If we press tab again, R will helpfully display all the available parameters for this function that we can pass an argument to. The word <em>parameter</em> is used to describe the name that the argument can be passed to. More on that later.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">sqrt</span>(<span class="op">&lt;</span>tab<span class="op">&gt;</span></a></code></pre></div>
+<p>There are many things in this list, but only one of them is marked in purple. Purple here means that this list item is a parameter we can use for the function, while yellow means that it is a variable that we defined earlier.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>To read the full help about <code>sqrt</code>, we can use the question mark, or type it directly into the help document browser.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">?sqrt</a></code></pre></div>
+<p>As you can see, <code>sqrt()</code> takes only one argument, <code>x</code>, which needs to be a <em>numerical vector</em>. Don’t worry too much about the fact that it says <em>vector</em> here; we will talk more about that later. Briefly, a numerical vector is one or more numbers. In R, every number is a vector, so you don’t have to do anything special to create a vector. More on vectors later.</p>
+<p>Let’s try a function that can take multiple arguments: <code>round()</code>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">round</span>(<span class="op">&lt;</span>tab<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">?round</a></code></pre></div>
+<p>If we try round with a value:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">round</span>(<span class="fl">3.14159</span>)</a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>Here, we’ve called <code>round()</code> with just one argument, <code>3.14159</code>, and it has returned the value <code>3</code>. That’s because the default is to round to the nearest whole number, or integer. If we want more digits we can pass an argument to the <code>digits</code> parameter, to specify how many decimals we want to round to.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">round</span>(<span class="fl">3.14159</span>, <span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 3.14</code></pre>
+<p>So, above we pass the <em>argument</em> <code>2</code>, to the <em>parameter</em> <code>digits</code>. Knowing this nomenclature is not essential for doing your own data analysis, but it will be very helpful when you are reading through help documents online and in RStudio.</p>
+<p>We can leave out the word <code>digits</code> since we know it comes as the second parameter, after <code>x</code>.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">round</span>(<span class="fl">3.14159</span>, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 3.14</code></pre>
+<p>As you notice, we have been leaving out <code>x</code> from the beginning. If you provide the names for both the arguments, we can switch their order:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">round</span>(<span class="dt">digits =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="fl">3.14159</span>)</a></code></pre></div>
+<pre><code>## [1] 3.14</code></pre>
+<p>It’s good practice to put the non-optional arguments (like the number you’re rounding) first in your function call, and to specify the names of all optional arguments. If you don’t, someone reading your code might have to look up the definition of a function with unfamiliar arguments to understand what you’re doing.</p>
+</div>
+<div id="writing-functions" class="section level2">
+<h2>Writing functions</h2>
+<p>In this class, you will be working a lot with functions, especially those that someone else has already written. When you type <code>sum</code>, <code>c()</code>, or <code>mean()</code>, you are using a function that has been made previously and built into R. To remove some of the magic around these functions, we will go through how to make a basic function of our own. Let’s start with a simple example where we add two numbers together:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">add_two_numbers &lt;-<span class="st"> </span><span class="cf">function</span>(num1, num2) {</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">    <span class="kw">return</span>(num1 <span class="op">+</span><span class="st"> </span>num2)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">add_two_numbers</span>(<span class="dv">4</span>, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>As you can see, running this function on two numbers returns their sum. We could also assign to a variable in the function and return the function.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">add_two_numbers &lt;-<span class="st"> </span><span class="cf">function</span>(num1, num2) {</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">    my_sum &lt;-<span class="st"> </span>num1 <span class="op">+</span><span class="st"> </span>num2</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">    <span class="kw">return</span>(my_sum)</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="kw">add_two_numbers</span>(<span class="dv">4</span>, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<div id="challenge-3" class="section level4">
+<h4>Challenge</h4>
+<p>Can you write a function that calculates the mean of 3 numbers?</p>
+</div>
+</div>
+<div id="vectors-and-data-types" class="section level2">
+<h2>Vectors and data types</h2>
+<p>A vector is the most common and basic data type in R, and is pretty much the workhorse of R. A vector is composed by a series of values, which can be either numbers or characters. We can assign a series of values to a vector using the <code>c()</code> function, which stands for “concatenate (combine/connect one after another) values into a vector” For example we can create a vector of animal weights and assign it to a new object <code>weight_g</code>:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">weight_g &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">82</span>) <span class="co"># Concatenate/Combine values into a vector</span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">weight_g</a></code></pre></div>
+<pre><code>## [1] 50 60 65 82</code></pre>
+<p>You can also use the built-in command <code>seq</code>, to create a sequence of numbers without typing all of them in manually.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>) <span class="co"># This is the same as just `0:30`</span></a></code></pre></div>
+<pre><code>##  [1]  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+## [26] 25 26 27 28 29 30</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">3</span>) <span class="co"># Every third number</span></a></code></pre></div>
+<pre><code>##  [1]  0  3  6  9 12 15 18 21 24 27 30</code></pre>
+<p>A vector can also contain characters:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">animals &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;mouse&#39;</span>, <span class="st">&#39;rat&#39;</span>, <span class="st">&#39;dog&#39;</span>)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">animals</a></code></pre></div>
+<pre><code>## [1] &quot;mouse&quot; &quot;rat&quot;   &quot;dog&quot;</code></pre>
+<p>The quotes around “mouse”, “rat”, etc. are essential here and can be either single or double quotes. Without the quotes R will assume there are objects called <code>mouse</code>, <code>rat</code> and <code>dog</code>. As these objects don’t exist in R’s memory, there will be an error message.</p>
+<p>There are many functions that allow you to inspect the content of a vector. <code>length()</code> tells you how many elements are in a particular vector:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">length</span>(weight_g)</a></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">length</span>(animals)</a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>An important feature of a vector is that all of the elements are the same type of data. The function <code>class()</code> indicates the class (the type of element) of an object:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">class</span>(weight_g)</a></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">class</span>(animals)</a></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>The function <code>str()</code> provides an overview of the structure of an object and its elements. It is a useful function when working with large and complex objects:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">str</span>(weight_g)</a></code></pre></div>
+<pre><code>##  num [1:4] 50 60 65 82</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">str</span>(animals)</a></code></pre></div>
+<pre><code>##  chr [1:3] &quot;mouse&quot; &quot;rat&quot; &quot;dog&quot;</code></pre>
+<p>You can use the <code>c()</code> function to add other elements to your vector:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">weight_g &lt;-<span class="st"> </span><span class="kw">c</span>(weight_g, <span class="dv">90</span>) <span class="co"># add to the end of the vector</span></a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">weight_g &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>, weight_g) <span class="co"># add to the beginning of the vector</span></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3">weight_g</a></code></pre></div>
+<pre><code>## [1] 30 50 60 65 82 90</code></pre>
+<p>In the first line, we take the original vector <code>weight_g</code>, add the value <code>90</code> to the end of it, and save the result back into <code>weight_g</code>. Then we add the value <code>30</code> to the beginning, again saving the result back into <code>weight_g</code>.</p>
+<p>We can do this over and over again to grow a vector, or assemble a dataset. As we program, this may be useful to add results that we are collecting or calculating.</p>
+<p>An <strong>atomic vector</strong> is the simplest R <strong>data type</strong> and it is a linear vector of a single type, e.g. all numbers. Above, we saw 2 of the 6 main <strong>atomic vector</strong> types that R uses: <code>&quot;character&quot;</code> and <code>&quot;numeric&quot;</code> (or <code>&quot;double&quot;</code>). These are the basic building blocks that all R objects are built from. The other 4 <strong>atomic vector</strong> types are:</p>
+<ul>
+<li><code>&quot;logical&quot;</code> for <code>TRUE</code> and <code>FALSE</code> (the boolean data type)</li>
+<li><code>&quot;integer&quot;</code> for integer numbers (e.g., <code>2L</code>, the <code>L</code> indicates to R that it’s an integer)</li>
+<li><code>&quot;complex&quot;</code> to represent complex numbers with real and imaginary parts (e.g., <code>1 + 4i</code>) and that’s all we’re going to say about them</li>
+<li><code>&quot;raw&quot;</code> for bitstreams that we won’t discuss further</li>
+</ul>
+<p>Vectors are one of the many <strong>data structures</strong> that R uses. Other important ones are lists (<code>list</code>), matrices (<code>matrix</code>), data frames (<code>data.frame</code>), factors (<code>factor</code>) and arrays (<code>array</code>). In this class, we will focus on data frames, which is most commonly used one for data analyses.</p>
+<div id="challenge-4" class="section level4">
+<h4>Challenge</h4>
+<ul>
+<li>We’ve seen that atomic vectors can be of type character, numeric (or double), integer, and logical. But what happens if we try to mix these types in a single vector? Find out by using <code>class</code> to test these examples.</li>
+</ul>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">num_char &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">&#39;a&#39;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">num_logical &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb65-3" data-line-number="3">char_logical &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb65-4" data-line-number="4">tricky &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">&#39;4&#39;</span>)</a></code></pre></div>
+<ul>
+<li><p>This happens because vectors can be of only one data type. Instead of throwing an error and saying that you are trying to mix different types in the same vector, R tries to convert (coerce) the content of this vector to find a “common denominator”. A logical can be turn into 1 or 0, and a number can be turned into a string/character representation. It would be difficult to do it the other way around: would 5 be TRUE or FALSE? What number would ‘t’ be?</p></li>
+<li><p>In R, we call converting objects from one class into another class <em>coercion</em>. These conversions happen according to a hierarchy, whereby some types get preferentially coerced into other types. Can you draw a diagram that represents the hierarchy of how these data types are coerced?</p></li>
+</ul>
+</div>
+</div>
+<div id="subsetting-vectors" class="section level2">
+<h2>Subsetting vectors</h2>
+<p>If we want to extract one or several values from a vector, we must provide one or several indices in square brackets. For instance:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">animals &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mouse&quot;</span>, <span class="st">&quot;rat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cat&quot;</span>)</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">animals[<span class="dv">2</span>]</a></code></pre></div>
+<pre><code>## [1] &quot;rat&quot;</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">animals[<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>)]</a></code></pre></div>
+<pre><code>## [1] &quot;dog&quot; &quot;rat&quot;</code></pre>
+<p>We can also repeat the indices to create an object with more elements than the original one:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">more_animals &lt;-<span class="st"> </span>animals[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>)]</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">more_animals</a></code></pre></div>
+<pre><code>## [1] &quot;mouse&quot; &quot;rat&quot;   &quot;dog&quot;   &quot;rat&quot;   &quot;mouse&quot; &quot;cat&quot;</code></pre>
+<p>R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R start counting at 1, because that’s what human beings typically do. Languages in the C family (including C++, Java, Perl, and Python) count from 0 because that was historically simpler for computers and can allow for more elegant code.</p>
+<div id="conditional-subsetting" class="section level3">
+<h3>Conditional subsetting</h3>
+<p>Another common way of subsetting is by using a logical vector. <code>TRUE</code> will select the element with the same index, while <code>FALSE</code> will not:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">weight_g &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">21</span>, <span class="dv">34</span>, <span class="dv">39</span>, <span class="dv">54</span>, <span class="dv">55</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">weight_g[<span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a></code></pre></div>
+<pre><code>## [1] 21 39 54</code></pre>
+<p>Typically, these logical vectors are not typed by hand, but are the output of other functions or logical tests. For instance, if you wanted to select only the values above 50:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">weight_g <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>    <span class="co"># will return logicals with TRUE for the indices that meet the condition</span></a></code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">## so we can use this to select only the values above 50</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">weight_g[weight_g <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>]</a></code></pre></div>
+<pre><code>## [1] 54 55</code></pre>
+<p>We will consider conditions in more detail in the next few lectures.</p>
+</div>
+</div>
+<div id="missing-data" class="section level2">
+<h2>Missing data</h2>
+<p>As R was designed to analyze datasets, it includes the concept of missing data (which is uncommon in other programming languages). Missing data are represented in vectors as <code>NA</code>.</p>
+<p>When doing operations on numbers, most functions will return <code>NA</code> if the data you are working with include missing values. This feature makes it harder to overlook the cases where you are dealing with missing data. You can add the argument <code>na.rm = TRUE</code> to calculate the result while ignoring the missing values.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">heights &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="ot">NA</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="kw">mean</span>(heights)</a></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">max</span>(heights)</a></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">mean</span>(heights, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">max</span>(heights, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">## Extract those elements which are not missing values.</a>
+<a class="sourceLine" id="cb86-2" data-line-number="2">heights[<span class="op">!</span><span class="kw">is.na</span>(heights)]</a></code></pre></div>
+<pre><code>## [1] 2 4 4 6</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).</a>
+<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="kw">na.omit</span>(heights)</a></code></pre></div>
+<pre><code>## [1] 2 4 4 6
+## attr(,&quot;na.action&quot;)
+## [1] 4
+## attr(,&quot;class&quot;)
+## [1] &quot;omit&quot;</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">## Extract those elements which are complete cases. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2">heights[<span class="kw">complete.cases</span>(heights)]</a></code></pre></div>
+<pre><code>## [1] 2 4 4 6</code></pre>
+<p>Recall that you can use the <code>class()</code> function to find the type of your atomic vector.</p>
+<div id="challenge-5" class="section level4">
+<h4>Challenge</h4>
+<ol style="list-style-type: decimal">
+<li>Using this vector of length measurements, create a new vector with the NAs removed.</li>
+</ol>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">lengths &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="ot">NA</span>, <span class="dv">18</span>, <span class="ot">NA</span>, <span class="dv">20</span>)</a></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Use the function <code>median()</code> to calculate the median of the <code>lengths</code> vector.</li>
+</ol>
+</div>
+</div>
+<div id="loops-and-vectorization" class="section level2">
+<h2>Loops and vectorization</h2>
+<p>Loops, specifically for-loops, are essential to programming in general. However, in R, you should avoid them as often as possible because there are more efficient ways of doing things that you should use instead. It is still important that you understand the concept of loops and you might also use them in some of your own functions if there is no vectorized way of going about what you want to do.</p>
+<p>You can think of a for-loop as: “for each number contained in a list/vector, perform this operation” and the syntax basically says the same thing:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"><span class="cf">for</span> (num <span class="cf">in</span> v) {</a>
+<a class="sourceLine" id="cb93-3" data-line-number="3">    <span class="kw">print</span>(num)</a>
+<a class="sourceLine" id="cb93-4" data-line-number="4">}</a></code></pre></div>
+<pre><code>## [1] 2
+## [1] 4
+## [1] 6</code></pre>
+<p>Instead of printing out every number to the console, we could also add numbers cumulatively, to calculate the sum of all the numbers in the vector:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="co"># To increment `w` each time, we must first create the variable,</span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="co"># which we do by setting `w &lt;- 0`, referred to as initializing.</span></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="co"># This also ensures that `w` is zero at the start of the loop and</span></a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"><span class="co"># doesn&#39;t retain the value from last time we ran this code.</span></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5">w &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb95-6" data-line-number="6"><span class="cf">for</span> (num <span class="cf">in</span> v) {</a>
+<a class="sourceLine" id="cb95-7" data-line-number="7">    w &lt;-<span class="st"> </span>w <span class="op">+</span><span class="st"> </span>num</a>
+<a class="sourceLine" id="cb95-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb95-9" data-line-number="9">w</a></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>If we put what we just did inside a function, we have essentially recreated the <code>sum</code> function in R.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">my_sum &lt;-<span class="st"> </span><span class="cf">function</span>(input_vector) {</a>
+<a class="sourceLine" id="cb97-2" data-line-number="2">    vector_sum &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb97-3" data-line-number="3">    <span class="cf">for</span> (num <span class="cf">in</span> input_vector){</a>
+<a class="sourceLine" id="cb97-4" data-line-number="4">        vector_sum &lt;-<span class="st"> </span>vector_sum <span class="op">+</span><span class="st"> </span>num</a>
+<a class="sourceLine" id="cb97-5" data-line-number="5">    }</a>
+<a class="sourceLine" id="cb97-6" data-line-number="6">    <span class="kw">return</span>(vector_sum)</a>
+<a class="sourceLine" id="cb97-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb97-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb97-9" data-line-number="9"><span class="kw">my_sum</span>(v)</a></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>Although this gives us the same output as the built-in function <code>sum</code>, the built-in function has many more optimizations so it is much faster than our function. In R, it is always faster to try to find a way of doing things without writing a loop yourself. When you are reading about R, you might see suggestions that you should try to <em>vectorize</em> your code to make it faster. What people are referring to, is that you should not write for loops in R and instead use the ready-made functions that are much more efficient in working with vectors and essentially performs operations on entire vector at once instead of one number at a time. If anyone is interested in more details about how this works, please ask after class, but conceptually loops operate on one element at a time while vectorized code operates on all elements of a vector at once.</p>
+<p>In our next lecture, we’ll dive into working with real data using all that we’ve learned today.</p>
+<!-- break -->
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Refer to the <a href="https://uoftcoders.github.io/rcourse/resources.html">class resources page</a> for which style to adhere to.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>There are a few other symbols as well, all of which can be viewed at the end of <a href="https://support.rstudio.com/hc/en-us/articles/205273297-Code-Completion">this post about RStudio code completion</a>.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

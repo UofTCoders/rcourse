@@ -1,0 +1,79 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "0000-0003-4169-2616",
+      "@type": "Person",
+      "email": "lwjohnst@ph.au.dk",
+      "name": "Luke Johnston",
+      "affiliation": "Department of Nutritional Sciences, University of Toronto; Department of Public Health, Aarhus University"
+    },
+    {
+      "@id": "0000-0002-5813-4664",
+      "@type": "Person",
+      "email": "m.bonsma@mail.utoronto.ca",
+      "name": "Madeleine Bonsma-Fisher",
+      "affiliation": "Department of Physics, University of Toronto"
+    },
+    {
+      "@id": "0000-0003-0051-3239",
+      "@type": "Person",
+      "email": "joel.ostblom@mail.utoronto.ca",
+      "name": "Joel Ostblom",
+      "affiliation": "Institute of Biomaterials and Biomedical Engineering, University of Toronto"
+    },
+    {
+      "@id": "0000-0003-0002-8399",
+      "@type": "Person",
+      "email": "ahmed.hasan@mail.utoronto.ca",
+      "name": "Ahmed Hasan",
+      "affiliation": "Department of Cell and Systems Biology, University of Toronto"
+    },
+    {
+      "@id": "0000-0002-5921-2548",
+      "@type": "Person",
+      "email": "james.santangelo@mail.utoronto.ca",
+      "name": "James Santangelo",
+      "affiliation": "Department of Ecology and Evolutionary Biology, University of Toronto"
+    },
+    {
+      "@id": "0000-0003-3504-4524",
+      "@type": "Person",
+      "email": "lina.tran@mail.utoronto.ca",
+      "name": "Lina Tran",
+      "affiliation": "Department of Physiology, University of Toronto"
+    },
+    {
+      "@id": "0000-0001-7310-8942",
+      "@type": "Person",
+      "email": "esalesde@physics.utoronto.ca",
+      "name": "Elliott Sales de Andrade",
+      "affiliation": "Department of Physics, University of Toronto"
+    },
+    {
+      "@id": "0000-0001-8126-3571",
+      "@type": "Person",
+      "email": "lindsay.coome@mail.utoronto.ca",
+      "name": "Lindsay Coome",
+      "affiliation": "Department of Psychology, University of Toronto"
+    },
+    {
+      "@id": "0000-0002-6765-0898",
+      "@type": "Person",
+      "email": "sara.mahallati@mail.utoronto.ca",
+      "name": "Sara Mahallati",
+      "affiliation": "Institute of Biomaterials and Biomedical Engineering, University of Toronto"
+    }
+  ],
+  "identifier": "https://doi.org/10.5281/zenodo.2335179",
+  "codeRepository": "https://github.com/UofTCoders/rcourse",
+  "datePublished": "2019-01-03",
+  "dateModified": "2019-01-03",
+  "dateCreated": "2019-01-03",
+  "description": "This material contains modular participatory live-coding lectures covering statistics and data analysis for ecology and reproducible quantitative methods in R. Statistical analysis, modelling, simulation, and data analysis are essential skills for applying ecology concepts to data. This material is designed to meet a growing demand for reproducible, openly accessible, analytically thorough, and well documented science.",
+  "keywords": "R, programming, coding, ecology, statistics, differential equations, modelling, regression, population dynamics",
+  "license": "MIT, CC-BY-4.0",
+  "title": "A graduate student-led participatory live-coding quantitative methods course in R: Experiences on initiating, developing, and teaching",
+  "version": "v2.1.0"
+}

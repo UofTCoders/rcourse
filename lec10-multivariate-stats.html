@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Amber Gigi Hoi" />
+
+
+<title>Multivariate statistics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Multivariate statistics</h1>
+<h4 class="author">Amber Gigi Hoi</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level1">
+<h1>Lesson preamble:</h1>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives:</h3>
+<ul>
+<li>Most things in EEB are correlated - what does that do to our analyses?</li>
+<li>Use multivariate techniques to reduce complex situtations into more manageable ones</li>
+<li>Run multivariate multiple regressions with structural equation models</li>
+<li>Understand that a <strong>very</strong> long list of caveats come with using each of these techniques</li>
+<li>Bottomline: integrity is the number one virtue to being a good researcher</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline:</h3>
+<p>Total lesson time: 2 hours</p>
+<ul>
+<li>Introduction to dataset and hypotheses (10 min)</li>
+<li>Performing ordination on species data (30 min)</li>
+<li>Inspect multicollinearity (20 min)</li>
+<li>A very brief introduction to structural equation models (40 min)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="correlations---a-double-edge-sword" class="section level2">
+<h2>Correlations - a double edge sword</h2>
+<p>Ecologists are obsessed with patterns in nature. It is thus great news that most things in nature <em>are</em> correlated with one another - that’s why we all still have jobs. However, this is also bad news, because when things are correlated, it becomes difficult to tease part which effects came from where.</p>
+<p>Take this simple example of something we can all relate to – food.</p>
+<p>You love spicy food. To satisfy your craving, you made this very spicy dish with five different kinds of chili peppers. It was a very delicious dish! It has this real depth of flavor, and needless to say, spicy! Then you find yourselves wondering where is the heat actually coming from anyway? Was it the habanero? The Scotch bonnet? There was a little bit of smokiness, perhaps that was chipotle? That was a difficult question because all of the ingredients you put in have a similar flavor profile – spicy.</p>
+<p>In today’s lecture, we’ll be working through a real-life –- read: it’s gonna be messy –- example of how different multivariate techniques can be used to <del>distinguish between the flavor profile of different chili peppers</del> disentangle the effects of highly correlated variables.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>The overarching question we will be tackling today is whether vector diversity mattered to malaria transmission. Did you know that malaria parasites, <em>Plasmodium spp.</em>, can infect up to 70 mosquito species? These vector species were not created equal in terms of their capacity to transmit disease as they often differ in traits such as life history, phenology, and feeding preference. Thus, neglected details of vector diversity can have important consequences for disease dynamics. There are many ways in which “diversity” can be measured: abundance, species richness, and composition. Which one of these axes of diversity really mattered, and how much does it matter?</p>
+<p>Here are the packages we will be using today:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(MASS)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(PerformanceAnalytics)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(MuMIn)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(ggfortify)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">library</span>(lavaan)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">library</span>(viridis)</a></code></pre></div>
+<p>In addition, we will also be <em>sourcing</em> some functions provided by Zuur <em>et al.</em> (2009). The full reference can be found at the end of this document.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Original link http://highstat.com/Books/BGS/GAMM/RCodeP2/HighstatLibV6.R</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/UofTCoders/rcourse/master/resources/HighstatLibV6.R&quot;</span>)</a></code></pre></div>
+<p>And here is the data we will be working with:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">download.file</span>(<span class="st">&quot;https://uoftcoders.github.io/rcourse/data/kenya.wide&quot;</span>, </a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">              <span class="st">&quot;kenya.wide&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">kenya.wide &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/kenya.wide.csv&quot;</span>)</a></code></pre></div>
+<p>The data used in this analysis was collected by Mbogo and colleagues in 1998 and published in their 2003 manuscript. In brief, these researchers conducted entomological and epidemiological surveys at 30 villages along the eastern Kenyan coast in 1998. Overnight human-landing catches were performed in ten huts per village every two months over the course of the year-long study. Mosquito species were identified via molecular methods, and their abundances were recorded. At the end of the vector survey period (May 1998), 76-100 school children (ages 6-12) were sampled for malaria at each village. Malaria prevalence was estimated as the proportion of samples that showed blood-stage parasites in stained blood smears. <em>P. falciparum</em> was found to be responsible for more than 95% of the malaria cases in this region, and thus is the only parasite species considered here. The longitudinal mosquito diversity data was aggregated to match the cross-sectional nature of the malaria prevalence data.</p>
+<p>The data relevant to our analysis thus consisted of the following:</p>
+<ol style="list-style-type: decimal">
+<li>Malaria prevalence (number positive divided by number sampled at each village),</li>
+<li>Mosquitoes observed at each village (relative and total abundance of each species),</li>
+<li>Latitudinal location of each village as a proxy for unavailable climate variables,</li>
+<li>Distance to closest big city in the region (Mombasa) as a proxy for access to health care.</li>
+</ol>
+<p>The unit of replication in this study, i.e. the smallest scale at which information on variation is available, is “village”, bringing the total sample size to 30.</p>
+<p>Let’s have a look at the data, and start to organize our analysis.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">head</span>(kenya.wide)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 15
+##   site.id gambiae funestus arabiensis   merus   lat  long site.name
+##     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    
+## 1      24  0.0751   0.930     0.00152 0       -4.38  39.5 Magaoni  
+## 2       2  0.399    0.0238    0.282   0.295   -3     40.2 Garithe  
+## 3       3  0.905    0.0190    0.0759  0       -3.54  39.6 Kagombani
+## 4       4  0.837    0.0345    0.109   0.0192  -3.15  40.2 Majenjeni
+## 5      21  0.784    0.171     0.0407  0.00428 -4.13  39.3 Amani    
+## 6      14  0.444    0.467     0.0615  0.0273  -3.64  39.7 Jaribuni 
+## # … with 7 more variables: total.abundance &lt;dbl&gt;, PfPOS &lt;dbl&gt;, PfNEG &lt;dbl&gt;,
+## #   PfEX &lt;dbl&gt;, PfPR &lt;dbl&gt;, distance &lt;dbl&gt;, SR &lt;dbl&gt;</code></pre>
+<ul>
+<li>The <strong>response</strong> variable is “PfPR” which stands for <em>Plasmodium falciparum</em> parasite rate.</li>
+<li>The <strong>predictor</strong> variables are “total.abundance”, “SR” which stands for species richness, and the four columns “arabiensis”, “funestus”, “gambiae”, and “merus”, which recorded relative abundances of each of the vector species of the genus <em>Anopheles</em> found in this area.</li>
+<li>We will also be considering “lat” and “distance” (to closest big city) as potential <strong>confounders</strong>.</li>
+</ul>
+</div>
+<div id="creating-a-proxy-for-community-structure" class="section level2">
+<h2>Creating a proxy for community structure</h2>
+<p>At the moment, we have four predictors that relate to “vector community structure” (i.e., those four columns containing species relative abundance info), and that is a lot! How can we reduce this to something simpler to use in our regressions?</p>
+<p>The first multivariate technique we are going to work with today is ordination. As the name may suggest, ordination is a way of organizing things into a particular order, typically based on how similar things are in some aspect. In this case, we will be organizing our sites based on how similar they are in vector species composition.</p>
+<p>One of the most common ordination techniques used by ecologists is the Principle Components Analysis (PCA). A PCA seeks to find a new coordinate system (PC axes) that best accounts for the variation in multivariate data space, thus reducing dimensionality in the process.</p>
+<p>The procudure to conduct a PCA is as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Imagine a 4-dimensional object with each of our species relative abundances as an axis (k=4).</li>
+<li>Plot our sites (n=30) in this 4-D space, and then find the distance between those points (do not despair, R will do the actual calculations for us).</li>
+<li>After you have the distances between points, we can use processes that are similar (in concept) to least squares to find a “best-fit line” through our data points. This will be our first PC axes and it explains the most variance in our data.</li>
+<li>Find another best-fit line through the remainder of the data under the condition that it has to be orthogonal to the first axes (i.e., at a 90° angle, meaning that these two axes are as unrelated to each other as possible).</li>
+<li>This process continues until we have k PC axes.</li>
+</ol>
+<p>Easy peasy, right? PCA <em>is</em> in fact a fairly straightforward and automatic analysis in R. We just have to give R the appropriate object, do a little of bit of transformation to ensure our results are not disproportionately affected by any outliers (i.e., rare species), and we are good to go!</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">kenya.pca &lt;-<span class="st"> </span>kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(arabiensis, gambiae, funestus, merus) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Choose relevant columns</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate_all</span>(sqrt) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Hellinger transformation </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">prcomp</span>(.) <span class="co"># Pipe directly into base R function for PCA</span></a></code></pre></div>
+<p>These lines of code returns the result of our simple PCA. Use <em>str()</em> and <em>summary()</em> for a quick initial inspection of this object.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(kenya.pca)</a></code></pre></div>
+<pre><code>## Importance of components:
+##                           PC1    PC2     PC3     PC4
+## Standard deviation     0.3574 0.2361 0.11994 0.08256
+## Proportion of Variance 0.6241 0.2723 0.07029 0.03330
+## Cumulative Proportion  0.6241 0.8964 0.96670 1.00000</code></pre>
+<p>This gives us a table <em>summary</em> of variance explained by each axes. R even did the math for us and showed cumulative variance explained as we move to the higher dimensions, so convenient! We see that the first two PC axes already explained close to 90% of the variation of the data, that’s pretty good! We will therefore only be using these two axes in subsequent analyses, and have successfully reduced our community composition measure from four variables to two!</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">str</span>(kenya.pca) </a></code></pre></div>
+<pre><code>## List of 5
+##  $ sdev    : num [1:4] 0.3574 0.2361 0.1199 0.0826
+##  $ rotation: num [1:4, 1:4] 0.3384 0.4869 -0.805 -0.0208 0.7567 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:4] &quot;arabiensis&quot; &quot;gambiae&quot; &quot;funestus&quot; &quot;merus&quot;
+##   .. ..$ : chr [1:4] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot;
+##  $ center  : Named num [1:4] 0.2259 0.7328 0.4532 0.0754
+##   ..- attr(*, &quot;names&quot;)= chr [1:4] &quot;arabiensis&quot; &quot;gambiae&quot; &quot;funestus&quot; &quot;merus&quot;
+##  $ scale   : logi FALSE
+##  $ x       : num [1:30, 1:4] -0.6967 0.2849 0.3787 0.3379 0.0979 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : NULL
+##   .. ..$ : chr [1:4] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot;
+##  - attr(*, &quot;class&quot;)= chr &quot;prcomp&quot;</code></pre>
+<p>We see that this object is <em>str</em>uctured as a five-item list. We mostly care about two of these items:</p>
+<ol style="list-style-type: decimal">
+<li>Species loadings - appropriately named <em>rotation</em>.</li>
+<li>Site scores - lazily named <em>x</em>.</li>
+</ol>
+<p>To inspect these items, use the $ notation.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">kenya.pca<span class="op">$</span>rotation</a></code></pre></div>
+<pre><code>##                    PC1         PC2         PC3        PC4
+## arabiensis  0.33840120  0.75670838 -0.43923364 -0.3463392
+## gambiae     0.48686812 -0.55562455 -0.05229353 -0.6719421
+## funestus   -0.80499055 -0.02683509 -0.23865264 -0.5425081
+## merus      -0.02083931  0.34344384  0.86451380 -0.3663713</code></pre>
+<p>Basically, species loadings show how much of the original species info contributed to each new axes. For example, we see that the species <em>An. funestus</em> loaded the most strongly on to PC1, followed by <em>An. arabiensis</em> and <em>An. gambiae</em> in the opposite direction. This means that sites with relatively more <em>An. funestus</em> will tend to have relatively few <em>An. arabiensis</em> and <em>An. gambiae</em>, but this antagonism is not balanced (due to weaker loading of <em>arabiensis</em> and <em>gambiae</em> onto this axes). As a mini challenge, interpret PC2 loadings.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">kenya.pca<span class="op">$</span>x</a></code></pre></div>
+<pre><code>##               PC1          PC2           PC3          PC4
+##  [1,] -0.69671568  0.073905651 -8.107273e-02  0.123277513
+##  [2,]  0.28487808  0.455836972  3.474136e-01 -0.046968389
+##  [3,]  0.37866982 -0.101288160 -2.309864e-02  0.034678503
+##  [4,]  0.33793407  0.007145929  6.282820e-02 -0.036743660
+##  [5,]  0.09786239 -0.105339968  3.445384e-03 -0.069134357
+##  [6,] -0.21199675  0.078340215  1.660331e-02 -0.120924072
+##  [7,] -0.62389305  0.461464433  2.170097e-01  0.049548325
+##  [8,]  0.22260174  0.056300131 -1.244374e-01 -0.047843420
+##  [9,] -0.61835869  0.140371167  6.257681e-02  0.022398177
+## [10,]  0.37776974  0.152158722  4.302883e-02 -0.038023360
+## [11,] -0.61970650  0.010792141 -4.983541e-02  0.133442955
+## [12,] -0.05795704 -0.117678571  8.807717e-02 -0.091647300
+## [13,] -0.39541696 -0.033732876 -9.296904e-02 -0.022834305
+## [14,] -0.02633412 -0.023816721 -1.118308e-01 -0.079039783
+## [15,] -0.14275404 -0.179345735  1.488086e-01 -0.067887904
+## [16,]  0.34520127  0.397808116  4.921577e-02 -0.040342114
+## [17,] -0.55653068 -0.057556571 -5.533193e-02  0.052808099
+## [18,]  0.49472685  0.500476680 -2.036853e-01  0.166059470
+## [19,]  0.06221211 -0.171806565 -3.436335e-02 -0.040007606
+## [20,] -0.05785637 -0.108582176 -7.142207e-02 -0.061356439
+## [21,] -0.05401443 -0.270345274  1.471921e-02 -0.009950333
+## [22,]  0.18324810 -0.228998720  1.023225e-02  0.004725461
+## [23,]  0.11184673 -0.308127918  4.899861e-02  0.026085150
+## [24,]  0.41999953 -0.333080870  1.282432e-01  0.172156635
+## [25,]  0.41046889  0.283896666 -1.723764e-01  0.041704150
+## [26,] -0.04722058 -0.083183327 -8.493990e-02 -0.070049570
+## [27,]  0.15011611  0.144583759 -1.682336e-01 -0.064305996
+## [28,] -0.13410394 -0.246615111  5.306835e-05 -0.017756876
+## [29,] -0.05467612 -0.060501146 -9.590027e-02 -0.074225588
+## [30,]  0.41999953 -0.333080870  1.282432e-01  0.172156635</code></pre>
+<p>Site scores, on the other hand, tells us the coordinates of each site following projection onto our newly made PC axes.</p>
+<p>The best way to understand what all of that meant is by visualizing the PCA results in a <em>biplot</em>. This type of graph is called a <em>bi</em>plot because we will be plotting the species loadings and site scores simultaneously. Just like our PCA, R has made it extremely easy for us to make biplots, and there are many options available in terms of packages and functions. We will be using a new function – <em>autoplot()</em> – from a new package, <em>ggfortify</em>. This package (and function) takes the convenience afforded by ggplot to the next level (hence “fortify”) – we don’t even have to tell it which type of plot or give it any aesthetics!</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">autoplot</span>(kenya.pca)</a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>But wait, that’s not a biplot though!? Turns out <em>autoplot()</em> isn’t that auto after all…</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">autoplot</span>(kenya.pca, <span class="dt">loadings=</span><span class="ot">TRUE</span>, <span class="dt">loadings.label=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Some notes on interpreting this biplot:</p>
+<ul>
+<li>PC1 is typically plotted on the x-axis, and PC2 on the y-axis. The percent variance explain by these axes have been included in the labels automatically for our convenience.</li>
+<li>The arrows (rotations = species loadings) remind us what the axes mean – <em>An. funestus</em> loaded strong onto PC1 whereas PC2 mainly represent the antagoism between <em>An. arabiensis</em> and <em>An. gambiae</em>.</li>
+<li>The clustering of sites along the axes (and rotations) tell us which sites are similar in terms of their species composition and how they are similar. For example, sites 1, 9, 11, and 17 were all similar in that they are dominated by <em>An. funestus</em>.</li>
+</ul>
+<p>We can add some simple modifications to include more information on the plot, such as other community attributes.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">autoplot</span>(kenya.pca, <span class="dt">loadings=</span><span class="ot">TRUE</span>, <span class="dt">loadings.label=</span><span class="ot">TRUE</span>, <span class="dt">data=</span>kenya.wide, <span class="dt">colour=</span><span class="st">&quot;total.abundance&quot;</span>) </a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Remember to tell R where the original data is coming from! </span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co"># Also, ggplot will refuse to understand you if you spell colour the non-Canadian way</span></a></code></pre></div>
+<p>To make the scale more readable, we can manually change the colour bar to other colors, or, we could use a pre-made colour palette – brace yourselves for the package <em>viridis</em> because it is the BEST. PACKAGE. EVERRRRRRRRR.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">autoplot</span>(kenya.pca, <span class="dt">loadings=</span><span class="ot">TRUE</span>, <span class="dt">loadings.label=</span><span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">         <span class="dt">data=</span>kenya.wide, <span class="dt">colour=</span><span class="st">&quot;total.abundance&quot;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">scale_colour_viridis</span>(<span class="dt">option=</span><span class="st">&quot;D&quot;</span>, <span class="dt">direction=</span><span class="op">-</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Setting direction = -1 flips the colour scale</span></a></code></pre></div>
+<p>Lastly, we’ll add our PC axes to the main dataframe for subsequent analyses.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">axes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(kenya.pca<span class="op">$</span>x)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">kenya.wide &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(kenya.wide, axes) <span class="co"># Note order of rows!</span></a></code></pre></div>
+<p><em>Sidebar:</em> there are many ways to run ordinations, PCA is but one of them, and even then there are a couple of ways you can run a PCA. It will take this entire course and some more to walk you through all of the ordination techniques so we will refrain. Before you ordinate, you should always consult textbooks and and/or experts to make sure you are chosing the best method for your case.</p>
+</div>
+</div>
+<div id="investigating-the-contributions-of-different-axes-of-vector-diversity-to-malaria-prevalence" class="section level1">
+<h1>Investigating the contributions of different axes of vector diversity to malaria prevalence</h1>
+<div id="initial-data-exploration" class="section level2">
+<h2>Initial data exploration</h2>
+<p>Before we actually do our analysis, let’s have another look at our data. Specifically, let’s inspect the relationships between predictors using this tool called a correlation chart:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(total.abundance, SR, PC1, PC2, distance, lat)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span><span class="kw">chart.Correlation</span>(.)</a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>We see that there is fairly good correlation between almost all of our predictors. This is bad news – remember chili peppers? This phenomena is termed <em>multicollinearity</em>, and we can investigate this in a more objective and quantitative manner with the help of variance inflation factors (VIF). VIFs are so called because correlations amongst predictors inflates standard errors in parameter estimates, which means the p-value will also be inflated, making it difficult to detect an effect. The function we will use to calculate VIFs was sourced from Zuur <em>et al.</em> (2009).</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(total.abundance, SR, PC1, PC2, distance, lat)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw">corvif</span>(.) </a></code></pre></div>
+<pre><code>## 
+## 
+## Variance inflation factors</code></pre>
+<pre><code>## Warning in summary.lm(object, ...): essentially perfect fit: summary may be
+## unreliable</code></pre>
+<pre><code>##                     GVIF
+## total.abundance 1.472417
+## SR              1.673559
+## PC1             2.234416
+## PC2             2.362395
+## distance        5.632859
+## lat             4.932454</code></pre>
+<p>A general rule of thumb is that VIFs over 3 will cause problems to your regressions, and we should sequentially drop the variable with the highest VIF, and recalculate VIFs until all are less than 3. If this is the case in your analysis, you <strong>must</strong> report which variables were dropped <strong>and why</strong>, ideally including the before and after VIF values. Of course, sometimes there are variables that are important to include and we cannot just drop them (e.g., kind of important to keep mosquito abundance in our model). We will learn about methods to handle those situations in just a sec.</p>
+<p>Back to our VIF analysis. We see that both <em>lat</em>itude and <em>distance</em> to closest big city both have VIFs higher than 3. Check out Figure 1 in the original Mbogo <em>et al.</em> (2003) publication. We see that the closest big city in the area, Mombasa, is situated close to the south. No wonder latitude and distance were so highly correlated! Here, we make the executive decision to drop latitude, because we are not actually asking any climate-related question at the moment, and also because we have means to obtain climate variables directly (next lecture) and thus there is no need to use a proxy for that.</p>
+<p>Calculate VIFs again, this time without latitude.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(total.abundance, SR, PC1, PC2, distance)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw">corvif</span>(.) </a></code></pre></div>
+<pre><code>## 
+## 
+## Variance inflation factors</code></pre>
+<pre><code>## Warning in summary.lm(object, ...): essentially perfect fit: summary may be
+## unreliable</code></pre>
+<pre><code>##                     GVIF
+## total.abundance 1.472002
+## SR              1.659501
+## PC1             1.563787
+## PC2             1.968674
+## distance        2.330800</code></pre>
+<p>There, much better!</p>
+<p>Another thing we should inspect before running our linear models is the assmption of normality. Remember how the correlation chart we were working with earlier showed us histograms alongside correlations?</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(total.abundance, SR, PC1, PC2, distance)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">  </span><span class="kw">chart.Correlation</span>(.) <span class="co"># Not very normal</span></a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(total.abundance, SR, PC1, PC2, distance)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate_all</span>(log) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Natural-log transformation. For regular log, use log10()</span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="st">  </span><span class="kw">chart.Correlation</span>(., <span class="dt">histogram=</span><span class="ot">TRUE</span>, <span class="dt">pch=</span><span class="dv">19</span>) <span class="co"># Looks better</span></a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p>We make our second executive decision of the day - we will be fitting our linear models in log-log space.</p>
+</div>
+<div id="finally-we-are-going-to-fit-our-models" class="section level2">
+<h2>Finally, we are going to fit our models!</h2>
+<p>We should be quite familiar with the syntax of linear models by now. Let’s go ahead and write out one model each for our three predictors of interest, mosquito abundance (total.abundance), species richness (SR), and composition (PC1 and PC2).</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">mod01 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod01)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(total.abundance), data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.47475 -0.11418  0.01901  0.13806  0.32660 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          -0.81078    0.14622  -5.545 6.27e-06 ***
+## log(total.abundance)  0.06431    0.02788   2.307   0.0287 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1983 on 28 degrees of freedom
+## Multiple R-squared:  0.1597, Adjusted R-squared:  0.1297 
+## F-statistic: 5.321 on 1 and 28 DF,  p-value: 0.02869</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">mod02 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(SR), <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod02)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(SR), data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.39719 -0.17427  0.01965  0.16208  0.28023 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.71714    0.10856  -6.606 3.64e-07 ***
+## log(SR)      0.22620    0.09928   2.278   0.0305 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1987 on 28 degrees of freedom
+## Multiple R-squared:  0.1564, Adjusted R-squared:  0.1263 
+## F-statistic: 5.191 on 1 and 28 DF,  p-value: 0.03054</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">mod03 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span>PC1<span class="op">+</span>PC2, <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod03)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ PC1 + PC2, data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.45103 -0.13022 -0.00037  0.16458  0.34633 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.48402    0.03886 -12.457 1.05e-12 ***
+## PC1         -0.12448    0.11058  -1.126    0.270    
+## PC2         -0.13727    0.16740  -0.820    0.419    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2128 on 27 degrees of freedom
+## Multiple R-squared:  0.06703,    Adjusted R-squared:  -0.002083 
+## F-statistic: 0.9699 on 2 and 27 DF,  p-value: 0.392</code></pre>
+<p>Basically, we see that both mosquito abundance and species richness have strong positive effects, whereas PCs 1&amp;2 were not statistically significant. What about our confounder, distance?</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">mod04 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance)<span class="op">+</span><span class="kw">log</span>(distance), <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod04)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(total.abundance) + log(distance), 
+##     data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.42362 -0.10130  0.04113  0.10734  0.29674 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)          -0.49922    0.26519  -1.882   0.0706 .
+## log(total.abundance)  0.07589    0.02864   2.650   0.0133 *
+## log(distance)        -0.09431    0.06745  -1.398   0.1734  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.195 on 27 degrees of freedom
+## Multiple R-squared:  0.2164, Adjusted R-squared:  0.1584 
+## F-statistic: 3.728 on 2 and 27 DF,  p-value: 0.03717</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">mod05 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(SR)<span class="op">+</span><span class="kw">log</span>(distance), <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod05)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(SR) + log(distance), data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.32631 -0.17341  0.05048  0.14787  0.25926 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   -0.30224    0.25082  -1.205  0.23866   
+## log(SR)        0.30514    0.10483   2.911  0.00714 **
+## log(distance) -0.12636    0.06947  -1.819  0.08001 . 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.191 on 27 degrees of freedom
+## Multiple R-squared:  0.2485, Adjusted R-squared:  0.1928 
+## F-statistic: 4.464 on 2 and 27 DF,  p-value: 0.02114</code></pre>
+<p>From these models, we see the effects of total abundance and species richness on malaria prevalence differed <em>quantitatively</em> from the previous models without the confounder, but not <em>qualitatively</em> (i.e., the interpretation of the effect is the same – significant positive association). We can thus make yet another executive decision to drop distance from subsequent analyses. Again, you <strong>must</strong> disclose this to your readers, ideally providing a table showing regression coefficients from both models with and without the confounder.</p>
+<p>Let’s inspect the effects of abundance and species richness more closely. We can regress them against malaria prevalence simltaneously in a multiple regression…</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">mod06 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance)<span class="op">+</span><span class="kw">log</span>(SR), <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod06)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(total.abundance) + log(SR), data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.42896 -0.13623  0.02169  0.13888  0.30176 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          -0.82410    0.14663  -5.620 5.79e-06 ***
+## log(total.abundance)  0.03970    0.03671   1.081    0.289    
+## log(SR)               0.13429    0.13048   1.029    0.313    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1981 on 27 degrees of freedom
+## Multiple R-squared:  0.1914, Adjusted R-squared:  0.1315 
+## F-statistic: 3.196 on 2 and 27 DF,  p-value: 0.0568</code></pre>
+<p>…but then the whole thing flatlined. What is going on? Did the effect just disappear?</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">ggplot</span>(kenya.wide, <span class="kw">aes</span>(<span class="dt">x=</span>SR, <span class="dt">y=</span>PfPR, <span class="dt">colour=</span>total.abundance)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="st">  </span><span class="kw">scale_colour_viridis</span>(<span class="dt">option=</span><span class="st">&quot;D&quot;</span>, <span class="dt">direction=</span><span class="op">-</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Malaria prevalence&quot;</span>, <span class="dt">x=</span><span class="st">&quot;Number of mosquito species&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;Mosquito</span><span class="ch">\n</span><span class="st">abundance&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec10-multivariate-stats_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>From this plot, we can see clearly that the effects did not in fact disappear (I mean, how <em>could</em> it? Silly me…). The positive associations between abundance, species richness, and malaria prevalence are very pronounced. Could multicollinearity <em>still</em> be obscuring our ability to find the “truth”, even though we ensured VIFs looked good? To add even more confusion to the situation, when we compete all four predictors together in the model, we see that all of a sudden PC2 came back as significant…??!?</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">mod07 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance)<span class="op">+</span><span class="kw">log</span>(SR)<span class="op">+</span>PC1<span class="op">+</span>PC2, <span class="dt">data=</span>kenya.wide); <span class="kw">summary</span>(mod07)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(PfPR) ~ log(total.abundance) + log(SR) + PC1 + 
+##     PC2, data = kenya.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.31013 -0.11195 -0.00156  0.13155  0.30921 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          -1.01517    0.15881  -6.393 1.08e-06 ***
+## log(total.abundance)  0.05284    0.03520   1.501  0.14580    
+## log(SR)               0.25489    0.12466   2.045  0.05155 .  
+## PC1                  -0.01748    0.09932  -0.176  0.86174    
+## PC2                  -0.47205    0.16743  -2.819  0.00928 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1783 on 25 degrees of freedom
+## Multiple R-squared:  0.3935, Adjusted R-squared:  0.2964 
+## F-statistic: 4.054 on 4 and 25 DF,  p-value: 0.01143</code></pre>
+<p><strong>Disclaimer: Don’t do this at home!</strong> This exercise felt a lot like data mining – it probably was! We showed you this in class only to demonstrate what multicollinearity can do to your regressions.</p>
+</div>
+<div id="structural-equation-models-to-the-rescue" class="section level2">
+<h2>Structural equation models to the rescue</h2>
+<p>Structural equation models (SEM) is a scientific framework for the modelling and interpretation of complex networks of relationships as a whole system. SEMs are particularly well-suited for disentangling processess that operate simultaneously in systems, due to its focus on the many direct and indirect pathways through which a predictor may influence an outcome. This is acheived by explicitly modelling the relationships <em>between</em> predictors (those darn correlations!) in addition to their associations with the focal response. This also means that SEMs have the capacity to become multivariate multiple regressions with great flexibility, where variables can be simultaneously predictors and responses.</p>
+<p>The first and absolute most important step in constructing an SEM is model specification. It is absolutely crucial that this step is done appropriately. There are a couple types of relationships (i.e., paths) between variables one can specify:</p>
+<ol style="list-style-type: decimal">
+<li>Direct causal effect – strong words!</li>
+<li>Correlation – less strong words</li>
+<li>No relationship – also strong words!!!</li>
+<li>Latent variable – represents abstract theoretical ideas unmeasured or unmeasurable, these are uncommon in ecology and won’t be discussed further</li>
+</ol>
+<p>We totally sound like broken records at this point, but you <strong>must</strong> have solid rationale for the inclusion of each variable and for the specification of each path.</p>
+<p>The model we will be working with today takes the following form.</p>
+<div class="figure">
+<img src="image/SEMfig.png" alt="Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Double-headed arrows represent correlations between the pair of variables. Paths are labeled with letters to facilitate discussion." />
+<p class="caption">Path diagram representing hypothesized relationships between characteristics of vector communities and malaria prevalence. Paths (i.e., arrows) represent the direction of the hypothesized causal relationship between variables, with the arrow pointing from the predictor to the response. Double-headed arrows represent correlations between the pair of variables. Paths are labeled with letters to facilitate discussion.</p>
+</div>
+<p>Once you are satisfied with the specification of your model, we can then evaluate the model and inspect model fit.</p>
+<p>There are many ways one can evaluate SEMs, and the R package <em>lavaan</em> is perhaps the most popular amongst ecologists. <em>Lavaan</em> stands for <em>la</em>tent <em>va</em>riable <em>an</em>alysis. As the name suggests, this package is particularly suited to handling SEMs with latent variables. Inspite of the fact that latent variable analyses (a.k.a. factor analyses) are not that common in ecology, <em>lavaan</em> is popular because it is still powerful for non-factor-analyses, and also because it is extremely well documented.</p>
+<p>We need to do a little data preparation before we can specify the model in R. Specifically, we need to create the natural-log-transformed predictors (total abundance and species richness) and response (malaria prevalence) before hand, because <em>lavaan</em> does not like it when we do it in the equations itself.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">kenya.wide &lt;-<span class="st"> </span>kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">l.abun =</span> <span class="kw">log</span>(total.abundance), </a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">         <span class="dt">l.sr =</span> <span class="kw">log</span>(SR),</a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">         <span class="dt">l.pfpr =</span> <span class="kw">log</span>(PfPR))</a></code></pre></div>
+<p>The <em>lavaan</em> model specification syntax is slightly different from the linear models we are familiar with. The biggest difference is perhaps that, because we are dealing with multiple pathways in a system, we have to specify each path individuals and then include all of them as part of our model in a pair of quotations. Direct casual relationships are specified with the good old ~, as we do in regressions, and correlations are specified with ~~.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">sem01 &lt;-<span class="st"> &#39;</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st"># Regressions</span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="st">l.pfpr ~ l.sr + l.abun + PC2</span></a>
+<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="st"># Correlations</span></a>
+<a class="sourceLine" id="cb50-5" data-line-number="5"><span class="st">l.sr ~~ l.abun</span></a>
+<a class="sourceLine" id="cb50-6" data-line-number="6"><span class="st">PC2 ~~ l.sr</span></a>
+<a class="sourceLine" id="cb50-7" data-line-number="7"><span class="st">&#39;</span></a></code></pre></div>
+<p>We will then call the <em>sem()</em> function to evaluate this model. Remember to give it data! Given that each path in this model is expected to conform to assumptions of normality, and we can already foresee that this will not always be the case, we will use bootstrapping to obtain more robust standard error and p-value estiamtes. Since bootstrapping is a randomization procedure, we will set a seed for the random number generator to ensure that we can reproduce the same results when we rerun this code or share this with a collaborator.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">sem01.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(sem01, <span class="dt">data=</span>kenya.wide, <span class="dt">se=</span><span class="st">&quot;boot&quot;</span>, <span class="dt">bootstrap=</span><span class="dv">1000</span>, <span class="dt">verbose=</span><span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="co"># verbose is unnecessary, but it makes you look cool</span></a></code></pre></div>
+<p>It is always tempting to jump straight to results (those darn p-values!) – BUT – let’s refrain for now and instead inspect model fit. Depending on how you chose to evaluate your SEM (e.g., which package you used), there will be different ways to inspect model fit. <em>Lavaan</em> provides a whole suite of model fit indices, and we will focus on the Chi-sq test as it is often considered to be the gold standard.</p>
+<p>To understand how the Chi-sq test works, we need to back track a little bit and think about how SEMs are evaluated. Basically, <em>lavaan</em> calculates a matrix of covariances based on the observed data, and compares this to one generated from your hypothesized model structure. The null hypothesis of the Chi-sq test is that these two sets of values are not different from each other – which is a great thing because that means your hypothesized model <em>is consistent with</em> the observed data. In other words, a large p-value in the Chi-sq test for goodness of fit of an SEM is desirable. This is in contrast to traditional hypotheses testing approaches (e.g., in linear models) where the researcher hopes to find a large difference between the observed data and the null model which is a zero-effect model.</p>
+<p><strong>Disclaimer 2: A model that fits well doesn’t mean that it is correct <em>per se</em>, or that it reflects the “truth” or the “reality”!</strong> Whether an SEM is “good” is determined by the robustness of the theory that went into constucting it. We can never guarantee that we have found the “global best model”, and we must never claim that we have found “the truth”. The appropriate phrase to use is (and the correct way to think about SEM model fit) is whether “the data is consistent with what we’ve hypothesized/proposed”. You <strong>must</strong> report model fit statistics when you work with SEMs.</p>
+<p>To inspect model fit statistics, we can call our best friend <em>summary()</em>. This generates a very long summary, most are irrelevant at this point. Alternatively, we can use the self-explanatory function <em>fitMeasures()</em>.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">fitMeasures</span>(sem01.fit, <span class="kw">c</span>(<span class="st">&quot;df&quot;</span>, <span class="st">&quot;pvalue&quot;</span>)) </a></code></pre></div>
+<pre><code>##     df pvalue 
+##  1.000  0.012</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="co"># Retrieves df (make sure this is not zero) and p-value of chi-sq test</span></a></code></pre></div>
+<p>Significant p-value! Yay! … WAIT, we are working with SEMs, this is not good!</p>
+<p>So our hypothesized model structure is inconsistent with the observed data. Bummer! There are actually very good theoretical reasons why this model structure is inadequate, however, for the purposes of this lecture, we will pretend that this is not an issue and continue with our analysis.</p>
+<p>We can use another self-explanatory function to pull path coefficients.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">parameterEstimates</span>(sem01.fit, <span class="dt">boot.ci.type=</span><span class="st">&quot;bca.simple&quot;</span>, <span class="dt">standardized =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints</code></pre>
+<pre><code>##      lhs op    rhs    est    se      z pvalue ci.lower ci.upper std.lv std.all
+## 1 l.pfpr  ~   l.sr  0.255 0.134  1.897  0.058   -0.006    0.538  0.255   0.379
+## 2 l.pfpr  ~ l.abun  0.055 0.032  1.727  0.084   -0.022    0.103  0.055   0.310
+## 3 l.pfpr  ~    PC2 -0.477 0.177 -2.697  0.007   -0.785   -0.094 -0.477  -0.483
+## 4   l.sr ~~ l.abun  0.251 0.126  1.993  0.046    0.078    0.641  0.251   0.566
+## 5   l.sr ~~    PC2  0.024 0.014  1.754  0.079   -0.001    0.054  0.024   0.303
+## 6 l.pfpr ~~ l.pfpr  0.027 0.005  5.280  0.000    0.020    0.039  0.027   0.505
+## 7   l.sr ~~   l.sr  0.116 0.035  3.291  0.001    0.055    0.200  0.116   1.000
+## 8 l.abun ~~ l.abun  1.687 0.596  2.831  0.005    0.804    3.265  1.687   1.000
+## 9    PC2 ~~    PC2  0.054 0.013  4.234  0.000    0.032    0.083  0.054   1.000
+##   std.nox
+## 1   0.379
+## 2   0.310
+## 3  -0.483
+## 4   0.566
+## 5   0.303
+## 6   0.505
+## 7   1.000
+## 8   1.000
+## 9   1.000</code></pre>
+<ul>
+<li>The first three rows gave the results of the hypothesized direct causal relationships. These results are congurent with the last linear model (mod07) we ran in that species richness and PC2 both have significant positive associations with malaria prevalence, but not total abundance.</li>
+<li>The next two rows gave the results of hypoethesized correlations between species richness and total abundance and PC2, and as suspected, they were indeed correlated.</li>
+<li>The last four rows showed relationships we did not specify, and they were very strange ones as well – what does the correlation between malaria prevalence and malaria prevalence mean? Turns out, this represents the residual variance in this variable. In other words, 1 minus this value gives the R<sup>2</sup> value we are familiar with from working with linear models. This only works for direct causual relationships and not correlations, however, so you see that the last three gave estimates of 1, which means none of the variation is explained.</li>
+</ul>
+<p><em>Note:</em> Standardizing path coefficients (i.e., expressed in units of standard deviation) allow us to compare the effect of different predictors in a model, whereas raw path coefficients should be used when comparing the effect of that same predictor across different models.</p>
+<p>So we see that the code used to specify, evulate, and inspect elements of SEMs is pretty straight forward. To visualize SEM, however, is quite another story. There is an R package, <em>semPlot</em>, that can be used to draw path diagrams such as the one shown in Figure 1. Figures generated with this package is quite difficult to customize, though, so it is often recommended that you make your path diagrams in your favorite imaging processing software such as MS Paint, Inkscape, or even Powerpoint.</p>
+<p>Lastly, one simply cannot work with SEMs without calculating indirect and total effects:</p>
+<ul>
+<li>An indirect effect of predictor A to response B can be obtained by multiplying all of the path coefficients that are in the way of A and B in one straight path. For instance, there are two ways in which total abundance is exerting indirect effects on malaria prevalence: through species richness and through PC2. The former is obtained with b<span class="math inline">\(\times\)</span>d and the latter, d<span class="math inline">\(\times\)</span>e<span class="math inline">\(\times\)</span>c.</li>
+<li>Summing all the direct and indirect effects from A to B gives the total effect A has on B.</li>
+</ul>
+<p>We will add indirect and total effects of total abundance to our models first by labelling each path according to Figure 1, and using the symbol “:=”.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">sem02 &lt;-<span class="st"> &#39;</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st"># regressions</span></a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">l.pfpr ~ a*l.sr + b*l.abun + c*PC2</span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st"># correlations</span></a>
+<a class="sourceLine" id="cb58-5" data-line-number="5"><span class="st">l.sr ~~ d*l.abun</span></a>
+<a class="sourceLine" id="cb58-6" data-line-number="6"><span class="st">PC2 ~~ e*l.sr</span></a>
+<a class="sourceLine" id="cb58-7" data-line-number="7"><span class="st"># defined parameters</span></a>
+<a class="sourceLine" id="cb58-8" data-line-number="8"><span class="st">indirect.abun := (b*d) #indirect effect of abundance via SR</span></a>
+<a class="sourceLine" id="cb58-9" data-line-number="9"><span class="st">indirect.abun2 := (d*e*c) #indirect effect of abundance via PC2</span></a>
+<a class="sourceLine" id="cb58-10" data-line-number="10"><span class="st">total.abun := b + (a*d) + (d*e*c) </span></a>
+<a class="sourceLine" id="cb58-11" data-line-number="11"><span class="st">&#39;</span></a>
+<a class="sourceLine" id="cb58-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb58-13" data-line-number="13"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb58-14" data-line-number="14">sem02.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(sem02, <span class="dt">data=</span>kenya.wide, <span class="dt">se=</span><span class="st">&quot;boot&quot;</span>, <span class="dt">bootstrap=</span><span class="dv">1000</span>, <span class="dt">verbose=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">parameterEstimates</span>(sem02.fit, <span class="dt">boot.ci.type=</span><span class="st">&quot;bca.simple&quot;</span>, <span class="dt">standardized =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints
+
+## Warning in norm.inter(t, adj.alpha): extreme order statistics used as endpoints</code></pre>
+<pre><code>##               lhs op             rhs          label    est    se      z pvalue
+## 1          l.pfpr  ~            l.sr              a  0.255 0.134  1.897  0.058
+## 2          l.pfpr  ~          l.abun              b  0.055 0.032  1.727  0.084
+## 3          l.pfpr  ~             PC2              c -0.477 0.177 -2.697  0.007
+## 4            l.sr ~~          l.abun              d  0.251 0.126  1.993  0.046
+## 5            l.sr ~~             PC2              e  0.024 0.014  1.754  0.079
+## 6          l.pfpr ~~          l.pfpr                 0.027 0.005  5.280  0.000
+## 7            l.sr ~~            l.sr                 0.116 0.035  3.291  0.001
+## 8          l.abun ~~          l.abun                 1.687 0.596  2.831  0.005
+## 9             PC2 ~~             PC2                 0.054 0.013  4.234  0.000
+## 10  indirect.abun :=           (b*d)  indirect.abun  0.014 0.011  1.259  0.208
+## 11 indirect.abun2 :=         (d*e*c) indirect.abun2 -0.003 0.002 -1.342  0.179
+## 12     total.abun := b+(a*d)+(d*e*c)     total.abun  0.116 0.050  2.308  0.021
+##    ci.lower ci.upper std.lv std.all std.nox
+## 1    -0.006    0.538  0.255   0.379   0.379
+## 2    -0.022    0.103  0.055   0.310   0.310
+## 3    -0.785   -0.094 -0.477  -0.483  -0.483
+## 4     0.078    0.641  0.251   0.566   0.566
+## 5    -0.001    0.054  0.024   0.303   0.303
+## 6     0.020    0.039  0.027   0.505   0.505
+## 7     0.055    0.200  0.116   1.000   1.000
+## 8     0.804    3.265  1.687   1.000   1.000
+## 9     0.032    0.083  0.054   1.000   1.000
+## 10    0.001    0.051  0.014   0.176   0.176
+## 11   -0.013   -0.001 -0.003  -0.083  -0.083
+## 12    0.040    0.265  0.116   0.442   0.442</code></pre>
+<p>The total effect of total abundance was statistically significant, but none of the rest of the compenents are. Think about what these results mean, especially in relation to what our linear model results suggested.</p>
+</div>
+<div id="bottomline" class="section level2">
+<h2>Bottomline</h2>
+<ul>
+<li><p>SEM has the potential to provide much greater insight regarding how systems work, and thus also our ability to predict its behavior under perturbation, than traditional univariate regression approaches <strong>but only when applied appropriately</strong>. Specifically, it can reveal pathways and mechanisms that are not apparent (and often impossible to find) via classic univariate approaches <strong>but only when applied appropriately</strong>.</p></li>
+<li><p>We write this again here because this is extremely important: A model that fits well doesn’t necessarily mean that it is a good model, or that it reflects truth or reality. The theory behind the model is the most crucial to deciding whether or not a model is any good. For any given set of variables, there can be many different models that fit well, and they may even contradict each other or suggest nonsensical relationships. Thus, the model needs to be solid theoretically before you evaluate it and get too excited over the results.</p></li>
+<li><p>To ensure transparency and accountability, always provide a table summary of pre-hoc rationale for the specification of each path, and a post-hoc interpretation of the results of model fit. Know that there is absolutely nothing wrong with “getting it wrong” the first time, in fact, those case often turn out to be the most interesting! There is also nothing wrong with adjusting your hypotheses as you work through your data and gain better understanding of it – we’d all be out of jobs if the world always work exactly the way we thought it would. Again, transparency is key!</p></li>
+</ul>
+</div>
+<div id="additional-readings" class="section level2">
+<h2>Additional readings</h2>
+<p>Grace, J. B., Anderson, T. M., Olff, H. &amp; Scheiner, S. M. (2010). On the specification of structural equation models for ecological systems. Ecol. Monogr. 80, 67-87.</p>
+<p>Mbogo, C. M. et al (2003). Spatial and temporal heterogeneity of Anopheles mosquitoes and Plasmodium falciparum transmission along the Kenyan coast. Am. J. Trop. Med. Hyg. 68, 734–742.</p>
+<p>Shipley, B. (2000). Cause and correlation in biology: a user’s guide to path analysis, structural equations, and causal inference. Cambridge University Press, London, UK.</p>
+<p>Zuur, A. F., Ieno, E. N., Walker, N., Saveliev, A. A. &amp; Smith, G. M. (2009). Mixed effects models and extensions in ecology with R. Springer, New York, USA.</p>
+<p>Zuur, A. F., Ieno, E. N. &amp; Elphick, C. S. (2010). A protocol for data exploration to avoid common statistical problems. Methods Ecol. Evol. 1, 3–14.</p>
+</div>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

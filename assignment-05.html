@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Assignment 5: Model selection and multivariate statistics (9 marks)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Assignment 5: Model selection and multivariate statistics (9 marks)</h1>
+
+</div>
+
+
+<p><em>To submit this assignment, upload the full document on blackboard, including the original questions, your code, and the output. Submit your assignment as a knitted <code>.pdf</code> (preferred) or <code>.html</code> file.</em></p>
+<ol style="list-style-type: decimal">
+<li>In this exercise, we will once again use the data of Santangelo <em>et al.</em></li>
+</ol>
+<ol start="2019" style="list-style-type: decimal">
+<li>that you used in assignment 4. Let’s go ahead and load in the data. See assignment 4 if you need a refresher on the details of the experiment and the dataset. (5 marks total)</li>
+</ol>
+<pre><code>```r
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+
+
+Santangelo_data &lt;- &quot;https://uoftcoders.github.io/rcourse/data/Santangelo_JEB_2018.csv&quot;
+download.file(Santangelo_data, &quot;Santangelo_JEB_2018.csv&quot;)
+Santangelo_data &lt;- read_csv(&quot;Santangelo_JEB_2018.csv&quot;, 
+                            col_names = TRUE)
+glimpse(Santangelo_data)
+```
+
+```
+## Observations: 792
+## Variables: 11
+## $ Genotype      &lt;chr&gt; &quot;173-1&quot;, &quot;173-1&quot;, &quot;173-1&quot;, &quot;173-1&quot;, &quot;173-1&quot;, &quot;173-1&quot;, &quot;…
+## $ Pollination   &lt;chr&gt; &quot;Open&quot;, &quot;Open&quot;, &quot;Open&quot;, &quot;Supp&quot;, &quot;Supp&quot;, &quot;Supp&quot;, &quot;Open&quot;,…
+## $ Herbivory     &lt;chr&gt; &quot;Reduced&quot;, &quot;Ambient&quot;, &quot;Reduced&quot;, &quot;Ambient&quot;, &quot;Ambient&quot;, …
+## $ HCN           &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;,…
+## $ Flower.date   &lt;dbl&gt; 86, 23, 12, 25, 16, 38, 22, 61, 32, 25, 30, 33, 54, 23,…
+## $ Avg.Bnr.Wdth  &lt;dbl&gt; 3.32, NA, 3.02, 3.14, 2.76, NA, 3.11, 3.07, 3.16, 3.16,…
+## $ Avg.Bnr.Ht    &lt;dbl&gt; 6.50, NA, 7.02, 6.03, 5.20, NA, 5.69, 6.18, 6.04, 5.94,…
+## $ Biomass.plant &lt;dbl&gt; 9.27, 8.34, 7.74, 15.76, 4.16, 7.75, 48.67, 10.32, 28.8…
+## $ Num.flwrs     &lt;dbl&gt; 52.5, 67.0, 57.5, NA, NA, 47.5, 60.0, 58.5, 66.5, 64.5,…
+## $ Total.Inf     &lt;dbl&gt; 4, 1, 21, 9, 0, 15, 41, 19, 17, 23, 129, 46, 35, 35, 22…
+## $ Block         &lt;chr&gt; &quot;E&quot;, &quot;A&quot;, &quot;E&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;D&quot;, &quot;F&quot;, &quot;C&quot;, &quot;C&quot;, &quot;A&quot;, …
+```
+
+```r
+head(Santangelo_data)
+```
+
+```
+## # A tibble: 6 x 11
+##   Genotype Pollination Herbivory HCN   Flower.date Avg.Bnr.Wdth Avg.Bnr.Ht
+##   &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+## 1 173-1    Open        Reduced   Yes            86         3.32       6.5 
+## 2 173-1    Open        Ambient   Yes            23        NA         NA   
+## 3 173-1    Open        Reduced   Yes            12         3.02       7.02
+## 4 173-1    Supp        Ambient   Yes            25         3.14       6.03
+## 5 173-1    Supp        Ambient   Yes            16         2.76       5.2 
+## 6 173-1    Supp        Ambient   Yes            38        NA         NA   
+## # … with 4 more variables: Biomass.plant &lt;dbl&gt;, Num.flwrs &lt;dbl&gt;,
+## #   Total.Inf &lt;dbl&gt;, Block &lt;chr&gt;
+```
+
+
+a. Model selection works best when there are no missing values in your
+dataset. We will be identifying the best model that predict variation in
+flowering time (`Flower.date`) across plants. Create a dataset that excludes
+rows where there is missing flowering date data. (0.25 marks)
+
+b. We want to know how HCN, herbivores, and pollinators influence flowering
+date. We also think that the effect of herbivores and pollinators on
+flowering data might depend on whether the plant is producing HCN. Create a
+model that includes fixed-effects that test these predictions. Be sure to
+account for variation due to `Genotype`, `Block` and the `Genotype` by
+`Herbivory` interactions by including these terms as random effects. This
+will be our saturated model. You can ignore `boundary (singular) fit`
+warnings that may arise. (1 marks)
+
+c. We will generate a reduced model from the saturated model in (a). Should
+we use AIC or AIC~c~. Why? Show your calculation. (0.5 marks)
+
+d. Using the approach described in lecture 11, optimize the random effect
+structure of this model. Show the AIC/AIC~c~ output for each model of
+varying random effect strucure. Provide a one sentence justification for
+each random effect the model, justifying whether it is fixed (i.e., in every
+model) or whether some models will drop this effect. Describe in one
+sentence what the optimal random effect structure of the model is and why.
+(0.5 marks)
+
+e. Using the model with the optimal random-effect structure identified in
+(c), find the optimal fixed-effect structure. Be sure to show all the models
+and their AIC/AIC~c~ scores. (1.5 mark)
+
+f. Based on the AIC/AIC~c~ output from (d), generate your final model with
+both optimized fixed and random effects. Summarize the model and interpret
+its output. Is there a significant effect of any treatment? If so, which
+one(s) and in which direction. Make a statement about the significant
+treatments&#39; effects on flowering date. Use the model&#39;s output to support
+your answer. You only need to interpret significant main effects here (i.e.
+not interactions). (0.75 marks)
+
+g. Do you think we were justified in interpreting a single model? Why or why
+not? What alternative approach could we have used? (0.25 marks).
+
+h. Use `dplyr` and `ggplot2` to plot the flowering date of plants by the
+_main_ effect that showed a significant effect in the optimized model above.
+The figure should show the mean plus and minus a single standard error of
+the mean. Suggest one biological interpretation of the pattern you see in
+the figure and in the model (i.e. why do you think this would happen). If
+there are no significant effects in the model, simply write &quot;There are no
+significant effects!&quot;. (0.25 marks)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>During the multivariate statistics lecture, we made use of vector community and malaria survey data collected by Mbogo <em>et al.</em> (2003) to disentangle the effects of vector abundance, species richness, and composition, on malaria prevalence (see path diagram in lecture 10 for a reminder of these relationships). In this exercise, we will complete the analysis of the strucutral equation model we began building in class. (1.5 marks total)</li>
+</ol>
+<p>Here are some relevant snippets of code taken from the lecture notes to get you started on this exercise.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(lavaan)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">kenya.wide &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;kenya.wide.csv&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">kenya.pca &lt;-<span class="st"> </span>kenya.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(arabiensis, gambiae, funestus, merus) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#choose relevant columns</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate_all</span>(sqrt) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#this is the Hellinger transformation </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">  </span><span class="kw">prcomp</span>(.) <span class="co">#pipe directly into baseR function for PCA</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">axes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(kenya.pca<span class="op">$</span>x)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">kenya.wide &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(kenya.wide, axes) </a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">kenya.wide<span class="op">$</span>s.abun &lt;-<span class="st"> </span><span class="kw">log</span>(kenya.wide<span class="op">$</span>total.abundance) </a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">kenya.wide<span class="op">$</span>s.sr &lt;-<span class="st"> </span><span class="kw">log</span>(kenya.wide<span class="op">$</span>SR) </a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">kenya.wide<span class="op">$</span>s.pfpr &lt;-<span class="st"> </span><span class="kw">log</span>(kenya.wide<span class="op">$</span>PfPR) </a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">sem02 &lt;-<span class="st"> &#39;</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="st"># regressions</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="st">l.pfpr ~ a*l.sr + b*l.abun + c*PC2</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="st"># correlations</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="st">l.sr ~~ d*l.abun</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="st">PC2 ~~ e*l.sr</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="st"># defined parameters</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="st">indirect.abun := (a*d) #indirect effect of abundance via SR</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="st">indirect.abun2 := (d*e*c) #indirect effect of abundance via PC2</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="st">total.abun := b + (a*d) + (d*e*c) </span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="st">&#39;</span></a></code></pre></div>
+<pre><code>a. Complete the structural equation model by adding in calculations for the
+indirect and total effects of species richness (SR) and composition (PC2) on
+malaria prevalence (PfPR). (0.5 marks)
+
+b. Evaluate the model, bootstrapping confidence intervals for path
+coefficients with seed #778. Which predictor had the largest _direct_ effect
+on malaria prevalence? How about _total_ effect? Briefly explain these
+effects in plain english (1 sentence each). (1 mark)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>In this exercise, we will be investigating the relationship between vector community structure and another commonly used metric of disease risk – entomological inoculation rate (EIR). EIR is a measure of the number of bites by infectious mosquitoes per person per unit time. We will be making use of the same data from Mbogo <em>et al.</em> (2003) as before, only this time, we will start with the long form data. (2.5 marks total)</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">kenya.long &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;kenya.long.csv&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>)</a></code></pre></div>
+<p>This dataset consists of the same information as kenya.wide, with the addition of one new columns for “EIR”.</p>
+<pre><code>a. Convert this dataset to the wide format. Fill cells in the wide dataset
+with the **relative abundance** of each species, and include the columns
+&quot;total abundance&quot; and &quot;EIR&quot; in the final product. (Hint: use xxxx_join to
+add the desired columns to the wide dataset after you spread it) (Hint2:
+pivot_wider() may be easier to use than spread()) (1 marks)
+
+b. Construct a series of linear models to investigate the relationship
+between EIR and i) total mosquito abundance and ii) the abundance of each
+species. Interpret the results of these models. (Hint: is EIR a simple
+function of total mosquito abundance, or is there a particular species that
+is contributing disproportionately to it?) (0.5 mark)
+
+c. Investigate the influence of total abundance and community structure (use
+the first two PC axes) on EIR with a strcutural equation model. Include only
+direct effects only in this model, and pretend we have reason to believe
+total abundance is associated with community composition.
+    i. Briefly explain the correlation structure you have chosen for your
+    predictors, total abundance, PC1, and PC2. (0.5 marks)
+    ii. Evaluate the model. Are these results congruent with your findings
+    from part (a)? (0.5 marks)</code></pre>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James S. Santangelo" />
+
+
+<title>Data simulation and randomization tests</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data simulation and randomization tests</h1>
+<h4 class="author">James S. Santangelo</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="learning-objectives">Learning objectives</h3>
+<ul>
+<li>Learn to simulate small-scale data in R.</li>
+<li>Understand the basic logic underlying randomization tests and how they differ from standard parametric statistic tests.</li>
+<li>Apply randomization test to real ecological community data.</li>
+</ul>
+</blockquote>
+<blockquote>
+<h3 id="lesson-outline">Lesson outline</h3>
+<p>Total lesson time: 2 hours</p>
+<ul>
+<li>Brief intro to randomization tests (10 min)</li>
+<li>Simulating small-scale data in R (30 mins)</li>
+<li>General procedure for conducting a randomization test (10 mins)</li>
+<li>Simulate data and perform t-test (10 mins)</li>
+<li>Perform randomization test on same simulated data (30 mins)</li>
+<li>Perform randomization test on real ecological data (30 mins)</li>
+</ul>
+<h3 id="setup">Setup</h3>
+<ul>
+<li><code>install.packages('dplyr')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages('ggplot2')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages(&quot;reshape2&quot;)</code></li>
+<li><code>install.packages(&quot;EcoSimR&quot;)</code></li>
+</ul>
+</blockquote>
+</div>
+<div id="introduction-to-randomization-tests" class="section level2">
+<h2>Introduction to randomization tests</h2>
+<p>As we saw in previous weeks, standard parametric statistical tests (e.g. ANOVA, standard linear regression) have numerous assumptions that should be respected prior to drawing conclusions from their results. Violation of these assumptions can lead to erroneous conclusions about the population(s) you are trying to understand. Mixed-effects models provided us with a few ways of overcoming the limitations of standard models, while still using all of our data and remaining in a statistical framework that we generally understand and are comfortable with. Randomization tests provide yet another alternative solution to parametric tests.</p>
+<p>Many ecological and evolutionary questions ask: <strong>Is the observed pattern different than what we would expect by random chance?</strong> In other words, the null hypothesis is randomness. Randomization tests (sometimes called permutation tests) allow us to test whether the observed data are different from a random distribution generated by reordering our observed data. If the pattern is random, then it should be just as likely as any other pattern generated by reordering the data. If it is not random, then it should occur more or less frequently than we expect under this distribution.</p>
+<p>Randomization tests do not require that we make the same assumptions about our data as standard parametric tests. We do not require that samples be randomly drawn from the population since the goal of randomization tests is not to estimate parameters about the population (parameter estimation requires random samples to estimate means and variances). Similarly, we do not require normality of the data nor do we need equal variances among treatment groups since we are not really thinking about the population from which the data came and are not testing against a distribution (e.g. <em>t</em> distribution) with known shape. This will all become more clear when we walk through an example. But first, an aside.</p>
+</div>
+<div id="an-aside-on-simulating-data-in-r" class="section level2">
+<h2>An aside on simulating data in R</h2>
+<p>R allows us to generate fake data (i.e. simulate data) rather easily. This is useful if we just want some toy data to play around with, want to simulate data similar to the type we will collect in an experiment to test our analyses, or want to simulate data collection many times to estimate population parameters (e.g. variance or standard deviation). We can sample existing (i.e. real) data using the <code>sample()</code> function, or take random samples from known statistical distributions (e.g. Normal distribution). We will return to <code>sample()</code> later in this lesson. For now, let’s focus on sampling from known distributions.</p>
+<p>We’ll start by taking random samples from a normal distribution with mean equal to 1 and standard deviation equal to 0.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Let&#39;s install all the packages we&#39;ll need</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(reshape2)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(EcoSimR)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">42</span>) <span class="co"># Ensure reproducibility of random results.</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">mean &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">sd &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, mean, sd)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># Fancy plot, if desired</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(x), <span class="kw">aes</span>(<span class="dt">x=</span>x)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;white&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="st">    </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="fl">-0.30</span>, <span class="dt">y =</span> <span class="dv">9</span>, <span class="dt">label =</span> <span class="kw">round</span>(<span class="kw">mean</span>(x), <span class="dv">4</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">    </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="fl">-0.30</span>, <span class="dt">y =</span> <span class="fl">9.5</span>, <span class="dt">label =</span> <span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(x), <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, </a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Get mean</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">mean</span>(x)</a></code></pre></div>
+<pre><code>## [1] 0.03251482</code></pre>
+<p>Note how the mean from the above distribution (0.0325) is not exactly the same as the mean we specified (0). This should not be too surprising since we took <em>random</em> samples from a normal distribution and there is likely going to be variance within these samples. However, if we were to repeat this sampling many times (e.g. 10,000), each time plotting the mean of the distribution, we would expect the mean of this new distribution (i.e. the mean of the 10,000 means) to be much closer to what we specified. Let’s try this.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">43</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">mean &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">sd &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">size &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">x &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rnorm</span>(size, mean, sd)))</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># Fancy plot, if desired</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(x), <span class="kw">aes</span>(<span class="dt">x=</span>x)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;white&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">    </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="fl">-0.055</span>, <span class="dt">y =</span> <span class="dv">1050</span>, <span class="dt">label =</span> <span class="kw">round</span>(<span class="kw">mean</span>(x), <span class="dv">4</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">    </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="fl">-0.055</span>, <span class="dt">y =</span> <span class="dv">1100</span>, <span class="dt">label =</span> <span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(x), <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, </a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Get mean</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">mean</span>(x)</a></code></pre></div>
+<pre><code>## [1] -0.0007870843</code></pre>
+<p>As expected, the above distribution is normal and its mean is much closer to 0 than the distribution generated by sampling only a single time. Interestingly, the same would be true even if the original samples did not come from a normal distribution. For those who took introductory stats, you might remember that this is called the <strong>Central Limit Theorem</strong>, which states that the distribution of sample means approaches a normal distribution regardless of the shape of the original population’s distribution.</p>
+<p>Note that we could also simulate data from a linear model (or any other model), as the example below shows.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">44</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">y_intercept &lt;-<span class="st"> </span><span class="fl">5.1</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">beta &lt;-<span class="st"> </span><span class="fl">0.23</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">25</span>, <span class="dt">mean =</span> <span class="fl">7.6</span>, <span class="dt">sd =</span> <span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">error &lt;-<span class="st"> </span><span class="kw">rnorm</span>(x, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">y &lt;-<span class="st"> </span>y_intercept <span class="op">+</span><span class="st"> </span>beta<span class="op">*</span>x <span class="op">+</span><span class="st"> </span>error</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="kw">summary</span>(model)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.29902 -0.26647 -0.02793  0.19286  1.01859 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   4.2423     1.0887   3.897 0.000727 ***
+## x             0.3575     0.1446   2.473 0.021219 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5429 on 23 degrees of freedom
+## Multiple R-squared:   0.21,  Adjusted R-squared:  0.1757 
+## F-statistic: 6.116 on 1 and 23 DF,  p-value: 0.02122</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">abline</span>(model)</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="walkthrough-of-randomization-test" class="section level2">
+<h2>Walkthrough of randomization test</h2>
+<p>Now that we know how to simulate data, let’s use this to demonstrate the logic underlying randomization tests. The basic procedure for a randomization test is as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate test statistic for the sample data (e.g. difference in means, difference in means, t-statistic, etc.). The test statistic is chosen by the researcher.</li>
+<li>Randomly reshuffle observations among the treatment groups, each time calculating a test statistic.</li>
+<li>Repeat 2 multiple times, generating a distribution of test-statistics.</li>
+<li>Calculate the proportion of times the actual test statistic is outside the distribution of test-statistics.</li>
+</ol>
+<p>We will perform the above approach on some simulated data. Imagine we had ventured to South America and collected 10 male and 10 female Hercules beetles. We brought the beetles back to the lab and measured the width of their bodies at the largest point. The question we are interested in is: <strong>Do male and female Hercules beetles differ in body width?</strong> We will assume that body width is normally distributed (i.e. we will draw from a normal distribution).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">46</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># Male data</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">df_males &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">    <span class="dt">width =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="fl">16.5</span>, <span class="dt">sd=</span><span class="fl">2.5</span>),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">    <span class="dt">sex =</span> <span class="st">&quot;Male&quot;</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co"># Female data</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">df_females &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">    <span class="dt">width =</span> <span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">15</span>, <span class="dt">sd=</span><span class="fl">1.8</span>),</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">    <span class="dt">sex =</span> <span class="st">&quot;Female&quot;</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co"># Let&#39;s combine the datasets</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">df_body_widths &lt;-<span class="st"> </span><span class="kw">rbind</span>(df_males, df_females)</a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co"># Let&#39;s look at the male and female data</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="kw">ggplot</span>(df_body_widths, <span class="kw">aes</span>(<span class="dt">x =</span> width, <span class="dt">fill =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Body width&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">data =</span> <span class="kw">filter</span>(df_body_widths, sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>), <span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(width)),</a>
+<a class="sourceLine" id="cb11-23" data-line-number="23">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">data =</span> <span class="kw">filter</span>(df_body_widths, sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>), <span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(width)),</a>
+<a class="sourceLine" id="cb11-25" data-line-number="25">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="st">    </span><span class="kw">theme_classic</span>() </a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Males have a mean body width of 17.3656816 while females have a mean body width of 15.0282489</p>
+<p>We will use a randomization test to test if males and females differ in body width. If they do <strong>not</strong> differ, then each body width measurement in our dataframe should be equally likely to belong to a male or to a female. In other words, body width should independent of beetle sex. We can simulate this by randomly rearranging the body width values, effectively removing the effect of sex on body width, and then calculating a test statistic (e.g. <em>t</em> statistic, difference in means). We can do this many times (e.g. 5,000) and ask how many times our observed test statistic falls outside the randomly generated distribution of test statistics. We will use the difference in mean body width as our test statistic so let’s go ahead and calculate the <em>observed</em> difference in body width between male and female beetles.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">mean_males &lt;-<span class="st"> </span><span class="kw">mean</span>(df_males<span class="op">$</span>width)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">mean_females &lt;-<span class="st"> </span><span class="kw">mean</span>(df_females<span class="op">$</span>width)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">diff_means_obs &lt;-<span class="st"> </span>mean_males <span class="op">-</span><span class="st"> </span>mean_females</a></code></pre></div>
+<p>The observed difference in mean body width between male and female Hercules beetles is 2.3374326</p>
+<p>Traditionally, if we wanted to determine if there is a significant difference in means between two groups, we could use a <strong>t-test</strong>. Let’s perform a t-test on these data so we could compare it to the results of the randomization test that we will perform. Note the <code>alternative = two.sided</code> argument passed to <code>t.test()</code>. Since we are interested in whether males and females differ in mean body length without reference to whether one sex is <em>specifically</em> larger or smaller than the other, we are performing a two-sided hypothesis test. Realistically, males could either have larger or smaller body widths so a two-tailed test is appropriate here.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">t.test</span>(width <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> df_body_widths, <span class="dt">alternative =</span> <span class="st">&quot;two.sided&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  width by sex
+## t = 2.4886, df = 17.742, p-value = 0.023
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.3620858 4.3127795
+## sample estimates:
+##   mean in group Male mean in group Female 
+##             17.36568             15.02825</code></pre>
+<p>From the t-test above, we see that our t-statistic has a value of 2.49 and that males and females differ significantly in body width (<em>P</em> &lt; 0.05). From the means reported in the t-test, it looks like males have larger body widths than females (17.36 vs. 15.03). Let’s now perform a randomization test. To get a better sense of what we’re doing, let’s first perform a single reshuffling of the data and look at the resulting distribution of the data.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Set seed for reproducible results</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">47</span>)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co"># Randomly reshuffle the width column</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">reshuffled &lt;-<span class="st"> </span>df_body_widths</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">reshuffled<span class="op">$</span>width &lt;-<span class="st"> </span><span class="kw">sample</span>(reshuffled<span class="op">$</span>width, </a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">                           <span class="dt">size =</span> <span class="kw">nrow</span>(reshuffled), <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co"># View data to confirm that values have been reshuffle</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="kw">head</span>(df_body_widths)</a></code></pre></div>
+<pre><code>##      width  sex
+## 1 14.25271 Male
+## 2 17.03033 Male
+## 3 14.67852 Male
+## 4 19.58880 Male
+## 5 19.42210 Male
+## 6 14.94379 Male</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">head</span>(reshuffled)</a></code></pre></div>
+<pre><code>##      width  sex
+## 1 16.00825 Male
+## 2 14.62197 Male
+## 3 14.25271 Male
+## 4 11.53578 Male
+## 5 17.57305 Male
+## 6 14.94379 Male</code></pre>
+<p>Note the differences in body width values between the original and reshuffled dataframes above.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Plot histograms of reshuffled data</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">ggplot</span>(reshuffled, <span class="kw">aes</span>(<span class="dt">x =</span> width, <span class="dt">fill =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Body width&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">data =</span> <span class="kw">filter</span>(reshuffled, sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>), <span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(width)), </a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">data =</span> <span class="kw">filter</span>(reshuffled, sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>),<span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(width)), </a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">               <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Let get the mean difference of this single simulation</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">mean_males_sim1 &lt;-<span class="st"> </span><span class="kw">mean</span>(reshuffled <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>) </a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">                           <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(width))</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">mean_females_sim1 &lt;-<span class="st"> </span><span class="kw">mean</span>(reshuffled <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>) </a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">                             <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(width))</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">mean_diff_sim1 &lt;-<span class="st"> </span>mean_males_sim1 <span class="op">-</span><span class="st"> </span>mean_females_sim1</a></code></pre></div>
+<p>The mean difference from a single reshuffling of the data is -0.9177916</p>
+<p>We can see that the mean difference from the simulated data is considerably different from the observed mean difference. This makes sense since the body width values were randomly assigned to males and females. Let’s now do this 5,000 times, each time calculating the mean difference in body width.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Set seed for reproducible results</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">49</span>)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co"># Initialize a list to store the simulated test-statistics</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">simulated_means &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">nreps =<span class="st"> </span><span class="dv">5000</span> <span class="co"># 5000 iterations</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps){</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">    </a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">    <span class="co"># Create temporary dataframe to permute so we don&#39;t modify the original</span></a>
+<a class="sourceLine" id="cb21-12" data-line-number="12">    reshuffled &lt;-<span class="st"> </span>df_body_widths </a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">    </a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">    <span class="co"># Permute the width column with the &#39;sample()&#39; function. </span></a>
+<a class="sourceLine" id="cb21-15" data-line-number="15">    reshuffled<span class="op">$</span>width &lt;-<span class="st"> </span><span class="kw">sample</span>(reshuffled<span class="op">$</span>width, <span class="dt">size =</span> <span class="kw">nrow</span>(reshuffled), </a>
+<a class="sourceLine" id="cb21-16" data-line-number="16">                               <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb21-17" data-line-number="17">    </a>
+<a class="sourceLine" id="cb21-18" data-line-number="18">    <span class="co"># Calculate the means for each sex</span></a>
+<a class="sourceLine" id="cb21-19" data-line-number="19">    mean_males_sim &lt;-<span class="st"> </span><span class="kw">mean</span>(reshuffled <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>) </a>
+<a class="sourceLine" id="cb21-20" data-line-number="20">                           <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(width))</a>
+<a class="sourceLine" id="cb21-21" data-line-number="21">    mean_females_sim &lt;-<span class="st"> </span><span class="kw">mean</span>(reshuffled <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>) </a>
+<a class="sourceLine" id="cb21-22" data-line-number="22">                             <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(width))</a>
+<a class="sourceLine" id="cb21-23" data-line-number="23">    </a>
+<a class="sourceLine" id="cb21-24" data-line-number="24">    <span class="co"># Calculate to difference between simulated male and female body width </span></a>
+<a class="sourceLine" id="cb21-25" data-line-number="25">    <span class="co"># means</span></a>
+<a class="sourceLine" id="cb21-26" data-line-number="26">    mean_diff_sim &lt;-<span class="st"> </span>mean_males_sim <span class="op">-</span><span class="st"> </span>mean_females_sim</a>
+<a class="sourceLine" id="cb21-27" data-line-number="27">    </a>
+<a class="sourceLine" id="cb21-28" data-line-number="28">    <span class="co"># Append simulated mean difference to list</span></a>
+<a class="sourceLine" id="cb21-29" data-line-number="29">    simulated_means[i] &lt;-<span class="st"> </span>mean_diff_sim</a>
+<a class="sourceLine" id="cb21-30" data-line-number="30">}    </a>
+<a class="sourceLine" id="cb21-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb21-32" data-line-number="32"><span class="co"># Unlist simulated means list into numeric vector</span></a>
+<a class="sourceLine" id="cb21-33" data-line-number="33">simulated_means &lt;-<span class="st"> </span><span class="kw">unlist</span>(simulated_means)</a>
+<a class="sourceLine" id="cb21-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb21-35" data-line-number="35"><span class="co"># Show first 10 simulated mean differences</span></a>
+<a class="sourceLine" id="cb21-36" data-line-number="36">simulated_means[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<pre><code>##  [1]  0.1294759 -1.1193729  0.0234485  1.3749776 -1.4291942  0.1071253
+##  [7] -1.3720400  1.5833893 -0.4112268 -1.9538498</code></pre>
+<p>We now have a numeric vector containing 5,000 simulated differences in mean body width between males and females. Let’s plot a histogram of the simulated values and overlay onto the histogram our observed mean difference.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Simulated mean difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> simulated_means), <span class="dt">bins =</span> <span class="dv">30</span>, </a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">                   <span class="dt">fill =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> diff_means_obs, <span class="dt">size =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">               <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Finally, to get our <em>P</em>-value, we calculate the number of times the simulated mean difference exceeded the observed mean difference from our data. Because we are performing a two-tailed test, this amounts to determining the number of times the simulated mean difference is <strong>either greater or lesser than the observed difference</strong>. We can do this by asking how many times the absolute value of the simulated mean difference is greater or equal to the absolute value of the observed mean difference.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">abs_simulated_means &lt;-<span class="st"> </span><span class="kw">abs</span>(simulated_means)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">abs_diff_means_obs &lt;-<span class="st"> </span><span class="kw">abs</span>(diff_means_obs)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">exceed_count &lt;-<span class="st"> </span><span class="kw">length</span>(abs_simulated_means[abs_simulated_means <span class="op">&gt;=</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">                                               </span>abs_diff_means_obs])</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">p_val &lt;-<span class="st"> </span>exceed_count <span class="op">/</span><span class="st"> </span>nreps</a></code></pre></div>
+<p>The P-value from the randomization test is 0.0268</p>
+<p>As we can see, the randomization test provides results that are largely consistent with the t-test. This is not surprising since we specifically sampled independent data from normal distributions with similar variances. In other words, our sampled data do not violate any of the assumptions of the t-test and in such a case the difference in means is by definition analogous to the <em>t</em> statistic used in the t-test. There are some cases where randomization tests provide more accurate (or <em>exact</em>) <em>P</em>-values than parametric tests (e.g. small samples from skewed distributions) but even more diverse applications of randomization tests are found in ecology and evolutionary biology.</p>
+</div>
+<div id="randomization-tests-a-real-world-application" class="section level2">
+<h2>Randomization tests: A real-world application</h2>
+<p>Randomization tests are applied in all corners of ecological and evolutionary research but for our purpose we’ll turn to the field of community ecology for an example. Community ecologists have long been interested in understanding the factors that shape the organization of ecological communities. Are the species in an ecological community just a random assortment of species available from the regional species pool? Conversely, do species interactions and shared resources determine the local distribution of species, such that some species are found together more often than we would expect by chance whereas other never or only rarely co-occur. The idea that competition and shared resources are important in driving community assembly is known as <em>assembly rules</em> and was first proposed by Diamond (1975). An important null model based on randomization tests was later developed to test what species assemblages would look like in the absence of competition and shared resources (Connor and Simberloff 1979). We will apply one such randomization test in this section.</p>
+<p>First, let’s look at the type of data we need for this analysis.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># Load in example dataset</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">comMatrix_example &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/lec09_CommunityMatrix_Example.csv&quot;</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">download.file</span>(comMatrix_example, <span class="st">&quot;lec09_CommunityMatrix_Example.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">comMatrix_example &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;lec09_CommunityMatrix_Example.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">head</span>(comMatrix_example)</a></code></pre></div>
+<pre><code>## # A tibble: 5 x 5
+##   X1        `Site 1` `Site 2` `Site 3` `Site 4`
+##   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Species 1        0        0        0        1
+## 2 Species 2        0        1        1        1
+## 3 Species 3        1        0        1        0
+## 4 Species 4        1        1        1        0
+## 5 Species 5        0        1        0        1</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># Sliced to return a numeric Matrix, which is required for </span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co"># colSums() and rowSums()</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">colSums</span>(comMatrix_example[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]) </a></code></pre></div>
+<pre><code>## Site 1 Site 2 Site 3 Site 4 
+##      2      3      3      3</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">rowSums</span>(comMatrix_example[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>])</a></code></pre></div>
+<pre><code>## [1] 1 3 2 3 2</code></pre>
+<p>As you can see, the data is a matrix with sites (e.g. islands, quadrats, etc.) as columns and species as rows. Each cell represents whether a species is present (1) or absent (0) at that site. This type of data is often referred to as a <em>presence-absence matrix</em>. The column totals (using <code>colSums()</code>) gives us a sense of how species richness varies across the sites while the row totals (using <code>rowSums()</code>) tells us how rare or common a species is across all sites. The question we are interested in addressing is: <strong>Are the observed species co-occurrence patterns the result of species interactions or random chance?</strong></p>
+<p>Let’s read in some real data before proceeding. The data are from the <a href="https://www.neonscience.org/">National Ecological Observatory Network</a> and represent the presence and absence of plant species in eight square meter plots during the month of July, 2017, at a single site around Harvard, Boston, MA. Note this is only a subset of the very large dataset provided by NEON, which dates back to 2013 and includes about 46 different sites.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># Load in NEON data</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">neon_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/NEON_PlantPA_HARV_201707.csv&quot;</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw">download.file</span>(neon_data, <span class="st">&quot;NEON_PlantPA_HARV_201707.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">neon_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;NEON_PlantPA_HARV_201707.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">glimpse</span>(neon_data)</a></code></pre></div>
+<pre><code>## Observations: 996
+## Variables: 35
+## $ uid                      &lt;chr&gt; &quot;1be45bc7-f9c6-4975-9d20-34b4d30b8e21&quot;, &quot;af1…
+## $ namedLocation            &lt;chr&gt; &quot;HARV_026.basePlot.div&quot;, &quot;HARV_026.basePlot.…
+## $ domainID                 &lt;chr&gt; &quot;D01&quot;, &quot;D01&quot;, &quot;D01&quot;, &quot;D01&quot;, &quot;D01&quot;, &quot;D01&quot;, &quot;D…
+## $ siteID                   &lt;chr&gt; &quot;HARV&quot;, &quot;HARV&quot;, &quot;HARV&quot;, &quot;HARV&quot;, &quot;HARV&quot;, &quot;HAR…
+## $ decimalLatitude          &lt;dbl&gt; 42.41079, 42.41079, 42.41079, 42.41079, 42.4…
+## $ decimalLongitude         &lt;dbl&gt; -72.24726, -72.24726, -72.24726, -72.24726, …
+## $ geodeticDatum            &lt;chr&gt; &quot;WGS84&quot;, &quot;WGS84&quot;, &quot;WGS84&quot;, &quot;WGS84&quot;, &quot;WGS84&quot;,…
+## $ coordinateUncertainty    &lt;dbl&gt; 20.3, 20.3, 20.3, 20.3, 20.3, 20.3, 20.3, 20…
+## $ elevation                &lt;dbl&gt; 193.2, 193.2, 193.2, 193.2, 193.2, 193.2, 19…
+## $ elevationUncertainty     &lt;dbl&gt; 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,…
+## $ plotID                   &lt;chr&gt; &quot;HARV_026&quot;, &quot;HARV_026&quot;, &quot;HARV_026&quot;, &quot;HARV_02…
+## $ subplotID                &lt;chr&gt; &quot;40.1.1&quot;, &quot;40.1.1&quot;, &quot;40.3.1&quot;, &quot;32.4.1&quot;, &quot;32.…
+## $ endDate                  &lt;date&gt; 2017-07-03, 2017-07-03, 2017-07-03, 2017-07…
+## $ boutNumber               &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ samplingProtocolVersion  &lt;chr&gt; &quot;NEON.DOC.014042vG&quot;, &quot;NEON.DOC.014042vG&quot;, &quot;N…
+## $ divDataType              &lt;chr&gt; &quot;plantSpecies&quot;, &quot;plantSpecies&quot;, &quot;otherVariab…
+## $ targetTaxaPresent        &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;,…
+## $ otherVariablesPresent    &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;,…
+## $ taxonID                  &lt;chr&gt; &quot;PIST&quot;, &quot;VACO&quot;, NA, &quot;MACA4&quot;, &quot;VAPA4&quot;, NA, &quot;T…
+## $ scientificName           &lt;chr&gt; &quot;Pinus strobus L.&quot;, &quot;Vaccinium corymbosum L.…
+## $ taxonRank                &lt;chr&gt; &quot;species&quot;, &quot;species&quot;, NA, &quot;species&quot;, &quot;specie…
+## $ family                   &lt;chr&gt; &quot;Pinaceae&quot;, &quot;Ericaceae&quot;, NA, &quot;Liliaceae&quot;, &quot;E…
+## $ nativeStatusCode         &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, NA, &quot;N&quot;, &quot;N&quot;, NA, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, N…
+## $ identificationQualifier  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ taxonIDRemarks           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ morphospeciesID          &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ morphospeciesIDRemarks   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ identificationReferences &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ otherVariables           &lt;chr&gt; NA, NA, &quot;scat&quot;, NA, NA, &quot;lichen&quot;, NA, NA, NA…
+## $ percentCover             &lt;dbl&gt; 7.0, 9.0, 0.5, 3.0, 5.0, 0.5, 2.0, 0.5, 1.0,…
+## $ heightPlantOver300cm     &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, NA, &quot;N&quot;, &quot;N&quot;, NA, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, N…
+## $ heightPlantSpecies       &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ remarks                  &lt;chr&gt; NA, NA, &quot;Gypsy moth&quot;, NA, NA, NA, NA, NA, NA…
+## $ measuredBy               &lt;chr&gt; &quot;WpWHyjh7ZEbsFcxLGlzbonUvwbNLZ84R&quot;, &quot;WpWHyjh…
+## $ recordedBy               &lt;chr&gt; &quot;Pes0SJTi6mB/L3kaeuPRUby8XD59hvb8&quot;, &quot;Pes0SJT…</code></pre>
+<p>Clearly this data is not in the form that we need it to be. As I’m sure you know by now, R has many useful libraries and functions that should allow us to change this relatively easily. We’ll rely on the <code>reshape2</code> package to transform our dataset into a presence-absence matrix.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">neon_data_filtered &lt;-<span class="st"> </span>neon_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="st">    </span><span class="co"># We only want rows with plant species and not &#39;otherVariables&#39;</span></a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(divDataType <span class="op">==</span><span class="st"> &quot;plantSpecies&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb35-4" data-line-number="4"><span class="st">    </span></a>
+<a class="sourceLine" id="cb35-5" data-line-number="5"><span class="st">    </span><span class="co"># To create a presence-absence matrix, we only need the taxonID </span></a>
+<a class="sourceLine" id="cb35-6" data-line-number="6"><span class="st">    </span><span class="co"># (i.e. species) and the plotID (i.e. Site)</span></a>
+<a class="sourceLine" id="cb35-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(plotID, taxonID) </a>
+<a class="sourceLine" id="cb35-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb35-9" data-line-number="9"><span class="co"># Create Presence-Absence matrix</span></a>
+<a class="sourceLine" id="cb35-10" data-line-number="10"><span class="co"># Keep only unique rows so that cells represent presence-absence </span></a>
+<a class="sourceLine" id="cb35-11" data-line-number="11"><span class="co"># and not abundances</span></a>
+<a class="sourceLine" id="cb35-12" data-line-number="12">neon_data_filtered &lt;-<span class="st"> </span><span class="kw">unique</span>(neon_data_filtered) </a>
+<a class="sourceLine" id="cb35-13" data-line-number="13">PA_matrix &lt;-<span class="st"> </span><span class="kw">dcast</span>(neon_data_filtered, <span class="dt">formula =</span> taxonID <span class="op">~</span><span class="st"> </span>plotID, <span class="dt">fun.aggregate =</span> length)</a>
+<a class="sourceLine" id="cb35-14" data-line-number="14"><span class="kw">head</span>(PA_matrix)</a></code></pre></div>
+<pre><code>##   taxonID HARV_002 HARV_005 HARV_017 HARV_018 HARV_020 HARV_022 HARV_026
+## 1    ACER        0        0        0        0        1        1        0
+## 2    ACRU        1        1        1        1        1        1        1
+## 3   ACSAS        0        0        0        0        1        0        0
+## 4   AMBR2        0        0        0        0        1        0        0
+## 5   AMELA        0        1        0        0        0        1        1
+## 6   ANQUQ        0        1        0        0        1        0        0
+##   HARV_027 HARV_030
+## 1        1        0
+## 2        1        0
+## 3        1        0
+## 4        0        0
+## 5        0        0
+## 6        0        0</code></pre>
+<p>Well that was painless! We now have our data in a form that is usable in our randomization test but we need to decide two things first: (1) <em>What is our test statistic?</em> This is what we’ll use to determine if co-occurrence patterns are random or not, similar to how we used the difference in means to tell if male and female beetles differed in length. (2) <em>How do we randomize such a large matrix?</em> Do we randomly permute rows and columns so that each cell is equally likely to contain a 1 or 0? Do we constrain row permutations so that row totals (i.e. species rarity) are preserved but site richness is free to vary? Do we constrain column permutations so that column totals (i.e. site richness) are preserved but species rarity can vary? It turns out there are exactly 9 different ways a matrix like this can be randomized, each involving a different set of constraints and biological assumptions (Gotelli 2000).</p>
+<p>For our purpose, we will preserve species rarity but will assume that each site is equally likely to be colonized. In other words, we are assuming that sites do not vary in habitat quality or anything else that may change the number of species that can occupy it. However, we want rare species to remain rare throughout the permutations. This model is analogous to the <em>SIM2</em> algorithm in Gotelli (2000) and is reasonable in our case since the sites are relatively close in proximity (i.e. likely have similar habitat quality).</p>
+<p>For our index, we will use the <strong>C-score</strong> (Stone and Roberts 1990). We will not go into the calculation of this score here but suffice it to say that the higher the C-score, the less co-occurrence (on average) between all pairs of species in the matrix (i.e. a more segregated matrix). Smaller C-scores indicate an aggregated matrix (i.e. more co-occurrence among species pairs). Thankfully for us, there is an R package that implements the randomization algorithm for us. Let’s go ahead and conduct the analysis.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="co"># Perform co-occurrence analysis</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4">co_oc_analysis &lt;-<span class="st"> </span><span class="kw">cooc_null_model</span>(PA_matrix, <span class="dt">algo =</span> <span class="st">&quot;sim2&quot;</span>, </a>
+<a class="sourceLine" id="cb37-5" data-line-number="5">                                  <span class="dt">nReps=</span><span class="dv">1000</span>, </a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">                                  <span class="dt">metric =</span> <span class="st">&quot;c_score&quot;</span>, </a>
+<a class="sourceLine" id="cb37-7" data-line-number="7">                                  <span class="dt">suppressProg =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb37-8" data-line-number="8">                                  <span class="dt">saveSeed =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb37-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb37-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb37-11" data-line-number="11"><span class="co"># Summarize output from co-occurrence analysis</span></a>
+<a class="sourceLine" id="cb37-12" data-line-number="12"><span class="kw">summary</span>(co_oc_analysis)</a></code></pre></div>
+<pre><code>## Time Stamp:  Thu Feb 20 16:05:03 2020 
+## Reproducible:  TRUE 
+## Number of Replications:  1000 
+## Elapsed Time:  1.6 secs 
+## Metric:  c_score 
+## Algorithm:  sim2 
+## Observed Index:  1.8634 
+## Mean Of Simulated Index:  1.9969 
+## Variance Of Simulated Index:  0.00084441 
+## Lower 95% (1-tail):  1.9414 
+## Upper 95% (1-tail):  2.0364 
+## Lower 95% (2-tail):  1.9254 
+## Upper 95% (2-tail):  2.0423 
+## Lower-tail P &gt;  0.001 
+## Upper-tail P &lt;  0.999 
+## Observed metric &gt; 0 simulated metrics 
+## Observed metric &lt; 1000 simulated metrics 
+## Observed metric = 0 simulated metrics 
+## Standardized Effect Size (SES):  -4.5918</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># Let plot the randomization test</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">plot</span>(co_oc_analysis,<span class="dt">type=</span><span class="st">&quot;hist&quot;</span>)</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>As we can see, our observed C-score (red line) is much lower (significantly so) than we would expect by random chance given the species in our community. This suggests the community is <em>aggregated</em> such that some species are more likely to occur with other species in the community than we would expect if the communities were assembling themselves randomly. This can happen if there is facilitation and some species create ecological niches or favourable habitat for other species such that they occur more often. Importantly, the C-score is an average across all pairwise comparisons in the matrix and doesn’t tell us anything about which specific species pairs may be more or less likely to co-occur. Identifying which species pairs are driving this pattern would require quite a bit more time, and identifying the ecological mechanisms behind co-occurrence patterns of specific species pairs requires careful experimentation.</p>
+<p>For the sake of completeness, we can also visualize a single permutation of the matrix compared against our observed matrix.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">plot</span>(co_oc_analysis,<span class="dt">type=</span><span class="st">&quot;cooc&quot;</span>)</a></code></pre></div>
+<p><img src="lec12-randomization-tests_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Notice how all of the rows in the two figures above always have the same number of filled squares. This is confirmation that the rarity of species (i.e. row totals) has been preserved during the permutation.</p>
+</div>
+<div id="other-uses-of-randomization-tests" class="section level2">
+<h2>Other uses of randomization tests</h2>
+<p>Testing for mean differences among groups and for putative rules governing community assembly are only two of the many uses for randomization tests. In this section, I briefly highlight other uses of data randomization in statistics, ecology, and evolutionary biology.</p>
+<p>Randomization tests are additionally used in numerous fields in ecology and evolutionary biology such as spatial ecology (e.g. testing spatial patterns in animal distribution and allowing for spatial autocorrelations), phylogenetics (e.g. permutations of species phylogenies), community ecology, and environmental monitoring. In addition to randomization tests in the way that we’ve demonstrated here, randomization procedures play an important role in other aspects biology and statistics.</p>
+<p><strong>Bootstrapping</strong> involves sampling data <em>with replacement</em> to estimate the sampling distribution of a population estimator (e.g. mean, median, standard deviation). This is often done to estimate the error (e.g. standard error, confidence interval) around the estimated population parameter.</p>
+<p><strong>Cross-validation</strong> involves randomly subsampling a dataset, which is then held as a <em>model validation set</em> on which the predictive ability of a model can be tested. A model is tested on the remaining data (i.e. the <em>training set</em>) and used to predict the validation set. This is done many times to estimate the accuracy of the model.</p>
+<p><strong>Monte-carlo methods</strong> are a huge class of methods that generally involve simulating random numbers to estimate probability distributions and for obtaining numerical solution to really complicated problems. For our purposes, these are especially common in computational biology, genomics and in Bayesian inference (e.g. building phylogenies).</p>
+</div>
+<div id="additional-reading" class="section level2">
+<h2>Additional reading</h2>
+<ol style="list-style-type: decimal">
+<li>Diamond, J.M. 1975. Assembly of species communities. p. 342-444 in: Ecology and Evolution of Communities. M.L. Cody and J.M. Diamond (eds.). Harvard University Press, Cambridge.</li>
+<li>Connor, E.F. and D. Simberloff. 1979. The assembly of species communities: chance or competition? Ecology 60: 1132-1140.</li>
+<li>Connor, E.F., M.D. Collins, and D. Simberloff. 2013. The checkered history of checkerboard distributions. Ecology 94: 2403-2414</li>
+<li>Stone. L. and A. Roberts. 1990. The checkerboard score and species distributions. Oecologia 85: 74-79.</li>
+<li>Manly, B. 2007. Randomization, bootstrap and Monte Carlo methods in biology. B. Carlin, C. Chatfield M. Tanner and J. Zidek, eds. 3rd edition. Chapman and Hall/CRC.</li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

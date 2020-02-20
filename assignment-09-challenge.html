@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Challenge assignment (14.5 marks)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Challenge assignment (14.5 marks)</h1>
+
+</div>
+
+
+<p><em>To submit this assignment, upload the full document on Quercus, including the original questions, your code, and the output. Submit your assignment as a knitted <code>.pdf</code> (prefered) or <code>.html</code> file.</em></p>
+<p>Part of being an effective scientist involves being able to solve problems you have not encountered before. This is certainly true of programming as well, where problems are typically solved by furious bouts of Googling, reading documentation, and trial and error of proposed solutions. In this assignment, like previous ones, you will be evaluated on your ability to solve data manipulation and analysis tasks. However, unlike previous assignments, some of the solutions to the problems will require more research and effort on your part. It may require the use of packages and techniques not explored in class, but all problems are solveable, often with only a few lines of code. By now, you should all have the terminology required to search for solutions to the problems below. As with all programming problems, there are many possible ways to get the answer to the problems below.</p>
+<ol style="list-style-type: decimal">
+<li><p>Simpson’s diversity index and bootstrapping (6 marks)</p>
+<p>In lecture 12, we used data from the National Ecological Observatory Networkd on the abundance and percent cover of plant species across sites in the Harvard Forest from the year 2017. Run the code chunck below to read in the data if you do not already have it.</p></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">neon_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/NEON_PlantPA_HARV_201707.csv&quot;</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">download.file</span>(neon_data, <span class="st">&quot;NEON_PlantPA_HARV_201707.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">neon_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;NEON_PlantPA_HARV_201707.csv&quot;</span>, </a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">                                <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li><p>Using the raw NEON data, create a matrix with plant species as rows and sites as columns. The cell values should represent the abundance of each species at a given site. (1 mark)</p></li>
+<li><p>Write a function that takes a single numeric vector as an argument and returns Simpson’s Index of Diversity for the numeric vector. Test your function by computing Simpson’s diversity index on the <code>test_vector</code> in the code chunk below. Be sure to report the Simpson’s index for <code>test_vector</code> in your final assignment. As a reminder, I have included the formula for Simpson’s index below:</p></li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">test_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">0</span>, </a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">                 <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">19</span>, <span class="dv">0</span>, <span class="dv">11</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a></code></pre></div>
+<p><span class="math display">\[D = 1 - \sum_{i = 1}^{s}(p_i)^2\]</span></p>
+<p>where <code>s</code> is the species richness (i.e. number of species) and <code>p_i</code> is th relative abundance of species <em>i</em>. A <code>D</code> value of 0 represents no diversity and a D value of 1 represent infinite diversity. (1 mark)</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>In lecture 12, we discussed how resampling techniques can be used to conduct hypothesis tests (i.e., permutation tests) by comparing an observed population parameter (e.g., mean, median) to a null distribution of that parameter generated by resampling your observed data <em>without</em> replacement many times. Resampling can additionally be used to generate confidence intervals around a population parameter (e.g., mean median, slope) or other statistic (e.g., C-score) using a technique known as <em>bootstrapping</em>. Bootstrapping allows us to estimate the true distribution of a statistic in cases where it is unknown, which we can use to estimate our uncertainty (e.g., Standard Error, Confidence Intervals) in a population parameter. Importantly, this applies <em>regardless of the shape of the distribution</em>, although some adjustments often have to be made for strongly skewed distributions. While there are a few different types of bootstrapped confidence intervals (e.g., bias-corrected and accelerated, <em>t</em> with bootstrap), in this exercise, you will write a function that calculates the simple 95% percentile bootstrapped confidence interval from a given numeric vector. Your function should have the following properties:</p>
+<ol style="list-style-type: decimal">
+<li>It should take in two arguments: A numeric vector and an integer representing the number of iterations</li>
+<li>It should return a data frame with two columns: The lower and upper quantiles of the distribution, representing the 2.5 and 97.5 percentiles, respectively (<strong>hint:</strong> The <code>quantile()</code> function).</li>
+</ol></li>
+</ol>
+<p>Write the function as described above. How does the bootstrap differ from a permutation test (note: you don’t need code here, just tell me in words). Set a seed of 42 and test your function on the <code>test_vector</code> from part (b). (1.5 marks)</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li><p>Use your functions defined in (b) and (c) to estimate the Simpson’s diversity index and corresponding 95% bootstrapped confidence intervals around the Simpson’s index for each of the sites in your dataframe from (a). Use 1000 iterations for the bootstrapping procedure. Your answer should be a single dataframe with four columns: <code>site</code>, <code>simpson</code>, <code>lower</code>, and <code>upper</code>. Points are awarded for conciseness of the code. (<strong>Hint:</strong> The most concise answer will likely make use of the <code>purrr</code> package, which is part of the <code>tidyverse</code>). Set a seed of 43. (1.5 marks)</p></li>
+<li><p>Using the dataframe from (d), plot the Simpson’s index (y-axis) for each of the sites (x-axis) as a single point surrounded by its lower and upper 95% CIs. Order the x-axis from lowest to highest Simpson’s index. (1 mark)</p></li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Recreating a figure</p>
+<p>In assignment 3, we explored a dataset containing changes in yearly plant biomass in Abisko National Park, Sweden. In this question, we will use <code>ggplot2</code> to reproduce a figure in the original paper (Olofsson et al, 2013; <a href="https://royalsocietypublishing.org/doi/full/10.1098/rstb.2012.0486">link</a>).</p>
+<p>You should still have the dataset from when you completed assignment 3, but if not, run the code chunk below to download it.</p></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">plant_biomass_url &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/UofTCoders/rcourse/master/data/plant-biomass-preprocess.csv&#39;</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">download.file</span>(plant_biomass_url, <span class="st">&#39;plant-biomass-preprocess.csv&#39;</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">plant_biomass &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&#39;plant-biomass-preprocess.csv&#39;</span>)</a></code></pre></div>
+<p>Reproduce figure 4 from the paper using <code>ggplot2</code>. Pay close attention to the overall structure of the figure, the scale on the axes, and so on. The colors of the points do not need to be the exact same colors as those in the figure, but they should be sufficiently close. <em>(Note: you can ignore the SEM points, and the ‘look’ of your axes does not have to match the figure exactly. The species names also not have to be included in the body of the plot (like in the paper) as long as they are visible in some form</em> (1 mark)</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Use the built-in R dataset <code>iris</code>, for this question. (2 marks)</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Test the relationship between sepal length and sepal width <em>for each species</em> using linear models. Set sepal width as the response and sepal length as the predictor. Output a single data frame containing the beta estimate and p-value associated with the predictor for each of the three models, and also make sure to include a column called ‘species’ in the final data frame. Your final data frame should only have species, term, estimate, and p.value as columns. Do not include the intercepts. <em>(Hint: You want to simultaneously perform the same model on different subsets of the data with only a few lines of code)</em> (1 mark)</p></li>
+<li><p>Use <code>ggplot2</code> to plot a scatter plot of sepal width by sepal length, coloured by species. Plot the three linear fits as well, also coloured by species. Below your code, comment on how the estimate values from your linear models above correspond to the plotted fits. (1 mark)</p></li>
+</ol></li>
+<li><p>The Canadian lynx population cycle (3.5 marks)</p>
+<p>The Canadian lynx experiences large periodic changes in its population size over a timescale of several years. This is thought to be driven by oscillations in the population size of the snowshoe hare, the primary food source for the lynx. Read more about the lynx population cycle on this <a href="https://www.enr.gov.nt.ca/en/services/lynx/lynx-snowshoe-hare-cycle">Northwest Territories website</a>.</p>
+<p>R has a built-in dataset called <code>lynx</code> which contains annual population measurements for the Canadian lynx as a time series.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Plot the abundance of <code>lynx</code> vs. time in years using either <code>ggplot</code> or <code>qplot</code>. Plot points and a connect them by a line . Create a time series that starts at 0 and ends at the total number of years in the dataset (total years <span class="math inline">\(=  1934-1821\)</span>). By eye, estimate the time between peaks in the population. (0.5 marks)</p></li>
+<li><p>Define a function called <code>sine_model</code> that takes 5 arguments: a vector of years for the x-axis and four parameters (amplitude, period, phase, and offset). Recall the general formula for a sine wave: <span class="math display">\[y = A \text{sin}(kx - b) + c\]</span> where <span class="math inline">\(k = 2\pi / T\)</span>, <span class="math inline">\(T\)</span> is the period or length of time between peaks, <span class="math inline">\(A\)</span> is the amplitude, <span class="math inline">\(b\)</span> is the phase, and <span class="math inline">\(c\)</span> is the offset. Using a value of <span class="math inline">\(A = c = 1700\)</span> for both the amplitude and offset and a value of <span class="math inline">\(b = 2.75\)</span> for the phase, plot the lynx data as before and add a sine curve using your guess of the timescale from part (a) for the period. Use a colour other than black to plot the sine wave. Note that the x axis must start at 0 in order for the offset of <span class="math inline">\(2.75\)</span> to match the data. (1 mark)</p></li>
+<li>Use least-squares fitting to refine your estimate of the lynx cycle length. (1.5 marks)
+<ul>
+<li>Create a numeric vector with a range of values for the period that span your guess from part (a).</li>
+<li>Write a function to calculate the Residual Sums of Squares (RSS) from a model fitted to the <code>lynx</code> data.
+<ul>
+<li>This function should calculate the sum of the difference (<em>residuals</em>) between the lynx data and your prediction, then return the sum of the residuals squared.</li>
+</ul></li>
+<li>Apply this function over the numeric vector of period values you created. Essentially, you should be striving to obtain an RSS value for models fitted using all of the different period values in your numeric vector.</li>
+<li>Plot the sum of the residuals squared vs. the range of period values. By eye, what is the minimum of this curve?</li>
+<li>Identify the period value that provides the best fit to the <code>lynx</code> data. Models with lowest RSS fit the data best. What is your calculated length of the lynx population cycle?</li>
+</ul></li>
+<li><p>Plot the lynx data again and plot your best fit curve on top. (0.5 marks)</p></li>
+</ol></li>
+<li><p>In class, we worked with a simple one-locus haploid model of evolution and investigated how different forces of evolution (e.g., selection vs. drift) affect allele frequencies. In this challenge assignment, we will naturally upgrade to a diploid model to see how evolution work in this kind of system.</p>
+<p>We will once again be considering the case of malaria (of course, what else does Amber think about anyway). In assignment 7, we (you) worked on ways to incorporate various facets of biological detail into a baseline, super simple, disease model. We will incorporate another level of detail in this exercise: host genotype. The trait that we will be working with is the sickle cell trait. You can read more about the sickle-cell trait on Wikipedia. Basically, this is a blood-cell-shape trait that is controlled at a single locus by two alleles: <span class="math inline">\(A\)</span> for wildtype “normal” blood shape, and <span class="math inline">\(S\)</span> for sickle-shaped blood cells. There are thus three possible host genotypes with respect to the sickle cell trait: homozygous “normal” blood (<span class="math inline">\(AA\)</span>), heterozygous (<span class="math inline">\(AS\)</span>), and homozygous sickle blood (<span class="math inline">\(SS\)</span>). People with homozygous <span class="math inline">\(SS\)</span> suffer from debilitating illness (sickle-cell disease) and often result in mortality at a young age if untreated. Heterozygotes (<span class="math inline">\(AS\)</span>), while still suffering minor illness, receives partial immunity against malaria. It was thus hypothesized that the deleterious <span class="math inline">\(S\)</span> allele is maintained in the population due to <strong>balancing selection</strong> – the strong selective pressure exerted by malaria gave heterozygotes an advantage over the homozygotes, thus saving the <span class="math inline">\(S\)</span> allele from being purged from the population.</p>
+<p>We will be using mathematical models to help us test this hypothesis. A good start is to first extend the framework we used in lecture and think about how to represent allele frequency change in a diploid population.</p>
+<p>In population genetics it is often easier to work with allele frequencies (proportion of a certain allele in a population) rather than changes to their absolute numbers. Here, we will use <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> to denote the proportions of the <span class="math inline">\(A\)</span> and <span class="math inline">\(S\)</span> alleles in the population, respectively. The frequencies of the three genotypes in the population are thus given by <span class="math inline">\(p^2\)</span>, <span class="math inline">\(2pq\)</span>, and <span class="math inline">\(q^2\)</span> for AA, AS, and SS individuals, respectively. <span class="math inline">\(p^2\)</span>, <span class="math inline">\(2pq\)</span>, and <span class="math inline">\(q^2\)</span> are known as Hardy-Weinberg proportions and they have the convenient property of summing to 1.</p>
+<p>Applying selection to this population alters the frequency of each <em>genotype</em> by an amount that is proportional to their fitness. We will denote the fitness of each host genotype group as <span class="math inline">\(W_{AA}\)</span>, <span class="math inline">\(W_{AS}\)</span>, and <span class="math inline">\(W_{SS}\)</span>. The frequencies of each genotype following selection (i.e., as weighted by its fitness) is therefore <span class="math inline">\(p^2W_{AA}\)</span>, <span class="math inline">\(2pqW_{AS}\)</span>, and <span class="math inline">\(q^2W_{SS}\)</span>. Dividing these quantities by their sum (the mean fitness of the population, often denoted with <span class="math inline">\({\bar{W}}\)</span>) allows us to retrieve the frequency of the three genotypes after selection (e.g., <span class="math inline">\(p^2 \frac{W_{AA}}{\bar{W}}\)</span>). (2 marks)</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Derive a recursion equation that describe the change in <strong>allele</strong> frequencies of <span class="math inline">\(A\)</span> and <span class="math inline">\(S\)</span> in one time step. (Hint: How do you go from genotype frequency to allele frequency?) (1 marks)</p></li>
+<li><p>Simulate the trajetory of change of the A allele. Use the parameter set provided, and include a graph in your answer. Explain what you see, and refer to the parameter values provide in your explanation. (1 mark)</p></li>
+</ol></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Time</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">times &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">timevec &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, times, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># Parameters</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">N &lt;-<span class="st"> </span><span class="dv">10000</span> <span class="co"># Total population size (assume constant)</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">WAA &lt;-<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">WAS &lt;-<span class="st"> </span><span class="fl">0.7</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">WSS &lt;-<span class="st"> </span><span class="fl">0.2</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co"># Intitial condition</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">p &lt;-<span class="st"> </span><span class="fl">0.5</span> <span class="co"># proportion of A allele</span></a></code></pre></div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

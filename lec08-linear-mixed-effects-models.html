@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James S. Santangelo" />
+
+
+<title>Linear mixed-effects models</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Linear mixed-effects models</h1>
+<h4 class="author">James S. Santangelo</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="learning-objectives">Learning objectives</h3>
+<ul>
+<li>Understand the limitations of standard linear models (e.g. linear regression, ANOVA).</li>
+<li>Understand the benefits of mixed-effects modelling.</li>
+<li>Understand the differences between fixed and random effects.</li>
+<li>Apply random intercept and random intercept and slope models to nested experimental data.</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline</h3>
+<p>Total lesson time: 2 hours</p>
+<ul>
+<li>Load and familiarize ourselves with the RIKZ data that will be used for the majority of today’s lesson (10 min)</li>
+<li>Perform standard linear regression on a subset of the RIKZ data and check assumptions of model (i.e. recap from last week, 15 min)</li>
+<li>Explore in greater detail violation of an important assumption of standard linear models; namely, the independence of observations.
+<ul>
+<li>Explore ways to overcome this violation without the use of mixed-effects models. What are the drawbacks of these approaches? (15 min)</li>
+<li>Apply both random intercept, random intercept and slope models and simple random-effects only models to RIKZ data. What are the differences between these models? Interpret model output. (40 min)</li>
+<li>Using mixed-effects models for more deeply nested data. Difference between nested and crossed random effects (20 min)</li>
+</ul></li>
+<li>Discussion of fixed vs random effects, ML vs. REML, other types of mixed-effects models (e.g. GAM models, alternative variance structures, etc.) (20 min)</li>
+</ul>
+<h3 id="setup">Setup</h3>
+<ul>
+<li><code>install.packages('plyr')</code></li>
+<li><code>install.packages('dplyr')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages('ggplot2')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages('broom')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages('lme4')</code></li>
+<li><code>install.packages('lmerTest')</code></li>
+<li><code>install.packages('ggforce')</code></li>
+<li><code>install.packages('convaveman')</code></li>
+</ul>
+</blockquote>
+</div>
+<div id="quick-linear-model-recap-and-extension" class="section level2">
+<h2>Quick linear model recap and extension</h2>
+<p>Last week we discussed how to apply linear models to data (e.g. linear regression, ANOVA, etc.) to understand the relationship between predictor ( i.e. independent) and response (i.e. dependent) variables. While such models are incredibly powerful, they are underlain by numerous assumptions that should be met prior to placing any confidence in their results. As a reminder, these assumptions are:</p>
+<ol style="list-style-type: decimal">
+<li>Normality at each X value (or of the residuals)</li>
+<li>Homogeneity of variances at each X</li>
+<li>Fixed X</li>
+<li>Independence of observations</li>
+<li>Correct model specification</li>
+</ol>
+<p>Typically, small amounts of non-normality and heterogeneity of variances (AKA heteroscedasticity) is alright and will not strongly bias the results. However, serious heterogeneity and violations of independence can pose serious problems and result in biased parameter estimates and P-values. What’s more, ecological and evolutionary data are often very messy, with a lot of noise and unequal sample sizes and missing data, which can help drive these violations. Thankfully, mixed-effects models provide us with many ways to incorporate violations of these assumptions directly into our models, allowing us to use all of our data and have greater confidence in our parameter estimates and inferences.</p>
+</div>
+<div id="the-rikz-dataset" class="section level2">
+<h2>The RIKZ dataset</h2>
+<p>Throughout the first part of this lecture, we will be making use of the RIKZ dataset, described in Zuur <em>et al.</em> (2007) and Zuur <em>et al.</em> (2009). For each of 9 intertidal areas (denoted ‘Beaches’), the researchers sampled five sites (denoted ‘Sites’) and at each site they measured abiotic variables and the diversity of macro-fauna (e.g. aquatic invertebrates). Here, species richness refers to the total number of species found at a given site while NAP ( i.e. Normal Amsterdams Peil) refers to the height of the sampling location relative to the mean sea level and represents a measure of the amount of food available for birds, etc. For our purpose, the main question is:</p>
+<ol style="list-style-type: decimal">
+<li><strong>What is the influence of NAP on species richness?</strong></li>
+</ol>
+<p>A diagrammatic representation of the dataset can be seen below (Modified from Zuur <em>et al.</em> (2009), Chapter 5).</p>
+<div class="figure">
+<img src="image/RIKZ_data.png" alt="Figure 1: Diagrammatic representation of the RIKZ dataset" />
+<p class="caption"><strong>Figure 1</strong>: Diagrammatic representation of the RIKZ dataset</p>
+</div>
+<p>Let’s start by loading and examining the data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Richness = col_double(),
+##   Exposure = col_double(),
+##   NAP = col_double(),
+##   Beach = col_double(),
+##   Site = col_double()
+## )</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Load data</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">rikz_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/rikz_data.txt&quot;</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">download.file</span>(rikz_data, <span class="st">&quot;rikz_data.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">rikz_data &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">&quot;rikz_data.txt&quot;</span>,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                         <span class="dt">col_names =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">                         <span class="dt">delim =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Check whether Beach is encoded as factor. Convert.</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">is.factor</span>(rikz_data<span class="op">$</span>Beach)</a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">rikz_data &lt;-<span class="st"> </span>rikz_data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">Beach =</span> <span class="kw">as.factor</span>(Beach))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># Examine structure of the dataframe and view first 5 columns</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw">str</span>(rikz_data)</a></code></pre></div>
+<pre><code>## Classes &#39;spec_tbl_df&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;: 45 obs. of  5 variables:
+##  $ Richness: num  11 10 13 11 10 8 9 8 19 17 ...
+##  $ Exposure: num  10 10 10 10 10 8 8 8 8 8 ...
+##  $ NAP     : num  0.045 -1.036 -1.336 0.616 -0.684 ...
+##  $ Beach   : Factor w/ 9 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 1 1 1 1 2 2 2 2 2 ...
+##  $ Site    : num  1 2 3 4 5 1 2 3 4 5 ...</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">head</span>(rikz_data)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   Richness Exposure    NAP Beach  Site
+##      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;
+## 1       11       10  0.045 1         1
+## 2       10       10 -1.04  1         2
+## 3       13       10 -1.34  1         3
+## 4       11       10  0.616 1         4
+## 5       10       10 -0.684 1         5
+## 6        8        8  1.19  2         1</code></pre>
+<p>We can see that the data contains 45 rows (observations). As expected, these observations were taken across 9 beaches, each with 5 sites. We have encoded ‘Beach’ as a factor, which will facilitate plotting and its use as a random effect downstream. Let’s go ahead and perform a linear regression to examine the relationship between species richness and NAP, pooling data across all beaches</p>
+</div>
+<div id="standard-linear-regression" class="section level2">
+<h2>Standard linear regression</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Run basic linear model using all of the data.</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">basic.lm &lt;-<span class="st"> </span><span class="kw">lm</span>(Richness<span class="op">~</span><span class="st"> </span>NAP, <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">summary</span>(basic.lm)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Richness ~ NAP, data = rikz_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0675 -2.7607 -0.8029  1.3534 13.8723 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   6.6857     0.6578  10.164 5.25e-13 ***
+## NAP          -2.8669     0.6307  -4.545 4.42e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.16 on 43 degrees of freedom
+## Multiple R-squared:  0.3245, Adjusted R-squared:  0.3088 
+## F-statistic: 20.66 on 1 and 43 DF,  p-value: 4.418e-05</code></pre>
+<p>From the model output above, it looks like NAP is significantly, negatively (Estimate &lt; 0) associated with species richness. Let’s plot this relationship to see what it looks like.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Plot relationship from above model</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">ggplot</span>(rikz_data, <span class="kw">aes</span>(<span class="dt">x =</span> NAP, <span class="dt">y =</span> Richness)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Plot%20Richness%20against%20NAP-1.png" width="672" /></p>
+<p>However, before we trust this result, we should confirm that the assumptions of the linear regression are met. We can plot the residuals against the fitted values (homogeneity and independence) and a QQ-plot (normality). Thankfully, R’s base plotting function does all of this work for us.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Check assumptions.</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Normality homogeneity of variance violated</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">plot</span>(basic.lm)</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Check%20assumptions-1.png" width="672" /></p>
+<p>The first and third panels suggest that the homogeneity assumption is violated (increasing variance in the residuals with increasing fitted values). Similarly, panel 2 suggests non-normality (points falling off of the dotted line). A third-root transformation of the response variable (i.e. Richness) seems to alleviate both of these problems.</p>
+<ul>
+<li><strong>Tip: </strong>Right skewed response variables can be normalized using root transformations (e.g. square root, log, third-root, etc.), with greater roots required for increasingly right-skewed data. Left skewed response variables can be normalized with power transformations (e.g. squared, 3rd power, etc.)</li>
+</ul>
+<p>Nonetheless, for the analyses in this section, we will ignore violations of these assumptions for the purpose of better illustrating mixed-effects modelling strategies on untransformed data. In fact, these data violate another, potentially more problematic assumption; namely, the observations are not independent.</p>
+</div>
+<div id="non-independence-of-observations" class="section level2">
+<h2>Non-independence of observations</h2>
+<p>Remember, the species richness data come from multiple sites within multiple beaches. While each beach may be independent, sites within a beach are likely to have similar species richness due simply to their proximity within the same beach. In other words, observations among sites within a beach are <strong>not independent</strong>. Another way of saying this is that the data are <strong>nested</strong>. Nesting in this sense is a product of the experimental design (i.e. we chose to sample 5 sites within each beach) and not necessarily of the data itself. Other types of nested data include: sampling the same individual pre- and post-treatment or sampling them multiple times (i.e. repeated measures), or sampling multiple tissues from the same individuals. We can visualize the non-independence of observation within the same beach by producing a figure similar to the one above but clustered by beach (each beach is a different colour).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">library</span>(plyr)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co"># Function to find polygons</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">find_hull &lt;-<span class="st"> </span><span class="cf">function</span>(df) df[<span class="kw">chull</span>(df<span class="op">$</span>Richness, df<span class="op">$</span>NAP), ] </a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># Identify polygons in data</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">hulls &lt;-<span class="st"> </span><span class="kw">ddply</span>(rikz_data, <span class="st">&quot;Beach&quot;</span>, find_hull) </a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co"># Plot</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw">ggplot</span>(rikz_data, <span class="kw">aes</span>(<span class="dt">x =</span> NAP, <span class="dt">y =</span> Richness, <span class="dt">colour =</span> Beach)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="st">    </span><span class="kw">theme_classic</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="st">    </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="st">    </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span>hulls, <span class="kw">aes</span>(<span class="dt">fill =</span> Beach), <span class="dt">alpha =</span> <span class="fl">0.2</span>)</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Richness%20against%20NAP-1.png" width="672" /></p>
+<p>As you can see, observations from the same beach tend to cluster together. If the observations were independent, all of the clusters would overlap. Instead, observations from one beach are one average more similar to those within the same beach than to those from other beaches. We need to account for this non-independence in our modelling.</p>
+</div>
+<div id="accounting-for-non-independence" class="section level2">
+<h2>Accounting for non-independence</h2>
+<p>One approach to account for this non-independence would be to run a separate analysis for each beach, as shown in the figure and table below.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># We could account for non-independence by running a separate analysis </span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co"># for each beach</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">ggplot</span>(rikz_data, <span class="kw">aes</span>(<span class="dt">x =</span> NAP, <span class="dt">y =</span> Richness)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Beach) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;NAP&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Richness&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">    </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Plot%20beaches%20separately-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Run linear model of Richness against NAP for each beach</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">beach_models &lt;-<span class="st">  </span>rikz_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">    </span><span class="kw">group_by</span>(Beach) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">    </span><span class="kw">do</span>(<span class="dt">mod =</span> <span class="kw">lm</span>(Richness <span class="op">~</span><span class="st"> </span>NAP, <span class="dt">data =</span> .))</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co"># Get the coefficients by group in a tidy data_frame</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">dfBeachModels =<span class="st"> </span><span class="kw">tidy</span>(beach_models, mod)</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">dfBeachModels <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="st">    </span><span class="kw">filter</span>(term <span class="op">==</span><span class="st"> &quot;NAP&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(estimate, p.value)</a></code></pre></div>
+<pre><code>## # A tibble: 9 x 3
+## # Groups:   Beach [9]
+##   Beach estimate p.value
+##   &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 1       -0.372 0.694  
+## 2 2       -4.18  0.128  
+## 3 3       -1.76  0.0363 
+## 4 4       -1.25  0.00613
+## 5 5       -8.90  0.0484 
+## 6 6       -1.39  0.0148 
+## 7 7       -1.52  0.0579 
+## 8 8       -1.89  0.0170 
+## 9 9       -2.97  0.185</code></pre>
+<p>However, the issue with this approach is that each analysis only has 5 points (a really low sample size!) and we have to run multiple tests. As such, we run the risk of obtaining spuriously significant results purely by chance. This is not the best approach. Perhaps instead we can simply include a term for beach in our model, thereby estimating its effects. This is done in the model below.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">basic.lm &lt;-<span class="st"> </span><span class="kw">lm</span>(Richness <span class="op">~</span><span class="st"> </span>NAP <span class="op">+</span><span class="st"> </span>Beach, <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">summary</span>(basic.lm)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Richness ~ NAP + Beach, data = rikz_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.8518 -1.5188 -0.1376  0.7905 11.8384 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   9.8059     1.3895   7.057 3.22e-08 ***
+## NAP          -2.4928     0.5023  -4.963 1.79e-05 ***
+## Beach2        3.0781     1.9720   1.561  0.12755    
+## Beach3       -6.4049     1.9503  -3.284  0.00233 ** 
+## Beach4       -6.0329     2.0033  -3.011  0.00480 ** 
+## Beach5       -0.8983     2.0105  -0.447  0.65778    
+## Beach6       -5.2231     1.9682  -2.654  0.01189 *  
+## Beach7       -5.4367     2.0506  -2.651  0.01196 *  
+## Beach8       -4.5530     1.9972  -2.280  0.02883 *  
+## Beach9       -3.7820     2.0060  -1.885  0.06770 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.06 on 35 degrees of freedom
+## Multiple R-squared:  0.7025, Adjusted R-squared:  0.626 
+## F-statistic: 9.183 on 9 and 35 DF,  p-value: 5.645e-07</code></pre>
+<p>That’s a lot of terms! Note what’s happening here. The model is estimating a separate effect for each level of beach (8 total since 1 is used as the reference). Because we need one degree of freedom to estimate each of these, that’s a total of 8 degrees of freedom! In this case, it had little effect of changing our interpretation of the effects of NAP on richness (which is still negative and significant). However, sometimes the inclusion of additional terms in this way will change the estimated effect of other terms in the model and alter their interpretation. The question we need to ask ourselves here is: <em>Do we really care about differences between beaches?</em> Maybe but probably not. These beaches were a random subset of all beaches that could have been chosen but we still need to account for the non-independence of observations within beaches. This is where random-effects become useful.</p>
+</div>
+<div id="random-effect-models" class="section level2">
+<h2>Random-effect models</h2>
+<div id="random-intercept-model" class="section level3">
+<h3>Random intercept model</h3>
+<p>We do not want to pay the steep price of 8 degrees of freedom to include a Beach term in our model but still want to estimate the variance among beaches and must account for the non-independence of sites within beaches. We can do this by including it as a <strong>random effect</strong>, while NAP remains a <strong>fixed effect</strong>. As such, we model a separate y-intercept (i.e. Richness at NAP = 0) for each beach and estimate the variance around this intercept. A small variance means that variances per beach are small whereas a large variance means the opposite (this will become clearer shortly). We can run mixed-effects models using the <code>lmer</code> function from the <code>lme4</code> R package and obtain parameter estimates using the <code>lmerTest</code> package. The question we are now asking is:</p>
+<ol style="list-style-type: decimal">
+<li><strong>What is the influence of NAP on species richness, while accounting for variation within beaches?</strong></li>
+</ol>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">library</span>(lme4)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">library</span>(lmerTest)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># Random intercept model with NAP as fixed effect and Beach </span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co"># as random effect</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">mixed_model_IntOnly &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">                            <span class="dt">data =</span> rikz_data, <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw">summary</span>(mixed_model_IntOnly)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+##   method [lmerModLmerTest]
+## Formula: Richness ~ NAP + (1 | Beach)
+##    Data: rikz_data
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    249.8    257.1   -120.9    241.8       41 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.4258 -0.5010 -0.1791  0.2452  4.0452 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  Beach    (Intercept) 7.507    2.740   
+##  Residual             9.111    3.018   
+## Number of obs: 45, groups:  Beach, 9
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)   6.5844     1.0321  9.4303   6.380 0.000104 ***
+## NAP          -2.5757     0.4873 38.2433  -5.285 5.34e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##     (Intr)
+## NAP -0.164</code></pre>
+<p>The <code>(1|Beach)</code> is the random effect term, where the <code>1</code> denotes this is a random-intercept model and the term on the right of the <code>|</code> is a nominal variable (or factor) to be used as the random effect. Note that it’s considered best practice that random effects have at least 5 levels, otherwise it should be used as a fixed effect (we have 9 so we’re good!). From top to bottom, the output is telling us that the model was fit using maximum likelihood with parameters estimated using the Satterthwaite approximation. It then gives us the AIC, BIC and log-likelihood values for this particular model. I’m sure most of this sounds like jargon. Don’t worry! These will become clearer later and AIC will be especially useful for our lecture on Model Selection (Lecture 9). The next part is important: it gives us the estimated variance for the random effects in the model. Here, it’s telling us that the variance associated with the effect of beach is <code>7.507</code>. In other words, differences between beaches account for <code>(7.507 / 7.507 + 9.111) * 100 = 45%</code> of the residual variance <em>after accounting for the fixed effects</em> in the model. Note the denomiator here is the <strong>total variance</strong> (i.e. the sum of the variance components from all the random effects, including the residuals). Finally, we have the fixed effect portions of the model, with a separate intercept, slope and P-value for the effect of NAP. Let’s visualize the fitted values for this model.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co"># Let&#39;s predict values based on our model and add these to our dataframe</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co"># These are the fitted values for each beach, which are modelled separately.</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">rikz_data<span class="op">$</span>fit_InterceptOnly &lt;-<span class="st"> </span><span class="kw">predict</span>(mixed_model_IntOnly)</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co"># Let&#39;s plot the </span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="kw">ggplot</span>(rikz_data, <span class="kw">aes</span>(<span class="dt">x =</span> NAP, <span class="dt">y =</span> Richness, <span class="dt">colour =</span> Beach)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">    </span><span class="co"># Add fixed effect regression line (i.e. NAP)</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_abline</span>(<span class="kw">aes</span>(<span class="dt">intercept =</span> <span class="st">`</span><span class="dt">(Intercept)</span><span class="st">`</span>, <span class="dt">slope =</span> NAP),</a>
+<a class="sourceLine" id="cb22-9" data-line-number="9">                <span class="dt">size =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb22-10" data-line-number="10">                <span class="kw">as.data.frame</span>(<span class="kw">t</span>(<span class="kw">fixef</span>(mixed_model_IntOnly)))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="st">    </span><span class="co"># Add fitted values (i.e. regression) for each beach</span></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> fit_InterceptOnly), <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="st">    </span><span class="kw">theme_classic</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="st">    </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Random%20intercept%20fitted%20values-1.png" width="672" /></p>
+<p>The thick black line corresponds to the fitted values associated with the fixed-effect component of the model (i.e. <code>6.58 x -2.58(x)</code>). The thin coloured lines correspond to the fitted values estimated for each beach. As you can see, they all have separate intercepts, as expected. As the estimated variance of the random effect increases, these lines would become more spread around the thick black line. If the variance was 0, all the coloured lines would coincide with the thick black line.</p>
+</div>
+<div id="random-intercept-slope-model" class="section level3">
+<h3>Random intercept-slope model</h3>
+<p>The model above allows the intercept for each beach to vary around the population-level intercept. However, what if beaches don’t only vary in their mean richness, but the richness on each beach also varies in its response to NAP. In standard regression terms, this would amount to including NAP, Beach and NAP x Beach effects in the model. Of course, including such fixed-effects here would consume way too many degrees of freedom and we already decided we don’t really care about differences between beaches. Thankfully, we can still allow beaches to vary in the response to NAP using a <strong>random intercept-slope model</strong>. We can fit the random intercept-slope model to these data using the code below.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Random intercept and slope model</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">mixed_model_IntSlope &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>NAP<span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">                             <span class="dt">data =</span> rikz_data, <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control$checkConv, :
+## Model failed to converge with max|grad| = 0.00629499 (tol = 0.002, component 1)</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">summary</span>(mixed_model_IntSlope)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+##   method [lmerModLmerTest]
+## Formula: Richness ~ NAP + (1 + NAP | Beach)
+##    Data: rikz_data
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    246.7    257.5   -117.3    234.7       39 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.7985 -0.3419 -0.1827  0.1747  3.1386 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  Beach    (Intercept) 10.944   3.308         
+##           NAP          2.502   1.582    -1.00
+##  Residual              7.175   2.679         
+## Number of obs: 45, groups:  Beach, 9
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value Pr(&gt;|t|)    
+## (Intercept)    6.582      1.188  8.898   5.540 0.000376 ***
+## NAP           -2.829      0.685  7.923  -4.131 0.003365 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##     (Intr)
+## NAP -0.810
+## convergence code: 0
+## Model failed to converge with max|grad| = 0.00629499 (tol = 0.002, component 1)</code></pre>
+<p>The above model now allows both the intercept and slope of the relationship between Richness and NAP to vary across beaches. The only difference here is the additional variance component in the random effects, which estimates the variance in slopes across beaches. It also includes a <code>Cor</code> term, which estimates the correlation between the intercept and slope variances. At -1, this implies that beaches with larger intercepts also have more steeply negative slopes, as can be seen in the figure below.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">rikz_data<span class="op">$</span>fit_IntSlope &lt;-<span class="st"> </span><span class="kw">predict</span>(mixed_model_IntSlope)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">ggplot</span>(rikz_data, <span class="kw">aes</span>(<span class="dt">x =</span> NAP, <span class="dt">y =</span> Richness, <span class="dt">colour =</span> Beach)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_abline</span>(<span class="kw">aes</span>(<span class="dt">intercept =</span> <span class="st">`</span><span class="dt">(Intercept)</span><span class="st">`</span>, <span class="dt">slope =</span> NAP),</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">                <span class="dt">size =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">                <span class="kw">as.data.frame</span>(<span class="kw">t</span>(<span class="kw">fixef</span>(mixed_model_IntSlope)))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> fit_IntSlope), <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8"><span class="st">    </span><span class="kw">theme_classic</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10"><span class="st">    </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<p><img src="lec08-linear-mixed-effects-models_files/figure-html/Random%20intercept-slope%20fitted%20values-1.png" width="672" /></p>
+</div>
+<div id="random-effects-only-model" class="section level3">
+<h3>Random effects only model</h3>
+<p>Note that it is not always necessary to specify fixed effects, in the same way that it is not always necessary to specify random effects. For example, we could run the following model.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">mixed_model_NoFix &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">                          <span class="dt">data =</span> rikz_data, <span class="dt">REML =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">summary</span>(mixed_model_NoFix)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: Richness ~ 1 + (1 | Beach)
+##    Data: rikz_data
+## 
+## REML criterion at convergence: 261.1
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.7797 -0.5070 -0.0980  0.2547  3.8063 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  Beach    (Intercept) 10.48    3.237   
+##  Residual             15.51    3.938   
+## Number of obs: 45, groups:  Beach, 9
+## 
+## Fixed effects:
+##             Estimate Std. Error    df t value Pr(&gt;|t|)   
+## (Intercept)    5.689      1.228 8.000   4.631  0.00169 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Now that we have specified these three different models, how do we know which to choose? After all, they all provide slightly different estimates for the effects of NAP (if NAP is even included) and P-values. We will come back to this question in Lecture 9 when discussing model selection.</p>
+</div>
+</div>
+<div id="deeply-nested-and-crossed-effects" class="section level2">
+<h2>Deeply nested and crossed effects</h2>
+<p>Have a look back at the original diagram showing the layout of the RIKZ data and the dataset itself. Every site within each beach is associated with only one observation for each of the variables (e.g. Species richness). As such, we used mixed-effects modelling to account for the variance among these 5 observations within each of the five beaches. But what about if each of those sites additionally included multiple samples (e.g. measurements of morphological traits of multiple individuals of a species), as in the diagram below?. We would the need to account for the variance both within sites and within beaches.</p>
+<div class="figure">
+<img src="image/RIKZ_data_DeepNest.png" alt="Figure 2: Diagrammatic representation of what the RIKZ data would look like if it were more deeply nested (i.e. if each site had multiple samples taken.)" />
+<p class="caption"><strong>Figure 2:</strong> Diagrammatic representation of what the RIKZ data would look like if it were more deeply nested (i.e. if each site had multiple samples taken.)</p>
+</div>
+<p>Thankfully, <code>lmer</code> allows us to do this quite easily. To account for variation within sites <strong>and</strong> within beaches, we would need to modify our existing random effect term. We would write this as <code>(1|Beach/Site)</code>, which means “Site nested within beach”. This expands to — and can also be written as — <code>(1|Beach) + (1|Beach:Site)</code>. Thus, we are modelling a separate intercept for every beach and for every site within beach. I should pause for a moment here and say that the ‘Site 1’ from ‘Beach 1’ is <strong>not</strong> the same as ‘Site 1’ from ‘Beach 2’ and this was true of the original data as well. These sites are distinct; despite carrying the same label, they are occurring on distinct beaches and are thus not the same site. <strong>This is what makes the data nested.</strong></p>
+<p>An alternative design to this would be <strong>crossed effects</strong>, in which any site could be observed on any beach. If all sites were observed on all beaches, this would be a <strong>fully crossed effect</strong> whereas if some sites were observed on only some beaches, this would be a <strong>partially crossed effect</strong>. Crossed effects are shown in the diagram below. This may sound confusing. The easiest way to think about it is that if the data are not nested, they are crossed.</p>
+<div class="figure">
+<img src="image/RIKZ_data_Crossed.png" alt="Figure 3: Diagrammatic representation of what the RIKZ dataset would look like if it were fully crossed (i.e. if every site occurred on every beach)" />
+<p class="caption"><strong>Figure 3:</strong> Diagrammatic representation of what the RIKZ dataset would look like if it were fully crossed (i.e. if every site occurred on every beach)</p>
+</div>
+<p>I will illustrate both deeply nested and crossed random effects in a single model using data from Fitzpatrick <em>et al.</em> (2019). The authors were interested in understanding whether soil microbes can help plants cope with stress imposed by drought and how this can influence plant evolution. To do this, Fitzpatrick <em>et al.</em> grew 5 plants from each of 44 <em>Arabidopsis thaliana</em> accessions in each combination of the following treatments:</p>
+<ol style="list-style-type: decimal">
+<li>Well-watered and live soil (i.e. with microbes)</li>
+<li>Well watered and sterile soil</li>
+<li>Drought and live soil</li>
+<li>Drought and sterile soil</li>
+</ol>
+<p>The experiment took place inside of growth chambers at the University of Toronto, where plants were randomly assigned into trays, which were then randomly assigned onto racks in the growth chamber. Thus, plants only occur within one tray and each tray only occurs within one rack (tray is nested within rack). Given that plants within a tray could be more similar to one another than plants from another tray (i.e. tray effect) and the same is true for racks, this non-independence needs to be accounted for. However, every accession occurred on every rack (i.e. crossed effect) and individual plants from an accession are likely to be more similar to other plants from that accession than to plants from another accession. Again, this non-independence needs to be accounted for. The authors tracked flowering date and counted the number of fruit produced by each plant (n = 879) at the end of the experiment. The code below provides a useful way of examining the data to assess whether terms are nested or crossed and then fits a mixed-effects model to the Fitzpatrick <em>et al.</em> data. The question we are interested in here is: <strong>Do soil microbes, drought, or their interaction influence the number of fruit produced by <em>A. thaliana</em> plants?</strong></p>
+<pre><code>## Parsed with column specification:
+## cols(
+##   accession = col_double(),
+##   water = col_character(),
+##   microbe = col_character(),
+##   replicate = col_double(),
+##   tray = col_double(),
+##   shelf = col_character(),
+##   rack = col_double(),
+##   fruit = col_double(),
+##   flowering = col_double(),
+##   counter = col_character()
+## )</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co"># Load in and examine data</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">Fitz_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/Fitzpatrick_2018.csv&quot;</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">download.file</span>(Fitz_data, <span class="st">&quot;Fitzpatrick_2018.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">Fitz_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;Fitzpatrick_2018.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># Let&#39;s change some columns to factors and remove rows with no fruit data</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">Fitz_data &lt;-<span class="st"> </span>Fitz_data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">    </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">        <span class="dt">tray =</span> <span class="kw">as.factor</span>(tray),</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">        <span class="dt">rack =</span> <span class="kw">as.factor</span>(rack),</a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">        <span class="dt">accession =</span> <span class="kw">as.factor</span>(accession)</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">    ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-8" data-line-number="8"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(fruit))</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb32-10" data-line-number="10"><span class="kw">glimpse</span>(Fitz_data)</a></code></pre></div>
+<pre><code>## Observations: 879
+## Variables: 10
+## $ accession &lt;fct&gt; 10, 72, 52, 69, 56, 68, 30, 44, 49, 3, 70, 58, 33, 32, 65, …
+## $ water     &lt;chr&gt; &quot;D&quot;, &quot;D&quot;, &quot;W&quot;, &quot;D&quot;, &quot;W&quot;, &quot;W&quot;, &quot;W&quot;, &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;D&quot;,…
+## $ microbe   &lt;chr&gt; &quot;S&quot;, &quot;L&quot;, &quot;S&quot;, &quot;S&quot;, &quot;L&quot;, &quot;S&quot;, &quot;L&quot;, &quot;S&quot;, &quot;L&quot;, &quot;S&quot;, &quot;L&quot;, &quot;S&quot;,…
+## $ replicate &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ tray      &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,…
+## $ shelf     &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
+## $ rack      &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ fruit     &lt;dbl&gt; 6, 6, 21, 37, 12, 23, 29, 5, 17, 17, 0, 0, 20, 28, 0, 0, 0,…
+## $ flowering &lt;dbl&gt; 31, 30, 30, 10, 7, 15, 15, 13, 6, 19, NA, NA, 10, 8, NA, NA…
+## $ counter   &lt;chr&gt; &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;, &quot;JV&quot;,…</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">head</span>(Fitz_data)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 10
+##   accession water microbe replicate tray  shelf rack  fruit flowering counter
+##   &lt;fct&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;  
+## 1 10        D     S               1 1     A     1         6        31 JV     
+## 2 72        D     L               1 1     A     1         6        30 JV     
+## 3 52        W     S               1 1     A     1        21        30 JV     
+## 4 69        D     S               1 1     A     1        37        10 JV     
+## 5 56        W     L               1 1     A     1        12         7 JV     
+## 6 68        W     S               1 1     A     1        23        15 JV</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">#Let&#39;s look at how trays breakdown across the levels of rack</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">xtabs</span>(<span class="op">~</span><span class="st"> </span>rack <span class="op">+</span><span class="st"> </span>tray, Fitz_data)</a></code></pre></div>
+<pre><code>##     tray
+## rack  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+##    1 15 15 15 15 15 15 15 15 15 15 15 11  0  0  0  0  0  0  0  0  0  0  0  0  0
+##    2  0  0  0  0  0  0  0  0  0  0  0  0 15 15 15 15 15 15 15 15 15 15 15 11  0
+##    3  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 15
+##    4  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+##    5  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+##     tray
+## rack 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+##    1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+##    2  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+##    3 15 15 15 15 15 15 15 15 15 15 11  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+##    4  0  0  0  0  0  0  0  0  0  0  0 15 15 15 15 15 15 15 15 15 15 15 11  0  0
+##    5  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 14 15
+##     tray
+## rack 51 52 53 54 55 56 57 58 59 60
+##    1  0  0  0  0  0  0  0  0  0  0
+##    2  0  0  0  0  0  0  0  0  0  0
+##    3  0  0  0  0  0  0  0  0  0  0
+##    4  0  0  0  0  0  0  0  0  0  0
+##    5 15 15 15 15 15 15 15 15 15 11</code></pre>
+<p>As you can see above, each tray occurs in only one rack. This is an indication that the data are nested (i.e. tray is nested within racks). Let’s now look at how accessions breakdown across the racks</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># Breakdown of accessions across the racks</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">xtabs</span>(<span class="op">~</span><span class="st"> </span>rack <span class="op">+</span><span class="st"> </span>accession, Fitz_data)</a></code></pre></div>
+<pre><code>##     accession
+## rack 1 3 8 9 10 11 12 15 19 21 22 30 32 33 37 38 41 42 43 44 45 47 49 50 51 52
+##    1 4 4 4 4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    2 4 4 4 4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    3 4 4 4 4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    4 4 4 4 4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    5 4 4 4 4  4  4  3  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##     accession
+## rack 54 55 56 58 60 61 62 63 64 65 66 67 68 69 70 71 72 73
+##    1  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    2  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    3  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4
+##    5  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4  4</code></pre>
+<p>In this case, we see that every accession occurs on every rack. In other words, accession and rack are fully crossed. Let’s go ahead and fit our model.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># Fit mixed-effects model</span></a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">Fitz_mod &lt;-<span class="st"> </span><span class="kw">lmer</span>(fruit <span class="op">~</span><span class="st"> </span>water <span class="op">+</span><span class="st"> </span>microbe <span class="op">+</span><span class="st"> </span>water<span class="op">:</span>microbe <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="st">                     </span>(<span class="dv">1</span><span class="op">|</span>rack<span class="op">/</span>tray) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>rack<span class="op">:</span>accession), </a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">                 <span class="dt">data =</span> Fitz_data)</a></code></pre></div>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control$checkConv, :
+## Model failed to converge with max|grad| = 0.00267274 (tol = 0.002, component 1)</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">summary</span>(Fitz_mod)</a></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: fruit ~ water + microbe + water:microbe + (1 | rack/tray) + (1 |  
+##     rack:accession)
+##    Data: Fitz_data
+## 
+## REML criterion at convergence: 6983.2
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.4963 -0.5763 -0.0542  0.4587  6.5849 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  rack:accession (Intercept)  72.524   8.516  
+##  tray:rack      (Intercept)   9.493   3.081  
+##  rack           (Intercept)   1.270   1.127  
+##  Residual                   116.806  10.808  
+## Number of obs: 879, groups:  rack:accession, 220; tray:rack, 60; rack, 5
+## 
+## Fixed effects:
+##                 Estimate Std. Error       df t value Pr(&gt;|t|)    
+## (Intercept)      13.2742     1.1374   8.7212  11.670 1.28e-06 ***
+## waterW            6.3453     1.0568 652.9691   6.004 3.19e-09 ***
+## microbeS         -0.7679     1.0558 648.7894  -0.727  0.46727    
+## waterW:microbeS   4.1515     1.5007 655.1532   2.766  0.00583 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) waterW micrbS
+## waterW      -0.465              
+## microbeS    -0.463  0.500       
+## watrW:mcrbS  0.327 -0.705 -0.708
+## convergence code: 0
+## Model failed to converge with max|grad| = 0.00267274 (tol = 0.002, component 1)</code></pre>
+<p>Notice we are now estimating 3 random-effect variance components. First, we are estimating the variance among accessions, which explains the most residual variance among the random effects (<code>(72.510 / 200.1) * 100 = 58%</code>). We then estimate the variance between trays, followed by the variance between racks (which has only a minor effect). From the fixed effects, we see that the watering treatment had a significant effect on the number of fruit produced (main effect of <code>water</code>), although its effect depended on the presence of microbes (<code>water:microbe</code> interaction). While we will not go into the details of these results here, this example serves to illustrate how nested and crossed random effects are encoded in linear-mixed effects models.</p>
+</div>
+<div id="additional-considerations" class="section level2">
+<h2>Additional considerations</h2>
+<p><strong>Fixed vs. random effects</strong></p>
+<ul>
+<li>Fixed effects are the things you care about and want to estimate. You likely chose the factor levels for a specific reason or measured the variable because you are interested in the relationship it has to your response variable.</li>
+<li>Random effects can be variables that were opportunistically measured whose variation needs to be accounted for but that you are not necessarily interested in (e.g. spatial block in a large experiment). The levels of the random effect are likely a random subset of all possible levels (although there should be at least 5). However, if the experimental design includes nesting or non-independence of any kind, this needs to be accounted for to avoid pseudoreplication.</li>
+</ul>
+<p><strong>REML or ML</strong></p>
+<p>The math behind maximum likelihood (ML) and restricted maximum likelihood (REML) is beyond this course. Suffice it to say that if your interested in accurately estimating the random effects, you should fit the model with REML whereas if you’re interested in estimating the fixed effects, you should fit the model with ML. Given that we are often most interested in the fixed effects, ML is usually the most appropriate (but see Lecture 9: model selection). The difference in the estimates obtained by ML and REML increases as the number of parameters in the model increases.</p>
+<p><strong>Other models</strong></p>
+<p>Mixed-effects models are very powerful when correctly applied. For example, they allow modelling of non-linear relationships (e.g. GAM models), modelling separate variances across factor levels to account for heterogeneity of variance, fitting alternative error structures to account for temporal and spatial non-independence, etc. This lecture covered the type of mixed-effects model that is most often encountered by ecologists and evolutionary biologists (at least in my experience). Nonetheless, if you find yourself needing something more, I’ll refer you to the reading list below.</p>
+</div>
+<div id="additional-reading" class="section level2">
+<h2>Additional reading</h2>
+<ol style="list-style-type: decimal">
+<li>Zuur, A. <em>et al.</em> 2009. Mixed effects models and extensions in ecology with R. <em>Springer</em></li>
+<li>Bates, D. <em>et al.</em> 2015. Fitting linear mixed-effects models using lme4. <em>Journal of Statistical Software</em> 67: 1-48.</li>
+<li>Fitzpatrick, C. R., Mustafa, Z., and Viliunas, J. Soil microbes alter plant fitness under competition and drought. <em>Journal of Evolutionary Biology</em> 32: 438-450.</li>
+<li><a href="https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified">Crossed vs. Nested random effects</a></li>
+<li><a href="https://stats.stackexchange.com/questions/4700/what-is-the-difference-between-fixed-effect-random-effect-and-mixed-effect-mode">Fixed vs. Random effects</a></li>
+<li><a href="https://stats.stackexchange.com/questions/41123/reml-vs-ml-stepaic">ML vs. REML</a></li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

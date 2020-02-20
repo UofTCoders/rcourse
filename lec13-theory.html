@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Amber Gigi Hoi &amp; Zoë Humphries" />
+
+
+<title>Mathematical models in ecology and evolutionary biology</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Mathematical models in ecology and evolutionary biology</h1>
+<h4 class="author">Amber Gigi Hoi &amp; Zoë Humphries</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level1">
+<h1>Lesson preamble:</h1>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives:</h3>
+<ul>
+<li>Introduce students to the world of mathematical modelling – the art, the mechanics, the possibilities, and the limitations</li>
+<li>Be comfortable with – and even appreciate – math and theory</li>
+<li>Equip students with tools to construct their first model</li>
+<li>Work through examples of how to use models to solve real world problems</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline:</h3>
+<p>Total lesson time: 3 hours</p>
+<ul>
+<li>Introduction to mathematical models (10 min)</li>
+<li>Learn about the different moving parts of a model and common things you can do to them and get out of them (20 min)</li>
+<li>Go through examples of some classic models in EEB (30 min)</li>
+<li>Working through an ecological model (1 hour)</li>
+<li>Working through an example of an evolution model (1 hour)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="what-is-a-model-why-do-we-model" class="section level2">
+<h2>What is a model? Why do we model?</h2>
+<p>Up until this point in this course, we’ve been working with statistical models with the goal of characterizing relationships between variables and their significance in existing data. Today, we are going to venture into another branch of applied mathematics and learn about <em>mathematical models</em>. A mathematical model (a.k.a. first-principle models) is a description of a system using a series of equations. These models are used extensively throughout the natural and social sciences to help explain and predict the behavior of various systems of interest.</p>
+<p>The world is governed by series of natural laws and “truths” biologists refer to as first principles. For instance, ocean currents flow in a certain direction, and some salmon species reproduce just once in their life time. Mathematical models provide us with an opportunity to study the intricacies of biological systems under a framework of first principles. More accurately, models forces us to explicitly lay out our conception of “reality” and to confront those intuitions. Intuition is perhaps the biggest pitfall in biology – everybody loves to tell a good story where everything works out and everything makes perfect sense, but how rigorously have we actually weeded them before accepting story as dogma? When you construct a model, you have no choice but to verify every single last piece of information you plan to include in your model.</p>
+<p>Technically, one can describe any biological phenonemon with math. At the same time, however, it is rarely the goal to rewrite “reality” in math. The most elegant models are those able to describe succinctly a system’s most essential attributes, and the best theoreticians are those with the state-of-the-art knowledge of the system and the clarity of mind to know exactly what those important features are <em>given the questions being asked</em>. Sometimes we ask grand questions about driviers of macro system change, other times we would kill to find that devil in the details. Knowing how best to represent your system and answer your question is a skill that comes with experience (read: lots of trials and lots and <em>lots</em> of errors).</p>
+<p>What models are good for:</p>
+<ul>
+<li>Guiding intuition regarding how processes and mechanisms work.</li>
+<li>Pointing out logical flaws in an argument when the math don’t make sense.</li>
+<li>Testing hypotheses that are otherwise untestable due to ethical concerns and/or logistical constraints.</li>
+<li>Generating new testable hypotheses and predictions and can inform experimental design.</li>
+<li>Provide a new framework on how to think about a problem.</li>
+</ul>
+<p>Limitations of a model:</p>
+<ul>
+<li>Only as interesting as the motivating question.</li>
+<li>Only as robust as the theory that went into building it.</li>
+<li>All models are wrong, some are useful.</li>
+<li>Without data, models are only good for telling us what is possible, but not what happened or what will happen.</li>
+</ul>
+<p>Diversity promotes science and progress. Thus, any good researcher should strive to have at least a basic understanding of both the empirical and theoretical sides of science in order to facilitate collaboration and synthesis, and to push the frontiers of knowledge.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Here are the packages we will be using today:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(deSolve)</a></code></pre></div>
+</div>
+</div>
+<div id="getting-started-with-theory" class="section level1">
+<h1>Getting started with theory</h1>
+<div id="some-simple-terminologies" class="section level2">
+<h2>Some simple terminologies</h2>
+<ul>
+<li>Variable – quantity changes over time, a.k.a. the things we are tracking.</li>
+<li>Parameter – pre-determined values, quantity doesn’t change over time, a.k.a. the things we know or think that we know.</li>
+<li>Dynamics – fancy way of saying patterns of change over time.</li>
+<li>Equilibria – the state at which the system stops changing.</li>
+<li>Stability – whether the system will remain at a particular state when perturbed.</li>
+<li>Sensitivity – how readily a system will change when perturbed.</li>
+</ul>
+</div>
+<div id="some-simple-classifications" class="section level2">
+<h2>Some simple classifications</h2>
+<p>Two basic categories based on how to solve: analytic and numeric</p>
+<ul>
+<li>A model is solved analytically when exact solutions of desired outputs are obtained.</li>
+<li>Numeric methods allows you to approximate solutions when the system is too complex to solve.</li>
+</ul>
+<p>Two basic categories based on type of dynamics: discrete and continuous</p>
+<ul>
+<li>Discrete time models describe change in discrete time step with recursion equations. These are useful when modelling semelparous organisms.</li>
+<li>Continous time models allow variables to change at any point in time, and is described with differential equations. These are useful when modelling iteroparous organisms.</li>
+</ul>
+<p>Two basic categories based on nature of change: deterministic and stochastic</p>
+<ul>
+<li>Deterministic models assumes the future is determined entirely by model mechanics.</li>
+<li>Stochastic models assumes that there are random events that affect the biological processes of interest. There is always some element of randomness in real life. Whether to model that randomness explicitly depends on how big of a role it plays in determining the dynamics of your system.</li>
+</ul>
+</div>
+<div id="learning-basic-model-mechanics-through-classic-models-in-eeb" class="section level2">
+<h2>Learning basic model mechanics through classic models in EEB</h2>
+<p>In this section, we will learn different ways to represent system change from one time step to another by examining and deriving some classic models in EEB.</p>
+<div id="exponential-growth" class="section level3">
+<h3>Exponential growth</h3>
+<p>The first population model we examine is the exponential growth model, which describes a population that grows without restriction, e.g., bacteria on a petri dish.</p>
+<ul>
+<li>In discrete time: literally what is <span class="math inline">\(N_{t+1}\)</span> given <span class="math inline">\(N_t\)</span>.</li>
+</ul>
+<p><span class="math display">\[N_{t+1} = RN_t\]</span></p>
+<ul>
+<li>In continous time: population growth is described as change in <span class="math inline">\(N\)</span> per change in <span class="math inline">\(t\)</span>. <span class="math inline">\(dN/dt\)</span> is thus the rate of population change, or the <em>growth rate</em> of a population.</li>
+</ul>
+<p><span class="math display">\[\frac{dN}{dt}=rN\]</span></p>
+<p>Note that <span class="math inline">\(R\)</span> and <span class="math inline">\(r\)</span> are <strong>not</strong> the same. <span class="math inline">\(R\)</span> is termed the <em>reproductive factor</em> (or ratio, or number), and it represents the number of replicates each individual makes of themselves in a subsequent time step. On the other hand, <span class="math inline">\(r\)</span> describes the per capita change in number of individual from one generation to the next and is referred to as the <em>intrinsic growth rate</em>.</p>
+<p>If we want to find out what the population size is at <span class="math inline">\(t=t+1\)</span>, we simply plug the necessary parameters into the recursion equation listed like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Set up some master controls such that it is easier to customize model later on</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">N0 =<span class="st"> </span><span class="dv">10</span> <span class="co"># Initial population size</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">R =<span class="st"> </span><span class="fl">1.2</span> <span class="co"># Reproductive factor</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">N1 =<span class="st"> </span>R<span class="op">*</span>N0; N1 </a></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>Most of the time though, biologists want to track the population for more than just one time step. In that case, we could continue to do math like this</p>
+<p><span class="math display">\[N_{t+5} = R(R(R(R(RN_0))))\]</span></p>
+<p>which simplifies to</p>
+<p><span class="math display">\[N_{t+5} = R^5 (N_0)\]</span></p>
+<p>and then further simplifies to</p>
+<p><span class="math display">\[N_{t+n} = R^n(N_0)\]</span></p>
+<p>We coould also take a graphical approach and draw out the dynamics of the system for 50 time steps.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">N0 &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># Initial population size</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="fl">1.2</span> <span class="co"># Reproductive factor</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">times &lt;-<span class="st"> </span><span class="dv">50</span> <span class="co"># Number of time steps</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">N &lt;-<span class="st"> </span><span class="kw">c</span>() <span class="co"># Make empty vector to store population size at each time step</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">N[<span class="dv">1</span>] &lt;-<span class="st"> </span>N0 <span class="co"># Initiate vector</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># Make for loop to iterate through the model 50 times</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># Running (times-1) iterations gets us to generation N[i+1]</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(times<span class="dv">-1</span>)) { </a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  N[i<span class="op">+</span><span class="dv">1</span>] =<span class="st"> </span>R<span class="op">*</span>N[i]</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">  }</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># Plot the newly loaded N vector </span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">1</span>, times, <span class="dv">1</span>), N, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>As expected, this population is literally spinning out of control! In reality, however, even bacteria on a petri dish can’t grow forever. What are some factors that may limit population growth?</p>
+</div>
+<div id="logistic-growth" class="section level3">
+<h3>Logistic growth</h3>
+<p>Organisms often find themselves limited by resource availability as their numbers grow. This causes their per capita growth rate to decreases as the population increases towards the resource limit known as the <em>carrying capacity</em>, <span class="math inline">\(K\)</span>.</p>
+<ul>
+<li>In discrete time:</li>
+</ul>
+<p><span class="math display">\[N_{t+1} = N_t+r(\frac{K-N_t}{K})N_t\]</span></p>
+<ul>
+<li>In continous time:</li>
+</ul>
+<p><span class="math display">\[\frac{dN}{dt} = r(\frac{K-N}{K})N\]</span></p>
+<p>When interpreted in plain English, the growth rate of the population is being discounted depending on how close to <span class="math inline">\(K\)</span> it is. When the population is very small, <span class="math inline">\(\frac{K-N}{K} \approx 1\)</span> and logistic growth approximates exponential growth. When the population is close to <span class="math inline">\(K\)</span>, <span class="math inline">\(\frac{K-N}{K} \approx 0\)</span> and thus the population size stops increasing.</p>
+<p>We can examine the logistics growth model graphically just like we did before.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">N0 &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># Initial population size</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">r &lt;-<span class="st"> </span><span class="fl">0.5</span> <span class="co"># Intrinsic growth rate</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">K &lt;-<span class="st"> </span><span class="dv">1000</span> <span class="co"># Carrying capacity</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">times &lt;-<span class="st"> </span><span class="dv">50</span> <span class="co"># Number of time steps</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">N &lt;-<span class="st"> </span><span class="kw">c</span>() <span class="co"># Make empty vector to store population size at each time step</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">N[<span class="dv">1</span>] &lt;-<span class="st"> </span>N0 <span class="co"># Initiate vector</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(times<span class="dv">-1</span>)) { </a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">  N[i<span class="op">+</span><span class="dv">1</span>] =<span class="st"> </span>N[i]<span class="op">+</span>r<span class="op">*</span>N[i]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>(N[i]<span class="op">/</span>K))</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">  }</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">1</span>, times, <span class="dv">1</span>), N, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Initially (<span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=10\)</span>), the population grows rapidly, and the form of the growth model resembles the exponential growth model. As the population increases (<span class="math inline">\(t=10\)</span> to <span class="math inline">\(t=20\)</span>), the growth rate slows, and eventually plateaus at the carrying capacity <span class="math inline">\(K=1000\)</span>.</p>
+</div>
+<div id="when-species-are-in-competition-the-lotka-volterra-model" class="section level3">
+<h3>When species are in competition – the Lotka-Volterra model</h3>
+<p>This example will show case how to model two interacting populations, specifically, populations in competition for a limiting resource. Focusing on a continous time example, we will first write down the logistic growth models of two populations (differentiated by subscripts), and then add in the effect of their interaction.</p>
+<p><span class="math display">\[\frac{dN_1}{dt} = r(\frac{K-N_1}{K})N_1\]</span> <span class="math display">\[\frac{dN_2}{dt} = r(\frac{K-N_2}{K})N_2\]</span></p>
+<p>What does competition do to organisms? Well, many things, but in terms of population dynamics, competition hinders the growth of a population, and the degree of reduction in growth is governed by the <em>competition coefficient</em>, <span class="math inline">\(\alpha_{ij}\)</span>. The subscripts <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> correspond to our two populations, and the order of the subscript tells us who is affecting whom. For example, <span class="math inline">\(\alpha_{ij}\)</span> represents the effect of <span class="math inline">\(j\)</span> on <span class="math inline">\(i\)</span>, whereas <span class="math inline">\(\alpha_{ji}\)</span> represent the effect of <span class="math inline">\(i\)</span> on <span class="math inline">\(j\)</span>.</p>
+<p>Adding these terms into the population growth equations gives the classic Lotka-Volterra model for competition: population growth is governed jointly by how close it is to carrying capacity, but also the effect of the competing species has on it (per capita strength of effect <span class="math inline">\(\times\)</span> number of individuals around to exert this effect).</p>
+<p><span class="math display">\[\frac{dN_1}{dt} = r(\frac{K- N_1 - \alpha_{12} N_2}{K})N_1\]</span> <span class="math display">\[\frac{dN_2}{dt} = r(\frac{K - N_2 - \alpha_{21} N_1}{K})N_2\]</span></p>
+</div>
+<div id="models-of-evolution" class="section level3">
+<h3>Models of evolution</h3>
+<p>In line with the most basic definition of evolution, evolution models describes change in allele frequency in a population over time. These models are sometimes referred to as population genetics (pop gen) models. We will work with a one-locus haploid model in this example.</p>
+<p>Consider a population of individuals each carrying one of two variants of a certain gene; let’s call them alleles <em>A</em> and <em>a</em> because we are creative like that. Similar to ecologists, evolutionary biologists are often interested in the reproductive factor (or survivability, denoted <span class="math inline">\(W\)</span>) of individuals with different genotypes. The dynamics of these two sub-populations can be expressed as</p>
+<p><span class="math display">\[N_{A, t+1} = W_A N_{A, t}\]</span></p>
+<p><span class="math display">\[N_{a, t+1} = W_a N_{a, t}\]</span></p>
+<p>Typically, evolutionary biologists are concerned with the <em>proportion</em> of a certain allele in a population rather than changes to their absolute numbers. Here, we will use <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> to denote the proportions of the <em>A</em> and <em>a</em> alleles in the population, respectively.</p>
+<p><span class="math display">\[p_{t}=\frac{N_{A,t}}{N_{A,t}+ N_{a,t}}\]</span></p>
+<p><span class="math display">\[q_{t}=1-p_{t}\]</span></p>
+<p>Doing so also allow us to leverage the fact that the proportions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> must add up to 1, and therefore the dynamics of the allele frequencies in a population can be described with just one equation:</p>
+<p><span class="math display">\[p_{t+1}=\frac{W_A N_{A,t}}{W_A N_{A,t}+W_a N_{a,t}}\]</span></p>
+<p>In order to write an equation that tracks change in allele frequency over time, as promised, we need to transform <span class="math inline">\(N\)</span> (the number of each type) to <span class="math inline">\(p\)</span> (proportion). Through the magic of algebra, we have</p>
+<p><span class="math display">\[p_{t+1}=\frac{W_A p_t}{W_A p_t+W_a q_t}\]</span></p>
+<p>Note that <span class="math inline">\(N_A\)</span> is <strong>not</strong> interchangeable with <span class="math inline">\(p\)</span>; the algebra just happened to work out this way.</p>
+<p>Lastly, remember our good friend <span class="math inline">\(p+q=1\)</span>?</p>
+<p><span class="math display">\[p_{t+1}=\frac{W_A p_t}{W_A p_t+W_a (1-p_t)}\]</span></p>
+</div>
+</div>
+<div id="how-to-construct-a-model" class="section level2">
+<h2>How to construct a model</h2>
+<div id="step-0-breathe" class="section level3">
+<h3>Step 0: Breathe</h3>
+<p>Don’t panic, and try not to be overwhelmed. Trust us when we say it is not as daunting as it appears. This doesn’t mean that it is easy to write a model either, but there are lots of resources available to help you achieve your ambition. The biggest hurdle is often to simply <em>start</em>. Know that whatever you do, these are just numbers and symbols and words on paper and on the screen, you can’t break anything or hurt anything (except maybe R, but just turn it on and off again and all will be forgiven, life will move on). So don’t be afraid to start typing and playing around with ideas. Know also that you will be making mistakes and will have to troubleshoot your way through a theory project (any project really…). We all go through that, even the most experienced theoreticians make mistakes. Experience comes with time and practice, and you will learn how to quickly spot mistakes, and how to effectively troubleshoot. None of that will happen though, if you don’t start.</p>
+<p>So let’s start!</p>
+</div>
+<div id="step-1-formulate-the-question." class="section level3">
+<h3>Step 1: Formulate the question.</h3>
+<ul>
+<li>What do you want to know? Start with the simplest, biologically-reasonable description of the problem.</li>
+<li>Having clear objectives is crucial!</li>
+</ul>
+</div>
+<div id="step-2-determine-the-basic-ingredients-of-the-model." class="section level3">
+<h3>Step 2: Determine the basic ingredients of the model.</h3>
+<ul>
+<li>Decide on which type of model to use (discrete vs. continous time, stochastic vs. deterministic, etc.).</li>
+<li>Define the variables and parameters you want to keep track of.</li>
+<li><strong>Think about the assumptions you are making about your system</strong>. Given that we can’t ever full replicate reality (and we don’t want to anyway), we are neccessarily making simplifying assumptions about our system as we write our model. What are those assumptions? You need to make them clear to both yourself and your audience. Your model can only be interpreted in the context of these assumptions.</li>
+</ul>
+</div>
+<div id="step-3-qualitatively-describe-the-system." class="section level3">
+<h3>Step 3: Qualitatively describe the system.</h3>
+<ul>
+<li>Use life-cycle diagrams and flow charts to decribe changes to the individuals/populations/communities that you’re modelling.</li>
+<li>Make a table or list of variables and how they will interact with each other.</li>
+<li>Think about the possible outcomes and types of output you want from your model.</li>
+</ul>
+</div>
+<div id="step-4-quantitatively-describe-the-system." class="section level3">
+<h3>Step 4: Quantitatively describe the system.</h3>
+<ul>
+<li>Using the diagrams and tables etc as guides, draft out equations that describe your system.</li>
+<li>Think about the functional forms of interactions in your model and how to parameterize your model (i.e., where are you going to get data?).</li>
+<li>Perform checks to make sure the structure of the model is logically sound (e.g., will your model return negative population size?).</li>
+</ul>
+</div>
+<div id="step-5-analyze-your-model" class="section level3">
+<h3>Step 5: Analyze your model</h3>
+<ul>
+<li>There are abundant options regarding how to analyze a model. These range from finding equiliria and performing a stability analysis analytically, to numerically simulating population dynamics over time.</li>
+<li>Choose the appropriate analysis for your system and question, and make sure that the output does address the question adequately!</li>
+</ul>
+</div>
+<div id="step-6-checks-and-balances" class="section level3">
+<h3>Step 6: Checks and balances</h3>
+<ul>
+<li>Check results against data or known cases.</li>
+<li>Consider alternatives to a simplified model – how can this model be extended?</li>
+</ul>
+</div>
+<div id="step-7-relate-results-back-to-the-question" class="section level3">
+<h3>Step 7: Relate results back to the question</h3>
+<ul>
+<li>Interpret the results and describe any new insights obtained in the context of assumptions made.</li>
+<li>How general are your results? Are the results counterintuitive? Why?</li>
+</ul>
+<p>We will be following this recipe (roughly) in our build-a-model workshops.</p>
+</div>
+</div>
+</div>
+<div id="build-a-model-workshop-1-modelling-malaria-transmission-dynamics" class="section level1">
+<h1>Build-a-model workshop 1 – Modelling malaria transmission dynamics</h1>
+<p>First, take a <em>deeeeeeeeeeeeeeep</em> breath.</p>
+<p>In this workshop, we are going all the way back to the dawn of mathematical models in biology. We will borrow from the classic malaria model orginally developed by Ross (1908), and later solidified by Macdonald (1956), which investigates the required efficacy of mosquito management programs in order to eradicate malaria.</p>
+<p><em>Note:</em> It is actually very common practice to adapt old models to answer new questions. In fact, practically <em>all</em> of the malaria models that exist today is a variation of the Ross-Macdonald model.</p>
+<p>The Ross-Macdonald model is a continuous-time, deterministic, model which tracks the number of <strong>S</strong>usceptible, <strong>I</strong>nfected, and <strong>R</strong>ecovered subjects over the course of a malaria outbreak. These models are sometimes referred to as <em>SIR</em> models, and they have been adapted to model numerous diseases beyond malaria.</p>
+<p>Figure 1 shows a flow diagram of the malaria transmission cycle we will be modelling today.</p>
+<div class="figure">
+<img src="image/model.png" alt="Flow diagram illustrating a basic epidemiological model of malaria transmission. The blocks represent different host and vector classes within a population. Arrows describe possible movements between host/vector categories. Subscripts h and m represent hosts and mosquitoes, respectively." />
+<p class="caption">Flow diagram illustrating a basic epidemiological model of malaria transmission. The blocks represent different host and vector classes within a population. Arrows describe possible movements between host/vector categories. Subscripts <em>h</em> and <em>m</em> represent hosts and mosquitoes, respectively.</p>
+</div>
+<p>The principle epidemiological compartments (i.e., variables) of interest are the populations of infectious hosts (<span class="math inline">\(I_h\)</span>) and infectious vectors (<span class="math inline">\(I_m\)</span>). These compartments are interdependent via the hosts’ and the vectors’ rate of exposure to the parasite, given by <span class="math inline">\(\beta I_m\)</span> and <span class="math inline">\(\beta I_h\)</span>, respectively, where <span class="math inline">\(\beta\)</span> represent the per capita biting rate of vectors. Upon contact, susceptible hosts (<span class="math inline">\(S_h\)</span>) and mosquitoes (<span class="math inline">\(S_m\)</span>) become infected with probabilities <span class="math inline">\(\varphi_h\)</span> and <span class="math inline">\(\varphi_m\)</span>, respectively. For simplicity, we will assume that hosts cannot acquire immunity and so the “recovered” class was not included in this model. Instead, hosts either die of infection at rate <span class="math inline">\(\alpha\)</span> or recover and return to <span class="math inline">\(S\)</span> class at rate <span class="math inline">\(\gamma\)</span>. Vectors were assumed to be immediately infectious upon successful infection, are unaffected by the parasites they carry, and remain infected for life (i.e., no <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> for vectors). All host and vector die of natural causes at rate <span class="math inline">\(\mu_h\)</span> and <span class="math inline">\(\mu_m\)</span>, respectively. The host and vector populations were assumed to be closed and constant over time such that all deaths are immediately replaced by immigration of individuals into susceptible classes, represented by the symbol <span class="math inline">\(\tau\)</span>.</p>
+<p>After all that prefacing, we’re finally ready to do math!</p>
+<p>Recall that, in contrast to recursion equations where we describe directly the change in the value of a variable, an ordinary differential equation (ODE) model describes <em>how</em> the population is changing. We will follow this simple formula when we translate our flow diagram to our equations:</p>
+<p><span class="math display">\[\frac{dN}{dt} = rate\;of\;increase - rate\;of\;decrease\]</span></p>
+<p>Or,</p>
+<p><span class="math display">\[\frac{dN}{dt} = flow\;rates\;along\;arrows\;entering\;a\;compartment - flow\;rates\;along\;arrows\;exiting\;a\;compartment\]</span></p>
+<p>Note that the order of the entering and exiting of compartments is irrelevant because each time step is so small, it doesn’t matter which event happens first within that time step.</p>
+<p>The resulting model is thus made up of a system of four ODEs, two for hosts and two for vectors, written as follows:</p>
+<p><span class="math display">\[\frac{dS_h}{dt} = \tau_t - (\mu_h +\beta \varphi_h I_m)S_h + \gamma I_h\]</span></p>
+<p><span class="math display">\[\frac{dI_h}{dt} = (\beta \varphi_h I_m)S_h - (\gamma + \mu_h + \alpha_h) I_h\]</span></p>
+<p><span class="math display">\[\frac{dS_m}{dt} = \tau_m - (\mu_m + \beta \varphi_m I_h)S_m\]</span></p>
+<p><span class="math display">\[\frac{dI_m}{dt} = (\beta \varphi_m  I_h)S_m - \mu_m I_m\]</span></p>
+<p>The trickiest part of writing these equations is probably to remember that the rate at which susceptible hosts (<span class="math inline">\(S_h\)</span>) become infected (<span class="math inline">\(I_h\)</span>) will depend on how many infected mosquitoes (<span class="math inline">\(I_m\)</span>) are around to deliver those infection (<span class="math inline">\(\beta\)</span> is the <strong>per capita</strong> biting rate, which means the number of times <strong>each</strong> mosquito will bite a host). The same logic applies to the process in which mosquitoes become infected (going from <span class="math inline">\(S_m\)</span> to <span class="math inline">\(I_m\)</span>).</p>
+<p>Now that we have our model written out, it is R’s turn to do some math for us. Specifically, R will <em>solve</em> this system for us and save us from a lot of headache and paper. To solve a system of ODEs means we will integrate the equations (i.e., turn <span class="math inline">\(\frac{dN}{dt}\)</span> into <span class="math inline">\(N\)</span>) to find expressions that describes the state of each population as a function of the remaining variables and parameters.</p>
+<p>We will code our model like we did before, this time with roughly 100<span class="math inline">\(\times\)</span> the parameters, variables, and equations. First, we will set up a bunch of master controls for easy model manipulation later on. Then, we will write out our ODE model as a function that our solver will deal with. Lastly, we will call the ODE solver <em>lsoda</em> to put all this together.</p>
+<div id="define-required-parameters-for-the-main-program" class="section level3">
+<h3>Define required parameters for the main program</h3>
+<ol style="list-style-type: decimal">
+<li>Time vector:</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">times &lt;-<span class="st"> </span><span class="dv">50</span>; <span class="co"># Time is per day               </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">timevec &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, times, <span class="dv">1</span>) </a></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Assign values for model parameters:</li>
+</ol>
+<ul>
+<li>These parameter values are mostly informed guesstimates. The reason we’re not using “real” parameter values here is because the model is too simple a representation of “real life”, and real numbers don’t make sense in this horrible rendition of reality. For instance, mosquitoes <em>infected</em> with the parasite don’t actually become <em>infectious</em> right away. There is a 10-14 day incubation period where mosquitoes do nothing but sit around and accumulate mortality before they can transmit malaria. Since we do not account for this incubation period in our model, using the “real” daily mortality rate of mosquito results in a drastic underestimation of their true mortality risk, and an over-abundance of mosquitoes in our hypothetical population.<br />
+</li>
+<li>Since the per capita biting rate (<span class="math inline">\(\beta\)</span>) changes with population size, we decomposed (<span class="math inline">\(\beta\)</span>) into its components (i.e., number of bites per mosquito per day and population size) for easy calculation. In this example, <span class="math inline">\(\beta\)</span> is actually constant through out because we assumed closed and constant population size (<span class="math inline">\(N\)</span>), but setting up the variable in this manner will allow for flexibility if one day we wish to relax that assumption.</li>
+<li>Make sure that the <span class="math inline">\(N\)</span> here is the same as the population size we will assign later!</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Units are assumed to be /day</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">mu.h &lt;-<span class="st"> </span><span class="fl">0.05</span>; mu.m &lt;-<span class="st"> </span><span class="fl">0.1</span> <span class="co"># Natural mortality</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">psi.h &lt;-<span class="st"> </span><span class="fl">0.1</span>; psi.m &lt;-<span class="st"> </span><span class="fl">0.1</span> <span class="co"># Probability of infection upon exposure</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="fl">0.25</span> <span class="co"># number of times a mosquito bites per day</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">N &lt;-<span class="st"> </span><span class="dv">500</span> <span class="co"># Total population size (remains constant)</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">beta &lt;-<span class="st"> </span>b<span class="op">/</span>N <span class="co"># Number of times a mossie bite each person in a day</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">gamma &lt;-<span class="st"> </span><span class="fl">0.03</span> <span class="co"># Recovery rate (host only)</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">alpha &lt;-<span class="st"> </span><span class="fl">0.2</span> <span class="co"># Disease mortality rate (host only)</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co"># String it all up as a vector</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">parms &lt;-<span class="st"> </span><span class="kw">c</span>(mu.h, mu.m, psi.h, psi.m, b, N, beta, gamma, alpha)</a></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Give the model something to get it going a.k.a. assign initial conditions:</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">s.h0 &lt;-<span class="st"> </span><span class="dv">450</span>; i.h0 &lt;-<span class="st"> </span><span class="dv">50</span> <span class="co"># Host - make sure this is the same N as above</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">s.m0 &lt;-<span class="st"> </span><span class="dv">200</span>; i.m0 &lt;-<span class="st"> </span><span class="dv">50</span> <span class="co"># Vector</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># Make into another vector</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">Y0 &lt;-<span class="st"> </span><span class="kw">c</span>(s.h0, i.h0, s.m0, i.m0)</a></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Define the function that specifies the ODE model called by <em>lsoda</em> a.k.a. type out equations.</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">odeequations &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, parms) </a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="co"># Retype parms and initial conditions</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="co"># This will link parameters set &quot;outside&quot; of the function to the equations &quot;inside&quot;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="co"># Natural mortality parms</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  mu.h &lt;-<span class="st"> </span>parms[<span class="dv">1</span>]; mu.m &lt;-<span class="st"> </span>parms[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="co"># Probability of infection parms</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  psi.h &lt;-<span class="st"> </span>parms[<span class="dv">3</span>]; psi.m &lt;-<span class="st"> </span>parms[<span class="dv">4</span>] </a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="co"># Biting rate parms</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">  b &lt;-<span class="st"> </span>parms[<span class="dv">5</span>]; N &lt;-<span class="st"> </span>parms[<span class="dv">6</span>]; beta &lt;-<span class="st"> </span>parms[<span class="dv">7</span>]</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">  </a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">  <span class="co">#recovery parms</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">  gamma &lt;-<span class="st"> </span>parms[<span class="dv">8</span>];</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">  <span class="co">#virulence </span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19">  alpha &lt;-<span class="st"> </span>parms[<span class="dv">9</span>];</a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">  </a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">  <span class="co"># Initial conditions</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">  s.h &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; i.h &lt;-<span class="st"> </span>y[<span class="dv">2</span>]; s.m &lt;-<span class="st"> </span>y[<span class="dv">3</span>]; i.m &lt;-<span class="st"> </span>y[<span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">  </a>
+<a class="sourceLine" id="cb9-24" data-line-number="24">  <span class="co"># These are the differential equations </span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25">  <span class="co"># These should be written in the same order as the initial conditions</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26">  dsh =<span class="st"> </span>(mu.h<span class="op">*</span>s.h <span class="op">+</span><span class="st"> </span>(mu.h <span class="op">+</span><span class="st"> </span>alpha)<span class="op">*</span>i.h) <span class="op">-</span><span class="st"> </span>(mu.h <span class="op">+</span><span class="st"> </span>beta<span class="op">*</span>i.m<span class="op">*</span>psi.h)<span class="op">*</span>s.h <span class="op">+</span><span class="st"> </span>gamma<span class="op">*</span>i.h</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27">  dih =<span class="st"> </span>beta<span class="op">*</span>i.m<span class="op">*</span>psi.h<span class="op">*</span>s.h <span class="op">-</span><span class="st"> </span>(gamma <span class="op">+</span><span class="st"> </span>mu.h <span class="op">+</span><span class="st"> </span>alpha)<span class="op">*</span>i.h</a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">  dsm =<span class="st"> </span>mu.m<span class="op">*</span>(s.m <span class="op">+</span><span class="st"> </span>i.m) <span class="op">-</span><span class="st"> </span>(mu.m <span class="op">+</span><span class="st"> </span>beta<span class="op">*</span>i.h<span class="op">*</span>psi.m)<span class="op">*</span>s.m </a>
+<a class="sourceLine" id="cb9-29" data-line-number="29">  dim =<span class="st"> </span>beta<span class="op">*</span>i.h<span class="op">*</span>psi.m<span class="op">*</span>s.m <span class="op">-</span><span class="st"> </span>mu.m<span class="op">*</span>i.m </a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">  </a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dsh, dih, dsm, dim))); </a>
+<a class="sourceLine" id="cb9-32" data-line-number="32">  </a>
+<a class="sourceLine" id="cb9-33" data-line-number="33">}</a></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Call ODE solver <em>lsoda</em> to integrate ODEs.</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">odeoutput1 &lt;-<span class="st"> </span><span class="kw">lsoda</span>(Y0, timevec, odeequations, parms)</a></code></pre></div>
+<p>Anddddd that’s it! We are done! We can now look at our shiny model outputs.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">head</span>(odeoutput1)</a></code></pre></div>
+<pre><code>##      time        1        2        3        4
+## [1,]    0 450.0000 50.00000 200.0000 50.00000
+## [2,]    1 461.2620 38.73803 204.3348 45.66525
+## [3,]    2 469.8378 30.16215 208.3448 41.65521
+## [4,]    3 476.3845 23.61546 212.0419 37.95808
+## [5,]    4 481.3964 18.60361 215.4410 34.55901
+## [6,]    5 485.2459 14.75407 218.5587 31.44129</code></pre>
+<p>The output dataframe consists of five columns, one for time, and the next four represent the population size of each of our population classes at those time points. The columns are organized in the same order we typed out our equations. Therefore, column 1 represent susceptible hosts, column 2 infected hosts, etc. To make our lives easier from now on, we’ll go ahead and rename these columns. We’re also going to force the output into a data frame so that it is easier to work with.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">colnames</span>(odeoutput1)[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;S.h&quot;</span>, <span class="st">&quot;I.h&quot;</span>, <span class="st">&quot;S.m&quot;</span>, <span class="st">&quot;I.m&quot;</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">odeoutput1 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(odeoutput1)</a></code></pre></div>
+<p>We can inspect the dynamics of this system by ploting out these trajetories.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Host</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>odeoutput1, <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>S.h), <span class="dt">colour=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>odeoutput1, <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>I.h), <span class="dt">colour=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Hosts&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Vector</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>odeoutput1, <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>S.m), <span class="dt">colour=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>odeoutput1, <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>I.m), <span class="dt">colour=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Vectors&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<p>Feel free to play with the parameter set, and investigate what happens to disease dynamics as you do so. Is the system more <em>sensitive</em> to some parameters than others? What are some parameters we can change or add to imitate various means of disease control?</p>
+</div>
+</div>
+<div id="build-a-model-workshop-2-modelling-forces-of-evolution" class="section level1">
+<h1>Build-a-model workshop 2 – Modelling forces of evolution</h1>
+<p>In this section, we will switch gears 720<span class="math inline">\(^\circ\)</span>, and work on a discrete time, stochastic, evolution model! We will use an example of drug resistance emergence to ask whether random events – genetic drift – can counteract the effect of drug-resistance selection and block the evolution of this trait.</p>
+<p>You may recall from evolutionary biology class that the relative strengths of drift vs. selection depend on population size and mutation rate. Here, we will use simple population genetic simulations to disentangle these different factors and get a better understanding of the role of these various forces of evolution.</p>
+<p>We will use the single-locus haploid model we were working on before as the foundation of this model. Consider a population with <span class="math inline">\(N\)</span> individuals (of parasites) each carrying a variant of this gene: <em>A</em> is a drug-sensitive allele, and <em>a</em> confers resistance. We will impose mutation and selection on this population at every time step, and at the end of each time step, we will simulate genetic drift by random selecting a subset from the standing population.</p>
+<div id="model-mechanics" class="section level2">
+<h2>Model mechanics</h2>
+<div id="mutation" class="section level3">
+<h3>Mutation</h3>
+<p>At each time step, some fraction of <em>a</em> alleles will mutate to <em>A</em> at rate <span class="math inline">\(m\)</span> and vice versa.</p>
+<p><span class="math display">\[p_{t+1} = (1-m)p_t + m(1-p_t)\]</span></p>
+</div>
+<div id="selection" class="section level3">
+<h3>Selection</h3>
+<p>Recall this equation:</p>
+<p><span class="math display">\[p_{t+1}=\frac{W_A p_t}{W_A p_t+W_a (1-p_t)}\]</span></p>
+<p>Recall also that selection acts on relative fitness, specifically, the difference in relative fitness between <em>A</em> and <em>a</em>. This is known as the <em>selection coefficient</em>, and is commonly denoted <span class="math inline">\(s\)</span>. The fitness of <em>A</em> relative to <em>a</em> can be expressed simply as <span class="math inline">\(\frac{W_A}{W_a}\)</span>. Taking <span class="math inline">\(w_a\)</span> as the reference (i.e., setting <span class="math inline">\(w_a\)</span> to 1), we obtain the selection coefficient against <em>A</em> (i.e., assuming <em>A</em> is at disadvantage) as follows:</p>
+<p><span class="math display">\[s=1-\frac{W_A}{W_a}\]</span></p>
+<p>Through the magic of algebra, we can derive an expression for <span class="math inline">\(p_{t+1}\)</span> consisting only of terms related to our focal allele <em>A</em>:</p>
+<p><span class="math display">\[p_{t+1}=\frac{p_t (1-s)}{p_t(1-s) + (1-p_t)}\]</span></p>
+</div>
+<div id="genetic-drift" class="section level3">
+<h3>Genetic drift</h3>
+<p>We will simulate genetic drift by choosing a random sample from the population. More specifically, we obtain <span class="math inline">\(N_A\)</span> by drawing <span class="math inline">\(N\)</span> individuals from a population where a fraction <span class="math inline">\(p\)</span> of the population is <em>A</em> using the function <em>rbinom</em>. After this draw, we can retrieve <span class="math inline">\(p\)</span> from <span class="math inline">\(N_A\)</span> with <span class="math inline">\(\frac{N_A}{N}\)</span>.</p>
+</div>
+<div id="putting-the-model-together" class="section level3">
+<h3>Putting the model together</h3>
+<p>First, we’ll set up parameters and initial conditions. We will initiate our population with equal proportions of the <em>A</em> and <em>a</em> alleles, and we will investigate a scenario where drugs don’t exist (i.e., <em>A</em> and <em>a</em> perform equally well).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Time</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">times &lt;-<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">timevec &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, times, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co"># Parameters</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">N &lt;-<span class="st"> </span><span class="dv">10000</span> <span class="co"># Total population size (assume constant)</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">m &lt;-<span class="st"> </span><span class="fl">0.001</span> <span class="co"># Mutation rate</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">s &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># Selection coefficient</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co"># Intitial condition</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">p &lt;-<span class="st"> </span><span class="fl">0.5</span> <span class="co"># proportion of A allele</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co"># Empty vector to store values of p over time</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">freq &lt;-<span class="st"> </span><span class="kw">c</span>()</a></code></pre></div>
+<p>Then, we will write a <em>for</em> loop to help us impose the various forces of evolution repeatedly through time.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>times) { </a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">    </a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="co"># Mutation</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">    p &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>m)<span class="op">*</span>p <span class="op">+</span><span class="st"> </span>m<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">    <span class="co"># Selection</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">    p &lt;-<span class="st"> </span>( p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>s) <span class="op">/</span><span class="st"> </span>(p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>s)<span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>p)) )</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">    </a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">    <span class="co"># Drift </span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">    p &lt;-<span class="st"> </span>((<span class="kw">rbinom</span>(<span class="dv">1</span>,N,p)) <span class="op">/</span><span class="st"> </span>N)</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">    </a>
+<a class="sourceLine" id="cb17-12" data-line-number="12">    <span class="co"># Store values in vector</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13">    freq[i] &lt;-<span class="st"> </span>p</a>
+<a class="sourceLine" id="cb17-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb17-15" data-line-number="15">    }</a></code></pre></div>
+<p>That’s it! We just made a stochastic population genetics model!</p>
+<p>Let’s have a look at the results.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span>timevec, <span class="dt">y=</span>freq)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;time&quot;</span>, <span class="dt">y=</span><span class="st">&quot;p&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Here, we see that in the absence of selection, mutation and drift causes allele frequency to fluctute randomly, but for the most part <span class="math inline">\(p\)</span> <em>seems to be</em> hovering around its initial values of 0.5.</p>
+<p>Next, we can add in some drugs and see what happens to the fate of the drug-sensitive <em>A</em> alleles.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Update s </span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">s &lt;-<span class="st"> </span><span class="fl">0.005</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co"># Don&#39;t forget to reset p and the storage vector </span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">p &lt;-<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">freq &lt;-<span class="st"> </span><span class="kw">c</span>()</a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co"># Run loop again </span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>times) { </a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">    </a>
+<a class="sourceLine" id="cb19-12" data-line-number="12">  <span class="co"># Mutation</span></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13">    p &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>m)<span class="op">*</span>p <span class="op">+</span><span class="st"> </span>m<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)</a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15">    <span class="co"># Selection</span></a>
+<a class="sourceLine" id="cb19-16" data-line-number="16">    p &lt;-<span class="st"> </span>( p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>s) <span class="op">/</span><span class="st"> </span>(p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>s)<span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>p)) )</a>
+<a class="sourceLine" id="cb19-17" data-line-number="17">    </a>
+<a class="sourceLine" id="cb19-18" data-line-number="18">    <span class="co"># Drift </span></a>
+<a class="sourceLine" id="cb19-19" data-line-number="19">    p &lt;-<span class="st"> </span>((<span class="kw">rbinom</span>(<span class="dv">1</span>,N,p)) <span class="op">/</span><span class="st"> </span>N)</a>
+<a class="sourceLine" id="cb19-20" data-line-number="20">    </a>
+<a class="sourceLine" id="cb19-21" data-line-number="21">    <span class="co"># Store values in vector</span></a>
+<a class="sourceLine" id="cb19-22" data-line-number="22">    freq[i] &lt;-<span class="st"> </span>p</a>
+<a class="sourceLine" id="cb19-23" data-line-number="23">    </a>
+<a class="sourceLine" id="cb19-24" data-line-number="24">    }</a>
+<a class="sourceLine" id="cb19-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb19-26" data-line-number="26"><span class="co"># Make a plot of results</span></a>
+<a class="sourceLine" id="cb19-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb19-28" data-line-number="28"><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-29" data-line-number="29"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span>timevec, <span class="dt">y=</span>freq)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-30" data-line-number="30"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;time&quot;</span>, <span class="dt">y=</span><span class="st">&quot;p&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-31" data-line-number="31"><span class="st">  </span><span class="kw">theme_classic</span>()</a></code></pre></div>
+<p><img src="lec13-theory_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Oh dear! It took no time for the resistant allele (<em>a</em>) to take over! The population of the sensitive strain doesn’t drop to zero, though, why is that? And lastly, feel free to play around with this model to investigate the relative effects of mutation, selection, drift, and how population size mediates all of this!</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Hartl, D. (2000). A Primer of Population Genetics (3rd Ed). Sinauer Associates Inc., Sunderland, MA.</p>
+<p>Macdonald, G. (1956). Theory of the eradication of malaria. Bulletin of the World Health Organization, 15(3–5): 369–387.</p>
+<p>Otto, S. &amp; Day, T. (2007). A Biologist’s Guide to Mathematical Modeling in Ecology and Evolution. Princeton University Press, Princeton, NJ.</p>
+<p>Ross, R. (1908). Report on the prevention of malaria in Mauritius. Waterlow and Sons Limited, London, UK.</p>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

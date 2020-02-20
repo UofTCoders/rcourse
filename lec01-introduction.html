@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joel Östblom &amp; Ahmed Hasan" />
+
+
+<title>Introduction to course</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to course</h1>
+<h4 class="author">Joel Östblom &amp; Ahmed Hasan</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives</h3>
+<ul>
+<li><strong>Main goal</strong>:
+<ul>
+<li>To give students an overview of the capabilities of R and how to use the R Notebook for exploratory data analyses.</li>
+</ul></li>
+<li><strong>Secondary goals</strong>:
+<ul>
+<li>Learn about the differences between R and Excel.</li>
+<li>Learn some basic R commands.</li>
+<li>Learn about the markdown syntax and how to use it within the R Notebook.</li>
+</ul></li>
+</ul>
+<h3 id="lesson-outline">Lesson outline</h3>
+<p>Total lesson time: 1 hour</p>
+<ul>
+<li>Working with computers (10 min)</li>
+<li>Programming in R (45 min)
+<ul>
+<li>The Basics (10 min)</li>
+<li>RStudio and the R Notebook (5 min)</li>
+<li>Creating and assigning objects (5 min)</li>
+<li>Plotting (10 min)</li>
+<li>Saving data and generating reports (5 min)</li>
+<li>R Markdown (10 min)</li>
+</ul></li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="working-with-computers" class="section level2">
+<h2>Working with computers</h2>
+<p>Before we get into more practical matters, I want to provide a brief background to the idea of working with computers. Essentially, computer work is about humans communicating with a computer by modulating flows of current in the hardware in order to get the computer to carry out advanced calculations that we are unable to efficiently compute ourselves. Early examples of human computer communication were quite primitive and included physically disconnecting a wire and connecting it again in a different spot. Luckily, we are not doing this anymore; instead we have programs with graphical user interfaces with menus and buttons that enable more efficient human to computer communication.</p>
+<div id="graphical-user-interfaces-vs-text-based-user-interfaces" class="section level3">
+<h3>Graphical user interfaces vs text based user interfaces</h3>
+<p>An example of such a program that I think many of you are familiar with is spreadsheet software such as Microsoft Excel and LibreOffice Calc. Here, all the functionality of the program is accessible via hierarchical menus, and clicking buttons sends instructions to the computer, which then responds and sends the results back to your screen. For instance, I can click a button to send the instruction of coloring this cell yellow, and the computer interprets my instructions and then displays the results on the screen; in this case, the cell is highlighted yellow.</p>
+<p>Spreadsheet software is great for viewing and entering small data sets and creating simple visualizations fast. However, it can be tricky to design publication-ready figures, create automatic reproducible analysis workflows, perform advanced calculations, and reliably clean data sets. Even when using a spreadsheet program to record data, it is often beneficial to have some some basic programming skills to facilitate the analyses of those data.</p>
+<p>Typing commands directly instead of searching for them in menus is a more efficient approach to communicate with the computer and a powerful way of doing data analysis. This is initially intimidating for almost all people, but if you compare it to learning a new language, the process becomes more intuitive: when learning a language, you would initially string together sentences by looking up individual words in the dictionary. As you improve, you will only reference the dictionary occasionally since you already know most of the words. Eventually, you will throw the dictionary out altogether because it is faster and more precise to speak directly. In contrast, graphical programs force you to look up every word in the dictionary every time, even if you already know what to say.</p>
+</div>
+<div id="formal-and-natural-languages" class="section level3">
+<h3>Formal and natural languages</h3>
+<p>You might think it is quite tricky to learn computer languages, but it is actually not! You already know one: mathematics is often written the same way as you would write it by hand, both in Excel and R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">d =<span class="st"> </span><span class="dv">4</span> <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
+<p>This is much more efficient than typing “Hi computer, could you please add 4 and 5 for me?”. Formal computer languages also avoid the ambiguity present in natural languages such as English. You can think of R as a combination of math and a formal, succinct version of English.</p>
+<p>E.g. Create a sequence of the numbers zero to thirty.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>)</a></code></pre></div>
+<pre><code>##  [1]  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+## [26] 25 26 27 28 29 30</code></pre>
+<p>E.g. Create a sequence of the numbers zero to thirty and calculate the average value of this sequence.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">mean</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>))</a></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<p>In my experience, learning programming really is similar to learning a foreign language - you will often learn the most from just trying to do something and receiving feedback (from the computer or another person)! When there is something you can’t wrap you head around, or if you are actively trying to find a new way of expressing a thought, then look it up, just as you would with a natural language.</p>
+</div>
+</div>
+<div id="programming-in-r" class="section level2">
+<h2>Programming in R</h2>
+<div id="the-basics" class="section level3">
+<h3>The basics</h3>
+<p>With that background to some of the concepts of programming, let’s compare the workflow of analyzing a data set in R vs in Excel. <em>Pull up Excel and an R console next to each other.</em> In Excel, we open a file via ‘File -&gt; Open -&gt; Navigate to file’. You can conceptualize this as if there is a function <code>file.open()</code> for which you need to specify a file location, (<code>file.open(/home/joel/iris.csv</code>). In R this looks similar, it is <code>read.csv('/home/joel/iris.csv')</code>, <!--need to write in windows paths...--> so it is pretty much the same. The only differences are that slightly different words are used, and you type them in instead of clicking your way to them.</p>
+<p>When you open a file in Excel, it will immediately display the content in the window. Likewise, the R console will display the information of the data set when you read it in. This sample data set that we are using for this class describes the length and width of sepals and petals for three species of iris flowers.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">read_csv</span>(<span class="st">&#39;iris.csv&#39;</span>)</a></code></pre></div>
+<p>However, to do useful and interesting things to data, we need to assign <em>values</em> to <em>objects</em>. Objects are also referred to as <em>variables</em>, and although there technically are minor differences between them<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, we will use them interchangeably in this class. To create an object, we need to give it a name followed by the assignment operator <code>&lt;-</code>, and the value we want to assign:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">x <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p><code>&lt;-</code> is the assignment operator. It assigns values on the right to objects on the left. So, after executing <code>x &lt;- 3</code>, the value of <code>x</code> is <code>3</code>. The arrow can be read as 3 <strong>goes into</strong> <code>x</code>.</p>
+<p>Let’s save our data into an object called <code>iris</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">iris &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&#39;data/iris.csv&#39;</span>)</a></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   sepal_length = col_double(),
+##   sepal_width = col_double(),
+##   petal_length = col_double(),
+##   petal_width = col_double(),
+##   species = col_character()
+## )</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">iris</a></code></pre></div>
+<pre><code>## # A tibble: 150 x 5
+##    sepal_length sepal_width petal_length petal_width species
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  
+##  1          5.1         3.5          1.4         0.2 setosa 
+##  2          4.9         3            1.4         0.2 setosa 
+##  3          4.7         3.2          1.3         0.2 setosa 
+##  4          4.6         3.1          1.5         0.2 setosa 
+##  5          5           3.6          1.4         0.2 setosa 
+##  6          5.4         3.9          1.7         0.4 setosa 
+##  7          4.6         3.4          1.4         0.3 setosa 
+##  8          5           3.4          1.5         0.2 setosa 
+##  9          4.4         2.9          1.4         0.2 setosa 
+## 10          4.9         3.1          1.5         0.1 setosa 
+## # … with 140 more rows</code></pre>
+<p>These values are now stored in this R session and we can access them by the name <code>iris</code>. More formally, we can say ‘the data has been assigned to the variable <code>iris</code>’.</p>
+<p>The arrow <code>&lt;-</code> is known as the <em>assignment operator</em> and simply means that the output from the right hand side is stored in the variable name that you write on the left hand side.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Now we can simply ask R to calculate the mean of the data frame <code>iris</code>, column <code>petal_length</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">mean</span>(iris<span class="op">$</span>petal_length)</a></code></pre></div>
+<pre><code>## [1] 3.758</code></pre>
+<p>The <code>$</code> is the syntax used in R to indicate that you want to access a column in the data frame. If we want to know more than just the mean, one useful thing with R is that we don’t have to calculate these things one by one. Rather, we can actually get an overview of all the columns by asking R to provide a summary of <code>iris</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">summary</span>(iris)</a></code></pre></div>
+<pre><code>##   sepal_length    sepal_width     petal_length    petal_width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##    species         
+##  Length:150        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+## </code></pre>
+<p>You can already see how it will save you time to use R instead of typing these calculations separately in Excel.</p>
+</div>
+<div id="rstudio-and-the-r-notebook" class="section level3">
+<h3>RStudio and the R Notebook</h3>
+<p>Before we continue, we are going to switch from using the R console to using an interface called RStudio. RStudio includes the R console, but also many other convenient functionalities, which makes it easier to get started and to work with R. When you launch RStudio, you will see four panels:</p>
+<ul>
+<li>The console is the same as what we have been using so far. The advantage with using the console within RStudio is that it interacts with the other panels.</li>
+<li>So, if I read in the iris data we were working with previously, we can view it in the console by typing <code>iris</code>, just like before, or we can also view the <code>iris</code> variable in our environment tab, which shows it to us in a spreadsheet or table format.</li>
+<li>This panel shows the files in the current directory, any plots we might make later, and also the documentation, which we accessed earlier by typing <code>?</code> in front of a function. Here, the documentation is formatted in a way that is easier to read and also provides links to the related sections.</li>
+<li>Finally we have the text editor panel. This is where we can write scripts, i.e. putting several commands of code together and saving them as a text document so that they are accessible for later and so that we can execute them all at once by running the script instead of typing them in one by one.</li>
+<li>Another very useful thing with RStudio is that you have access to some excellent cheat sheets in PDF format straight from the menu: <code>Help -&gt; Cheatsheets</code>!</li>
+</ul>
+<p>In the RStudio interface, we will be writing code in a format called the R Notebook. As the name entails, this interface works like a notebook for code, as it allows us to save notes about what the code is doing, the code itself, and any output we get, such as plots and tables, all together in the same document.</p>
+<p>When we are in the Notebook, the text we write is normal plain text, just as if we would be writing it in a text document. If we want to execute some R code, we need to insert a <em>code chunk</em>. You insert a code chunk by either clicking the “Insert” button or pressing <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>i</kbd> simultaneously. You could also type out the surrounding backticks, but this would take longer. To run a code chunk, you press the green arrow, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">30</span>)</a></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+## [26] 26 27 28 29 30 31</code></pre>
+<p>As you can see, the output appears right under the code block. This is a great way to perform explore your data, since you can do your analysis and write comments and conclusions right under it all in the same document. A powerful feature of this workflow is that there is no extra time needed for code documentation and note-taking, since you’re doing your analyses and taking notes at the same time. This makes it great for both taking notes at lectures and to have as a reference when you return to your code in the future. We will delve deeper into some of the neat features about the R notebook towards the end; for now, let’s get back into learning about R.</p>
+</div>
+<div id="plots" class="section level3">
+<h3>Plots</h3>
+<p>In R, it is straightforward to explore your data by creating nice looking plots. For instance, to make a scatter plot, we first tell R that we want to make a plot of the <code>iris</code> data frame, and we want the aesthetics of this plot to be that <code>sepal_length</code> is on the x axis and <code>sepal_width</code> is on the y-axis. Finally, we specify that we want this to be a plot of points, i.e. a scatter plot.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x =</span> sepal_length, <span class="dt">y =</span> sepal_width)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<p><img src="lec01-introduction_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>This plot shows up in the plot panel in RStudio, which is far more convenient than having it show up as a separate window. You can already see that there seems to be at least some structure to the data. There is one cluster of points up the left corner and at least one in the lower right corner. Hmmmm, I wonder if these correspond to the different species of flowers… Let’s find out, by coloring the points according to which species they are.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x =</span> sepal_length, <span class="dt">y =</span> sepal_width, <span class="dt">color =</span> species)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<p><img src="lec01-introduction_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Likewise, it would be similarly easy to make a histogram of the <code>petal_length</code> and color it according to the species.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x =</span> petal_length, <span class="dt">fill =</span> species)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_histogram</span>()</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec01-introduction_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>And we could get fancier by instructing R to split this plot in vertically stacked facets, or subplots, with one species in each facet.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x =</span> petal_length, <span class="dt">fill =</span> species)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_histogram</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>species, <span class="dt">dir =</span> <span class="st">&#39;v&#39;</span>)</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec01-introduction_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Finally, if you don’t have a clear idea of what you are looking for in a data set – such as if you are exploring publicly available data that you have not generated yourself – then it can be useful to visualize the relationships between all the variables to get an overview of the data.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">ggpairs</span>(iris, <span class="kw">aes</span>(<span class="dt">color =</span> species))</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec01-introduction_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>This plot is a bit overwhelming, and the purpose here is not to produce a publication ready figure. You can see that many of the labels are overlapping and not everything fits in the plotting window. We can tweak these properties, which we will get into later in the course. But even in its slightly rough form, this is a powerful data set overview for your own analyses.</p>
+<p>Hopefully, these examples have giving you an idea of how simple and powerful it is to use R for your exploratory data analyses. In a few lines of code, we have made some really nice plots, some of which are not even imaginable to create in Excel.</p>
+</div>
+<div id="saving-data-and-generating-reports" class="section level3">
+<h3>Saving data and generating reports</h3>
+<p>To save our code and graphs, all we have to do is to save the R Notebook file, and the we can open it in RStudio next time again. However, if we want someone else to look at this, we can’t just send them the R Notebook file, because they might not have RStudio installed. Another great feature of R Notebooks is that it is really easy to export them to HTML or PDF documents with figures and professional typesetting. There are actually many academic papers that are written entirely in this format and it is great for assignments and reports: I have used this myself for some of my progress updates to my supervisor. Since R Notebook files convert to HTML, it is also easy to publish simple good-looking websites in it – for example, the syllabus website for this course is made this way via a template that Luke set up.</p>
+<p>Let’s try to convert this new document. First, let’s go through it and see what we expect the output to include. First we see this intro section here – this is called the yaml-block, and it’s where you specify the title of your document, what kind of output you want, and a few other things that we will try later. Then we have a heading, a link, some bold text, and a few code blocks. OK, let’s see what this looks like. To create the output document, we poetically say that we will knit our R Markdown into the HTML document. Luckily, it is much simpler than actually knitting something. Simply press the <code>Knit</code> button here and the new document will be created.</p>
+<p>As you can see in the knitted document, the title showed up as we would expect, the lines with pound sign(s) in front of them were converted into headers and we can see both the code and its output! So the plots are generated directly in the report without us having to cut and paste images! If we change something in the code, we don’t have to find the new images and paste it in again, the correct one will appear right in your code.</p>
+</div>
+<div id="r-markdown" class="section level3">
+<h3>R Markdown</h3>
+<p>The text format we are using in the R Notebook is called R Markdown. This format allows us to combine R code with the Markdown text format, which enables the use of certain characters to specify headings, bullet points, quotations and even citations. A simple example of how to write in Markdown is to use a single asterisk or underscore to <em>emphasize</em> text (<code>*emphasis*</code>) and two asterisks or underscores to <strong>strongly emphasize</strong> text (<code>**strong emphasis**</code>). When we convert our R Markdown text to HTML or PDF, these will show up as italics and bold typeface, respectively. If you have been writing on online forums, or popular chat services, such as WhatsApp, you might already be familiar with this style of writing. In case you haven’t seen it before, you have just learnt something about WhatsApp in your quantitative methods class…</p>
+<p>To get more familiar with the Markdown syntax, let’s open a new R Notebook. RStudio already includes a template when you create new documents that gives you some instructions on how to use the syntax. We can see some of the formatting rules that we just mentioned. Let’s add some emphasized text and see how it renders. Using the Markdown syntax we can organize our document with headings and subheadings, each indicated by a variable number of hash symbols.</p>
+<p>Furthermore, if we want to change the style of our output document, it is quite easy to do so. Let’s add a subheading first, and a table of contents.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="fu">title:</span><span class="at"> </span><span class="st">&quot;HTML output demo&quot;</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="fu">output:</span></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">  <span class="fu">html_document:</span></a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">    <span class="fu">toc:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="ot">---</span></a></code></pre></div>
+<p>Now we realize that we want to include numbers in the report to keep with the departmental guidelines, so let’s add those.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="fu">title:</span><span class="at"> </span><span class="st">&quot;HTML output demo&quot;</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="fu">output:</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">  <span class="fu">html_document:</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">    <span class="fu">toc:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">    <span class="fu">number_section:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="ot">---</span></a></code></pre></div>
+<p>We can alter the style of our report by adding a theme.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="fu">title:</span><span class="at"> </span><span class="st">&quot;HTML output demo&quot;</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="fu">output:</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">  <span class="fu">html_document:</span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">    <span class="fu">toc:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">    <span class="fu">number_section:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7">    <span class="fu">theme:</span><span class="at"> united</span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="ot">---</span></a></code></pre></div>
+<p>And finally we remember that we need to hand in our assignments as PDF-files, so let’s create a PDF instead of a HTML-document.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="ot">---</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="fu">title:</span><span class="at"> </span><span class="st">&quot;PDF output demo&quot;</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="fu">output:</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">  <span class="fu">pdf_document:</span></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">    <span class="fu">toc:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">    <span class="fu">number_section:</span><span class="at"> true</span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7"><span class="ot">---</span></a></code></pre></div>
+<p>If you want to learn more about R Markdown, you can read the cheat sheets in RStudio and <a href="https://rmarkdown.rstudio.com/authoring_basics.html">RStudio Markdown reference online</a>.</p>
+</div>
+</div>
+<div id="background-experience-survey" class="section level2">
+<h2>Background experience survey</h2>
+<p>Hopefully, this has given you an idea of how powerful and time-saving R can be for your data analysis, and how we will work with it in this class using the R Notebook. The first assignment will be available on Quercus today, and it includes a few questions about RStudio and R Markdown. 1 / 4 marks on this assignment is to fill in a survey about your background knowledge. This is so that we can adjust the pace and content of the lectures and to divide you into groups accordingly for the class project later this fall. The link to the survey will be posted on Quercus; please take 10 minutes to fill it out now.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects" class="uri">https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects</a>).<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>For historical reasons, you can also use <code>=</code> for assignments, but not in every context. Because of the <a href="https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html">slight</a> <a href="https://web.archive.org/web/20130610005305/https://stat.ethz.ch/pipermail/r-help/2009-March/191462.html">differences</a> in syntax, it is good practice to always use <code>&lt;-</code> for assignments. Note that in RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write <code>&lt;-</code> in a single keystroke.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

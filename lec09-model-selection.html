@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Santangelo" />
+
+<meta name="date" content="2018-10-03" />
+
+<title>Model selection and model averaging</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Model selection and model averaging</h1>
+<h4 class="author">James Santangelo</h4>
+<h4 class="date">2018-10-03</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="learning-objectives">Learning objectives</h3>
+<ul>
+<li>Learn the benefits of model selection and how it differs from traditional inferential statistics</li>
+<li>Understand the use of AIC and AIC<sub>c</sub></li>
+<li>Use AIC<sub>c</sub> to perform model selection on the RIKZ data</li>
+<li>Use AIC<sub>c</sub> to perform model selection and model averaging on a more complicated ecological dataset</li>
+</ul>
+</blockquote>
+<blockquote>
+<h3 id="lesson-outline">Lesson outline</h3>
+<p>Total lesson time: 2 hours</p>
+<ul>
+<li>Brief intro to model selection (10 min)</li>
+<li>Understanding AIC and AIC<sub>c</sub> (20 mins)</li>
+<li>Model selection of RIKZ dataset (30 mins)</li>
+<li>Model selection and model averaging of more complicated ecological data (60 mins)</li>
+</ul>
+</blockquote>
+<blockquote>
+<h3 id="setup">Setup</h3>
+<ul>
+<li><code>install.packages('dplyr')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages('ggplot2')</code> (or <code>tidyverse</code>)</li>
+<li><code>install.packages(&quot;lme4&quot;)</code></li>
+<li><code>install.packages(&quot;lmerTest&quot;)</code></li>
+<li><code>install.packages(&quot;MuMIn&quot;)</code></li>
+</ul>
+</blockquote>
+</div>
+<div id="introduction-to-model-selection" class="section level2">
+<h2>Introduction to model selection</h2>
+<p>Up to now, when faced with a biological question, we have formulated a null hypothesis, generated a model to test the null hypothesis, summarized the model to get the value of the test-statistic (e.g. <em>t</em>-statistic, <em>F</em>-value, etc.), and rejected the null hypothesis when the observed test statistic falls outside the test statistic distribution with some arbitrarily low probability (e.g. <em>P</em> &lt; 0.05). This low probability then allows us to reject the null hypothesis in favour of the more biologically interesting alternative hypothesis. This is an <strong>inferential</strong> or <strong>frequentist</strong> approach to statistics.</p>
+<p>An alternative approach is to simultaneously test multiple competing hypotheses, with each hypothesis being represented in a separate model. This is what model selection allows and it is becoming increasingly used in ecology and evolutionary biology. It has a number of advantages:</p>
+<ol style="list-style-type: decimal">
+<li>It does not rely on a single model.</li>
+<li>Models can be ranked and weighted according to their fit to the observed data.</li>
+<li>The best supported models can be averaged to get parameter estimates</li>
+</ol>
+<p>The most challenging part of model selection is coming up with a series of hypothesis-driven models that that adequately capture the processes and patterns you are interested in representing. In an ideal world, this would be based on detailed knowledge of the system you are working in and on prior work or literature reviews. However, detailed knowledge is often unavailable for many ecological systems and alternative approaches exist. For example, we can compare models with all possible combinations of the predictors of interest (AKA the <strong>all-subset</strong> approach) rather than constructing models with only particular combinations of those predictors. Note this approach has been criticized as “data-dredging” or “fishing” (Burnham and Anderson 2002, but see Symonds and Moussalli 2011) and is nicely summarized by this often-quoted line from Burnham and Anderson (2012).</p>
+<p><em>““Let the computer find out” is a poor strategy and usually reflects the fact that the researcher did not bother to think clearly about the problem of interest and its scientific setting (Burnham and Anderson, 2002).&quot;</em></p>
+<p>The next step is to decide how we select the “best” model or set of best models. One approach would be to use a measure of model fit or explanatory power. For example, we could use the model R<sup>2</sup>, which we covered in lecture 9 and represents the amount of variation in our response variable that is explained by the predictor variables in the model. However, this is not a parsimonious solution since it inevitably favours more complex models (i.e. models with more predictors). Thus, what we really need is an approach that examines model fit while simultaneously penalizing model complexity.</p>
+</div>
+<div id="information-theory-and-model-selection-criteria" class="section level2">
+<h2>Information Theory and model selection criteria</h2>
+<p>There are numerous model selection criteria based on mathematical information theory that we can use to select models from among a set of candidate models. They additionally allow the relative weights of different models to be compared and allow multiple models to be used for inferences. The most commonly used information criteria in ecology and evolution are: Akaike’s Information Criterion (AIC), the corrected AIC<sub>c</sub> (corrected for small sample sizes), and the Bayesian Information Criterion (BIC, also known as the Schwarz Criterion) (Johnson and Omland, 2004). Here we will focus on AIC and AIC<sub>c</sub>. Here is how AIC is calculated:</p>
+<p><span class="math display">\[ AIC = -2Log\mathcal{L} \ + \ 2p \]</span> The lower the AIC value, the better the model. <span class="math inline">\(-2Log\mathcal{L}\)</span> is called the <strong>negative log likelihood</strong> of the model, and measures the model’s fit (or lack thereof) to the observed data: <strong>Lower</strong> negative log-likelihood values indicate a beter fit of the model to the observed data. <span class="math inline">\(2p\)</span> is a <em>bias correcting factor</em> that penalizes the model AIC based on the number of parameters (p) in the model.</p>
+<p>Similar to AIC is AIC<sub>c</sub>, which corrects for small sample sizes. It is recommended to use AIC<sub>c</sub> when <span class="math inline">\(n/k\)</span> is less than 40, with <span class="math inline">\(n\)</span> being the sample size (i.e. total number of observations) and <span class="math inline">\(k\)</span> being the <strong>total</strong> number of parameters in the most saturated model (i.e. the model with the most parameters), including both fixed and random effects, as well as intercepts (Symonds and Moussalli 2011). AIC<sub>c</sub> is calculated as follows:</p>
+<p><span class="math display">\[ AIC_c = AIC+\frac{2k(k+1)}{n-k-1} \]</span></p>
+</div>
+<div id="example-of-model-selection" class="section level2">
+<h2>Example of model selection</h2>
+<p>In lecture 8, we used mixed-effect models to determine whether species richness was influenced by NAP (i.e. the height of a sampling location relative to mean tidal level) across 9 beaches. We generated 3 models: (1) A random intercept model with NAP as a fixed effect and the random effect allowing the intercept (i.e species richness) to vary by beach; (2) A random intercept and slope model with NAP as a fixed effect and a random effect allowing both the intercept ( i.e. richness) and slope (i.e. response of richness to NAP) to vary across beaches; and (3) An intercept only model with no fixed effects but allowing for variation in richness across beaches. In this lecture, we’ll create similar models with random intercepts and random intercepts + slopes but we’ll additionally include Exposure and the NAP by Exposure interaction as additional fixed-effects. Let’s load in the RIKZ data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Load in packages used throughout lesson</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(lme4)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(lmerTest)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(MuMIn)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Load in data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">rikz_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/rikz_data.txt&quot;</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">download.file</span>(rikz_data, <span class="st">&quot;rikz_data.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">rikz_data &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">&quot;rikz_data.txt&quot;</span>,</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                         <span class="dt">col_names =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">                         <span class="dt">delim =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">rikz_data<span class="op">$</span>Beach &lt;-<span class="st"> </span><span class="kw">as.factor</span>(rikz_data<span class="op">$</span>Beach)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">rikz_data<span class="op">$</span>Beach &lt;-<span class="st"> </span><span class="kw">as.factor</span>(rikz_data<span class="op">$</span>Beach)</a></code></pre></div>
+<p>Given these 3 models, we may be interested in knowing which one best fits our observed data so that we can interpret this model to draw inferences about our population. To do this, we can follow the guidelines laid out in Zuur <em>et al.</em> (2009):</p>
+<ol style="list-style-type: decimal">
+<li>Create a saturated model that includes all fixed effects (and their interactions) and random effects. If you can’t include all fixed effects, you should select those that you think are most likely to be important based on your knowledge of the system at hand.</li>
+<li>Using the saturated model, optimize the random-effect structure of the model. Compare models with saturated fixed effects structure with models of differing random effect structure. Models should be fit using Restricted Maximum Likelihood (i.e. <code>REML = TRUE</code>). The optimal random effect structure is the one that provides the lowest AIC. Note that some common sense is needed here: you should not remove random effects if they are included to specifically account for non-independence in your data (i.e. nestedness, see lecture 8)</li>
+<li>Optimize the fixed-effect structure by fitting the model with optimized random effects to models with differing fixed effect structures. These models should be fit with Maximum Likelihood (i.e. <code>REML = FALSE</code>) to prevent biased fixed-effect parameter estimates. Models can be selected on the basis of AIC (lowest is best) or by comparing nested models using Likelihood Ratio Tests (LRTs). <strong>Important</strong>: You cannot include models that contain interactions if the main effects involved in the interactiond are not present in the model.</li>
+<li>Run the final model with optimized fixed and random effects using REML.</li>
+</ol>
+<p>Note that this approach to model selection can also be applied to models that lack random effects (e.g. simple linear regression). In such cases, you don’t need to worry about random effects and can go ahead and just optimize the fixed effects. You also don’t need to worry about ML vs. REML.</p>
+<p>Let’s try this with some real data. Let’s create 2 models, but this time let’s include Exposure and the interaction between NAP and Exposure as additional effects.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Define 2 models. Fit both with REML.</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">mixed_model_IntOnly &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP<span class="op">*</span>Exposure <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), <span class="dt">REML =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">mixed_model_IntSlope &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP<span class="op">*</span>Exposure <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>NAP<span class="op">|</span>Beach), <span class="dt">REML =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">                          <span class="dt">data =</span> rikz_data)</a></code></pre></div>
+<div id="step-1-create-saturated-model" class="section level4">
+<h4>Step 1: Create saturated model</h4>
+<p>This is already done. The saturated model is <code>mixed_model_IntSlope</code> created in the code chunk above.</p>
+</div>
+<div id="step-2-optimize-random-effect-structure" class="section level4">
+<h4>Step 2: Optimize random-effect structure</h4>
+<p>To optimize the random effects, we compare the <code>mixed_model_IntSlope</code> with the <code>mixed_model_IntOnly</code>. This will determine whether including a random slope for each beach improves the fit of the model to the observed data. <strong>Note:</strong> We are not testing the <code>mixed_model_IntOnly</code> model against one in which there is no random effect since including a random intercept for each beach is required to account for the non-independence in our data. Let’s get the AIC<sub>c</sub> for these two models below. We will use AIC<sub>c</sub> since <span class="math inline">\(n/k\)</span> is equal to <code>nrow(rikz_data)/3 = 1.67</code>, which is below 40.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">AICc</span>(mixed_model_IntOnly, mixed_model_IntSlope)</a></code></pre></div>
+<pre><code>##                      df     AICc
+## mixed_model_IntOnly   6 235.2327
+## mixed_model_IntSlope  8 237.2527</code></pre>
+<p>Based on the output above, it seems including a random intercept only is a beter fit to the data (i.e. lower AIC<sub>c</sub>). The optimal random-effect structure is thus one that includes only a random intercept for each beach but does <strong>not</strong> include a random slope.</p>
+</div>
+<div id="step-3-optimize-the-fixed-effect-structure" class="section level4">
+<h4>Step 3: Optimize the fixed effect structure</h4>
+<p>We now need to refit the model with the optimal random-effect structure using ML and compare different fixed effect structures. Let’s fit these models below and check their AIC<sub>c</sub>s.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Full model with both fixed effects and their interaction</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">mixed_model_IntOnly_Full &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP<span class="op">*</span>Exposure <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), <span class="dt">REML =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># No interaction</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">mixed_model_IntOnly_NoInter &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP <span class="op">+</span><span class="st"> </span>Exposure <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">                                    <span class="dt">REML =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co"># No interaction or main effect of exposure</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">mixed_model_IntOnly_NAP &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>NAP <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">                                    <span class="dt">REML =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co"># No interaction or main effect of NAP</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">mixed_model_IntOnly_Exp &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span>Exposure <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">                                    <span class="dt">REML =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co"># No fixed effects</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">mixed_model_IntOnly_NoFix &lt;-<span class="st"> </span><span class="kw">lmer</span>(Richness <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Beach), </a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">                                    <span class="dt">REML =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">                             <span class="dt">data =</span> rikz_data)</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="kw">AICc</span>(mixed_model_IntOnly_Full, mixed_model_IntOnly_NoInter,</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">    mixed_model_IntOnly_NAP, mixed_model_IntOnly_Exp,</a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">    mixed_model_IntOnly_NoFix)</a></code></pre></div>
+<pre><code>##                             df     AICc
+## mixed_model_IntOnly_Full     6 236.5947
+## mixed_model_IntOnly_NoInter  5 238.1467
+## mixed_model_IntOnly_NAP      4 250.8291
+## mixed_model_IntOnly_Exp      4 261.7996
+## mixed_model_IntOnly_NoFix    3 269.8889</code></pre>
+<p>Based on the output above, it looks like the model that includes NAP, Exposure, and their interaction provides the best fit to the data.</p>
+</div>
+<div id="step-4-interpret-model-output" class="section level4">
+<h4>Step 4: Interpret model output</h4>
+<p>Summarizing the output, we see that increasing both NAP and Exposure results in a decrease in species richness (<em>P</em> &lt; 0.05). There is also a nearly significant interaction between NAP and Exposure (I wouldn’t interpret this since <em>P</em> &gt; 0.05). Finally, while Beach is included in our model as a random effect, notice how little variation is attributed to differences between beaches relative to the model we ran in lecture 8. The only difference is that our current model includes Exposure as a fixed effect. This suggests that much of the variation between beaches in lecture 8 was likely attributable to differences in exposure, which is now being captured by the fixed effects.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Summarize best-fit model</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">update</span>(mixed_model_IntOnly_Full, <span class="dt">REML =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: Richness ~ NAP * Exposure + (1 | Beach)
+##    Data: rikz_data
+## 
+## REML criterion at convergence: 221
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.4139 -0.4394 -0.1064  0.1511  4.3635 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  Beach    (Intercept) 0.3061   0.5533  
+##  Residual             8.7448   2.9572  
+## Number of obs: 45, groups:  Beach, 9
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(&gt;|t|)    
+## (Intercept)   40.7149     5.6162   7.9355   7.250 9.18e-05 ***
+## NAP          -13.5865     5.4298  36.5641  -2.502 0.016947 *  
+## Exposure      -3.3385     0.5485   7.9964  -6.087 0.000294 ***
+## NAP:Exposure   1.0625     0.5279  36.6831   2.013 0.051505 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) NAP    Exposr
+## NAP         -0.300              
+## Exposure    -0.996  0.301       
+## NAP:Exposur  0.302 -0.997 -0.306</code></pre>
+</div>
+</div>
+<div id="a-more-realistic-example" class="section level2">
+<h2>A more realistic example</h2>
+<p>In Assignment 5, you used data from Santangelo <em>et al.</em> (2019) who were interested in understanding how insect herbivores and plant defenses influence the expression of plant floral traits. While that was one component of the study, the main question was whether herbivores, pollinators, and plant defenses alter the shape and strength of <em>natural selection</em> on plant floral traits. In other words, which of these 3 agents of selection (plant defenses, herbivores, or pollinators) are most important in driving the evolution of floral traits in plants?</p>
+<p>The motivation for that experiment actually came a few year prior, in 2016, when Thompson and Johnson (2016) published an experiment examining how plant defenses alter natural selection on plant floral traits. They found some interesting patterns but it was unclear whether these were being driven by the plant’s interactions with herbivores, pollinators, or both. This was because they didn’t directly manipulate these agents: pollination was not quantified in their experiment and herbivore damage was measured observationally and thus these results were correlative. However, their experimental data provides a prime use of model selection in ecology and evolution.</p>
+<p>The data consists of 140 observations (rows). Each row in the dataset corresponds to the mean trait value of one plant genotype (they had replicates for each genotype but took the average across these replicates) grown in a common garden. They measured 8 traits and quantified the total mass of seeds produced by plants as a measure of absolute fitness. Genotypes were either “cyanogenic” (i.e. containing plant defenses) or were “acyanogenic” ( i.e. lacking plant defenses). In addition, they quantified the amount of herbivore damage (i.e. percent leaf area lost) on each plant twice throughout the growing season, although here we will only focus on the effects of plant defenses and avoid their herbivore damage measurements. We are going to conduct a <strong>genotypic selection analysis</strong> to quantify natural selection acting on each trait (while controlling for other traits) and assess whether plant defenses alter the strength or direction of natural selection imposed on these traits. While this may sound complicated, it turns out that a single multiple regression is all that’s required to do this: relative fitness is the response variable and <em>standardized</em> traits (i.e. mean of 0 and standard deviation of 1), treatments, and their interactions are the predictors. This multiple regression approach is a common way of measuring natural selection in nature (see Lande and Arnold 1983, Rausher 1992, Stinchcombe 2002).</p>
+<p>Let’s start by loading in the data.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Load in Thompson and Johnson (2016) data</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">Thompson_data &lt;-<span class="st"> &quot;https://uoftcoders.github.io/rcourse/data/Thompson-Johnson_2016_Evol.csv&quot;</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">download.file</span>(Thompson_data, <span class="st">&quot;Thompson-Johnson_2016_Evol.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">Thompson_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;Thompson-Johnson_2016_Evol.csv&quot;</span>, </a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                          <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## Observations: 140
+## Variables: 38
+## $ Genotype     &lt;dbl&gt; 2, 4, 5, 6, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 21, 22…
+## $ cyanide      &lt;dbl&gt; 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0,…
+## $ linamarin    &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0,…
+## $ linamarase   &lt;dbl&gt; 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0,…
+## $ VegBiomass   &lt;dbl&gt; 1.16840, 4.42100, 0.79500, 4.44740, 1.17575, 2.70160, 2.…
+## $ LatSpread    &lt;dbl&gt; 283.500, 995.400, 298.000, 1019.450, 271.000, 887.800, 7…
+## $ FrstFlwr     &lt;dbl&gt; 2.200000, 11.250000, 7.666667, 32.000000, 8.500000, 6.80…
+## $ BnrLgth      &lt;dbl&gt; 6.326250, 6.472500, 5.712500, 5.422500, 5.565000, 5.8862…
+## $ BnrWdt       &lt;dbl&gt; 3.568750, 3.700000, 2.961250, 3.222500, 3.350000, 3.2937…
+## $ InflHt       &lt;dbl&gt; 23.21750, 20.62000, 20.09500, 25.13500, 14.93000, 19.711…
+## $ InflWdt      &lt;dbl&gt; 22.67250, 17.72833, 21.44250, 25.01000, 15.37000, 19.391…
+## $ InflNum      &lt;dbl&gt; 4.20, 4.00, 3.00, 1.00, 1.75, 3.40, 2.20, 1.50, 1.80, 12…
+## $ FlwrCt       &lt;dbl&gt; 32.75000, 29.50000, 21.50000, 59.25000, 56.00000, 35.444…
+## $ SeedBm       &lt;dbl&gt; 0.030000, 0.038625, 0.004375, 0.014960, 0.025875, 0.0309…
+## $ AvgDMG1      &lt;dbl&gt; 43.26000, 21.95000, 43.17500, 21.72000, 30.16250, 27.400…
+## $ AvgDMG2      &lt;dbl&gt; 21.3700, 17.5500, 24.4500, 15.9200, 37.3375, 20.2400, 22…
+## $ VegGrowth    &lt;dbl&gt; -1.12177796, 0.88565970, -1.23438613, 0.92433034, -1.134…
+## $ RFSeed       &lt;dbl&gt; 0.9282121, 1.1950731, 0.1353643, 0.4628684, 0.8005829, 0…
+## $ FrstFlwr.T   &lt;dbl&gt; 1.483240, 3.354102, 2.768875, 5.656854, 2.915476, 2.6076…
+## $ InflHt.T     &lt;dbl&gt; 539.0523, 425.1844, 403.8090, 631.7682, 222.9049, 388.54…
+## $ SeedBm.T     &lt;dbl&gt; 0.17320508, 0.19653244, 0.06614378, 0.12231108, 0.160857…
+## $ InflNum.T    &lt;dbl&gt; 1.6486586, 1.6094379, 1.3862944, 0.6931472, 1.0116009, 1…
+## $ AvgDmg1.T    &lt;dbl&gt; 6.577233, 4.685083, 6.570769, 4.660472, 5.492040, 5.2345…
+## $ AvgDmg2.T    &lt;dbl&gt; 4.622770, 4.189272, 4.944694, 3.989987, 6.110442, 4.4988…
+## $ VegGrowth.T  &lt;dbl&gt; 0.7926046, 1.6234715, 0.7180626, 1.6353380, 0.7845251, 1…
+## $ VegBiomass.T &lt;dbl&gt; 1.0809255, 2.1026174, 0.8916277, 2.1088860, 1.0843201, 1…
+## $ LatSpread.T  &lt;dbl&gt; 16.83746, 31.54996, 17.26268, 31.92883, 16.46208, 29.795…
+## $ FlwrCt.S     &lt;dbl&gt; -0.51866068, -0.84578217, -1.65100431, 2.14863763, 1.821…
+## $ BnrLgth.S    &lt;dbl&gt; 0.98570003, 1.28769651, -0.28165272, -0.88048334, -0.586…
+## $ BnrWdt.S     &lt;dbl&gt; 0.91616830, 1.41223922, -1.37993138, -0.39251403, 0.0893…
+## $ InflHt.S     &lt;dbl&gt; 0.7190552, -0.3496320, -0.5502468, 1.5892241, -2.2480905…
+## $ InflWdt.S    &lt;dbl&gt; 0.83894602, -0.80610308, 0.42969396, 1.61669129, -1.5907…
+## $ FrstFlwr.S   &lt;dbl&gt; -1.54639903, 0.34224409, -0.24854531, 2.66688196, -0.100…
+## $ SeedBm.S     &lt;dbl&gt; 0.08114206, 0.44458767, -1.58689750, -0.71179816, -0.111…
+## $ InflNum.S    &lt;dbl&gt; 0.94431501, 0.85825229, 0.36860437, -1.15238099, -0.4535…
+## $ AvgDmg1.S    &lt;dbl&gt; 0.66702301, -1.29690435, 0.66031291, -1.32244855, -0.459…
+## $ AvgDmg2.S    &lt;dbl&gt; -0.29425351, -0.87159469, 0.13449201, -1.13700594, 1.687…
+## $ VegGrowth.S  &lt;dbl&gt; -1.18918210, 0.91239380, -1.37772698, 0.94240864, -1.209…</code></pre>
+<p>We will now generate the global model. Remember, this should be a saturated model with all of the fixed effects and their interactions. We are including the presence of hydrogen cyanide (HCN, cyanide in model below), all standardized traits and the trait by HCN interactions as fixed effects in this model. There are no random effects in this model so we can go ahead and use <code>lm()</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Create saturated model</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">GTSelnModel.HCN &lt;-<span class="st"> </span><span class="kw">lm</span>(RFSeed <span class="op">~</span><span class="st"> </span>VegGrowth.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span>BnrLgth.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">                          </span>BnrWdt.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span>FrstFlwr.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">                          </span>InflNum.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span>FlwrCt.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">                          </span>InflWdt.S<span class="op">*</span>cyanide <span class="op">+</span><span class="st"> </span>InflHt.S<span class="op">*</span>cyanide,</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">                      <span class="dt">data =</span> Thompson_data)</a></code></pre></div>
+<p>Next, we will perform our model selection based on AIC<sub>c</sub> (due to low sample sizes). We automate this process using the <code>dredge()</code> function from the <code>MuMIn</code> package. <code>dredge()</code> offers a <strong>ton</strong> of flexibility in how model selection is done. You can customize the criterion used (i.e. AIC, BIC, etc.), how the output is reported, what’s included in the output (e.g. do you want F-stats and R<sup>2</sup> to be included?), whether some terms should be represented in all models and even only include some terms in models if other terms are included (AKA <em>Dependency Chain</em>). For our purposes, we will perform an <strong>all-subsets</strong> model selection, comparing models with all combinations of predictors (but not those where main effects are absent despite the presence of an interaction!). I warned earlier that this approach has been criticized. However, in this case it’s reasonable: we know from work in other systems that all of these traits could conceivably experience selection, and we know that that selection could vary due to plant defenses. In other words, all terms in this model represent biologically real hypotheses. Let’s go ahead and dredge.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">options</span>(<span class="dt">na.action =</span> <span class="st">&quot;na.fail&quot;</span>) <span class="co"># Required for dredge to run</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">GTmodel_dredge &lt;-<span class="st"> </span><span class="kw">dredge</span>(GTSelnModel.HCN, <span class="dt">beta =</span> F, <span class="dt">evaluate =</span> T, <span class="dt">rank =</span> AICc)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">options</span>(<span class="dt">na.action =</span> <span class="st">&quot;na.omit&quot;</span>) <span class="co"># set back to default</span></a></code></pre></div>
+<p>Let’s have a look at the first few lines returned by <code>dredge()</code>. Let’s also print out how many models were compared.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">head</span>(GTmodel_dredge)</a></code></pre></div>
+<pre><code>## Global model call: lm(formula = RFSeed ~ VegGrowth.S * cyanide + BnrLgth.S * cyanide + 
+##     BnrWdt.S * cyanide + FrstFlwr.S * cyanide + InflNum.S * cyanide + 
+##     FlwrCt.S * cyanide + InflWdt.S * cyanide + InflHt.S * cyanide, 
+##     data = Thompson_data)
+## ---
+## Model selection table 
+##        (Int)  BnL.S    BnW.S     cyn  FlC.S    FrF.S  InN.S   VgG.S BnL.S:cyn
+## 3920  0.9783 0.2297 -0.09086 0.04292 0.1671          0.4958 0.07497   -0.3245
+## 3664  0.9668 0.2597 -0.10380 0.05271 0.1756          0.5099           -0.3513
+## 2894  0.9895 0.1861          0.02887 0.1721          0.4916 0.09900   -0.1837
+## 69456 0.9809 0.2151 -0.08489 0.04193 0.1624          0.4992 0.10790   -0.3086
+## 3936  0.9825 0.2238 -0.09101 0.04230 0.1687 -0.02619 0.4860 0.08231   -0.3215
+## 2910  0.9943 0.1794          0.02828 0.1739 -0.02989 0.4806 0.10700   -0.1834
+##       BnW.S:cyn cyn:FlC.S cyn:VgG.S df  logLik  AICc delta weight
+## 3920     0.2273    0.2328           11 -85.102 194.3  0.00  0.254
+## 3664     0.2633    0.2437           10 -86.353 194.4  0.14  0.237
+## 2894               0.2200            9 -87.650 194.7  0.42  0.206
+## 69456    0.2391    0.2521   -0.0917 12 -84.648 195.8  1.49  0.121
+## 3936     0.2238    0.2311           12 -84.880 196.2  1.95  0.096
+## 2910               0.2181           10 -87.370 196.4  2.18  0.086
+## Models ranked by AICc(x)</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">nrow</span>(GTmodel_dredge)</a></code></pre></div>
+<pre><code>## [1] 6817</code></pre>
+<p>The output tells us the original model and then provides a rather large table with many rows and columns. The rows in this case are different models with different combinations of predictors (n = 6,817 models). The columns are the different terms from our model, which <code>dredge()</code> has abbreviated. The numbers in the cells are the estimates (i.e. beta coefficients) for each term that is present in the model; blank cells mean that term was not included in the model. The last 5 columns are important: they give us the degrees of freedom for the model (a function of the number of terms in the model), the log-likelihood of the model, the AIC score, the delta AIC, and the AIC weights. The delta AIC is the difference between the AIC score of a model and the AIC score of the top model. The weight can be thought of as the probability that the model is the best model given the candidate set included in the model selection procedure.</p>
+<p>Given this output, we may be interested in retrieving the top model and interpreting it. Let’s go ahead and to this. We can retrieve the top model using the <code>get.models()</code> function and specifying that we want to top model using the <code>subset</code> argument. We need to further subset this output since it returns a list.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">top_model &lt;-<span class="st"> </span><span class="kw">get.models</span>(GTmodel_dredge, <span class="dt">subset =</span> <span class="dv">1</span>)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">top_model</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = RFSeed ~ BnrLgth.S + BnrWdt.S + cyanide + FlwrCt.S + 
+##     InflNum.S + VegGrowth.S + BnrLgth.S:cyanide + BnrWdt.S:cyanide + 
+##     cyanide:FlwrCt.S + 1, data = Thompson_data)
+## 
+## Coefficients:
+##       (Intercept)          BnrLgth.S           BnrWdt.S            cyanide  
+##           0.97834            0.22967           -0.09086            0.04292  
+##          FlwrCt.S          InflNum.S        VegGrowth.S  BnrLgth.S:cyanide  
+##           0.16709            0.49578            0.07497           -0.32449  
+##  BnrWdt.S:cyanide   cyanide:FlwrCt.S  
+##           0.22730            0.23284</code></pre>
+<p>This output above shows us the top model from our dredging. What if we want to interpret this model? No problem!</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Summarize top model</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">summary</span>(top_model)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = RFSeed ~ BnrLgth.S + BnrWdt.S + cyanide + FlwrCt.S + 
+##     InflNum.S + VegGrowth.S + BnrLgth.S:cyanide + BnrWdt.S:cyanide + 
+##     cyanide:FlwrCt.S + 1, data = Thompson_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.20717 -0.24783 -0.02084  0.26346  1.25135 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        0.97834    0.05049  19.376  &lt; 2e-16 ***
+## BnrLgth.S          0.22967    0.05807   3.955 0.000125 ***
+## BnrWdt.S          -0.09086    0.05758  -1.578 0.116972    
+## cyanide            0.04292    0.08416   0.510 0.610918    
+## FlwrCt.S           0.16709    0.05256   3.179 0.001845 ** 
+## InflNum.S          0.49578    0.04865  10.191  &lt; 2e-16 ***
+## VegGrowth.S        0.07497    0.04898   1.531 0.128237    
+## BnrLgth.S:cyanide -0.32449    0.11197  -2.898 0.004409 ** 
+## BnrWdt.S:cyanide   0.22730    0.10567   2.151 0.033313 *  
+## cyanide:FlwrCt.S   0.23284    0.09003   2.586 0.010806 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4612 on 130 degrees of freedom
+## Multiple R-squared:  0.6198, Adjusted R-squared:  0.5935 
+## F-statistic: 23.55 on 9 and 130 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>But how much evidence do we actually have that this is the <strong>best</strong> model? We have over 6,000 models so it’s unlikely that only one model explains the data. From the <code>dredge</code> output we can see there is little difference in the AIC and weights of the first few models. Is there really much of a difference between two models who’s AIC differ by only 0.14 points? How do we decide which model(s) to interpret? Statisticians have thought about this problem and it turns out that models with delta AIC (or other criterion) less than 2 are considered to be just as good as the top model and thus we shouldn’t just discount them. Alternatively, we could use the weights: if a model has weight greater or equal to 95% then it is likely to be the top model. Otherwise we can generate a “credibility” set consisting of all models whose cumulative sum of AIC weights is 0.95. In any case, the point is that we have no good reason to exclude models other than the top one when the next models after it are likely to be just as good. To get around this, we can perform what’s called <strong>model averaging</strong> (AKA multi-model inference), which allows us to average the parameter estimates across multiple models and avoids the issue of model uncertainty. Let’s do this below by averaging all models with a delta AIC &lt;= 2.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">model.avg</span>(GTmodel_dredge, <span class="dt">subset =</span> delta <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## 
+## Call:
+## model.avg(object = GTmodel_dredge, subset = delta &lt;= 2)
+## 
+## Component model call: 
+## lm(formula = RFSeed ~ &lt;5 unique rhs&gt;, data = Thompson_data)
+## 
+## Component models: 
+##                       df logLik   AICc delta weight
+## 1/2/3/4/6/7/8/9/10    11 -85.10 194.27  0.00   0.28
+## 1/2/3/4/6/8/9/10      10 -86.35 194.41  0.14   0.26
+## 1/3/4/6/7/8/10         9 -87.65 194.68  0.42   0.23
+## 1/2/3/4/6/7/8/9/10/11 12 -84.65 195.75  1.49   0.13
+## 1/2/3/4/5/6/7/8/9/10  12 -84.88 196.22  1.95   0.10
+## 
+## Term codes: 
+##           BnrLgth.S            BnrWdt.S             cyanide            FlwrCt.S 
+##                   1                   2                   3                   4 
+##          FrstFlwr.S           InflNum.S         VegGrowth.S   BnrLgth.S:cyanide 
+##                   5                   6                   7                   8 
+##    BnrWdt.S:cyanide    cyanide:FlwrCt.S cyanide:VegGrowth.S 
+##                   9                  10                  11 
+## 
+## Model-averaged coefficients:  
+## (full average) 
+##                      Estimate Std. Error Adjusted SE z value Pr(&gt;|z|)    
+## (Intercept)          0.978654   0.051169    0.051637  18.953  &lt; 2e-16 ***
+## BnrLgth.S            0.225054   0.062200    0.062681   3.590  0.00033 ***
+## BnrWdt.S            -0.072942   0.064461    0.064835   1.125  0.26058    
+## cyanide              0.042088   0.084783    0.085570   0.492  0.62282    
+## FlwrCt.S             0.169975   0.052873    0.053364   3.185  0.00145 ** 
+## InflNum.S            0.497923   0.049505    0.049957   9.967  &lt; 2e-16 ***
+## VegGrowth.S          0.066116   0.060037    0.060342   1.096  0.27321    
+## BnrLgth.S:cyanide   -0.297258   0.124060    0.124926   2.379  0.01734 *  
+## BnrWdt.S:cyanide     0.186530   0.137538    0.138125   1.350  0.17687    
+## cyanide:FlwrCt.S     0.235112   0.091214    0.092057   2.554  0.01065 *  
+## cyanide:VegGrowth.S -0.012129   0.047872    0.048135   0.252  0.80106    
+## FrstFlwr.S          -0.002749   0.015496    0.015604   0.176  0.86018    
+##  
+## (conditional average) 
+##                     Estimate Std. Error Adjusted SE z value Pr(&gt;|z|)    
+## (Intercept)          0.97865    0.05117     0.05164  18.953  &lt; 2e-16 ***
+## BnrLgth.S            0.22505    0.06220     0.06268   3.590  0.00033 ***
+## BnrWdt.S            -0.09420    0.05800     0.05853   1.609  0.10753    
+## cyanide              0.04209    0.08478     0.08557   0.492  0.62282    
+## FlwrCt.S             0.16997    0.05287     0.05336   3.185  0.00145 ** 
+## InflNum.S            0.49792    0.04951     0.04996   9.967  &lt; 2e-16 ***
+## VegGrowth.S          0.08921    0.05295     0.05341   1.670  0.09487 .  
+## BnrLgth.S:cyanide   -0.29726    0.12406     0.12493   2.379  0.01734 *  
+## BnrWdt.S:cyanide     0.24090    0.10646     0.10743   2.242  0.02494 *  
+## cyanide:FlwrCt.S     0.23511    0.09121     0.09206   2.554  0.01065 *  
+## cyanide:VegGrowth.S -0.09170    0.10015     0.10110   0.907  0.36438    
+## FrstFlwr.S          -0.02619    0.04092     0.04131   0.634  0.52601    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The first part of the output breaks down which terms are part of which models and gives some nice descriptive statistics for these models. The next part is the important bit: the actual parameter estimates from the model averaging. The estimates are those that were averaged across all models with a delta AIC &lt;= 2. Note there are two sets of estimates: the “full” coefficients set terms to 0 if they are not included in the model while averaging, whereas the “conditional” coefficients ignores the predictors entirely. The “full” coefficients are thus more conservative and it is best practice to interpret these. Finally, the last part of the output tells us in how many models each of the terms was included.</p>
+<div id="caveats-to-model-selection" class="section level3">
+<h3>Caveats to model selection</h3>
+<ol style="list-style-type: decimal">
+<li>Depends on the models included in the candidate set. You can’t identify a model as being the “best” fit to the data if you didn’t include the model to begin with!</li>
+<li>The parameter estimates and predictions arising from the “best” model or set of best models should be biologically meaningful.</li>
+<li>Need to decide whether to use model selection or common inferential statistics (e.g. based on <em>P</em>-values). Techniques that rely on both approaches are possible (e.g. backward variable selection followed by averaging of top models), such as the example provided above.</li>
+</ol>
+</div>
+<div id="formal-test-between-two-models" class="section level3">
+<h3>Formal test between two models</h3>
+<p>Throughout the early parts of the lecture, we made qualitative decisions on which model was best based on model AIC scores. However, it is also possible to statistically test whether one model fits the data better using a <em>likelihood ratio test</em>. This test compares the goodness of fit of two models by testing the ratio of their log-likelihoods against a Chi-squared distribution. Importantly, this approach requires that the two models be nested (i.e., one model must be a subset of the other). This can be implemented in R using the <code>anova(model1, model2)</code> syntax.</p>
+</div>
+</div>
+<div id="additional-reading" class="section level2">
+<h2>Additional reading</h2>
+<ol style="list-style-type: decimal">
+<li>Johnson, J. and Omland, K. 2004. Model selection in ecology and evolution. <em>Trends in Ecology and Evolution</em> <strong>19</strong>: 101-108.</li>
+<li>Burnham K.P., Anderson D.R. 2002. Model selection and multimodel inference, 2nd edn. <em>Springer</em>, New York.</li>
+<li>Symonds, M. and Moussalli, A. 2011. A brief guide to model selection, multimodel inference and model averaging in behavioural ecology using Akaike’s information criterion. <em>Behavioural Ecology and Sociobiology</em> <strong>65</strong>: 13-21.</li>
+<li><ol style="list-style-type: decimal">
+<li>Zuur, A. <em>et al.</em> 2009. Mixed effects models and extensions in ecology with R. <em>Springer</em></li>
+</ol></li>
+<li>Thompson, K.A. and Johnson, M.T.J. 2016. Antiherbivore defenses alter natural selection on plant reproductive traits. <em>Evolution</em> <strong>70</strong>: 796-810.</li>
+<li>Lande, R. and Arnold, S. 1983. The measurement of selection on correlated characters. <em>Evolution</em> <strong>37</strong>: 1210-1226.</li>
+<li>Rausher, M. 1992. The measurement of selection on quantitative traits: biases due to environmental covariances between traits and fitness. <em>Evolution</em> <strong>46</strong>: 616-626.</li>
+<li>Stinchcombe, J.R. <em>et al.</em>. 2002. Testing for environmentally induced bias in phenotypic estimates of natural selection: theory and practice. <em>Am. Nat.</em> <strong>160</strong>: 511-523.</li>
+</ol>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

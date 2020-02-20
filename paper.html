@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2019-01-15" />
+
+<title>A graduate student-led participatory live-coding quantitative methods course in R: Experiences on initiating, developing, and teaching</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">A graduate student-led participatory live-coding quantitative methods course in R: Experiences on initiating, developing, and teaching</h1>
+<h4 class="date">15 January 2019</h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>We present an open source learning module suitable for a semester long course and designed to leverage participatory live-coding techniques to teach both statistical and programming skills to primarily upper-year undergraduate biology students. Our learning module has three self-contained submodules spanning sixteen lessons: 1) Programming in R, basic data wrangling, and visualizations; 2) Exploratory data analysis, statistics, and modelling; and 3) Collaborative and reproducible science. Our learning module includes eight assignments distributed throughout the term to assess students’ learning and understanding. The material is made available as R Markdown documents and designed to be taught using R Notebooks. Students are not expected to have any prior knowledge of the R language. Our material is licensed under CC-BY 4.0 while the code is under the MIT License. Our course is a response to the growing need for programmatic training emphasizing sound data analysis practices among researchers. We believe the included lesson topics, open accessibility, and modularity of our course makes it an ideal resource for instructors.</p>
+</div>
+<div id="statement-of-need" class="section level1">
+<h1>Statement of Need</h1>
+<p>In traditional undergraduate biology education, students learn statistical skills and biological concepts separately, without any practical application through coding. Designed primarily for upper-year undergraduate students, this learning module emphasizes gaining skills in R coding in the context of learning statistics and ecology. Notably, the material covers statistical concepts that are broadly useful in biological sciences, including mixed effects models, randomization tests, model selection, and differential equations. While we delivered the material and concepts as a four-month long course, these concepts are structured into primarily independent submodules focused around several lessons, which could easily be mixed and matched to suit any desired learning outcome. Lessons were designed to be interactive and delivered in a participatory live-coding format so students learn experientially. The teaching material includes assignments to hone and reinforce students’ understanding and allow them to critically apply their skills to new problems. Reproducible quantitative research skills are emphasized throughout, culminating in an open-ended self-directed project that requires students to apply their skills to a real ecological dataset and problem. The teaching material is hosted in a public GitHub repository which automatically generates a website that presents the text, code, and code output together on the same page. The material is openly available and licensed; anyone can easily copy and modify for their own purposes.</p>
+</div>
+<div id="learning-objectives-and-content" class="section level1">
+<h1>Learning Objectives and Content</h1>
+<p>The overarching objective of the course is to teach reproducible and collaborative quantitative research skills. The lessons are described in more detail in Table 1 and are organized into three submodules:</p>
+<ol style="list-style-type: decimal">
+<li>Programming in R <span class="citation">(R Core Team 2018)</span>, basic data wrangling, and visualization (lessons 1-5).</li>
+<li>Exploratory and statistical data analysis (lessons 6-13).</li>
+<li>Collaborative and reproducible science (lessons 14-15).</li>
+</ol>
+<table>
+<caption>Overview of submodules, lessons, and packages used in the learning module.</caption>
+<colgroup>
+<col width="18%" />
+<col width="24%" />
+<col width="24%" />
+<col width="32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Submodule</strong></th>
+<th align="left"><strong>Lesson</strong></th>
+<th align="left"><strong>Description</strong></th>
+<th align="left"><strong>Packages used</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Programming in R, data wrangling, visualization</td>
+<td align="left">1</td>
+<td align="left">Introducing R, RStudio, and R Markdown</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">2</td>
+<td align="left">Vectors, data frames, basic operations, and functions</td>
+<td align="left"><code>tidyverse</code> <span class="citation">(Wickham 2017)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">3</td>
+<td align="left">Introduction to exploratory data analysis</td>
+<td align="left"><code>tidyverse</code></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">4</td>
+<td align="left">Introduction to statistics and visualization</td>
+<td align="left"><code>tidyverse</code></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">5</td>
+<td align="left">Data transformation and visualization</td>
+<td align="left"><code>tidyverse</code></td>
+</tr>
+<tr class="even">
+<td align="left">Exploratory and statistical data analysis</td>
+<td align="left">6</td>
+<td align="left">Cleaning and preprocessing raw data</td>
+<td align="left"><code>tidyverse</code>; <code>mice</code> <span class="citation">(van Buuren and Groothuis-Oudshoorn 2011)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">7</td>
+<td align="left">Descriptive and inferential statistics</td>
+<td align="left"><code>tidyverse</code>; <code>car</code> <span class="citation">(Fox and Weisberg 2011)</span>; <code>psych</code> <span class="citation">(Revelle 2018)</span>; <code>multcomp</code> <span class="citation">(Hothorn, Bretz, and Westfall 2008)</span></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">8</td>
+<td align="left">Linear mixed-effects models</td>
+<td align="left"><code>tidyverse</code>; <code>plyr</code> <span class="citation">(Wickham 2011)</span>; <code>lme4</code> <span class="citation">(Bates et al. 2015)</span>; <code>lmerTest</code> <span class="citation">(Kuznetsova, Brockhoff, and Christensen 2017)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">9</td>
+<td align="left">Randomization tests and data simulation</td>
+<td align="left"><code>tidyverse</code>; <code>reshape2</code> <span class="citation">(Wickham 2007)</span>; <code>EcoSimR</code> <span class="citation">(Gotelli, Hart, and Ellison 2015)</span></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">10</td>
+<td align="left">Multivariate statistics (e.g. PCA)</td>
+<td align="left"><code>tidyverse</code>; <code>car</code>; <code>psych</code>; <code>multcomp</code></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">11</td>
+<td align="left">Model selection and averaging</td>
+<td align="left"><code>tidyverse</code>; <code>lme4</code>; <code>lmerTest</code>; <code>MuMIn</code> <span class="citation">(Bartoń 2018)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Numerical models</td>
+<td align="left">12</td>
+<td align="left">Population modelling with differential equations</td>
+<td align="left"><code>tidyverse</code>; <code>deSolve</code> <span class="citation">(Soetaert, Petzoldt, and Setzer 2010)</span></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">13</td>
+<td align="left">Time-series data and numerical models</td>
+<td align="left"><code>tidyverse</code>; <code>deSolve</code></td>
+</tr>
+<tr class="even">
+<td align="left">Collaborative and reproducible science</td>
+<td align="left">14</td>
+<td align="left">Scientific methods</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">15</td>
+<td align="left">Collaborating through Git and GitHub</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">16</td>
+<td align="left">Manuscript preparation in R Markdown</td>
+<td align="left"><code>knitr</code> <span class="citation">(Xie 2018)</span>; <code>rmarkdown</code> <span class="citation">(Allaire et al. 2018)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="instructional-design" class="section level1">
+<h1>Instructional Design</h1>
+<p>Drawing on the instructors’ previous experiences teaching introductory programming workshops, we designed our lessons to have the following components:</p>
+<ol style="list-style-type: decimal">
+<li><em>Lesson Outline</em>: Each lesson has a clearly defined outline of the lesson objectives, including expected time spent on each objective. This gives students a clear expectation of what they should learn and gain from the lesson. It also provides a structured template for instructors to prioritize content and gauge how much time each objective should take.</li>
+<li><em>Participatory Live-Coding</em>: Coding in real-time with the students actively coding along, forms the primary focus of each lesson. This hands-on approach to teaching is frequently used by teaching organizations such as <a href="https://software-carpentry.org/blog/2016/04/tips-tricks-live-coding.html">Software Carpentry</a> <span class="citation">(Michonneau and Fournier 2018; Rubin 2013; Haaranen 2017; Wilson 2018)</span>. While many learning outcomes focus on developing programming proficiency, some lessons are centred around concepts (such as “Statistical Modelling” or “Differential Equations”), during which we still use the live-coding approach. This approach not only demonstrates the concepts in a step-by-step fashion but also helps students practice writing code.</li>
+<li><em>Interwoven Exercises</em>: Coding exercises or discussion points are interspersed throughout each lesson to assess and reinforce the concepts and skills being taught. These exercises challenge the students and help build confidence in the material and in their coding skills. They also help instructors identify problem areas that should be further reinforced later in the lesson or submodule.</li>
+<li><em>Summative Assignments</em>: Lesson specific assignments are used every two lessons to test the competency of students to the lesson material and expected skills to be gained, while a comprehensive final assignment is used to test the students’ ability to bring together all concepts learned throughout the learning module.</li>
+</ol>
+<p>Each of our submodules and individual lessons built on skills and concepts that would ultimately allow students to complete a final open-ended analysis of real open ecological data. We deliberately chose large and messy (e.g. missing values) datasets for the students, reflecting the types of data that are being increasingly generated across various disciplines. With this goal in mind, we designed lessons to provide the building blocks to clean, manipulate, visualize, and analyze any dataset the students may come across, both for the final project and in their future research.</p>
+</div>
+<div id="teaching-experience" class="section level1">
+<h1>Teaching Experience</h1>
+<p>For the first iteration of the course, our teaching team consisted of six graduate students from diverse fields of research; we divided course topics among each instructor to develop and deliver individual lessons and assignments to the eight students. We reduced the number of instructors to four graduate students for the second iteration and the number of students increased to 26. We estimate four instructors could effectively teach the current iteration of the course to around 40 students. We consider having instructors come from multiple fields as a major strength and strongly recommend this practice for teaching quantitative research methods and skills.</p>
+<p>To maximize the learning experience, we prioritized in-class participation, engagement, and hands-on experience. The main teaching techniques we used to achieve this goal were participatory live-coding, exercises interwoven with teaching, and project-based learning <span class="citation">(Sawyer 2006; Strobel and Barneveld 2009; Markham 2011)</span> where students collaborated in teams on data analysis problems to mimic a real world scenario.</p>
+<p>To ensure proper teaching assistance was available at all times, we adopted a technique used successfully in workshops developed by The Carpentries <span class="citation">(Wilson 2006)</span>. This technique involved having at least two instructors present for each lesson, where one instructed and another acted as a “helper”. Students would signal for assistance by attaching colored sticky notes to the back of their laptop monitor. This method avoided interrupting the lesson flow when individual students needed assistance.</p>
+</div>
+<div id="story-of-the-project" class="section level1">
+<h1>Story of the project</h1>
+<p>While there are many excellent open source software packages available for quantitative data analysis, the use of less capable tools (such as spreadsheet software) is still prevalent among researchers, even though these drastically reduce analytical reproducibility, power, and efficiency. This happens partly due to lack of awareness, and partly because graduate students, many of whom will be future researchers, often are not incentivized to learn new and better tools, as they usually must use what their supervisor or colleagues use. Those who do try to learn these modern tools often do so in isolation and without much formal training available. These are major barriers to learning. To help break down these barriers, we launched the graduate student group <a href="https://uoftcoders.github.io/">University of Toronto Coders</a> where we run peer-led learning sessions on using code for research through skill sharing, co-working, and community building in a friendly and supportive environment.</p>
+<p>After running many sessions and consistently receiving overwhelmingly positive feedback on our content and teaching style, we sought to formally share our experiences through the university curriculum. We designed a course on open, reproducible data analysis, and contacted multiple departments that could be interested in hosting this course. The Department of Ecology and Evolutionary Biology at the University of Toronto agreed, and we ran a pilot of the course with the title “Theoretical Ecology and Reproducible Quantitative Methods in R” to fourth-year undergraduate students. We modelled the structure and portions of the course content after the course <a href="https://cbahlai.github.io/rqm-template/">“Reproducible Quantitative Methods”</a>, which was created by Dr. Christie Bahlai. We extensively modified the lesson content to include expanded material on data wrangling, visualization, reproducibility, collaborative science, and additional theoretical ecology topics.</p>
+<p>Following a successful pilot term, we modified our lesson material further again to include more generally applicable statistical concepts and far fewer theoretical ecological concepts. We also renamed the course to “Quantitative Methods in R for Biology” to reflect this change. On both occasions, the course received excellent feedback from the students and the supervising professors and has been incorporated into the long-term curriculum as a third year level course.</p>
+</div>
+<div id="contributions" class="section level1">
+<h1>Contributions</h1>
+<p>LWJ, MB-F, LT, and LC conceptualized the course. JO lead course development. JO, MB-F, LWJ, LC, ES, and LT designed and taught the first iteration of the course. JSS, LC, MB-F, and ARH taught the second iteration of the course, with guest lectures from SM and LT. Lesson development for second iteration: JO and ARH (1-5), JSS (8, 9, 11), LC (6, 7, 10), MB-F (12, 13), LWJ (14), ARH and SM (15), LT (16). LWJ, MB-F, JO, SM, LT, ARH, and JSS wrote the paper. LWJ, MB-F, ES, JO, LT, JSS, and AH proofread and edited the final draft.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-rmarkdown">
+<p>Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and Richard Iannone. 2018. <em>Rmarkdown: Dynamic Documents for R</em>. <a href="https://rmarkdown.rstudio.com" class="uri">https://rmarkdown.rstudio.com</a>.</p>
+</div>
+<div id="ref-MuMIn">
+<p>Bartoń, Kamil. 2018. <em>MuMIn: Multi-Model Inference</em>. <a href="https://CRAN.R-project.org/package=MuMIn" class="uri">https://CRAN.R-project.org/package=MuMIn</a>.</p>
+</div>
+<div id="ref-lme4">
+<p>Bates, Douglas, Martin Mächler, Ben Bolker, and Steve Walker. 2015. “Fitting Linear Mixed-Effects Models Using lme4.” <em>Journal of Statistical Software</em> 67 (1): 1–48. <a href="https://doi.org/10.18637/jss.v067.i01" class="uri">https://doi.org/10.18637/jss.v067.i01</a>.</p>
+</div>
+<div id="ref-car">
+<p>Fox, John, and Sanford Weisberg. 2011. <em>An R Companion to Applied Regression</em>. 2nd ed. Thousand Oaks, CA, USA: Sage. <a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion-2E" class="uri">https://socialsciences.mcmaster.ca/jfox/Books/Companion-2E</a>.</p>
+</div>
+<div id="ref-EcoSimR">
+<p>Gotelli, Nicholas J., Edmund M. Hart, and Aaron M. Ellison. 2015. <em>EcoSimR: Null Model Analysis for Ecological Data</em>. <a href="https://doi.org/10.5281/zenodo.16522" class="uri">https://doi.org/10.5281/zenodo.16522</a>.</p>
+</div>
+<div id="ref-haaranen_programming_2017">
+<p>Haaranen, Lassi. 2017. “Programming as a Performance: Live-Streaming and Its Implications for Computer Science Education.” In <em>Proceedings of the 2017 ACM Conference on Innovation and Technology in Computer Science Education</em>, 353–58. ITiCSE ’17. New York, NY, USA: ACM. <a href="https://doi.org/10.1145/3059009.3059035" class="uri">https://doi.org/10.1145/3059009.3059035</a>.</p>
+</div>
+<div id="ref-multcomp">
+<p>Hothorn, Torsten, Frank Bretz, and Peter Westfall. 2008. “Simultaneous Inference in General Parametric Models.” <em>Biometrical Journal</em> 50 (3): 346–63. <a href="https://doi.org/10.1002/bimj.200810425" class="uri">https://doi.org/10.1002/bimj.200810425</a>.</p>
+</div>
+<div id="ref-lmerTest">
+<p>Kuznetsova, Alexandra, Per B. Brockhoff, and Rune H. B. Christensen. 2017. “lmerTest Package: Tests in Linear Mixed Effects Models.” <em>Journal of Statistical Software</em> 82 (13): 1–26. <a href="https://doi.org/10.18637/jss.v082.i13" class="uri">https://doi.org/10.18637/jss.v082.i13</a>.</p>
+</div>
+<div id="ref-markham_project_2011">
+<p>Markham, Thom. 2011. “Project-Based Learning: A Bridge Just Far Enough.” <em>Teacher Librarian; Bowie</em> 39 (2): 38–42. <a href="https://search.proquest.com/docview/915254354/abstract/707DEDB5F1E145E5PQ/1" class="uri">https://search.proquest.com/docview/915254354/abstract/707DEDB5F1E145E5PQ/1</a>.</p>
+</div>
+<div id="ref-carpentry">
+<p>Michonneau, Francois, and Auriel Fournier, eds. 2018. “Data Carpentry: R for Data Analysis and Visualization of Ecological Data.” <a href="https://doi.org/10.5281/zenodo.569338" class="uri">https://doi.org/10.5281/zenodo.569338</a>.</p>
+</div>
+<div id="ref-R">
+<p>R Core Team. 2018. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-psych">
+<p>Revelle, William. 2018. <em>psych: Procedures for Psychological, Psychometric, and Personality Research</em>. Evanston, IL, USA: Northwestern University. <a href="https://CRAN.R-project.org/package=psych" class="uri">https://CRAN.R-project.org/package=psych</a>.</p>
+</div>
+<div id="ref-rubin_effectiveness_2013">
+<p>Rubin, Marc J. 2013. “The Effectiveness of Live-Coding to Teach Introductory Programming.” In <em>Proceeding of the 44th ACM Technical Symposium on Computer Science Education</em>, 651–56. SIGCSE ’13. New York, NY, USA: ACM. <a href="https://doi.org/10.1145/2445196.2445388" class="uri">https://doi.org/10.1145/2445196.2445388</a>.</p>
+</div>
+<div id="ref-sawyer_cambridge_2006">
+<p>Sawyer, R. Keith, ed. 2006. <em>The Cambridge Handbook of the Learning Sciences</em>. Cambridge, NY, USA: Cambridge University Press. <a href="https://doi.org/10.1192/bjp.bp.106.029678" class="uri">https://doi.org/10.1192/bjp.bp.106.029678</a>.</p>
+</div>
+<div id="ref-deSolve">
+<p>Soetaert, Karline, Thomas Petzoldt, and R. Woodrow Setzer. 2010. “Solving Differential Equations in R: Package deSolve.” <em>Journal of Statistical Software</em> 33 (9): 1–25. <a href="https://doi.org/10.18637/jss.v033.i09" class="uri">https://doi.org/10.18637/jss.v033.i09</a>.</p>
+</div>
+<div id="ref-strobel_when_2009">
+<p>Strobel, Johannes, and Angela van Barneveld. 2009. “When Is PBL More Effective? A Meta-Synthesis of Meta-Analyses Comparing PBL to Conventional Classrooms.” <em>Interdisciplinary Journal of Problem-Based Learning</em> 3 (1). <a href="https://doi.org/10.7771/1541-5015.1046" class="uri">https://doi.org/10.7771/1541-5015.1046</a>.</p>
+</div>
+<div id="ref-mice">
+<p>van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” <em>Journal of Statistical Software</em> 45 (3): 1–67. <a href="https://doi.org/10.18637/jss.v045.i03" class="uri">https://doi.org/10.18637/jss.v045.i03</a>.</p>
+</div>
+<div id="ref-reshape2">
+<p>Wickham, Hadley. 2007. “Reshaping Data with the reshape Package.” <em>Journal of Statistical Software</em> 21 (12): 1–20. <a href="https://doi.org/10.18637/jss.v021.i12" class="uri">https://doi.org/10.18637/jss.v021.i12</a>.</p>
+</div>
+<div id="ref-plyr">
+<p>———. 2011. “The Split-Apply-Combine Strategy for Data Analysis.” <em>Journal of Statistical Software</em> 40 (1): 1–29. <a href="https://doi.org/10.18637/jss.v040.i01" class="uri">https://doi.org/10.18637/jss.v040.i01</a>.</p>
+</div>
+<div id="ref-tidyverse">
+<p>———. 2017. <em>Tidyverse: Easily Install and Load the ’Tidyverse’</em>. <a href="https://CRAN.R-project.org/package=tidyverse" class="uri">https://CRAN.R-project.org/package=tidyverse</a>.</p>
+</div>
+<div id="ref-wilson-software-carpentry">
+<p>Wilson, Greg. 2006. “Software Carpentry: Getting Scientists to Write Better Code by Making Them More Productive.” <em>Computing in Science &amp; Engineering</em>. <a href="https://doi.org/10.1109/MCSE.2006.122" class="uri">https://doi.org/10.1109/MCSE.2006.122</a>.</p>
+</div>
+<div id="ref-wilson_teaching_2018">
+<p>———. 2018. <em>Teaching Tech Together: How to Design and Deliver Lessons That Work and Build a Teaching Community Around Them</em>. Leipzig: Amazon Distribution GmbH. <a href="http://teachtogether.tech/" class="uri">http://teachtogether.tech/</a>.</p>
+</div>
+<div id="ref-knitr">
+<p>Xie, Yihui. 2018. <em>knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://yihui.name/knitr/" class="uri">https://yihui.name/knitr/</a>.</p>
+</div>
+</div>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

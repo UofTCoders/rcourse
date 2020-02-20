@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Amber Gigi Hoi" />
+
+
+<title>Spatial statistics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Spatial statistics</h1>
+<h4 class="author">Amber Gigi Hoi</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level1">
+<h1>Lesson preamble:</h1>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives:</h3>
+<ul>
+<li>Understand the basics of spatial data in R</li>
+<li>Learn simple spatial data manipulations</li>
+<li>Fantastic rasters and how to use them</li>
+<li>Incorporate spatial structure in regression models</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline:</h3>
+<p>Total lesson time: 1.5 hours</p>
+<ul>
+<li>An introduction to spatial data and objects in R (20 min)</li>
+<li>Plotting and extracting information from rasters (20 min)</li>
+<li>Detecting and modelling spatial dependence (50 min)</li>
+<li>Optional: making simple maps in ggplot (20 min)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="why-do-we-care-about-space" class="section level2">
+<h2>Why do we care about space?</h2>
+<p>Everything in ecology plays out in space. How heterogeneity in abiotic factors across space drive ecological processes (e.g., species interactions) and patterns (e.g., species distributions) has been of interest to ecologists for a long time.</p>
+<p>From an implicit perspective, the consideration of space is important to us all. Whenever we have data collected across space, e.g., any sort of field survey, the independence assumption is typically not valid, as sites closer in space will tend to exhibit similar properties. This correlation in space can occur for two reasons (not mutually exclusive):</p>
+<ol style="list-style-type: decimal">
+<li>Endogeneous mechanisms: processes inherent to the organism being considered, such as low dispersal capacity or social behaviour (e.g., schooling and herding).</li>
+<li>Exogeneous mechanisms: processes unrelated to the organism being considered, such aggregation of resources or climate gradients.</li>
+</ol>
+<p>Spatial autocorrelation may be classified as either positive or negative. A positive correlation means similar values appear together, while a negative case has dissimilar values appearing nearby.</p>
+<p>Recall the mixed model lecture. When there is non-independence in regressions that were not properly accounted for, we increase our Type I error (false positive) rates, and risk inferring patterns that don’t in fact exist. Checking for spatial autocorrelation is therefore a crucial step in any regression involving spatial data.</p>
+</div>
+<div id="set-up" class="section level2">
+<h2>Set up</h2>
+<p>In this lecture, we will continue our quest into vector ecology, only this time asking a much simpler question: what is the effect of mosquito abundance on malaria prevalence? We will explicitly consider the role of space when we answer this question.</p>
+<p>Here are the packages we will be using today:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(MASS)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(PerformanceAnalytics)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(nlme)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(sp)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">library</span>(ape)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">library</span>(rgdal) <span class="co"># R Geospatial Data Abstraction Library</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">library</span>(raster)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">library</span>(maps)</a></code></pre></div>
+<p>And here is the data we will be working with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">download.file</span>(<span class="st">&quot;https://uoftcoders.github.io/rcourse/data/kenya.wide&quot;</span>, </a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">              <span class="st">&quot;kenya.wide&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">download.file</span>(<span class="st">&quot;https://uoftcoders.github.io/rcourse/data/africa.wide&quot;</span>, </a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">              <span class="st">&quot;africa.wide&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">download.file</span>(<span class="st">&quot;https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_01&quot;</span>, </a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">              <span class="st">&quot;wc2.0_bio_10m_01.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw">download.file</span>(<span class="st">&quot;https://uoftcoders.github.io/rcourse/data/wc2.0_bio_10m_12&quot;</span>, </a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">              <span class="st">&quot;wc2.0_bio_10m_12.tif&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">kenya.wide &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/kenya.wide.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">africa.wide &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/africa.wide.csv&quot;</span>)</a></code></pre></div>
+<p>The <em>kenya.wide</em> data was introduced in the multivariate statistics lecture, and we will revisit it briefly to illustrate working with spatial data at different scales (regional vs. continental). The <em>africa.wide</em> data was originally obtained from the Malaria Atlas Project, an open-access, everything-malaria, database created and maintained by an international consortium of Malaria experts. In brief, data for global vector occurrence and malaria prevalence were extracted, matched in space (within 1 km<sup>2</sup> of each other) and time (overlapped in study duration), and validated against original sources. Additional data (e.g., climate, GDP, vector abundance) were sourced via diverse means. For the purposes of this lecture, we will be focusing on a subset of sites located in Africa.</p>
+</div>
+</div>
+<div id="a-very-brief-introduction-to-spatial-data" class="section level1">
+<h1>A <em>very</em> brief introduction to spatial data</h1>
+<p>Spatial data can be broadly classified into two groups: vectors and rasters.</p>
+<p>Vectors are more “free-formed” in the information they store:</p>
+<ul>
+<li>Points – a.k.a. vertices, a literal point position in space</li>
+<li>Lines – connects vertices, such as a road or a river</li>
+<li>Polygon – connects vertices into a closed area, such as a park perimeter or provincial boundaries</li>
+</ul>
+<p>Rasters, a.k.a. grids, on the other hand, are much more rigid, as the name suggests. This data type divide the landscape into identical and regularly-spaced pixels, and stores values in each of these pixels. Rasters can be fine or coarse, and doesn’t have to be squares or rectangles. The pixels can even be so fine that they are essentially a continuous scale, representing gradual change.</p>
+<div id="coordinate-reference-systems-crs" class="section level2">
+<h2>Coordinate reference systems (CRS)</h2>
+<p>The fundamental goal of encoding spatial data is to convey where the data was collected. These are typically given as <em>coordinates</em>, as in the latitude and longitude we are all familiar with. In reality, however, it is a lot more complex to describe geographic locations. There are two broad classes of coordinate systems:</p>
+<ol style="list-style-type: decimal">
+<li>Unprojected (aka geographic): Latitude and Longitude locations on the ellipsoid Earth</li>
+<li>Projected: location on 2D representations of Earth (e.g., maps).</li>
+</ol>
+<p><em>Projection</em> refers to the process of projecting latitude and longitude from Earth the earth’s surface (which is a ellipse) onto a flat surface by some standard formula known as a map projection. The main problem here is that it is not possible to flatten a round object without distortion. This results in trade-offs between area, direction, shape, and distance, because these features cannot be simultaneously perserved when projecting from 3D to 2D. Unprojected data is therefore always perferred, but alas, globes are inconvenient to use (e.g., the distance described by one unit changes depending on where on earth you are), so maps still predominate. There are many projections available – there is no <em>best</em> projection, but we can prioritize which features are important to perserve in each case.</p>
+<p>The Universal Transverse Mercator (UTM) projection is commonly used in research because it is more accurate at smaller scales, especially in distance estimations. The UTM projection divides the Earth into 60 zones and uses a different transverse Mercator projection in each zone to reduce distance distortions. That said, one of the major disadvantage of UTM is that it is not suitable for use over large areas.</p>
+<p>For any projections, we need a model of the shape of the earth to work off of, or, in geography lingo, a <em>datum</em>. The most commonly used datum is the World Geodesic System 1984 (WGS84). There are, again, many datums available, including a selection of local datum which often does a better job at recording locations for single country or region.</p>
+<p>The most basic way to record spatial data is therefore a pair of coordinates and the reference datum. More sophisticated means involve a complete coordinate reference system (CRS). CRSs are central to how software such as R and ArcGIS read locations, however, it is not trivial to code a CRS as any number of parameters (other than coordinates and datum) may be require to properly specify a CRS. Thankfully, a lot of commonly used CRSs have been assigned simplied EPSG (European Petroleum Survey Group) codes, which are unique IDs that identifies a CRS. For example, the CRS for Kenya can be specified as either</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:32737&quot;</span>)</a></code></pre></div>
+<p>OR</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">CRS</span>(<span class="st">&quot;+proj=utm +zone=37 +south +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)</a></code></pre></div>
+<p>Note that CRSs in R follow a very rigid format. Each piece of information (a tag) is entered as a string, indicated by +, and each tag is separated by a single space. Spacing within each tag is not allowed.</p>
+</div>
+<div id="spatial-data-in-practice" class="section level2">
+<h2>Spatial data in practice</h2>
+<p>The data we will be using today were not created as spatial objects, which means they don’t come with defined coordinate systems (in other words, R or ArcGIS won’t know that they refer to locations). The first thing we need to do is therefore to assign a CRS.</p>
+<p><em>CAUTION</em>: only do this if you know what the CRS should be!</p>
+<p>First, we need to make our numeric points into spatial points, and then transform it from geographic coordinates (latitude and longitude) to map projections for more accurate calculations later on. As a exmaple, we will use the UTM projection for the Kenya data we previously worked with, because all of those points fitted nicely into a single UTM zone.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">coord.kenya &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(<span class="kw">cbind</span>(kenya.wide<span class="op">$</span>long, kenya.wide<span class="op">$</span>lat), </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                             <span class="dt">proj4string=</span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84&quot;</span>))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">UTM.kenya &lt;-<span class="st"> </span><span class="kw">spTransform</span>(coord.kenya, </a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">                         <span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:32737&quot;</span>)) </a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># EGSP:32737 for Kenya, Mozambique, and Tanzania </span></a></code></pre></div>
+<p>For the Africa data, however, the UTM projection is no longer appropriate as the data now span a much larger geographic area. We will be using the <em>sinusoidal</em> projection instead. This is an equal-area projection and does a reasonable job at perserving distance as well, especially well for locations near the equator, so it appropriate for our case.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">coord.africa &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(<span class="kw">cbind</span>(africa.wide<span class="op">$</span>long, africa.wide<span class="op">$</span>lat), </a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                              <span class="dt">proj4string=</span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84&quot;</span>))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">sinu.africa &lt;-<span class="st"> </span><span class="kw">spTransform</span>(coord.africa, </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                           <span class="kw">CRS</span>(<span class="st">&quot;+proj=sinu +ellps=WGS84&quot;</span>)) </a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># Note name of columns - x1 for longitude and x2 for latitude</span></a></code></pre></div>
+<p>We can now add our shiny new projected coordinates to main data file</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">africa.wide &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(africa.wide, <span class="kw">as.data.frame</span>(sinu.africa)) <span class="co"># Note order of rows!</span></a></code></pre></div>
+<p>We could further add environmental data from <em>rasters</em> we pull from the interwebs. Here, we extract annual temperature and annual rainfall for our sites from a historic climate data repository, WorldClim2 (accessed Oct 2019). Again, note the special function <em>stack()</em> used to load raster files.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">temp &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">stack</span>(<span class="st">&quot;data/wc2.0_bio_10m_01.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">rain &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">stack</span>(<span class="st">&quot;data/wc2.0_bio_10m_12.tif&quot;</span>)</a></code></pre></div>
+<p>Let’s have a look at these files. Simplest way is to do so is to plot them.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">plot</span>(temp)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">points</span>(coord.africa)</a></code></pre></div>
+<p><img src="lec11-spatial-stats_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">plot</span>(rain)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">points</span>(coord.africa)</a></code></pre></div>
+<p><img src="lec11-spatial-stats_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p>We can extract data from raster files for our sites with a simple and appropriately named function <em>extract</em>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">extractions.t &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(temp, coord.africa, <span class="dt">df =</span> <span class="ot">TRUE</span>, <span class="dt">method=</span><span class="st">&quot;bilinear&quot;</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">extractions.r &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(rain, coord.africa, <span class="dt">df =</span> <span class="ot">TRUE</span>, <span class="dt">method=</span><span class="st">&quot;bilinear&quot;</span>)</a></code></pre></div>
+<p>The <em>df</em> argument tells R to return a data frame. In case there is a missing value in our raster file, <em>method=“bilinear”</em> will interpolate from the four nearest raster cells.</p>
+<p>Since the resulting object is a data frame, we can easily bind this new data to our main data file.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Change colnames</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">colnames</span>(extractions.t)[<span class="dv">2</span>] &lt;-<span class="st"> &quot;ann.temp&quot;</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">colnames</span>(extractions.r)[<span class="dv">2</span>] &lt;-<span class="st"> &quot;ann.rain&quot;</span> </a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">extractions &lt;-<span class="st"> </span><span class="kw">left_join</span>(extractions.t, extractions.r, <span class="dt">by=</span><span class="st">&quot;ID&quot;</span>)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">africa.wide &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">bind_cols</span>(africa.wide, extractions)) <span class="co"># Note order of rows!</span></a></code></pre></div>
+<p><em>Sidebar</em>: WorldClim2 is a one-stop shop for a bunch of climate variables. There are other open-source data repositories out there, such as WorldPop for demographics, World Bank for economics data. There are lots of opportunities out there for you to build custom datasets and ask lots of interesting questions. For this lecture, however, we will focus on vector ecology, and therefore, not consider these environmental variables further.</p>
+</div>
+</div>
+<div id="a-very-brief-introduction-to-spatial-statistics" class="section level1">
+<h1>A <em>very</em> brief introduction to spatial statistics</h1>
+<p>In this section, we will learn the basics of spatial statistics, including how to assess and correct for spatial autocorrelation in our analyses.</p>
+<p>We’ll assess for spatial autocorrelation with Moran’s autocorrelation coefficient, a.k.a Moran’s I. To calculate Moran’s I, we first need to create a matrix of <em>inverse distance weights</em>, which describes how close together each site is. It is very easy to do with three simple steps in base R (sorry, this is just so much cleaner in base!).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Generate distance matrix</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">dist.matrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(<span class="kw">data.frame</span>(sinu.africa)))</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co"># Take reciprocal of each number</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">inv.dist &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>dist.matrix</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co"># Replace diagonal with zeros</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="kw">diag</span>(inv.dist) &lt;-<span class="st"> </span><span class="dv">0</span></a></code></pre></div>
+<p>Inverse distance weights are now ready, and we can assess whether our variables of interest are correlated in space! We will be using the self-explanatory function Moran.I for this test.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">Moran.I</span>(africa.wide<span class="op">$</span>PfPR, inv.dist, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>) </a></code></pre></div>
+<pre><code>## $observed
+## [1] 0.4704674
+## 
+## $expected
+## [1] -0.01612903
+## 
+## $sd
+## [1] 0.06412366
+## 
+## $p.value
+## [1] 3.241851e-14</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Two sided = checks for both positive and negative spatial autocorrelation</span></a></code></pre></div>
+<p>The null hypothesis is zero spatial autocorrelation present in the variable. A significant p-value therefore means that sites that are closer together have more similar prevalence in malaria. Let’s repeat this analysis for our predictor variable.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">Moran.I</span>(africa.wide<span class="op">$</span>total.abundance, inv.dist, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>) </a></code></pre></div>
+<p>Turns out, sites close to one another also have similar mosquito abundances.</p>
+<div id="visualizing-spatial-autocorrelation-with-semivariograms" class="section level2">
+<h2>Visualizing spatial autocorrelation with semivariograms</h2>
+<p>Another way to explore spatial autocorrelation is to calculate semivariance. Semivariance is a measure of the degree of similarity between pairs of points separated by a specific distance. If the data are spatial autocorrelated, then sampling units that are closer together in space might be expected to yield similar responses and thus similar residuals. The <em>semivariogram</em> (used interchangebly with variogram) is a special kind of residual plot which displays the variances within groups of observations, plotted as a function of distance between the observations.</p>
+<p>To make a semivariogram, first we fit a null model without any spatial sturcture. We will be fitting this model with the function <em>gls()</em> instead of <em>lm()</em> to facilitate future comparisons. These two differ in their method of parameter estimation (ordinary least square vs. maximum likelihood) but otherwise achieve the same thing.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">mod &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>africa.wide, <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>) <span class="co"># ML for max likelihood</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">Variogram</span>(mod, <span class="dt">form =</span> <span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">resType =</span> <span class="st">&quot;normalized&quot;</span>))</a></code></pre></div>
+<p><img src="lec11-spatial-stats_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><em>Note</em>: This <strong>V</strong>ariogram() function comes from <em>nlme</em> package, and should not be confused with <strong>v</strong>ariogram() from package <em>gstat</em>. Although they perform the same semivariance analysis, these functions take different arguments, so R will get confused if we are not careful.</p>
+<p>In spatially correlated data, semivariance typically increases with increasing distance up to a point (the sill). The span of distances over which points are correlated is called the range. In the above variogram, the range is approximately “2e+06”. The sinusoidal projection we used on our geographic data presents distance in meters, therefore, we can conclude that sites within 200 km of each other tend to have similar mosquito abundances. Note that semivariance does not always plateau, but may exhibit forms of cycling. This can be indicative of the underlying environment conditions (e.g., types of vegetation) showing similar patterns across a landscape.</p>
+</div>
+<div id="accounting-for-spatial-autocorrelation-in-statistical-models" class="section level2">
+<h2>Accounting for spatial autocorrelation in statistical models</h2>
+<p>There are – you guessed it! – many ways to incorporate spatial autocorrelation structure into regression analyses. One of the most stragihtfoward ways to do so is to think of it as a random effect. The <em>gls()</em> function we used above allows us to do just that. This method is simple and works really well if normality assumptions are met.</p>
+<p>There are – you guessed it again! – five autoregressive correlation structures we can model. They all describe the degrading of correlation between samples as you move away in space, with the different functional forms dictates the rate of decay as you move away. These different functions are necessary because the cause and consequences of spatial autocorrelation can differ across datasets. For instance, the way that the sites are clustered (or not clustered) can have an impact on how autocorrelation should be modelled. The five options are:</p>
+<ol style="list-style-type: decimal">
+<li>Exponential</li>
+<li>Gaussian</li>
+<li>Linear</li>
+<li>Rational quadratic</li>
+<li>Spherical</li>
+</ol>
+<p><em>Note:</em> all of these assume <em>isotropy</em>, which means data are uniform (or uniformly different) in all directions. We can imagine situations where that may not be the case, for example, a river carrying substrate downstream, or when wind consistently blow in one direction. We can actually check for those assumptions with variograms, but that is beyond the scope of this lecture.</p>
+<p>While sometimes you can tell from the variogram which structure is most suitable, it is very common practice to fit all the alternative models and then chose the one with the lowest AIC.</p>
+<p>So here we go, the grand finale where we input the spatial structure into our model.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mod.exp &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), </a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">               <span class="dt">data=</span>africa.wide, </a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">               <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>, </a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">               <span class="dt">corr=</span><span class="kw">corSpatial</span>(<span class="dt">form=</span><span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">type =</span><span class="st">&quot;exponential&quot;</span>))</a></code></pre></div>
+<p>Repeat that four more times, then inspect AIC scores.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">mod.gau &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>africa.wide, <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>, </a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">               <span class="dt">corr=</span><span class="kw">corSpatial</span>(<span class="dt">form=</span><span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">type =</span><span class="st">&quot;gaussian&quot;</span>))</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">mod.lin &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>africa.wide, <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>, </a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">               <span class="dt">corr=</span><span class="kw">corSpatial</span>(<span class="dt">form=</span><span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">type =</span><span class="st">&quot;linear&quot;</span>))</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">mod.rat &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>africa.wide, <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>, </a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">               <span class="dt">corr=</span><span class="kw">corSpatial</span>(<span class="dt">form=</span><span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">type =</span><span class="st">&quot;rational&quot;</span>))</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">mod.sp &lt;-<span class="st"> </span><span class="kw">gls</span>(<span class="kw">log</span>(PfPR)<span class="op">~</span><span class="kw">log</span>(total.abundance), <span class="dt">data=</span>africa.wide, <span class="dt">method=</span><span class="st">&quot;ML&quot;</span>, </a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">              <span class="dt">corr=</span><span class="kw">corSpatial</span>(<span class="dt">form=</span><span class="op">~</span>coords.x1<span class="op">+</span>coords.x2, <span class="dt">type =</span><span class="st">&quot;spherical&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">AIC</span>(mod, mod.exp, mod.gau, mod.lin, mod.rat, mod.sp)</a></code></pre></div>
+<pre><code>##         df      AIC
+## mod      3 190.5575
+## mod.exp  4 145.5572
+## mod.gau  4 182.1549
+## mod.lin  4 146.9603
+## mod.rat  4 172.7328
+## mod.sp   4 147.5903</code></pre>
+<p>The two things to take away from this analysis are:</p>
+<ol style="list-style-type: decimal">
+<li>mod.exp has the lowest AIC score, and is thus our best model. The exponential autocorrelation strucutre was the most appropriate to use in this case.</li>
+<li>The model without any spatial autorcorrelation strucutre performed horribly. Good thing we thought to include space!</li>
+</ol>
+<p>Now, have a look at the model outputs with and without spatial structure:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">summary</span>(mod)</a></code></pre></div>
+<pre><code>## Generalized least squares fit by maximum likelihood
+##   Model: log(PfPR) ~ log(total.abundance) 
+##   Data: africa.wide 
+##        AIC      BIC    logLik
+##   190.5575 196.9869 -92.27873
+## 
+## Coefficients:
+##                           Value Std.Error   t-value p-value
+## (Intercept)          -2.7016661 0.5891854 -4.585426  0.0000
+## log(total.abundance)  0.3177172 0.1189859  2.670210  0.0097
+## 
+##  Correlation: 
+##                      (Intr)
+## log(total.abundance) -0.974
+## 
+## Standardized residuals:
+##        Min         Q1        Med         Q3        Max 
+## -2.7053528 -0.5280698  0.4029512  0.6143694  2.4625602 
+## 
+## Residual standard error: 1.046868 
+## Degrees of freedom: 63 total; 61 residual</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">summary</span>(mod.exp)</a></code></pre></div>
+<pre><code>## Generalized least squares fit by maximum likelihood
+##   Model: log(PfPR) ~ log(total.abundance) 
+##   Data: africa.wide 
+##        AIC      BIC    logLik
+##   145.5572 154.1297 -68.77858
+## 
+## Correlation Structure: Exponential spatial correlation
+##  Formula: ~coords.x1 + coords.x2 
+##  Parameter estimate(s):
+##    range 
+## 82024.58 
+## 
+## Coefficients:
+##                           Value Std.Error    t-value p-value
+## (Intercept)          -2.0903187 0.6982425 -2.9936857  0.0040
+## log(total.abundance)  0.1070355 0.1487180  0.7197211  0.4744
+## 
+##  Correlation: 
+##                      (Intr)
+## log(total.abundance) -0.908
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -2.28800073 -0.04838898  0.66326083  0.86912984  1.20399414 
+## 
+## Residual standard error: 1.296347 
+## Degrees of freedom: 63 total; 61 residual</code></pre>
+<p>Oh no! After accounting for spatial autocorrelation, the relationship between total abundance and malaria prevalence went away! Now, that doesn’t mean that mosquito abundance doesn’t have any effect on disease. This means that, across such large spatial scale, other processes become more important in determining malaria prevalence. The interpretation of these results are indeed the same as a mixed model.</p>
+</div>
+<div id="appendix-a-very-very-very-brief-intorduction-to-making-maps-with-ggplot" class="section level2">
+<h2>Appendix: A <em>very very very</em> brief intorduction to making maps with ggplot</h2>
+<p>There are so many ways one can make maps in both base R and ggplot and beyond. In this example, we will be making use of maps taken from the <em>maps</em> package and customizing them in ggplot. The issue with this pacakge is that you always have to start with a world map and then subset by country. This means that when you want to plot Africa, you have to sit there and subset all day.</p>
+<p>There is a more <em>pure</em> ggplot way of making maps, called <em>ggmap</em>. This package extracts maps from Google maps, which is awesome because it gives you access to high quality maps from all over the world, and you can zoom in on whichever region you want. However, you do have to register with Google to use it, and Google asks for your credit card number when you register. So, not great.</p>
+<p>We will therefore go with the free-all-the-way route, and use <em>maps</em>. Instead of subseting the map officially, we’ll cheat a little and just crop the figure to show Africa. We’ll also do an example of plotting a single country (Kenya).</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">map.world &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;world&quot;</span>) </a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co"># Note: you must include group=group in aes() to ensure proper plotting</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data =</span> map.world, <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">group=</span>group), <span class="dt">fill=</span><span class="ot">NA</span>, <span class="dt">colour=</span><span class="st">&quot;gray85&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="st">  </span><span class="kw">coord_fixed</span>() <span class="op">+</span><span class="st"> </span><span class="co"># Prevents map from being distorted </span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>africa.wide, <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">colour=</span>total.abundance)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="st">  </span><span class="kw">xlim</span>(<span class="op">-</span><span class="dv">20</span>,<span class="dv">60</span>) <span class="op">+</span><span class="st"> </span><span class="co"># Approximate longitudinal and latitudinal boundaries of Africa</span></a>
+<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">40</span>,<span class="dv">40</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="lec11-spatial-stats_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">map.kenya &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;world&quot;</span>, <span class="dt">region=</span><span class="st">&quot;kenya&quot;</span>) </a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">africa.wide <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(country<span class="op">==</span><span class="st">&quot;Kenya&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span>map.kenya, <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">group=</span>group), <span class="dt">fill=</span><span class="ot">NA</span>, <span class="dt">colour=</span><span class="st">&quot;gray85&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="st">  </span><span class="kw">coord_fixed</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>africa.wide[africa.wide<span class="op">$</span>country<span class="op">==</span><span class="st">&quot;Kenya&quot;</span>, ], <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">colour=</span>total.abundance)) </a></code></pre></div>
+<p><img src="lec11-spatial-stats_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+</div>
+<div id="additional-readings" class="section level2">
+<h2>Additional readings</h2>
+<p>Fick, S.E. and R.J. Hijmans, 2017. WorldClim 2: new 1‐km spatial resolution climate surfaces for global land areas. Int J Climatol 37: 4302-4315.</p>
+<p>Fletcher, R. &amp; Fortin, M.-J. (2018). Spatial Ecology and Conservation Modeling. Springer, Switzerland.</p>
+<p>Hay, S. &amp; Snow, R. (2006). The Malaria Atlas Project: Developing global maps of malaria risk. PLoS Med 3: e473.</p>
+</div>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

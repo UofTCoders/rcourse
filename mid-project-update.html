@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>EEB313 Mid-project update (12 marks)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">EEB313 Mid-project update (12 marks)</h1>
+
+</div>
+
+
+<p><em>To submit this assignment, upload the full document on Quercus, including the original questions, your code (if applicable), and the output. Submit your assignment as a knitted <code>.pdf</code> or <code>.html</code> file.</em></p>
+<p>Prior to beginning this assignment, we suggest you take a look through <a href="https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html">this link</a> on how to manage project in RStudio using Rprojects. While not a component of this assignment, the tutorial may prove useful as you move forward with your group projects.</p>
+<p>These tasks seem like a lot of work. However, we will be doing these tasks already during class and during project work. The purpose of the mid-project update is for you to set up your repo and get something started on your final project. While most of these tasks are group based, please fill out each as an individual. In particular, the first question should be of <em>your</em> forked repository, not one of your team members. The remainder of the questions each involve a single pull request; make sure everyone in your group does at least one. Each team member should submit their <em>own assignment</em>.</p>
+<ol style="list-style-type: decimal">
+<li><p>A new repository has been created for your project on the <code>EEB313-2019</code> GitHub organization. Paste the URL of this forked version below. (0.25 marks)</p>
+<ul>
+<li>URL of <em>your</em> fork:</li>
+</ul></li>
+<li><p>On the main repo (you will be working on this from here on out, unless you are doing the fork-based workflow) – have one of your group members create a new branch from <code>master</code> called <code>add-conduct</code>. Create a <code>CONDUCT.md</code> file in this branch. Write down what you as a team decided on for acceptable conduct/behaviour of team members to each other (e.g. “Must be considerate and respectful”). You may reuse existing Codes of Conduct, such as the UofT Coders Code of Conduct or the Contributor Covenant, but make sure to both a) credit whichever you use and b) still expand upon it with project-specific items ( i.e. meeting frequency, PR approval policy, role rotations). The designated group member needs to create a pull request of this new file to the <code>master</code> branch. Copy and paste the link to the pull request below. Every team member must approve this pull request via whatever means you as a team decide on (‘all members must ’thumbs up’ the PR message’, or ‘all members must make a new comment saying ’good to merge’). Make sure the expectations and behaviours are explicit and clear. (1.0 marks)</p>
+<ul>
+<li>URL of team member’s pull request for <code>CONDUCT.md</code>:</li>
+</ul></li>
+<li><p>A <code>README.md</code> file should already exist in your project. Once the previous PR has been merged into <code>master</code>, complete the following tasks in the README, discussed and written up <em>as a team</em>. Decide who on your team will create the branch, make these edits, and create a pull request of this file to the main project repository. This person should <em>not</em> be the same person who did task 2. Every team member must approve this pull request. (1.75 marks)</p>
+<ul>
+<li><p>Create the following headers (make sure to use Markdown headers <code>#</code>): “Introduction to the project”, “Description of the data”, “Team description”.</p></li>
+<li><p>Fill out the “Introduction to the project” section, answering these questions in a paragraph form (don’t include these questions in the section). What is your project about? What is the goal? Why are you doing it?</p></li>
+<li><p>Fill out the “Description of the data” section, and briefly write down what the data is about, what are the variables you think you’ll use, how the data was collected, and how it will answer your research questions. Include a reference of the dataset if one is available, for instance:</p>
+<pre><code>Forstmann BU, et al. (2014) Data from: Multi-modal ultra-high resolution
+structural 7-Tesla MRI data repository. Dryad Digital Repository.
+(https://dx.doi.org/10.5061/dryad.fb41s)</code></pre></li>
+<li><p>Fill out the “Team description” section by writing down a brief biography of each member (including what their skills are and what their approximate responsibilities – which can change later – are for the project) as well as how team roles will be rotated.</p></li>
+<li><p>URL of team member’s pull request for <code>README.md</code>:</p></li>
+</ul></li>
+<li><p>Once the previous PR has been merged into <code>master</code>, have a different group member create a file called <code>doc/objectives.md</code> in a new branch. Note that this will simultaneously create a new folder called <code>doc</code> containing a file called <code>objectives.md</code> – this is <a href="https://github.com/KirstieJane/STEMMRoleModels/wiki/Creating-new-folders-in-GitHub-repository-via-the-browser">how folders are created on GitHub repos</a>. In <code>objectives.md</code>, create one header (<code>#</code> markdown header) called “Study objectives”. Create a list (<code>-</code> markdown syntax) of each of your research questions that you <em>as a team</em> thought of. It doesn’t matter what the questions are, how simple, complicated or obvious they are. Just have something written down, and make sure these are <em>explicitly</em> framed as questions or hypotheses. In this file, also list explicit predictions wherever possible; i.e. what you think a given relationship might look like. Bear in mind that these research questions <em>will</em> change as you do your analyses. The point is for you to get started thinking about ideas. Decide on another (new) team member to create this file, record it, and make a pull request of this new file. Every team member must approve this pull request. (3 marks)</p>
+<ul>
+<li>URL of team member’s pull request for <code>objectives.md</code>:</li>
+</ul></li>
+<li><p>Once the previous PR has been merged, start up another branch and create a file in the <code>doc/</code> folder called <code>analysis-plan.md</code>. Create three headers (<code>#</code> markdown headers): “Possible analyses”, “Possible results tables”, and “Possible results figures”. As a team, discuss and record some possible analyses on the data that you could do to answer the research questions. Discuss and record possible ways to present your results (possible tables, some visualizations). Moreover, discuss how you anticipate getting from the raw data to whatever summary data you will use to generate a given plot (i.e. explain a data cleaning/transformation plan). Moreover, discuss what kinds of statistical approaches you anticipate employing. Once again, these do not have to be final, but you need to show that your team has thought about how to approach this. Decide on another (new) team member to create this file in a new branch, record it, and make a pull request of this new file. Every team member must approve this pull request. <em>Note:</em> this analysis and presentation plan does <strong>not</strong> have to be accurate, nor do you have to use this later on. It could and will (very likely) change. The point is to get you as a group thinking about how you will answer the research questions. (3 marks)</p>
+<ul>
+<li>URL of team member’s pull request for <code>analysis-plan.md</code>:</li>
+</ul></li>
+<li><p>Finally, once the previous PR has been merged, have another group member create a file called <code>plots/mock/README.md</code> in a new branch. This will also create a folder called <code>plots</code> and a subfolder called <code>mock</code> within it. Add a few mock figures into this folder showing your predictions. These do not have to be ‘publication-ready’ plots, and can be made in any software of your choosing (R, Excel, PowerPoint, etc) with or without simulated data points; the important thing is that the predictions are clear and that your team can show you have been thinking about how to present your data. In <code>README.md</code>, list details about the mock figures in pseudo-figure caption format. Note that image files (png, pdf, etc) can also be uploaded to GitHub via dragging and dropping – but make sure you are in a branch before you do this. The image files should be part of the same PR as <code>README.md</code>. (3 marks)</p>
+<ul>
+<li>URL of team member’s pull request for <code>plots/mock/README.md</code> and image files:</li>
+</ul></li>
+</ol>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

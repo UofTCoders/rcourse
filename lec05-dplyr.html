@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joel Östblom" />
+
+
+<title>More dplyr and ggplot, tidying and exporting data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">More dplyr and ggplot, tidying and exporting data</h1>
+<h4 class="author">Joel Östblom</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="lecture-objectives">Lecture objectives</h3>
+<ul>
+<li>Understand how to combine dplyr and ggplot.</li>
+<li>Understand and apply faceting in ggplot.</li>
+<li>Learn about tidy data.</li>
+<li>Transform data from the long to wide format.</li>
+</ul>
+<h3 id="lecture-outline">Lecture outline</h3>
+<ul>
+<li>Split-apply-combine… plot! (30 min)</li>
+<li>Faceting (10 min)</li>
+<li>Reshaping with gather and spread (30 min)</li>
+<li>Exporting data (15 min)</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<div id="setting-up" class="section level2">
+<h2>Setting up</h2>
+<p>Start by loading the required packages. Both <strong><code>ggplot2</code></strong> and <strong><code>dplyr</code></strong> are included in the <strong><code>tidyverse</code></strong> package collection.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Install if needed</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># install.packages(&#39;tidyverse&#39;)</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.3
+## ✔ tibble  2.1.3     ✔ dplyr   0.8.4
+## ✔ tidyr   1.0.2     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<p>Load the data we saved in the previous lesson, and prepare the filtered abundant species dataset from the end of lecture 4.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Download if needed</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># download.file(&quot;https://ndownloader.figshare.com/files/2292169&quot;, &quot;portal_data.csv&quot;)</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">surveys &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&#39;portal_data.csv&#39;</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">surveys_abun_species &lt;-<span class="st"> </span>surveys <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(hindfoot_length) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(weight)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">    </span><span class="kw">group_by</span>(species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># add count value to each row</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">    </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">800</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>n)</a></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   record_id = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   year = col_double(),
+##   plot_id = col_double(),
+##   species_id = col_character(),
+##   sex = col_character(),
+##   hindfoot_length = col_double(),
+##   weight = col_double(),
+##   genus = col_character(),
+##   species = col_character(),
+##   taxa = col_character(),
+##   plot_type = col_character()
+## )</code></pre>
+<div id="split-apply-combine-plot" class="section level3">
+<h3>Split-apply-combine… plot!</h3>
+<p>In this section, we will learn how to work with <code>**dplyr**</code> and <code>**ggplot**</code> together. Aided by the pipes (<code>%&gt;%</code>), we can create a powerful data exploration workflow using these two packages.</p>
+<p>Let’s calculate number of counts per year for each species. First we need to group the data and count records within each group:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, genus) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw">arrange</span>(<span class="kw">desc</span>(n)) <span class="co"># Adding arrange just to compare with histogram</span></a></code></pre></div>
+<pre><code>## # A tibble: 178 x 3
+## # Groups:   year [26]
+##     year genus           n
+##    &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;
+##  1  2002 Chaetodipus  1243
+##  2  1983 Dipodomys     953
+##  3  1985 Dipodomys     951
+##  4  2000 Chaetodipus   913
+##  5  1982 Dipodomys     896
+##  6  1997 Dipodomys     830
+##  7  2001 Chaetodipus   781
+##  8  1981 Dipodomys     733
+##  9  1987 Dipodomys     688
+## 10  1980 Dipodomys     667
+## # … with 168 more rows</code></pre>
+<p>We could assign this table to a variable, and then pass that variable to <code>ggplot()</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">yearly_counts &lt;-<span class="st"> </span>surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>()</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">ggplot</span>(yearly_counts, <span class="kw">aes</span>(<span class="dt">x =</span> n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_histogram</span>()</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Creating an intermediate variable would be preferable for time consuming calculations, because you would not want to do that operation every time you change the plot aesthetics.</p>
+<p>If it is not a time consuming calculation or you would like the flexibility of changing the data summary and the plotting options in the same code chunk, you can pipe the output of your split-apply-combine operation to the plotting command:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_histogram</span>()</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can perform a quick check that the plot corresponds to the table by coloring the histogram by species:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> n, <span class="dt">fill =</span> species)) <span class="op">+</span><span class="st"> </span><span class="co"># `fill` is specific for histograms</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_histogram</span>()</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Let’s explore how the number of each genus varies over time. Longitudinal data can be visualized as a line plot with years on the x axis and counts on the y axis:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_line</span>()</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Unfortunately, this does not work because we plotted data for all the species together. We need to tell ggplot to draw a line for each species by modifying the aesthetic function to include <code>group = species</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n, <span class="dt">group =</span> species)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_line</span>()</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We will be able to distinguish species in the plot if we add colors (using <code>color</code> also automatically groups the data):</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n, <span class="dt">color =</span> species)) <span class="op">+</span><span class="st"> </span><span class="co"># `color` groups automatically</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_line</span>() <span class="co"># try adding `size = 2`</span></a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="faceting" class="section level3">
+<h3>Faceting</h3>
+<p>ggplot has a special technique called <em>faceting</em> that allows the user to split one plot into multiple subplots based on a variable included in the dataset. We will use it to make a time series plot for each species:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n)) <span class="op">+</span><span class="st"> </span><span class="co">#</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="st">        </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>species)</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Now we would like to split the line in each plot by the sex of each individual measured. To do that we need to make counts in the data frame grouped by <code>year</code>, <code>species</code>, and <code>sex</code>:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species, sex) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>()</a></code></pre></div>
+<pre><code>## # A tibble: 575 x 4
+## # Groups:   year, species [275]
+##     year species     sex       n
+##    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; &lt;int&gt;
+##  1  1977 eremicus    M         2
+##  2  1977 flavus      F        14
+##  3  1977 flavus      M         8
+##  4  1977 leucogaster F         1
+##  5  1977 leucogaster &lt;NA&gt;      1
+##  6  1977 megalotis   F         1
+##  7  1977 megalotis   M         1
+##  8  1977 merriami    F        75
+##  9  1977 merriami    M       106
+## 10  1977 ordii       F        10
+## # … with 565 more rows</code></pre>
+<p>We can make the faceted plot by splitting further by sex using <code>color</code> (within a single plot):</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">    </span><span class="kw">group_by</span>(year, species, sex) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n, <span class="dt">color =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">        </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="st">        </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>species)</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>There are several observations where no sex was recorded. In this case, we are not really interested in the observations of unknown sex, so we can filter out those values.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(sex)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">    </span><span class="kw">group_by</span>(year, species, sex) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n, <span class="dt">color =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">        </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">        </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>species)</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>It is possible to specify exactly which colors to use, to avoid those that are hard to distinguish. We can also change the thickness of the lines, and adjust the x labels so that they don’t overlap.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">color_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;black&#39;</span>, <span class="st">&#39;orange&#39;</span>)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">surveys_abun_species <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(sex)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">    </span><span class="kw">group_by</span>(year, species, sex) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="st">    </span><span class="kw">tally</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y =</span> n, <span class="dt">color =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="st">        </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="st">        </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> color_names) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="st">        </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>species) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="st">        </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="st">        </span><span class="kw">theme</span>(<span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">               <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">30</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</a></code></pre></div>
+<p><img src="lec05-dplyr_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div id="challenge" class="section level4">
+<h4>Challenge</h4>
+<p>Use the filtered data frame for all of these questions.</p>
+<ol style="list-style-type: decimal">
+<li>Remember the histogram colored according to each species? Starting from that code, how could we separate each species into its own subplot?</li>
+<li></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Which year was the average weight of the animals the highest?</li>
+<li>Is the yearly trend the same for all species?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="reshaping-with-gather-and-spread" class="section level2">
+<h2>Reshaping with gather and spread</h2>
+<p><strong><code>dplyr</code></strong> is one part of a larger <strong><code>tidyverse</code></strong> that enables you to work with data in tidy data formats. <strong><code>tidyr</code></strong> enables a wide range of manipulations of the structure data itself. For example, the survey data presented here is almost in what we call a <strong>long</strong> format - every observation of every individual is its own row. This is an ideal format for data with a rich set of information per observation. It makes it difficult, however, to look at the relationships between measurements across plots. For example, what is the relationship between mean weights of different genera across the entire data set?</p>
+<p>To answer that question, we’d want each plot to have a single row, with all of the measurements in a single plot having their own column. This is called a <strong>wide</strong> data format. For the <code>surveys</code> data as we have it right now, this is going to be one heck of a wide data frame! However, if we were to summarize data within plots and species, we might begin to have some relationships we’d want to examine.</p>
+<p>Let’s see this in action. First, using <strong><code>dplyr</code></strong>, let’s create a data frame with the mean body weight of each genus by plot.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">surveys_gw &lt;-<span class="st"> </span>surveys <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(weight)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">    </span><span class="kw">group_by</span>(genus, plot_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_weight =</span> <span class="kw">mean</span>(weight))</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="kw">head</span>(surveys_gw)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+## # Groups:   genus [1]
+##   genus   plot_id mean_weight
+##   &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Baiomys       1        7   
+## 2 Baiomys       2        6   
+## 3 Baiomys       3        8.61
+## 4 Baiomys       5        7.75
+## 5 Baiomys      18        9.5 
+## 6 Baiomys      19        9.53</code></pre>
+<div id="long-to-wide-with-spread" class="section level3">
+<h3>Long to Wide with <code>spread</code></h3>
+<p>Now, to make this long data wide, we use <code>spread</code> from <code>tidyr</code> to spread out the different taxa into columns. <code>spread</code> takes three arguments: - the data, the <em>key</em> column (or column with identifying information), the <em>values</em> column (the one with the numbers/values). We’ll use a pipe so we can ignore the data argument.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">surveys_gw_wide &lt;-<span class="st"> </span>surveys_gw <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="st">  </span><span class="kw">spread</span>(genus, mean_weight)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw">head</span>(surveys_gw_wide)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 11
+##   plot_id Baiomys Chaetodipus Dipodomys Neotoma Onychomys Perognathus Peromyscus
+##     &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+## 1       1    7           22.2      60.2    156.      27.7        9.62       22.2
+## 2       2    6           25.1      55.7    169.      26.9        6.95       22.3
+## 3       3    8.61        24.6      52.0    158.      26.0        7.51       21.4
+## 4       4   NA           23.0      57.5    164.      28.1        7.82       22.6
+## 5       5    7.75        18.0      51.1    190.      27.0        8.66       21.2
+## 6       6   NA           24.9      58.6    180.      25.9        7.81       21.8
+## # … with 3 more variables: Reithrodontomys &lt;dbl&gt;, Sigmodon &lt;dbl&gt;,
+## #   Spermophilus &lt;dbl&gt;</code></pre>
+<p>Notice that some genera have <code>NA</code> values. That’s because some of those genera don’t have any record in that plot. Sometimes it is fine to leave those as <code>NA</code>. Sometimes we want to fill them as zeros, in which case we would add the argument <code>fill=0</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">surveys_gw <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw">spread</span>(genus, mean_weight, <span class="dt">fill =</span> <span class="dv">0</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span>head</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 11
+##   plot_id Baiomys Chaetodipus Dipodomys Neotoma Onychomys Perognathus Peromyscus
+##     &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+## 1       1    7           22.2      60.2    156.      27.7        9.62       22.2
+## 2       2    6           25.1      55.7    169.      26.9        6.95       22.3
+## 3       3    8.61        24.6      52.0    158.      26.0        7.51       21.4
+## 4       4    0           23.0      57.5    164.      28.1        7.82       22.6
+## 5       5    7.75        18.0      51.1    190.      27.0        8.66       21.2
+## 6       6    0           24.9      58.6    180.      25.9        7.81       21.8
+## # … with 3 more variables: Reithrodontomys &lt;dbl&gt;, Sigmodon &lt;dbl&gt;,
+## #   Spermophilus &lt;dbl&gt;</code></pre>
+<p>We can now do things like plot the weight of <em>Baiomys</em> against <em>Chaetodipus</em> or examine their correlation.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">surveys_gw <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw">spread</span>(genus, mean_weight, <span class="dt">fill =</span> <span class="dv">0</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">cor</span>(<span class="dt">use =</span> <span class="st">&quot;pairwise.complete&quot;</span>)</a></code></pre></div>
+<pre><code>##                    plot_id     Baiomys Chaetodipus    Dipodomys     Neotoma
+## plot_id          1.0000000 -0.11041371   0.2945925 -0.165214440 -0.55050668
+## Baiomys         -0.1104137  1.00000000   0.3687496 -0.050774964 -0.03268885
+## Chaetodipus      0.2945925  0.36874958   1.0000000  0.325918149 -0.27649287
+## Dipodomys       -0.1652144 -0.05077496   0.3259181  1.000000000  0.12159544
+## Neotoma         -0.5505067 -0.03268885  -0.2764929  0.121595440  1.00000000
+## Onychomys       -0.4805452 -0.08689875  -0.3254973  0.093274704  0.43466237
+## Perognathus      0.2468167  0.16572228   0.1799742  0.134225846 -0.25623672
+## Peromyscus      -0.3042821  0.10570094   0.2109187  0.219996783  0.30722919
+## Reithrodontomys -0.2693462  0.34710430  -0.2258934 -0.142993836  0.31713778
+## Sigmodon         0.2745083 -0.01421689   0.1971181 -0.092613012  0.04665664
+## Spermophilus     0.1342651 -0.05423613  -0.3096137 -0.003720851 -0.14037233
+##                   Onychomys Perognathus Peromyscus Reithrodontomys    Sigmodon
+## plot_id         -0.48054516   0.2468167 -0.3042821     -0.26934622  0.27450825
+## Baiomys         -0.08689875   0.1657223  0.1057009      0.34710430 -0.01421689
+## Chaetodipus     -0.32549730   0.1799742  0.2109187     -0.22589344  0.19711806
+## Dipodomys        0.09327470   0.1342258  0.2199968     -0.14299384 -0.09261301
+## Neotoma          0.43466237  -0.2562367  0.3072292      0.31713778  0.04665664
+## Onychomys        1.00000000  -0.1929882  0.1146881     -0.03186637 -0.19977238
+## Perognathus     -0.19298820   1.0000000  0.1813099     -0.27968468 -0.24933409
+## Peromyscus       0.11468812   0.1813099  1.0000000      0.29246412  0.15628042
+## Reithrodontomys -0.03186637  -0.2796847  0.2924641      1.00000000  0.16463343
+## Sigmodon        -0.19977238  -0.2493341  0.1562804      0.16463343  1.00000000
+## Spermophilus     0.37939827   0.1057038 -0.1593698     -0.21747037 -0.27040148
+##                 Spermophilus
+## plot_id          0.134265067
+## Baiomys         -0.054236130
+## Chaetodipus     -0.309613679
+## Dipodomys       -0.003720851
+## Neotoma         -0.140372334
+## Onychomys        0.379398267
+## Perognathus      0.105703800
+## Peromyscus      -0.159369768
+## Reithrodontomys -0.217470366
+## Sigmodon        -0.270401476
+## Spermophilus     1.000000000</code></pre>
+</div>
+<div id="wide-to-long-with-gather" class="section level3">
+<h3>Wide to long with <code>gather</code></h3>
+<p>What if we had the opposite problem, and wanted to go from a wide to long format? For that, we use <code>gather</code> to sweep up a set of columns into one key-value pair. We give it the arguments of a new key and value column name, and then we specify which columns we either want or do not want gathered up. So, to go backwards from <code>surveys_gw_wide</code>, and exclude <code>plot_id</code> from the gathering, we would do the following:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">surveys_gw_long &lt;-<span class="st"> </span>surveys_gw_wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span><span class="kw">gather</span>(genus, mean_weight, <span class="op">-</span>plot_id)</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="kw">head</span>(surveys_gw_long)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   plot_id genus   mean_weight
+##     &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;
+## 1       1 Baiomys        7   
+## 2       2 Baiomys        6   
+## 3       3 Baiomys        8.61
+## 4       4 Baiomys       NA   
+## 5       5 Baiomys        7.75
+## 6       6 Baiomys       NA</code></pre>
+<p>Note that now the <code>NA</code> genera are included in the long format. Going from wide to long to wide can be a useful way to balance out a dataset so every replicate has the same composition.</p>
+<p>We could also have used a specification for what columns to include. This can be useful if you have a large number of identifying columns, and it’s easier to specify what to gather than what to leave alone. And if the columns are sequential, we don’t even need to list them all out - just use the <code>:</code> operator!</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">surveys_gw_wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw">gather</span>(genus, mean_weight, Baiomys<span class="op">:</span>Spermophilus) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   plot_id genus   mean_weight
+##     &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;
+## 1       1 Baiomys        7   
+## 2       2 Baiomys        6   
+## 3       3 Baiomys        8.61
+## 4       4 Baiomys       NA   
+## 5       5 Baiomys        7.75
+## 6       6 Baiomys       NA</code></pre>
+<div id="challenge-1" class="section level4">
+<h4>Challenge</h4>
+<ol style="list-style-type: decimal">
+<li><p>Make a wide data frame with <code>year</code> as columns, <code>plot_id</code> as rows, and the values are the number of genera per plot. You will need to summarize before reshaping, and use the function <code>n_distinct</code> to get the number of unique types of a genus. It’s a powerful function! See <code>?n_distinct</code> for more.</p></li>
+<li><p>Now take that data frame, and make it long again, so each row is a unique <code>plot_id</code> - <code>year</code> combination.</p></li>
+<li><p>The <code>surveys</code> data set is not truly wide or long because there are two columns of measurement - <code>hindfoot_length</code> and <code>weight</code>. This makes it difficult to do things like look at the relationship between mean values of each measurement per year in different plot types. Let’s walk through a common solution for this type of problem. First, use <code>gather</code> to create a truly long dataset where we have a key column called <code>measurement</code> and a <code>value</code> column that takes on the value of either <code>hindfoot_length</code> or <code>weight</code>. Hint: You’ll need to specify which columns are being gathered.</p></li>
+<li><p>With this new truly long data set, calculate the average of each <code>measurement</code> in each <code>year</code> for each different <code>plot_type</code>. Then <code>spread</code> them into a wide data set with a column for <code>hindfoot_length</code> and <code>weight</code>. Hint: Remember, you only need to specify the key and value columns for <code>spread</code>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="exporting-data" class="section level2">
+<h2>Exporting data</h2>
+<p>Now that you have learned how to use <strong><code>dplyr</code></strong> to extract information from or summarize your raw data, you may want to export these new datasets to share them with your collaborators or for archival.</p>
+<p>Similar to the <code>read_csv()</code> function used for reading CSV files into R, there is a <code>write_csv()</code> function that generates CSV files from data frames.</p>
+<p>Before using <code>write_csv()</code>, we are going to create a new folder, <code>data-processed</code>, in our working directory that will store this generated dataset. We don’t want to store manipulated datasets in the same directory as our raw data. It’s good practice to keep them separate. The raw data would ideally be put in a <code>data-raw</code> folder, which should only contain the raw, unaltered data, and should be left alone to make sure we don’t delete or modify it from how it was when we downloaded or recorded it ourself. In contrast, our R code will create the contents of the <code>data-processed</code> directory, so even if the files it contains are deleted, we can always re-generate them.</p>
+<p>Use the <code>getwd()</code> function to find out which is the current working directory.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">getwd</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;/home/travis/build/UofTCoders/rcourse&quot;</code></pre>
+<p>Navigate to this directory in your file browser and create a folder called <code>data-processed</code>.</p>
+<p>Alternatively, you could use R to create this directory.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">dir.create</span>(<span class="st">&quot;data-processed&quot;</span>)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="co"># To suppress the warning, we could do</span></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="kw">dir.create</span>(<span class="st">&quot;data-processed&quot;</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6"><span class="co"># Another alternative would be to use a conditional expression, which only</span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="co"># creates the directory *if* it does not already exist. The syntax here is</span></a>
+<a class="sourceLine" id="cb38-8" data-line-number="8"><span class="co"># similar to the for loop we created in the second lecture.</span></a>
+<a class="sourceLine" id="cb38-9" data-line-number="9"><span class="cf">if</span> (<span class="op">!</span><span class="kw">dir.exists</span>(<span class="st">&#39;data-processed&#39;</span>)) {</a>
+<a class="sourceLine" id="cb38-10" data-line-number="10">    <span class="kw">dir.create</span>(<span class="st">&quot;data-processed&quot;</span>)</a>
+<a class="sourceLine" id="cb38-11" data-line-number="11">}</a></code></pre></div>
+<p>We are going to prepare a cleaned up version of the data without NAs. Let’s start by removing observations for which the <code>species_id</code> is missing. Let’s also remove observations for which <code>weight</code> and the <code>hindfoot_length</code> are missing. This dataset should also only contain observations of animals for which the sex has been determined:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">surveys_complete &lt;-<span class="st"> </span>surveys <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(species_id),       <span class="co"># remove missing species_id</span></a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">         <span class="op">!</span><span class="kw">is.na</span>(weight),           <span class="co"># remove missing weight</span></a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">         <span class="op">!</span><span class="kw">is.na</span>(hindfoot_length),  <span class="co"># remove missing hindfoot_length</span></a>
+<a class="sourceLine" id="cb39-5" data-line-number="5">         <span class="op">!</span><span class="kw">is.na</span>(sex))              <span class="co"># remove missing sex</span></a>
+<a class="sourceLine" id="cb39-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb39-7" data-line-number="7"><span class="co"># This expression is a succinct alternative to the above</span></a>
+<a class="sourceLine" id="cb39-8" data-line-number="8">surveys_complete_comcas &lt;-<span class="st"> </span>surveys <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb39-9" data-line-number="9"><span class="st">    </span><span class="kw">filter</span>(<span class="kw">complete.cases</span>(species_id, weight, hindfoot_length, sex))</a>
+<a class="sourceLine" id="cb39-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb39-11" data-line-number="11"><span class="co"># This is even briefer, but omits observations with NA in *any* column.</span></a>
+<a class="sourceLine" id="cb39-12" data-line-number="12"><span class="co"># There is no way to control which columns to use, but it is common to want</span></a>
+<a class="sourceLine" id="cb39-13" data-line-number="13"><span class="co"># to exclude all NAs, which in our case corresponds to the columns listed above.</span></a>
+<a class="sourceLine" id="cb39-14" data-line-number="14">surveys_complete_naomit &lt;-<span class="st"> </span><span class="kw">na.omit</span>(surveys)</a>
+<a class="sourceLine" id="cb39-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb39-16" data-line-number="16"><span class="co"># Compare the dimensions of the original and the cleaned data frame</span></a>
+<a class="sourceLine" id="cb39-17" data-line-number="17"><span class="kw">dim</span>(surveys)</a></code></pre></div>
+<pre><code>## [1] 34786    13</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">dim</span>(surveys_complete)</a></code></pre></div>
+<pre><code>## [1] 30676    13</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">dim</span>(surveys_complete_comcas)</a></code></pre></div>
+<pre><code>## [1] 30676    13</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">dim</span>(surveys_complete_naomit)</a></code></pre></div>
+<pre><code>## [1] 30676    13</code></pre>
+<p>Now that our dataset is ready, we can save it as a CSV file in our <code>data-processed</code> folder.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">write_csv</span>(surveys_complete, <span class="dt">path =</span> <span class="st">&quot;data-processed/surveys_complete.csv&quot;</span>)</a></code></pre></div>
+<p><em>Parts of this lesson material were taken and modified from <a href="https://datacarpentry.org">Data Carpentry</a> under their CC-BY copyright license. See their <a href="https://datacarpentry.org/R-ecology-lesson/03-dplyr.html">lesson page</a> for the original source.</em></p>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

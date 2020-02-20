@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ahmed Hasan" />
+
+
+<title>Reproducible science and collaboration with Git and GitHub</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Reproducible science and collaboration with Git and GitHub</h1>
+<h4 class="author">Ahmed Hasan</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level2">
+<h2>Lesson preamble</h2>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives:</h3>
+<ul>
+<li>Understand basic bash commands</li>
+<li>Understand the logic of version control</li>
+<li>Practice using Git commands at the command line</li>
+<li>Learn how and when to use branches</li>
+<li>Learn how to effectively use Pull Requests</li>
+<li>Learn how to work with forks</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline:</h3>
+<ul>
+<li>Intro to Git (50 min) - Bash Primer (15 min) - Getting started with Git (5 min) - Version control with Git (30 min)</li>
+<li>Collaborating with GitHub (50 min) - Creating a fork + GitHub setup (5 min) - Branches and pull requests (40 min) - Issues (5 min)</li>
+<li>Appendix: Collaborating with GitHub without the command line (50 min)</li>
+</ul>
+<hr />
+</blockquote>
+</div>
+<div id="intro-to-git" class="section level2">
+<h2>Intro to Git</h2>
+<p>Git is a version control system that tracks changes in files. Although it is primarily used for software development, Git can be used to track changes in any files, and is an indispensable tool for collaborative projects. Using Git, we effectively create different versions of our files and track who has made what changes. The complete history of the changes for a particular project and their metadata make up a repository.</p>
+<p>To sync the repository across different computers and to collaborate with others, Git is often used via <a href="http://www.github.com">GitHub</a>, a web-based service that hosts Git repositories. In the spirit of ‘working open’ and ensuring scientific reproducibility, it has also become increasingly common for scientists to upload scripts and related files to GitHub for others to use.</p>
+<p>In this lesson, we’ll be covering some basic Git commands, before moving on to using GitHub for the upcoming group projects. All members of the group will be given admin access to a pre-made repository.</p>
+<div id="command-line-git" class="section level3">
+<h3>Command line Git</h3>
+<div id="setup-and-installation" class="section level4">
+<h4>Setup and Installation</h4>
+<p>Git is primarily used on the command line. The implementation of the command line that we’ll be using is known as a ‘bash interpreter’, or ‘shell’. While bash interpreters are natively available on Mac and Linux operating systems, Windows users may have to externally install a bash shell.</p>
+<p>To install Git on a <strong>Mac</strong>, you will have to install <a href="https://itunes.apple.com/ca/app/xcode/id497799835?mt=12">Xcode</a>, which can be downloaded from the Mac App Store. Be warned: Xcode is a very large download (approximately 6 GB)! Install Xcode and Git should be ready for use. (<em>Note: most students will have already installed Xcode already for some R packages we used earlier in the course. If you’re not sure whether this is the case, run the <code>git --version</code> command described below</em>)</p>
+<p>To install Git (and Bash) on <strong>Windows</strong>, download <a href="https://gitforwindows.org/">Git for Windows</a> from its <a href="https://github.com/git-for-windows/git/releases/tag/v2.19.1.windows.1">website</a>. At the time of writing, 2.19.1 is the most recent version. Download the <code>exe</code> file to get started. Git for Windows provides a program called Git Bash, which provides a bash interpreter that can also run Git commands.</p>
+<p>To install Git for <strong>Linux</strong>, use the preferred package manager for your distribution and follow the instructions <a href="https://git-scm.com/download/linux">listed here</a>.</p>
+<p>To test whether Git has successfully been installed, open a bash interpreter, type:</p>
+<pre><code>git --version</code></pre>
+<p>and hit Enter. If the interpreter returns a version number, Git has been installed.</p>
+</div>
+<div id="bash-primer" class="section level4">
+<h4>Bash Primer</h4>
+<p>Before we can use Git in the bash interpreter, it’s worth learning a few basic bash commands. All bash commands are run simply by typing them into the interpreter and pressing Enter. All instances of <code>foldername</code> and <code>filename</code> should be replaced with the name of whichever file/folder you would like to provide as input to the operation.</p>
+<pre><code>pwd</code></pre>
+<p><code>pwd</code>, or ‘print working directory’, will return the folder bash is currently in. This is similar to the concept of the working directory in R that we discussed earlier in the course.</p>
+<pre><code>cd foldername</code></pre>
+<p><code>cd</code> changes the current working directory to an input folder (in place of <code>foldername</code>). This is useful in tandem with <code>~</code>, which is shorthand for ‘home directory’ in bash (usually <code>/Users/[yourname]</code>). To navigate to your Desktop, the command would be <code>cd ~/Desktop</code>.</p>
+<p><code>cd ..</code> will let you move back up one folder. If your current working directory is <code>/Users/[yourname]/Desktop</code>, for instance, <code>cd ..</code> will change it to <code>/Users/[yourname]</code>.</p>
+<pre><code>ls</code></pre>
+<p><code>ls</code> will return what files/folders are within the current working directory. This is useful when you have just used <code>cd</code> to change your current directory and need a quick reminder of what’s in said directory.</p>
+<pre><code>mkdir foldername</code></pre>
+<p><code>mkdir</code>, or ‘make directory’, will create a new directory with the specified name. For instance, <code>mkdir thesis</code> will create a folder called <code>thesis</code>, which can then be entered with <code>cd thesis</code>.</p>
+<pre><code>nano filename</code></pre>
+<p><code>nano</code> is a text editor for Unix-like systems that opens right within the bash window. If the filename provided doesn’t refer to an existing file, <code>nano</code> will create a new file with that name. Once you’re done with <code>nano</code>, press Control + X to exit - <code>nano</code> will ask whether you want to save your work, which can be answered by pressing either <code>y</code> or <code>n</code>. Alternatively, Control + O followed by Enter will save your current work, after which Control + X will exit without prompting.</p>
+<p>You can use any other text editor based on your system, such as Notepad on Windows.</p>
+</div>
+<div id="getting-started-with-git" class="section level4">
+<h4>Getting started with Git</h4>
+<p>First, we have to tell Git who we are. This is especially important when collaborating with Git and keeping track of who did what! Keep in mind that this only has to be done the first time we’re using Git.</p>
+<p>This is done with the <code>git config</code> command. When using Git, <em>all</em> commands begin with <code>git</code>, followed by more specific subcommands.</p>
+<pre><code>git config --global user.name &quot;My Name&quot;
+git config --global user.email &quot;myemail@example.com&quot;</code></pre>
+<p>Next, we have to set a default text editor for Git. Here, we’ll use <code>nano</code>, as mentioned above:</p>
+<pre><code>git config --global core.editor &quot;nano&quot;</code></pre>
+<p>If you would like to set up a different text editor as your default, see <a href="https://swcarpentry.github.io/git-novice/02-setup/index.html">here</a>.</p>
+<p>Finally, the following command can be used to review Git configurations:</p>
+<pre><code>git config --list</code></pre>
+</div>
+<div id="version-control-with-git" class="section level4">
+<h4>Version control with Git</h4>
+<p>Note: <em>Material for the following section of the class was taught from <a href="www.software-carpentry.org">Software Carpentry</a>’s openly available Intro to Git lesson, which is available in its entirety <a href="http://swcarpentry.github.io/git-novice/">here</a>.</em></p>
+<p>Material covered in class, in order:</p>
+<ul>
+<li><a href="https://swcarpentry.github.io/git-novice/03-create/index.html">Creating a repository</a></li>
+<li><a href="https://swcarpentry.github.io/git-novice/04-changes/index.html">Tracking changes</a></li>
+<li><a href="https://swcarpentry.github.io/git-novice/05-history/index.html">Exploring history</a></li>
+</ul>
+<div id="summary-basic-git-commands" class="section level5">
+<h5>Summary: Basic Git commands</h5>
+<ul>
+<li><code>git init</code> (or <code>git clone</code>)</li>
+<li><code>git status</code></li>
+<li><code>git log</code></li>
+<li><code>git add</code></li>
+<li><code>git commit</code></li>
+<li><code>git checkout</code></li>
+</ul>
+</div>
+</div>
+<div id="branching" class="section level4">
+<h4>Branching</h4>
+<p>Git commit history is a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">directed acyclic graph</a> (or DAG), which means that every single commit always has at least one ‘parent’ commit (the previous commit(s) in the history), and any individual commit can have multiple ‘children’. This history can be traced back through the ‘lineage’ or ‘ancestry’.</p>
+<div id="what-are-branches" class="section level5">
+<h5>What are branches?</h5>
+<p>Branches are simply a <em>named pointer</em> to a commit in the DAG, which automatically <em>move forward</em> as commits are made. Divergent commits (two commits with the same parent) could be considered “virtual” branches. Since they are simply pointers, branches in Git are very lightweight.</p>
+<div class="figure">
+<img src="image/git_lesson/branches.png" alt="Examples of branching (Source: Atlassian Bitbucket Tutorials)" />
+<p class="caption">Examples of branching (Source: Atlassian Bitbucket Tutorials)</p>
+</div>
+</div>
+<div id="why-use-them" class="section level5">
+<h5>Why use them?</h5>
+<ul>
+<li>To keep experimental work separate</li>
+<li>To separate trials</li>
+<li>To ease collaboration</li>
+<li>To separate bug fixes from development</li>
+</ul>
+<p>We will focus more on branches in the second section of the lesson when we learn about GitHub.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="collaborating-with-github" class="section level2">
+<h2>Collaborating with GitHub</h2>
+<p>Although command line Git is very useful, GitHub allows for easy use of Git for collaborative purposes using a primarily point-and-click interface, in addition to providing a web-based hosting service for Git repositories (or ‘repos’). If you have not already made a GitHub account, do so now <a href="www.github.com">here</a>.</p>
+<p>All groups have been provided with existing repositories, but a new repository can be made by clicking on the <code>+</code> in the top right of the page and selecting ‘New repository’. For now, however, navigate to your provided group repo.</p>
+<div id="creating-a-fork" class="section level3">
+<h3>Creating a fork</h3>
+<p>The repos that have already been created can be thought of as ‘main repos’, which will contain the ‘primary’ version of the repo at any given point in time. However, instead of directly uploading and editing files right within this main repo itself, we will begin by <em>forking</em> the repo. When a given user forks a repo, GitHub creates a user-specific copy of the repo and all its files.</p>
+<p>To fork your group’s repo, navigate to the repo’s page and click on the ‘Fork’ button at the top right of the page. Following a brief load screen, GitHub will redirect you to your new, forked repo.</p>
+<p>You’ll notice that on the top left of this repo page, the repo’s name will be ‘[your username] / [repo name]’, as opposed to ‘EEB313 / [repo name]’. Furthermore, GitHub will indicate that this is a fork right underneath said repo name (‘forked from eeb313-[year]/ [repo name]’).</p>
+</div>
+<div id="branches-and-pull-requests" class="section level3">
+<h3>Branches and Pull Requests</h3>
+<p>Currently, your fork is identical to what the original repo looked like at the moment of forking, and so GitHub will indicate that the fork is currently ‘even’ with its original. Any edits that are made in the fork will be unique to the fork, leaving the original unchanged.</p>
+<p>But how do you add these changes to the main repo? Doing so is a two step process:</p>
+<ol style="list-style-type: decimal">
+<li><p>First, create a <em>branch</em> on your <em>fork</em> (not the main repo). This is yet another copy of the fork (a copy of a copy!) that will store changes separately from ‘master’, which is the default branch.</p></li>
+<li><p>Once you have made our changes in this branch, submit what’s known as a <em>pull request</em> from this edited branch to the main repo. This allows your changes to be reviewed by the other members of your group before they are merged into the main repo.</p></li>
+</ol>
+<p>Although this process may seem a bit laborious, using this method (also known as the ‘GitHub flow’) minimizes chances of error and ensures that all code is reviewed by at least one other person. Understanding how and why this process works is key to collaborative work in software development and the like, and is used by all sorts of open source projects on GitHub (<a href="https://github.com/tidyverse/dplyr">including <code>dplyr</code> itself</a>!)</p>
+<div id="creating-a-new-branch" class="section level4">
+<h4>Creating a new branch</h4>
+<p>In a given repo, there is a ‘Branch: master’ button just above the list of files. Clicking on this will bring up a dropdown menu containing a list of branches (which currently just contains <code>master</code>) and a text field. A new branch can be created by typing in the text field. Start by making a new branch called <code>initial-edit</code> using said text field. GitHub will then refresh, and the button will now say ‘Branch: initial-edit’ instead.</p>
+<div class="figure">
+<img src="image/git_lesson/branch_dropdown.png" alt="Pictured: the branch dropdown menu" />
+<p class="caption"><em>Pictured: the branch dropdown menu</em></p>
+</div>
+<p>The dropdown can now be used to switch back to <code>master</code>, but let’s stay in <code>initial-edit</code> for now. This is the place to make new changes – either by editing existing files or creating new ones. Let’s create a simple Rmd file with the ‘Create new file’ button on the right side of the repo page.</p>
+<pre><code>---
+title: &quot;Test R Notebook&quot;
+author: &quot;Your Name&quot;
+output: pdf_document
+---
+
+Hello! This is my R notebook.
+
+```{r}
+print(&#39;Hello, GitHub!&#39;)
+```
+</code></pre>
+<div class="figure">
+<img src="image/git_lesson/sample_rmd.png" alt="Pictured: editing a file on GitHub" />
+<p class="caption"><em>Pictured: editing a file on GitHub</em></p>
+</div>
+<p>Once done, scroll to the bottom of the page and add a commit message using the text file – something like ‘initial Rmd file creation’ – and then click on ‘Commit new file’.</p>
+</div>
+<div id="pull-requests" class="section level4">
+<h4>Pull requests</h4>
+<p>After a commit has been made, GitHub takes you back to the main repo page, but now with an attention-grabbing yellow prompt about these new edits. GitHub has noticed that your fork has a new branch with edits, and over on the right side of the prompt, GitHub presents the option of creating a pull request.</p>
+<div class="figure">
+<img src="image/git_lesson/yellow_prompt.png" alt="Pictured: GitHub’s pull request prompt" />
+<p class="caption"><em>Pictured: GitHub’s pull request prompt</em></p>
+</div>
+<p>If you don’t see the yellow prompt, head to your fork and switch to the branch containing your edits. Underneath the green ‘Clone or download’ button, there is a ‘Pull request’ option – this can be used to open a pull request instead. You’ll also notice that the left side of this bar lists how many commits ahead of <code>master</code> your branch currently is.</p>
+<p>Following either method of opening a pull request, GitHub takes you to the ‘Pull requests’ tab of the <em>main repo</em> and prompts you to write about your pull request. Here, you can (and should) explain the changes you’ve made for your group members, so that they know what to look for and review. Be specific and detailed to save your group members’ time – it’s a good idea to start off your pull request message with an overall summary (‘adding <code>dplyr</code> code to clean dataset’) followed by a point-form list of what changes have been made, if necessary.</p>
+<p>Once the pull request has been made, GitHub will list both your message and your commit messages below. You also have the option of merging the pull request yourself – but <em>don’t do this</em>! When collaborating, always have someone else review and merge your pull request.</p>
+<p>If all does <em>not</em> look good, your team members can add messages below, and tag others using the @ symbol, similarly to most social networks. If more changes are needed before the pull request is ready to merge, any new commits you make to the branch on your fork (<code>initial-edit</code> in our case here) will automatically be added on to the pull request. This way, you can incorporate any changes or fixes suggested by your team members simply by continuing to work in your fork’s new branch until your changes are ready to merge.</p>
+<p>Once a pull request has been merged into the main repo, the branch on your fork isn’t needed anymore. Because of this, GitHub will immediately prompt you to delete the <code>initial-edit</code> branch as soon as the merge has been completed.</p>
+<div class="figure">
+<img src="image/git_leson/delete_branch.png" alt="Pictured: GitHub’s branch deletion prompt" />
+<p class="caption"><em>Pictured: GitHub’s branch deletion prompt</em></p>
+</div>
+<p>Great work – your edits are now on the main repo!</p>
+</div>
+<div id="syncing-your-fork" class="section level4">
+<h4>Syncing your fork</h4>
+<p>There’s one issue with the above, though – now, the <code>master</code> branch on your fork is out of date with the current state of the main repo. The fork has to be synced to remedy this issue.</p>
+<p>First, head to your fork on GitHub, and click on the green ‘Clone or download’ button on the right side of the page. This yields a link to your fork. Copy this link to your clipboard.</p>
+<p>Next, open a bash shell, and navigate over to whichever folder you would like a copy of your repo to be saved in. Then, run:</p>
+<pre><code>git clone [repo link]</code></pre>
+<p>With the link in place of <code>[repo link]</code>. This process, known as <em>cloning</em>, will create a new folder in your current working directory that contains the contents of your fork. Enter this new folder with <code>cd</code> and type <code>git status</code> to make sure the repo has been cloned properly. <code>git status</code> should output that the branch is even with <code>origin/master</code>, indicating that it is currently the same as the current state of your fork.</p>
+<p>To get your fork up to date with the main repo, you next have to add a <em>remote</em> linking to the main repo. Head to your group’s repo and once again click on ‘Clone or download’ to grab its link. Then, using the main repo link, run:</p>
+<pre><code>git remote add upstream [repo link]</code></pre>
+<p>Once this is done, run:</p>
+<pre><code>git remote -v</code></pre>
+<p>to get a list of existing remotes. This should return four links, two of which are labelled <code>origin</code> and two of which are labelled <code>upstream</code>.</p>
+<p>Next, you have to <em>fetch</em> the new changes that are in the main repo.</p>
+<pre><code>git fetch upstream</code></pre>
+<p>Once the edits have been downloaded, merge them into your local repo:</p>
+<pre><code>git merge upstream/master</code></pre>
+<p>Your local copy is now even with the main repo! Finally, push these changes to the GitHub version of your fork:</p>
+<pre><code>git push origin master</code></pre>
+<p>and now the GitHub version of the fork is all synced up, ready for your next batch of edits, and eventually another pull request!</p>
+</div>
+<div id="keeping-your-fork-up-to-date" class="section level4">
+<h4>Keeping your fork up to date</h4>
+<p>When other group members add to the main repo through their own pull requests, you have to make sure those edits have been incorporated into your repo before making new changes of your own. This ensures that there aren’t any conflicts within files, wherein your edits clash with someone else’s if one of you is working with an earlier version of the file.</p>
+<p>To remain up to date, navigate to the local copy of your repo using bash, and once again repeat the above steps:</p>
+<pre><code>git fetch upstream
+git merge upstream/master
+git push origin master</code></pre>
+<p>Note: The <code>git pull</code> command combines two other commands, <code>git fetch</code> and <code>git merge</code>.</p>
+<p>This will download any changes your group members may have made and update both the local and GitHub versions of your fork accordingly. Before starting any edits of your own, it’s usually a good idea to start off by checking to see whether anything’s been added to the main repo and, if needed, then syncing your fork to account for that.</p>
+</div>
+<div id="issues" class="section level4">
+<h4>Issues</h4>
+<p>Finally, each repo on GitHub also has an Issues tab at the top of the page. Here, you and your group can create posts regarding the content of the repo that highlight issues with code or serve as to-do lists to manage outstanding tasks with.</p>
+<p>Although issues aren’t needed for any of the steps we discussed above, it can be useful to create a roadmap of your project with them and<br />
+assign group members to specific tasks if need be.</p>
+</div>
+</div>
+<div id="to-sum-up" class="section level3">
+<h3>To sum up</h3>
+<p>The ‘GitHub flow’:</p>
+<ol style="list-style-type: decimal">
+<li>Make sure your fork is up to date</li>
+<li>Create a new branch on your fork</li>
+<li>Make your edits (with informative commit messages along the way)</li>
+<li>Submit a pull request</li>
+<li>Have your group members review your pull request</li>
+<li>If your group requests further edits prior to merging, make more commits in the new branch</li>
+<li>Once your edits have been merged, delete your new edits-containing branch</li>
+<li>Sync your fork to be up to date with the new changes</li>
+</ol>
+</div>
+</div>
+<div id="collaborating-with-github-without-the-command-line" class="section level2">
+<h2>Collaborating with GitHub without the command line</h2>
+<p>The following section is a modified version of the above section that covers collaboration with GitHub <strong>without</strong> the use of the command line.</p>
+<p>All groups have been provided with existing repositories, but a new repository can be made by clicking on the <code>+</code> in the top right of the page and selecting ‘New repository’. For now, however, navigate to your provided group repo.</p>
+<div id="creating-a-fork-1" class="section level3">
+<h3>Creating a fork</h3>
+<p>The repos that have already been created can be thought of as ‘main repos’, which will contain the ‘primary’ version of the repo at any given point in time. Although we <em>will</em> in fact work within this ‘main repo’ in this version of the lesson, we will still begin by <em>forking</em> the repo. When a given user forks a repo, GitHub creates a user-specific copy of the repo and all its files.</p>
+<p>To fork your group’s repo, navigate to the repo’s page and click on the ‘Fork’ button at the top right of the page. Following a brief load screen, GitHub will redirect you to your new, forked repo.</p>
+<p>You’ll notice that on the top left of this repo page, the repo’s name will be ‘[your username] / [repo name]’, as opposed to ‘EEB313 / [repo name]’. Furthermore, GitHub will indicate that this is a fork right underneath said repo name (‘forked from eeb313-[year]/ [repo name]’).</p>
+<p>For the duration of this lesson, we will stick to the <code>eeb313</code> version of your group’s repo. Although the fork-based workflow (see above) is much more common in practice (especially since it works when collaborating on repos that one <em>doesn’t</em> have admin access to) it is a bit more advanced and not particularly needed for these projects. You are of course welcome to incorporate a fork-based workflow on your own time – but for the purposes of this class, your forks can just be used as sandboxes for you to test out things if you’d like.</p>
+</div>
+<div id="branches-and-pull-requests-1" class="section level3">
+<h3>Branches and Pull Requests</h3>
+<p>How does one collaboratively work on a single repo? The trick to that involves <strong>branches</strong>. A <strong>branch</strong> is a copy of the repo that will store changes separately from <code>master</code>, which is the default branch. The <code>master</code> branch should be thought of as the actual current state of your project – branches are meant, by design, to be temporary, and exist only to facilitate edits and experimental work while avoiding any risk of breaking the original codebase.</p>
+<p>The general collaborative workflow is as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>First, create a <em>branch</em> on the main repo.</p></li>
+<li><p>Make edits in the branch. These could involve adding/deleting lines of code or even adding/removing entire files. Keep in mind that the branch is separate from the main codebase, so don’t worry too much about deleting things or making large changes.</p></li>
+<li><p>Once you have made your changes in this branch, submit what’s known as a <em>pull request</em> (PR) from this edited branch to <code>master</code>. A PR neatly packages all the edits that have been made in your branch for review by other members of your group.</p></li>
+<li><p>Once your changes have been approved, merge the PR. It’s good practice to have group members merge your PRs instead of doing it yourself.</p></li>
+</ol>
+<p>Although this process may seem a bit laborious, using this method (also known as the ‘GitHub flow’) minimizes chances of error and ensures that all code is reviewed by at least one other person. Understanding how and why this process works is key to collaborative work in software development and the like, and is used by all sorts of open source projects on GitHub (<a href="https://github.com/tidyverse/dplyr">including <code>dplyr</code> itself</a>!)</p>
+<div id="creating-a-new-branch-1" class="section level4">
+<h4>Creating a new branch</h4>
+<p>In a given repo, there is a ‘Branch: master’ button just above the list of files. Clicking on this will bring up a dropdown menu containing a list of branches (which currently just contains <code>master</code>) and a text field. A new branch can be created by typing in the text field. Start by making a new branch called <code>initial-edit</code> using said text field. GitHub will then refresh, and the button will now say ‘Branch: initial-edit’ instead.</p>
+<div class="figure">
+<img src="image/git_lesson/branch_dropdown.png" alt="Pictured: the branch dropdown menu" />
+<p class="caption"><em>Pictured: the branch dropdown menu</em></p>
+</div>
+<p>The dropdown can now be used to switch back to <code>master</code>, but let’s stay in <code>initial-edit</code> for now. This is the place to make new changes – either by editing existing files or creating new ones. Let’s create a simple Rmd file with the ‘Create new file’ button on the right side of the repo page.</p>
+<pre><code>---
+title: &quot;Test R Notebook&quot;
+author: &quot;Your Name&quot;
+output: pdf_document
+---
+
+Hello! This is my R notebook.
+
+```{r}
+print(&#39;Hello, GitHub!&#39;)
+```
+</code></pre>
+<div class="figure">
+<img src="image/git_lesson/sample_rmd.png" alt="Pictured: editing a file on GitHub" />
+<p class="caption"><em>Pictured: editing a file on GitHub</em></p>
+</div>
+<p>Once done, scroll to the bottom of the page to save your changes. In GitHub lingo, a saved change is called a <strong>commit</strong> – this can be thought of more as a ‘checkpoint’. GitHub <em>requires</em> that all commits have an associated commit message describing the change. This may seem a bit draconian, but it ensures that all changes have been documented, which is something that may save you and your group members a lot of trouble down the line!</p>
+<p>While there is a default commit message GitHub will fill in, it’s best to add a custom one. It’s good practice to leave detailed commit messages as much as possible, so that both your collaborators as well as future you can understand what each commit did in case something goes wrong down the line. In this case, however, something like ‘initial Rmd file creation’ will do. Click on ‘Commit new file’ to complete the process. Note that the radio button underneath specifically says ‘Commit directly to the <code>initial-edit</code> branch’. This means that your edit will only exist in <code>initial-edit</code> for now – <code>master</code> remains unchanged.</p>
+</div>
+<div id="pull-requests-1" class="section level4">
+<h4>Pull requests</h4>
+<p>After a commit has been made, GitHub takes you back to the main repo page, but now with an attention-grabbing yellow prompt about these new edits. GitHub has noticed that there exists a new branch with edits and that these edits differ from what’s in <code>master</code>. Over on the right side of the prompt, GitHub presents the option of creating a <em>pull request</em> (PR). A PR is GitHub’s way of neatly packaging one or more commits that have been made in a branch into a single request to merge said commits into <code>master</code>. In our case, a PR is essentially you telling your group members: “Here are all the edits I’ve made. Have a look, and add them to <code>master</code> if you think they’re ready to go.”</p>
+<div class="figure">
+<img src="image/git_lesson/yellow_prompt.png" alt="Pictured: GitHub’s pull request prompt" />
+<p class="caption"><em>Pictured: GitHub’s pull request prompt</em></p>
+</div>
+<p>If you don’t see the yellow prompt, switch to the branch containing your edits. Notice the ‘New pull request’ button next to the branch dropdown – this can be used to open a pull request instead. You’ll also notice that the left side of this bar lists how many commits ahead of <code>master</code> your branch currently is.</p>
+<p>Following either method of opening a pull request, GitHub takes you to the ‘Pull requests’ tab of the repo and prompts you to write about your pull request (i.e. describe the changes you’re attempting to merge). Here, you can (and should) explain the changes you’ve made for your group members, so that they know what to look for and review. Be specific and detailed to save your group members’ time – it’s a good idea to start off your pull request message with an overall summary (‘adding <code>dplyr</code> code to clean dataset’) followed by a point-form list of what changes have been made, if necessary.</p>
+<p>Once the pull request has been made, GitHub will list both your message and your commit messages below. Clicking on any of these commits opens up a new page highlighting the changes made in that specific commit. You also have the option of merging the pull request yourself – but <em>don’t do this</em>! When collaborating, always have someone else review and merge your pull request.</p>
+<p>If all does <em>not</em> look good, your team members can add messages below, and tag others using the @ symbol, similarly to most social networks. If more changes are needed before the pull request is ready to merge, any new commits you make to the branch on your fork (<code>initial-edit</code> in our case here) will automatically be added on to the pull request. This way, you can incorporate any changes or fixes suggested by your team members simply by continuing to work in your fork’s new branch until your changes are ready to merge. For line-specific edits, if a file is opened up (i.e. by clicking on one of the commits), clicking on the <code>+</code> button that appears when hovering over a line number will allow you or a group member to add a comment specifically attached to that line. This can be useful when pointing out typos, for instance, among other things.</p>
+<p>Once a pull request has been merged into the main repo, the <code>initial-edit</code> branch (or whatever you have named your branch) isn’t needed anymore. Because of this, GitHub will immediately prompt you to delete the <code>initial-edit</code> branch as soon as the merge has been completed right in the PR.</p>
+<div class="figure">
+<img src="image/git_lesson/delete_branch.png" alt="Pictured: GitHub’s branch deletion prompt" />
+<p class="caption"><em>Pictured: GitHub’s branch deletion prompt</em></p>
+</div>
+<p>Great work – your edits are now on <code>master</code>!</p>
+</div>
+<div id="resolving-merge-conflicts" class="section level4">
+<h4>Resolving merge conflicts</h4>
+<p>Unfortunately, things aren’t always as smooth as the above process. Often, there may exist two versions of the same file with divergent edit histories. Here are a few scenarios where this might happen:</p>
+<ol style="list-style-type: decimal">
+<li><p>You create a branch called <code>update-plots</code>. In a file called <code>plots.Rmd</code>, you add code for a bar plot. However, someone makes the mistake of working directly in <code>master</code>, and writes code for something else in the same file. When you create your PR from <code>update-plots</code>, Git has trouble merging your edits, since there would exist two separate blocks of code in the same part of the <code>master</code> file if it did. Git is not sure which one should take precedence, and will not make assumptions.</p></li>
+<li><p>After explaining to your collaborator that editing in <code>master</code> should be avoided, you create a branch called <code>add-models</code> and do some stats in a file called <code>analysis.Rmd</code>. However, you take the weekend off, and in the interim, one of your group members creates a separate branch called <code>do-stats</code> and edits the same file. You both start from the same file, but your final files look different. Both of you submit PRs. The first PR to get merged has no issues, but the second PR cannot be merged into <code>master</code>, because the <code>master</code> version of <code>analysis.Rmd</code> has now changed.</p></li>
+</ol>
+<p>To deal with issues like these, GitHub allows for <em>merge conflict resolution</em>. The way resolution works is that a conflicting PR can still be submitted, but the ‘Merge pull request’ button will be greyed out. Instead, there will be a ‘Resolve conflicts’ button, which opens up a text editor in the browser. The text editor will show the file but contain <em>both</em> versions of the conflicting edits, essentially asking you to delete whichever version of the text you want removed. The offending lines should look something like this:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; test-update
+print(&#39;Hello&#39;)
+=======
+print(&#39;Goodbye&#39;)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; master</code></pre>
+<p>This tells us that <code>print('Hello')</code> is what’s on this line in this file in the <code>test-update</code> branch, while the <code>master</code> branch has <code>print('Goodbye')</code> on the same line. To keep the <code>test-update</code> version, all of the text here has to be deleted except for that line of code, including the separator (<code>=======</code>) line as well as the lines listing the branches. In the end, it should simply look like this:</p>
+<pre><code>print(&#39;Hello&#39;)</code></pre>
+<p>after which the ‘Mark as resolved’ button on the top right of the text editor will be un-greyed. Once that has been clicked, click on the new ‘Commit merge’ button to fix the issue, which will redirect back to the PR page. The PR can now be merged!</p>
+</div>
+</div>
+<div id="to-sum-up-1" class="section level3">
+<h3>To sum up</h3>
+<p>The ‘GitHub flow’, without the command line:</p>
+<ol style="list-style-type: decimal">
+<li>While in <code>master</code>, create a new branch</li>
+<li>Make your edits (with informative commit messages along the way)</li>
+<li>Submit a pull request</li>
+<li>Have your group members review your pull request</li>
+<li>If your group requests further edits prior to merging, make more commits in the new branch</li>
+<li>Once your edits have been merged into <code>master</code>, delete your branch</li>
+</ol>
+<p>Additional resources:</p>
+<ul>
+<li><a href="https://guides.github.com/introduction/flow/">A visual demonstration</a> of the GitHub flow.</li>
+<li>A useful <a href="https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf">Git command cheat sheet</a>.</li>
+<li>Guide to a <a href="https://www.atlassian.com/git/tutorials/comparing-workflows">good Git Workflow</a></li>
+</ul>
+</div>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

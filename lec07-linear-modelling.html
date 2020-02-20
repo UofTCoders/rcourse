@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lindsay Coome and Zoe Humphries" />
+
+
+<title>Linear models and statistical modelling</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/favicon.png">
+<style type="text/css">
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: solid #DCDCDC;
+    border-bottom: solid #DCDCDC;
+}
+
+tr.odd {
+    background-color: #F8F8F8;
+}
+
+tr:last-child {
+    border-bottom: solid #DCDCDC;
+}
+
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EEB313H1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-map-o"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="lec01-introduction.html">Sept. 10: Intro to course, programming, RStudio, and R Markdown</a>
+    </li>
+    <li>
+      <a href="lec02-basic-r.html">Sept. 12: Assignment, vectors, functions</a>
+    </li>
+    <li>
+      <a href="lec03-basic-r.html">Sept. 17: Data frames, intro to dplyr</a>
+    </li>
+    <li>
+      <a href="lec04-dplyr.html">Sept. 19: Data wrangling in dplyr, ggplot, tidy data</a>
+    </li>
+    <li>
+      <a href="lec05-dplyr.html">Sept. 24: More dplyr and ggplot</a>
+    </li>
+    <li>
+      <a href="lec06-exploratory-data-analysis.html">Sept. 26: Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="lec07-linear-modelling.html">Oct. 01: Linear models and statistical modelling</a>
+    </li>
+    <li>
+      <a href="lec08-linear-mixed-effects-models.html">Oct. 03: Mixed effects models</a>
+    </li>
+    <li>
+      <a href="lec09-model-selection.html">Oct. 08: Model Selection</a>
+    </li>
+    <li>
+      <a href="lec10-multivariate-stats.html">Oct. 10: Multivariate stats</a>
+    </li>
+    <li>
+      <a href="lec11-spatial-stats.html">Oct. 15: Spatial stats</a>
+    </li>
+    <li>
+      <a href="lec12-randomization-tests.html">Oct. 17: Simulating data: Randomization tests</a>
+    </li>
+    <li>
+      <a href="lec13-theory.html">Oct. 22 &amp; 24: Mathematical models in EEB</a>
+    </li>
+    <li>
+      <a href="lec14-datasets.html">Oct. 29: Datasets, hypotheses, begin projects</a>
+    </li>
+    <li>
+      <a href="lec15-git-projects.html">Oct. 29 (cont.): Collaborating with GitHub</a>
+    </li>
+    <li class="dropdown-header">Oct. 31: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 12: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 14: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 19: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 21: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 26: Project work (no lesson)</li>
+    <li class="dropdown-header">Nov. 28: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 03: Project work (no lesson)</li>
+    <li class="dropdown-header">Dec. 05: Group presentations (no lesson)</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="assignment-01.html">Assignment 1</a>
+    </li>
+    <li>
+      <a href="assignment-02.html">Assignment 2</a>
+    </li>
+    <li>
+      <a href="assignment-03.html">Assignment 3</a>
+    </li>
+    <li>
+      <a href="assignment-04.html">Assignment 4</a>
+    </li>
+    <li>
+      <a href="assignment-05.html">Assignment 5</a>
+    </li>
+    <li>
+      <a href="assignment-06.html">Assignment 6</a>
+    </li>
+    <li>
+      <a href="assignment-07.html">Assignment 7</a>
+    </li>
+    <li>
+      <a href="mid-project-update.html">Mid-project update</a>
+    </li>
+    <li>
+      <a href="assignment-09-challenge.html">Challenge assignment</a>
+    </li>
+    <li>
+      <a href="assignment-final.html">Final project</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">
+    <span class="fa fa-question"></span>
+     
+    Resources and FAQ
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:ahmed.hasan@mail.utoronto.ca">
+        <span class="fa fa-envelope"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/uoftcoders/rcourse">
+        <span class="fa fa-github"></span>
+         
+        GitHub
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Linear models and statistical modelling</h1>
+<h4 class="author">Lindsay Coome and Zoe Humphries</h4>
+
+</div>
+
+
+<div id="lesson-preamble" class="section level1">
+<h1>Lesson preamble</h1>
+<blockquote>
+<h3 id="lesson-objectives">Lesson objectives</h3>
+<ul>
+<li>Learn how to apply and interpret linear regression for a variety of data</li>
+<li>Understand probability and the importance of presenting confidence intervals</li>
+<li>Learn the importance of visualizing your data when doing any analyses or statistics</li>
+</ul>
+<h3 id="lesson-outline">Lesson outline</h3>
+<ul>
+<li>Basic descriptive and inferential statistics (20 min)</li>
+<li>Generalized linear models (50-60 min)
+<ul>
+<li>Linear regression</li>
+<li>ANOVA</li>
+<li>Logistic regression</li>
+</ul></li>
+</ul>
+</blockquote>
+</div>
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<p>Load appropriate libraries</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(car)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(multcomp)</a></code></pre></div>
+<p>If you need to re-download the survey data</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># download.file(&quot;https://ndownloader.figshare.com/files/2292169&quot;, &quot;survey.csv&quot;)</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># survey &lt;- read_csv(&quot;survey.csv&quot;)</span></a></code></pre></div>
+<p>Load the data and change all character vectors into factors</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">survey &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/survey.csv.gz&quot;</span>)</a></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   record_id = col_double(),
+##   month = col_double(),
+##   day = col_double(),
+##   year = col_double(),
+##   plot_id = col_double(),
+##   species_id = col_character(),
+##   sex = col_character(),
+##   hindfoot_length = col_double(),
+##   weight = col_double(),
+##   genus = col_character(),
+##   species = col_character(),
+##   taxa = col_character(),
+##   plot_type = col_character()
+## )</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># mutate_if is a very handy function!</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">survey &lt;-<span class="st"> </span>survey <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">    </span><span class="kw">mutate_if</span>(is.character, as.factor) </a></code></pre></div>
+</div>
+<div id="statistics-and-probability" class="section level1">
+<h1>Statistics and probability</h1>
+<p>Theoretical models are powerful tools for explaining and understanding the world. However, they are limited in that the real-world often doesn’t perfectly fit these models. The real world is messy and noisy. We can’t always blindly trust our data as there are inherent biases and errors in it. Measuring it, collecting it, recording it, and inputting it are some of the possible sources of error and bias. We use statistics and probability to determine whether the way we understand and conceptualize the world (as models) matches reality (even with the error and bias).</p>
+<p>A reason we use statistical methods in R compared to writing up the formulas and equations ourselves is that we can focus on answering questions without worrying about whether we are doing the math or computation wrong. This is of course dependent on the type of research questions you may be interested in (e.g. for more theoretical questions, doing the math and computation yourself is probably a goal!) and on the type of data you are using/collecting. There is a lot of complexity that has already been taken care of in the available R packages and functions. For example, the function <code>lm</code> that we will use in this lesson uses the ordinary least squares (OLS) method, which is a common method for determining fit for linear models. That way, you can answer your research questions and not worry too much about the exact math involved and instead worry about the specifics of your field (e.g. Are you measuring the right thing? Are you collecting the right data? Are you asking the right questions? Is there an ecological or biological aspect you are missing in your analysis?).</p>
+</div>
+<div id="descriptive-statistics" class="section level1">
+<h1>Descriptive statistics</h1>
+<p>This is simply a way to numerically describe patterns in data, very similar to the visual descriptions we made last lecture. It summarises information and can facilitate comparisons among and within experimental conditions. The distribution properties we discussed (averages, spread, skew, kurtosis) fall under this umbrella.</p>
+<p>Often, the dplyr function <code>summarise()</code> is very helpful for creating these descriptions.</p>
+<div id="count-occurrences" class="section level2">
+<h2>Count occurrences</h2>
+<p>Base R’s <code>table()</code> function displays counts of identical observations for either a single data vector or a dataframe. With the survey data, we can see how many records there are for a given genus (such as Dipodomys). This is the ‘single data vector’ case.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Count records for all genera</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">table</span>(survey<span class="op">$</span>genus)</a></code></pre></div>
+<pre><code>## 
+##       Ammodramus Ammospermophilus       Amphispiza          Baiomys 
+##                2              437              303               46 
+##      Calamospiza       Callipepla  Campylorhynchus      Chaetodipus 
+##               13               16               50             6029 
+##    Cnemidophorus         Crotalus        Dipodomys           Lizard 
+##                2                2            16167                4 
+##          Neotoma        Onychomys      Perognathus       Peromyscus 
+##             1252             3267             1629             2234 
+##           Pipilo        Pooecetes  Reithrodontomys           Rodent 
+##               52                8             2694               10 
+##       Sceloporus         Sigmodon          Sparrow     Spermophilus 
+##                6              233                4              249 
+##       Sylvilagus      Zonotrichia 
+##               75                2</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Count the number of records for Dipodomys</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">sum</span>( survey<span class="op">$</span>genus<span class="op">==</span><span class="st">&quot;Dipodomys&quot;</span> ) <span class="co">#most straightforward</span></a></code></pre></div>
+<pre><code>## [1] 16167</code></pre>
+<p>We can also provide two different variables from the same data set to <em>cross</em> <em>tabulate</em> the number of records that have each value. Looking for the intersection of values: how many records have the genus “Baiomys” and also are labelled with the taxa “rodent”?</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">table</span>(survey<span class="op">$</span>genus, survey<span class="op">$</span>taxa) <span class="co"># note: first variable is set as the rows</span></a></code></pre></div>
+<pre><code>##                   
+##                     Bird Rabbit Reptile Rodent
+##   Ammodramus           2      0       0      0
+##   Ammospermophilus     0      0       0    437
+##   Amphispiza         303      0       0      0
+##   Baiomys              0      0       0     46
+##   Calamospiza         13      0       0      0
+##   Callipepla          16      0       0      0
+##   Campylorhynchus     50      0       0      0
+##   Chaetodipus          0      0       0   6029
+##   Cnemidophorus        0      0       2      0
+##   Crotalus             0      0       2      0
+##   Dipodomys            0      0       0  16167
+##   Lizard               0      0       4      0
+##   Neotoma              0      0       0   1252
+##   Onychomys            0      0       0   3267
+##   Perognathus          0      0       0   1629
+##   Peromyscus           0      0       0   2234
+##   Pipilo              52      0       0      0
+##   Pooecetes            8      0       0      0
+##   Reithrodontomys      0      0       0   2694
+##   Rodent               0      0       0     10
+##   Sceloporus           0      0       6      0
+##   Sigmodon             0      0       0    233
+##   Sparrow              4      0       0      0
+##   Spermophilus         0      0       0    249
+##   Sylvilagus           0     75       0      0
+##   Zonotrichia          2      0       0      0</code></pre>
+<div id="check-your-understanding" class="section level3">
+<h3>Check your understanding</h3>
+<ol style="list-style-type: decimal">
+<li><p>Would you expect to see one genus with counts in two different taxa columns? Why or why not?</p></li>
+<li><p>Create a plot that shows the number of records for each genus.</p></li>
+<li><p>There are some unexpected genus values in the table: what are they?</p></li>
+<li><p>How can you count the number of records for each genus using <code>dplyr()</code>?</p></li>
+</ol>
+</div>
+</div>
+<div id="averages" class="section level2">
+<h2>Averages</h2>
+<p>The dplyr <code>summarise()</code> function is extremely customizable. You can use it to summarise the averages (mean, median, and mode), standard deviation, inter- quartile range, and counts of a data set. It can also provide you with the min and max value. Its documentation page lists is many outputs: <a href="https://dplyr.tidyverse.org/reference/summarise.html" class="uri">https://dplyr.tidyverse.org/reference/summarise.html</a></p>
+<p>Several of these summary functions (mean, sd, etc. that you can apply within your call to summarise) will not work as you expect if there are any missing values. You may need to pass “na.rm=TRUE” in order to obtain the summary value.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">survey <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">            <span class="dt">count=</span><span class="kw">n</span>(), </a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">            <span class="dt">unqiue=</span><span class="kw">n_distinct</span>(hindfoot_length),</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">            <span class="dt">median=</span><span class="kw">median</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">            <span class="dt">min=</span><span class="kw">min</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">            <span class="dt">max=</span><span class="kw">max</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">            <span class="dt">sd=</span><span class="kw">sd</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">            <span class="dt">IQR=</span><span class="kw">IQR</span>(hindfoot_length, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code>## # A tibble: 1 x 8
+##    mean count unqiue median   min   max    sd   IQR
+##   &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  29.3 34786     57     32     2    70  9.56    15</code></pre>
+<p>When you think that categorical factors (such as sex, genus) will have an impact on your dependent variable, it’s important to <code>group_by()</code> those factors so you can compare the variable’s value among each of the categories.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># To avoid na.rm calls, let&#39;s temporarily ignore any missing weight data </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">weightHere &lt;-<span class="st"> </span>survey <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(weight))</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">weightHere <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(genus) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(weight),</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">            <span class="dt">count=</span><span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">            <span class="dt">sd=</span><span class="kw">sd</span>(weight))</a></code></pre></div>
+<pre><code>## # A tibble: 10 x 4
+##    genus             mean count    sd
+##    &lt;fct&gt;            &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+##  1 Baiomys           8.6     45  2.08
+##  2 Chaetodipus      24.2   5844  9.11
+##  3 Dipodomys        55.9  15510 29.4 
+##  4 Neotoma         159.    1152 44.0 
+##  5 Onychomys        26.5   3136  6.32
+##  6 Perognathus       8.38  1579  3.69
+##  7 Peromyscus       21.5   2172  4.46
+##  8 Reithrodontomys  10.7   2620  2.27
+##  9 Sigmodon         67.3    223 25.9 
+## 10 Spermophilus     93.5      2 51.6</code></pre>
+<div id="check-your-understanding-1" class="section level3">
+<h3>Check your understanding</h3>
+<ol style="list-style-type: decimal">
+<li><p>Create a plot that visualizes the median and IQR of the summarised weightHere data (grouped by genus).</p></li>
+<li><p>Recall another way we dealt with missing values. Use this method to create a newWeightHere table and compare the values.</p></li>
+<li><p>Create another version of Q1’s plot with the newWeightHere data and compare. Explain why the plots differ. Hint: try incorporating taxa into your plot.</p></li>
+<li><p>Based on Q3, what kinds of predictions can you make with this data?</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="inferential-statistics" class="section level1">
+<h1>Inferential statistics</h1>
+<p>Descriptive statistics is describing the data you collected from a <strong>representative sample</strong> of your <strong>true population</strong>. If you want to ask questions about weight differences between <em>Perognathus flavus</em> males and females, you can’t just stop at the point where you’ve generated medians for the two groups. This is just a statement about the samples you’ve taken.</p>
+<div id="classic-t-test" class="section level2">
+<h2>Classic t-test</h2>
+<p>You’ve indubitably learned about t-tests in your past stats class(es). Hopefully, the <em>extreme importance</em> of validating the <strong>assumptions</strong> of a given statistical test has been etched upon your brain in indelible ink. Because t-tests are parametric, it’s important that your data is normally distributed.</p>
+<div id="one-sample-t-test" class="section level3">
+<h3>One-sample t-test</h3>
+<p>With a one-sample t-test, you’re asking whether the mean of your sample differs significantly from a mean value that you expect it to have. You might want to use this if you have an expected population mean value from the literature. You may have even amassed your own dataset that you think is representative of a population’s true mean &amp; you want to compare a newly collected sample.</p>
+<p>With our survey data, we might want to test whether the 2002 mean weight of <em>Perognathus flavus</em> differs from what we believe the true population mean to be. Our null hypothesis is that the 2002 mean does not differ significantly from the population mean. Our alternative hypothesis is that it is significantly different.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Filter the survey data for only the Perognathus flavus data</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">flavusOnly &lt;-<span class="st"> </span>survey <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(species<span class="op">==</span><span class="st">&quot;flavus&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="co"># create an adjusted weight variable that will hold the calculated median</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="co"># weight if the unadjusted weight == NA &amp; the original weight value otherwise</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">adjWeight =</span> </a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">           <span class="kw">if_else</span>(<span class="kw">is.na</span>(weight), <span class="kw">median</span>(weight, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), weight))</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#verify that you didn&#39;t get a different genus with the same species name</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="kw">table</span>(flavusOnly<span class="op">$</span>genus) <span class="co">#remember you can use table() to view unique values</span></a></code></pre></div>
+<pre><code>## 
+##       Ammodramus Ammospermophilus       Amphispiza          Baiomys 
+##                0                0                0                0 
+##      Calamospiza       Callipepla  Campylorhynchus      Chaetodipus 
+##                0                0                0                0 
+##    Cnemidophorus         Crotalus        Dipodomys           Lizard 
+##                0                0                0                0 
+##          Neotoma        Onychomys      Perognathus       Peromyscus 
+##                0                0             1597                0 
+##           Pipilo        Pooecetes  Reithrodontomys           Rodent 
+##                0                0                0                0 
+##       Sceloporus         Sigmodon          Sparrow     Spermophilus 
+##                0                0                0                0 
+##       Sylvilagus      Zonotrichia 
+##                0                0</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Test whether the weight data is normally distributed</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#quick visual check using a histogram</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">ggplot</span>(flavusOnly, <span class="kw">aes</span>(<span class="dt">x=</span>adjWeight)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_histogram</span>()</a></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="lec07-linear-modelling_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Shapiro-Wilk&#39;s test: does the distribution differ significantly from normal</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">shapiro.test</span>(flavusOnly<span class="op">$</span>adjWeight)</a></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  flavusOnly$adjWeight
+## W = 0.81435, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">shapiro.test</span>(flavusOnly<span class="op">$</span>weight)</a></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  flavusOnly$weight
+## W = 0.81676, p-value &lt; 2.2e-16</code></pre>
+<p>With a p-value &lt;&lt; 0.05 can reject the null hypothesis of the Shapiro-Wilk’s test, so our weight data is not normally distributed. We’re going to ignore that for the purposes of instruction, but <em>do not do this at home</em>!!</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># Calculate the estimated true population mean (from the years before 2002)</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">flavusOnly <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(year<span class="op">&lt;</span><span class="dv">2002</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(adjWeight)) <span class="co">#evaluates to 7.9 (sig figs!)</span></a></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##    mean
+##   &lt;dbl&gt;
+## 1  7.93</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># Extract the measurements taken during 2002 and put in a new data frame</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">newest &lt;-<span class="st"> </span>flavusOnly <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(year<span class="op">==</span><span class="dv">2002</span>)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co"># Test </span></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="kw">t.test</span>(newest<span class="op">$</span>adjWeight, <span class="dt">mu=</span><span class="fl">7.9</span>)   <span class="co">#note it&#39;s not a double ==</span></a></code></pre></div>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  newest$adjWeight
+## t = -1.8943, df = 17, p-value = 0.07533
+## alternative hypothesis: true mean is not equal to 7.9
+## 95 percent confidence interval:
+##  6.819617 7.958161
+## sample estimates:
+## mean of x 
+##  7.388889</code></pre>
+<p>Based on a p-value of 0.05, we <em>fail to reject</em> the null hypothesis. It is important to report your results with appropriate notation so your readers can understand how much credence to lend to your conclusions.</p>
+<p>The weight of <em>Perognathus flavus</em> individuals sampled in 2002 does not differ significantly from the general population one-sample t<sub>17</sub> = -1.89, p=0.075.</p>
+<div id="check-your-understanding-2" class="section level4">
+<h4>Check your understanding</h4>
+<ol style="list-style-type: decimal">
+<li><p>What are the assumptions of a one-sample t-test? Recall from past classes or ask the almighty Google.</p></li>
+<li><p>How can you extract the year==2002 weight values and perform a t.test using one line of code?</p></li>
+<li><p>Test whether the flavus hindfoot_length data from 2001 differs from your calculated population mean (be sure to test for normality!). Report your results using appropriate notation.</p></li>
+</ol>
+</div>
+</div>
+<div id="unpaired-two-sample-t-test" class="section level3">
+<h3>Unpaired two-sample t-test</h3>
+<p>Compare two <em>independent</em> sample means against each other. With our survey data, we might want to test whether males have a significantly different mean weight than females.</p>
+<p>There are two assumptions we have to test now (once we’ve determined that the two samples we’re looking at are independent):</p>
+<ol style="list-style-type: decimal">
+<li><p>The dependent variable must be normally distributed in both samples</p></li>
+<li><p>The variance of the dependent variable must be approximately equal between the two samples</p></li>
+</ol>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">shapiro.test</span>( <span class="kw">subset</span>(flavusOnly, sex<span class="op">==</span><span class="st">&quot;M&quot;</span>)<span class="op">$</span>weight ) <span class="co">#test male weight</span></a></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  subset(flavusOnly, sex == &quot;M&quot;)$weight
+## W = 0.77414, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">shapiro.test</span>( <span class="kw">subset</span>(flavusOnly, sex<span class="op">==</span><span class="st">&quot;F&quot;</span>)<span class="op">$</span>weight ) <span class="co">#test female weight</span></a></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  subset(flavusOnly, sex == &quot;F&quot;)$weight
+## W = 0.85419, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># F-test to test for homogeneity in variances</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">var.test</span>(weight <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data=</span>survey) </a></code></pre></div>
+<pre><code>## 
+##  F test to compare two variances
+## 
+## data:  weight by sex
+## F = 1.037, num df = 15302, denom df = 16878, p-value = 0.02139
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  1.005397 1.069579
+## sample estimates:
+## ratio of variances 
+##           1.036979</code></pre>
+<p>Our data fails both of these tests, but we’re going to pretend everything is fine… again, do NOT do this at home!!</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">t.test</span>(weight<span class="op">~</span>sex, <span class="dt">data=</span>survey)</a></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  weight by sex
+## t = -2.0226, df = 31751, p-value = 0.04312
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.62412287 -0.02552529
+## sample estimates:
+## mean in group F mean in group M 
+##        42.17055        42.99538</code></pre>
+<div id="check-your-understanding-3" class="section level4">
+<h4>Check your understanding</h4>
+<ol style="list-style-type: decimal">
+<li><p>Would you want to compare the sample rodent mean weight against the mean sample weight of <em>Perognathus flavus</em>? What about rodent mean weight against rodent mean hindfoot_length?</p></li>
+<li><p>Repeat this t-test between males and females, but compare mean hind foot length instead of mean weight (be sure to test for normality!). Report your results using appropriate notation.</p></li>
+</ol>
+</div>
+</div>
+<div id="paired-sample-t-test" class="section level3">
+<h3>Paired sample t-test</h3>
+<p>Compare the mean values of a dependent variable between two categories that were paired <em>by design</em>. You can’t do this for males and females in our survey data set because the measurements weren’t taken at the same time, in the same place, from one male and one female that were ostensibly similar in all other respects.</p>
+<p>However, this test would be appropriate if you wanted to compare the mean reaction time of the right and left hands from a sample of undergrads.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">#t.test(object1, object1, paired=TRUE)</span></a></code></pre></div>
+</div>
+</div>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>Bivariate correlation (<code>r</code>) gives us the strength and direction of relationship between two variables (linear). Say we find that the correlation (<span class="math inline">\(r\)</span>) between hindfoot length and weight is <span class="math inline">\(r\)</span> = .609. This means that .6092^2 = .371 of the variance in <span class="math inline">\(y\)</span> (hindfoot length) is common to the variance in <span class="math inline">\(x\)</span> (weight). Alternatively, we can say that these two variables share 37.1% of the variance in common. In the case of the Pearson correlation, this will be true whether we consider weight or hindfoot length to be the dependent variable.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">cor.test</span>(survey<span class="op">$</span>weight, survey<span class="op">$</span>hindfoot_length)</a></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  survey$weight and survey$hindfoot_length
+## t = 164.3, df = 30736, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.6778151 0.6897195
+## sample estimates:
+##       cor 
+## 0.6838128</code></pre>
+</div>
+<div id="general-linear-model" class="section level2">
+<h2>General linear model</h2>
+<p>A version of GLM that uses continuous <span class="math inline">\(y\)</span> values is called linear regression, which I’m going to focus on. The formula for linear regression (or GLM in general) is:</p>
+<p><span class="math display">\[ Y = \alpha + X\beta + \varepsilon \]</span></p>
+<p>Or, a simplified, alphabetized version is:</p>
+<p><span class="math display">\[ y = a + Xb + e \]</span></p>
+<p>Where <span class="math inline">\(a\)</span> is the intercept (where the line crosses the vertical, i.e. y, axis of the graph), <span class="math inline">\(X\)</span> is the predictor variable, <span class="math inline">\(b\)</span> is the slope/coefficient, and <span class="math inline">\(e\)</span> is the error term.</p>
+<p>We construct these regression models for several reasons. Sometimes we want to infer how some variables (<span class="math inline">\(x\)</span>) cause or influence another variable (<span class="math inline">\(y\)</span>). Or maybe we know that <span class="math inline">\(y\)</span> has a lot of error in the measurement or is difficult to measure, so we want to derive a formula in order to predict <span class="math inline">\(y\)</span> based on more accurately measured variables. In R we can run linear regression either using <code>lm</code> or using <code>glm()</code>. <code>lm()</code> assumes a Gaussian (normal) distribution of your data. On the other hand, when you use <code>glm()</code> in R, you can specifiy the data’s distribution with the parameter <code>model =</code>. This allows you to construct a linear model when your data don’t follow a Gaussian distribution.</p>
+<p>Regression requires a predictor (independent) variable and a predicted (dependent) variable. Changing which variable is the predictor/predicted gives you a different regression line with a different regression equation. The function we are going to use today, <code>lm</code>, uses the OLS method by default, as mentioned above. The least squares line is the line chosen by <code>lm</code> to fit your data. The goal of OLS is to choose a line that minimizes prediction error. With any other line, errors of prediction would be greater. Note, the best fitting model given your data (i.e. OLS) does <em>not</em> equal the best model period. We must pay attention to fit statistics like R^2, the amount (%) of variance in the outcome explained by our predictor (i.e., model), to determine how well our model is doing.</p>
+<p>So how do we use these functions? In R, dependent variables are predicted by a tilde <span class="math inline">\(~\)</span>. The formula to regress <span class="math inline">\(y\)</span> on <span class="math inline">\(x\)</span> is <code>y ~ x</code>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw">lm</span>(weight<span class="op">~</span>sex, <span class="dt">data=</span>survey)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">summary</span>(result)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ sex, data = survey)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -38.995 -22.171  -5.995   5.005 237.005 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  42.1706     0.2951 142.917   &lt;2e-16 ***
+## sexM          0.8248     0.4074   2.024   0.0429 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 36.5 on 32180 degrees of freedom
+##   (2604 observations deleted due to missingness)
+## Multiple R-squared:  0.0001273,  Adjusted R-squared:  9.627e-05 
+## F-statistic: 4.098 on 1 and 32180 DF,  p-value: 0.04293</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co">#multiple predictors with interaction terms</span></a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">result &lt;-<span class="st"> </span><span class="kw">lm</span>(weight<span class="op">~</span>sex<span class="op">*</span>hindfoot_length, <span class="dt">data=</span>survey)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3"><span class="kw">summary</span>(result)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ sex * hindfoot_length, data = survey)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -96.687 -12.919  -4.031   3.259 229.889 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          -32.042646   0.692255 -46.287   &lt;2e-16 ***
+## sexM                  -1.816600   0.959032  -1.894   0.0582 .  
+## hindfoot_length        2.558271   0.022894 111.746   &lt;2e-16 ***
+## sexM:hindfoot_length   0.003292   0.031264   0.105   0.9161    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26.02 on 30672 degrees of freedom
+##   (4110 observations deleted due to missingness)
+## Multiple R-squared:  0.4678, Adjusted R-squared:  0.4678 
+## F-statistic:  8989 on 3 and 30672 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co">#use + for main effect of predictor only</span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">result &lt;-<span class="st"> </span><span class="kw">lm</span>(weight<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span>hindfoot_length, <span class="dt">data=</span>survey)</a>
+<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">summary</span>(result)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ sex + hindfoot_length, data = survey)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -96.749 -12.907  -4.028   3.253 229.893 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     -32.09337    0.49714 -64.556  &lt; 2e-16 ***
+## sexM             -1.72062    0.29787  -5.776  7.7e-09 ***
+## hindfoot_length   2.56004    0.01559 164.202  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26.02 on 30673 degrees of freedom
+##   (4110 observations deleted due to missingness)
+## Multiple R-squared:  0.4678, Adjusted R-squared:  0.4678 
+## F-statistic: 1.348e+04 on 2 and 30673 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="analysis-of-variance" class="section level2">
+<h2>Analysis of Variance</h2>
+<p>ANOVA is simply a different way of evaluating explained variance in linear modelling. Anova is a special case of linear modelling. You must always wrap the <code>anova()</code> function around a <code>lm()</code> function.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">anova</span>(<span class="kw">lm</span>(weight<span class="op">~</span>sex<span class="op">*</span>genus, <span class="dt">data=</span>survey))</a></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: weight
+##              Df   Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## sex           1     5461    5461   10.801  0.001016 ** 
+## genus         9 26567752 2951972 5839.067 &lt; 2.2e-16 ***
+## sex:genus     9    48457    5384   10.650 &lt; 2.2e-16 ***
+## Residuals 32162 16259676     506                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>However, R uses type II sums of squares by default. <code>Anova()</code> from the <code>car</code> package can give you “Type III Sums of Squares”. This matters when you have more than one predictor (e.g. taxa x sex). Asking for type III sums of squares will match what you get from SPSS or SAS.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw">lm</span>(weight<span class="op">~</span>sex<span class="op">*</span>genus, <span class="dt">data=</span>survey)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">Anova</span>(result, <span class="dt">type=</span><span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## Anova Table (Type III tests)
+## 
+## Response: weight
+##               Sum Sq    Df   F value Pr(&gt;F)    
+## (Intercept)     2602     1    5.1464 0.0233 *  
+## sex               31     1    0.0621 0.8032    
+## genus       13368626     9 2938.1598 &lt;2e-16 ***
+## sex:genus      48457     9   10.6498 &lt;2e-16 ***
+## Residuals   16259676 32162                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="post-hoc-tests" class="section level2">
+<h2>Post hoc tests</h2>
+<p>R comes with a default pairwise t-test (<code>pairwise.t.test()</code>). However, <code>multcomp</code> offers more posthoc options than base R:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw">lm</span>(weight<span class="op">~</span>genus, <span class="dt">data=</span>survey)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">postHocs&lt;-<span class="kw">glht</span>(result, <span class="dt">linfct =</span> <span class="kw">mcp</span>(<span class="dt">genus =</span> <span class="st">&quot;Tukey&quot;</span>))</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="co">#summary function gives results of multiple comparisons</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="kw">summary</span>(postHocs)</a></code></pre></div>
+<pre><code>## Warning in RET$pfunction(&quot;adjusted&quot;, ...): Completion with error &gt; abseps</code></pre>
+<pre><code>## 
+##   Simultaneous Tests for General Linear Hypotheses
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: lm(formula = weight ~ genus, data = survey)
+## 
+## Linear Hypotheses:
+##                                      Estimate Std. Error  t value Pr(&gt;|t|)    
+## Chaetodipus - Baiomys == 0            15.5793     3.3770    4.613  &lt; 0.001 ***
+## Dipodomys - Baiomys == 0              47.2602     3.3689   14.028  &lt; 0.001 ***
+## Neotoma - Baiomys == 0               150.6457     3.4291   43.931  &lt; 0.001 ***
+## Onychomys - Baiomys == 0              17.8962     3.3881    5.282  &lt; 0.001 ***
+## Perognathus - Baiomys == 0            -0.2225     3.4117   -0.065  1.00000    
+## Peromyscus - Baiomys == 0             12.8563     3.3987    3.783  0.00353 ** 
+## Reithrodontomys - Baiomys == 0         2.0679     3.3928    0.610  0.99971    
+## Sigmodon - Baiomys == 0               58.6646     3.6879   15.907  &lt; 0.001 ***
+## Spermophilus - Baiomys == 0           84.9000    16.3078    5.206  &lt; 0.001 ***
+## Dipodomys - Chaetodipus == 0          31.6809     0.3464   91.464  &lt; 0.001 ***
+## Neotoma - Chaetodipus == 0           135.0663     0.7275  185.667  &lt; 0.001 ***
+## Onychomys - Chaetodipus == 0           2.3168     0.4995    4.638  &lt; 0.001 ***
+## Perognathus - Chaetodipus == 0       -15.8019     0.6400  -24.689  &lt; 0.001 ***
+## Peromyscus - Chaetodipus == 0         -2.7231     0.5671   -4.802  &lt; 0.001 ***
+## Reithrodontomys - Chaetodipus == 0   -13.5114     0.5306  -25.465  &lt; 0.001 ***
+## Sigmodon - Chaetodipus == 0           43.0852     1.5397   27.982  &lt; 0.001 ***
+## Spermophilus - Chaetodipus == 0       69.3207    15.9598    4.343  &lt; 0.001 ***
+## Neotoma - Dipodomys == 0             103.3854     0.6891  150.023  &lt; 0.001 ***
+## Onychomys - Dipodomys == 0           -29.3640     0.4418  -66.458  &lt; 0.001 ***
+## Perognathus - Dipodomys == 0         -47.4828     0.5961  -79.654  &lt; 0.001 ***
+## Peromyscus - Dipodomys == 0          -34.4040     0.5170  -66.544  &lt; 0.001 ***
+## Reithrodontomys - Dipodomys == 0     -45.1923     0.4767  -94.810  &lt; 0.001 ***
+## Sigmodon - Dipodomys == 0             11.4044     1.5220    7.493  &lt; 0.001 ***
+## Spermophilus - Dipodomys == 0         37.6398    15.9581    2.359  0.27082    
+## Onychomys - Neotoma == 0            -132.7495     0.7775 -170.746  &lt; 0.001 ***
+## Perognathus - Neotoma == 0          -150.8682     0.8744 -172.538  &lt; 0.001 ***
+## Peromyscus - Neotoma == 0           -137.7894     0.8225 -167.522  &lt; 0.001 ***
+## Reithrodontomys - Neotoma == 0      -148.5777     0.7978 -186.241  &lt; 0.001 ***
+## Sigmodon - Neotoma == 0              -91.9811     1.6510  -55.713  &lt; 0.001 ***
+## Spermophilus - Neotoma == 0          -65.7457    15.9709   -4.117  &lt; 0.001 ***
+## Perognathus - Onychomys == 0         -18.1187     0.6964  -26.019  &lt; 0.001 ***
+## Peromyscus - Onychomys == 0           -5.0399     0.6300   -8.000  &lt; 0.001 ***
+## Reithrodontomys - Onychomys == 0     -15.8282     0.5973  -26.500  &lt; 0.001 ***
+## Sigmodon - Onychomys == 0             40.7684     1.5640   26.067  &lt; 0.001 ***
+## Spermophilus - Onychomys == 0         67.0038    15.9622    4.198  &lt; 0.001 ***
+## Peromyscus - Perognathus == 0         13.0788     0.7463   17.525  &lt; 0.001 ***
+## Reithrodontomys - Perognathus == 0     2.2905     0.7190    3.186  0.03022 *  
+## Sigmodon - Perognathus == 0           58.8871     1.6144   36.477  &lt; 0.001 ***
+## Spermophilus - Perognathus == 0       85.1225    15.9672    5.331  &lt; 0.001 ***
+## Reithrodontomys - Peromyscus == 0    -10.7883     0.6549  -16.474  &lt; 0.001 ***
+## Sigmodon - Peromyscus == 0            45.8083     1.5869   28.867  &lt; 0.001 ***
+## Spermophilus - Peromyscus == 0        72.0437    15.9644    4.513  &lt; 0.001 ***
+## Sigmodon - Reithrodontomys == 0       56.5966     1.5742   35.953  &lt; 0.001 ***
+## Spermophilus - Reithrodontomys == 0   82.8321    15.9632    5.189  &lt; 0.001 ***
+## Spermophilus - Sigmodon == 0          26.2354    16.0285    1.637  0.76620    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic regression</h2>
+<p>Normally-distributed dependent variable assumption is violated in logistic regression, where we want to predict a binary outcome. So, you must use the <code>glm()</code> function rather than <code>lm()</code>. We only have one binary variable in our dataset: sex.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">glm</span>(survey<span class="op">$</span>sex <span class="op">~</span><span class="st"> </span>survey<span class="op">$</span>weight<span class="op">*</span>survey<span class="op">$</span>hindfoot_length, <span class="dt">family=</span>binomial))</a></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = survey$sex ~ survey$weight * survey$hindfoot_length, 
+##     family = binomial)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -1.472  -1.203   1.050   1.143   1.430  
+## 
+## Coefficients:
+##                                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                          -1.766e-01  5.416e-02  -3.261  0.00111 ** 
+## survey$weight                        -5.778e-03  1.266e-03  -4.565 4.99e-06 ***
+## survey$hindfoot_length                1.332e-02  2.020e-03   6.596 4.23e-11 ***
+## survey$weight:survey$hindfoot_length  8.781e-05  3.212e-05   2.734  0.00626 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 42452  on 30675  degrees of freedom
+## Residual deviance: 42341  on 30672  degrees of freedom
+##   (4110 observations deleted due to missingness)
+## AIC: 42349
+## 
+## Number of Fisher Scoring iterations: 3</code></pre>
+</div>
+</div>
+
+
+<hr>
+
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. See the <a href="LICENSE.html">licensing</a> page for more details about copyright information.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
