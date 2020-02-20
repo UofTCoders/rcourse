@@ -69,11 +69,10 @@ Run the following code to load the CO2 dataset.
 
     b. How much does `uptake` change if `conc` goes up by 10 mL/L? Write out the
     interpretation as a simple statement of this contribution of `conc` on
-    `uptake`, when the other variables are also in the model. How much CO2 would
-    you predict plants to uptake if atmospheric concentrations were 2,450 mL/L?.
-    Show your work. (2 marks)
+    `uptake`. How much CO2 would you predict plants to uptake if atmospheric
+    concentrations were 2,450 mL/L?. Show your work. (2 marks)
         
-3. Linear mixed-effects models (4 marks).
+4. Linear mixed-effects models (4 marks).
 
     Santangelo _et al._ (2018) were interested in understanding how plant
     defenses, herbivores, and pollinators influence the expression of plant
@@ -116,7 +115,7 @@ Run the following code to load the CO2 dataset.
     
     a. Use the `lme4` and `lmerTest` R packages to run a linear mixed-effects
     model examining how herbivores (`Herbivory`), Pollinators (`Pollination`),
-    plant defenses (`HCN`) _and all interactions_ influences the length of
+    plant defenses (`HCN`) _and all interactions_ influences the width of
     banner petals (`Avg.Bnr.Wdth`) produced by plants while accounting for
     variation due to spatial block and plant genotype. Also allow the intercept
     for `Genotype` to vary across the levels of the herbivory treatment. (1
@@ -129,17 +128,18 @@ Run the following code to load the CO2 dataset.
     so, which ones? Based on your examination of the model output, how can you
     tell which level of the significant treatments resulted in longer or shorter
     mean banner petal widths? Make a statement for each significant **main**
-    effects in the model (i.e. not interactions) (0.5 marks).
+    effects in the model (i.e. not interactions). If none of the main effects
+    are significant, then simply write "there are no significant main effects in
+    the model" (0.5 marks).
 
     c. Using `dplyr` and `gglot2`, plot the mean banner width for one of the
     significant interactions in the model above (whichever you choose). The idea
     is to show how both treatments interact to influence the mean length of
     banner petals using a combination of different colours, linetypes, shapes,
-    etc. Feel free to use whatever kind of plot that is appropriate to this kind
-    of data. Avoid overlapping points in the figure. Also include error
-    bars/bands with one standard error around the mean. As a reminder, I have
-    included the formula to calculate the standard error of the mean below. (1.5
-    marks).
+    etc. on the same plot (i.e., no faceting). Avoid overlapping points in the
+    figure. Also include error bars/bands with one standard error around the
+    mean. As a reminder, I have included the formula to calculate the standard
+    error of the mean below. (1.5 marks).
     
     $$ SE = \frac{sd}{\sqrt{n}}  $$
 

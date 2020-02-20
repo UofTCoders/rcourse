@@ -90,13 +90,14 @@ permutation test (note: you don't need code here, just tell me in words).
 Set a seed of 42 and test your function on the `test_vector` from part (b).
 (1.5 marks)
 
-d. Use your functions defined in (b) and (c) to estimate the Simpson's
-diversity index and corresponding 95% bootstrapped confidence intervals
-around the Simpson's index for each of the sites in your dataframe from (a).
-Your answer should be a single dataframe with four columns: `site`,
-`simpson`, `lower`, and `upper`. Points are awarded for conciseness of the
-code. (**Hint:** The most concise answer will likely make use of the `purrr`
-package, which is part of the `tidyverse`). Set a seed of 43. (1.5 marks)
+d. Use your functions defined in (b) and (c) to estimate the Simpson's diversity
+index and corresponding 95% bootstrapped confidence intervals around the
+Simpson's index for each of the sites in your dataframe from (a). Use 1000
+iterations for the bootstrapping procedure. Your answer should be a single
+dataframe with four columns: `site`, `simpson`, `lower`, and `upper`. Points are
+awarded for conciseness of the code. (**Hint:** The most concise answer will
+likely make use of the `purrr` package, which is part of the `tidyverse`). Set a
+seed of 43. (1.5 marks)
 
 e. Using the dataframe from (d), plot the Simpson's index (y-axis) for each
 of the sites (x-axis) as a single point surrounded by its lower and upper

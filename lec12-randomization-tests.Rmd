@@ -286,8 +286,10 @@ ggplot(reshuffled, aes(x = width, fill = sex)) +
     theme_classic()
 
 # Let get the mean difference of this single simulation
-mean_males_sim1 <- mean(reshuffled[reshuffled$sex == "Male", "width"])
-mean_females_sim1 <- mean(reshuffled[reshuffled$sex == "Female", "width"])
+mean_males_sim1 <- mean(reshuffled %>% filter(sex == "Male") 
+                           %>% pull(width))
+mean_females_sim1 <- mean(reshuffled %>% filter(sex == "Female") 
+                             %>% pull(width))
 mean_diff_sim1 <- mean_males_sim1 - mean_females_sim1
 ```
 

@@ -103,9 +103,10 @@ the model.
 
 Similar to AIC is AIC~c~, which corrects for small sample sizes. It is
 recommended to use AIC~c~ when $n/k$ is less than 40, with $n$ being the sample
-size (i.e. total number of observations) and $k$ being the number of parameters
-in the most saturated model (i.e. the model with the most parameters) (Symonds
-and Moussalli 2011). AIC~c~ is calculated as follows:
+size (i.e. total number of observations) and $k$ being the **total** number of
+parameters in the most saturated model (i.e. the model with the most
+parameters), including both fixed and random effects, as well as intercepts
+(Symonds and Moussalli 2011). AIC~c~ is calculated as follows:
 
 $$ AIC_c = AIC+\frac{2k(k+1)}{n-k-1} $$
 
