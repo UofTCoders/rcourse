@@ -5,12 +5,9 @@ output:
   html_document: default
 ---
 
-```{r}
-
+```{r eval=FALSE}
 library(deSolve)
-
 ```
-
 
 1. In this exercise, we will be working with the Lotka-Volterra competition
 model introduced in class. Use the following parameter set in this question. (3
@@ -20,7 +17,6 @@ marks)
 - `K` = 1000
 - `alpha12` = 3
 - `alpha21` = 1.5
-
 
     a. Solve the Lotka-Volterra competition model and plot the trajetory of the
     population for 100 time steps. Briefly explain the population dynamics of these
@@ -78,15 +74,8 @@ appear). (3 marks)
     capita** (per organism) decreases in a straight line as $N$ increases. (0.5
     marks)
     
-     d. What happens to the Allee effect as $A$ decreases? Plot curves for $A=0$
-     and a few values of $A>0$. (0.5 marks)
+    d. What happens to the Allee effect as $A$ decreases? Plot curves for $A=0$
+    and a few values of $A>0$. (0.5 marks)
 
     e. Describe two biological situations in which you might expect to see an Allee
     effect (either weak or strong). (0.5 marks)
-
-
-
-
-
-
-
